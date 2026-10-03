@@ -8,7 +8,7 @@ jobs:
   close_job:
     # this job will only run if the PR has been closed without being merged
     if: github.event.pull_request.merged == false
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON((github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && vars.LOCAL_RUNNER_LABELS || '["ubuntu-latest"]') }}
     steps:
       - uses: actions/github-script@v4
         with:
