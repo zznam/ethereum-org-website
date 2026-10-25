@@ -21,7 +21,7 @@ export const isLangRightToLeft = (lang: Lang): boolean => {
   return langConfig[0].langDir === "rtl"
 }
 
-export const filterRealLocales = (locales: string[] | undefined) => {
+export const filterRealLocales = (locales: readonly string[] | undefined) => {
   return locales?.filter((locale) => locale !== FAKE_LOCALE) || []
 }
 
