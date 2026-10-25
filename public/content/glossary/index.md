@@ -1,10 +1,10 @@
 ---
-title: Ethereum Glossary
+title: Glossary
+metaTitle: Ethereum Glossary
 description: An incomplete glossary of technical and non-technical terms related to Ethereum
 lang: en
+authors: ["Andreas Antonopoulos"]
 ---
-
-# Glossary {#ethereum-glossary}
 
 ## \# {#section-numbers}
 
@@ -44,6 +44,8 @@ lang: en
 
 <GlossaryDefinition term="block" />
 
+<GlossaryDefinition term="block-builder" />
+
 <GlossaryDefinition term="block-explorer" />
 
 <GlossaryDefinition term="block-header" />
@@ -75,6 +77,8 @@ lang: en
 ## C {#section-c}
 
 <GlossaryDefinition term="casper-ffg" />
+
+<GlossaryDefinition term="cfi" />
 
 <GlossaryDefinition term="checkpoint" />
 
@@ -117,6 +121,8 @@ lang: en
 <GlossaryDefinition term="decentralization" />
 
 <GlossaryDefinition term="dao" />
+
+<GlossaryDefinition term="desci" />
 
 <GlossaryDefinition term="dex" />
 
@@ -270,6 +276,8 @@ lang: en
 
 <GlossaryDefinition term="light-client" />
 
+<GlossaryDefinition term="liquid-staking-tokens" />
+
 <GlossaryDefinition term="liquidity" />
 
 <GlossaryDefinition term="liquidity-tokens" />
@@ -284,6 +292,8 @@ lang: en
 
 <GlossaryDefinition term="max-fee-per-gas" />
 
+<GlossaryDefinition term="mempool" />
+
 <GlossaryDefinition term="merkle-patricia-tree" />
 
 <GlossaryDefinition term="merkle-root" />
@@ -291,6 +301,8 @@ lang: en
 <GlossaryDefinition term="message" />
 
 <GlossaryDefinition term="message-call" />
+
+<GlossaryDefinition term="mev" />
 
 <GlossaryDefinition term="mining" />
 
@@ -318,11 +330,11 @@ lang: en
 
 ## O {#section-o}
 
-<GlossaryDefinition term="off-chain" />
+<GlossaryDefinition term="offchain" />
 
 <GlossaryDefinition term="ommer" />
 
-<GlossaryDefinition term="on-chain" />
+<GlossaryDefinition term="onchain" />
 
 <GlossaryDefinition term="optimistic-rollup" />
 
@@ -358,6 +370,12 @@ lang: en
 
 <Divider />
 
+## Q {#section-q}
+
+<GlossaryDefinition term="quadratic-voting" />
+
+<Divider />
+
 ## R {#section-r}
 
 <GlossaryDefinition term="receipt" />
@@ -386,6 +404,8 @@ lang: en
 
 <GlossaryDefinition term="shard" />
 
+<GlossaryDefinition term="shielded-pool" />
+
 <GlossaryDefinition term="sidechain" />
 
 <GlossaryDefinition term="signing" />
@@ -393,6 +413,8 @@ lang: en
 <GlossaryDefinition term="singleton" />
 
 <GlossaryDefinition term="slasher" />
+
+<GlossaryDefinition term="slippage" />
 
 <GlossaryDefinition term="slot" />
 
@@ -418,7 +440,11 @@ lang: en
 
 <GlossaryDefinition term="state-channels" />
 
+<GlossaryDefinition term="stealth-address" />
+
 <GlossaryDefinition term="supermajority" />
+
+<GlossaryDefinition term="sybil-attack" />
 
 <GlossaryDefinition term="syncing" />
 
@@ -435,6 +461,8 @@ lang: en
 <GlossaryDefinition term="testnet" />
 
 <GlossaryDefinition term="token" />
+
+<GlossaryDefinition term="token-factory" />
 
 <GlossaryDefinition term="transaction" />
 
@@ -466,9 +494,13 @@ lang: en
 
 <GlossaryDefinition term="wallet" />
 
+<GlossaryDefinition term="web2" />
+
 <GlossaryDefinition term="web3" />
 
 <GlossaryDefinition term="wei" />
+
+<GlossaryDefinition term="wrapped-token" />
 
 <Divider />
 
@@ -484,7 +516,7 @@ lang: en
 
 ## Sources {#sources}
 
-_Provided in part by [Mastering Ethereum](https://github.com/ethereumbook/ethereumbook) by [Andreas M. Antonopoulos, Gavin Wood](https://ethereumbook.info) under CC-BY-SA_
+_Provided in part by [Mastering Ethereum](https://github.com/ethereumbook/ethereumbook) by [Andreas M. Antonopoulos, Gavin Wood](https://aantonop.com/books/mastering-ethereum) under CC-BY-SA_
 
 <Divider />
 

@@ -4,8 +4,6 @@ lang: en
 description: Our criteria for listing developer tools on ethereum.org
 ---
 
-# Adding developer tools {#contributing-to-ethereumorg-}
-
 We want to make sure we list the best developer resources possible so that people can build with confidence and have the support they need.
 
 If there's a helpful developer tool that we've missed, feel free to suggest it somewhere appropriate.
@@ -56,6 +54,6 @@ Unless products are specifically ordered otherwise, such as alphabetically, prod
 
 If you want to add a developer tool to ethereum.org and it meets the criteria, create an issue on GitHub.
 
-<ButtonLink to="https://github.com/ethereum/ethereum-org-website/issues/new?assignees=&labels=feature+%3Asparkles%3A%2Ccontent+%3Afountain_pen%3A&template=suggest_dev_tool.yaml">
+<ButtonLink href="https://github.com/ethereum/ethereum-org-website/issues/new?assignees=&labels=feature+%3Asparkles%3A%2Ccontent+%3Afountain_pen%3A&template=suggest_dev_tool.yaml">
   Create issue
 </ButtonLink>

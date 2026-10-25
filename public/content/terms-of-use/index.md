@@ -1,10 +1,9 @@
 ---
-title: Terms of Use
+title: Terms of use
+description: Read the terms and conditions governing your use of ethereum.org and related websites operated by the Ethereum Foundation.
 lang: en
 hideEditButton: true
 ---
-
-# Terms of Use {#terms-of-use}
 
 **PLEASE READ THESE TERMS OF USE BEFORE USING THE WEBSITES.**
 
@@ -33,7 +32,7 @@ Your continued use of the Websites following the posting of revised Terms of Use
 
 **Accessing the Websites and Account Security**
 
-We reserve the right to withdraw or amend the Websites, and any service or material we provide on the Websites, in our sole discretion without notice. We do not guarantee that our Websites or any content on them will always be available or be interrupted. We will not be liable if for any reason all or any part of the Websites are unavailable at any time or for any period. From time to time, we may restrict access to some parts of the Websites, or entire Websites, to users.
+We reserve the right to withdraw or amend the Websites, and any service or material we provide on the Websites, in our sole discretion without notice. We do not guarantee that our Websites or any content on them will always be available or not be interrupted. We will not be liable if for any reason all or any part of the Websites are unavailable at any time or for any period. From time to time, we may restrict access to some parts of the Websites, or entire Websites, to users.
 
 You are responsible for:
 

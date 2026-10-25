@@ -1,31 +1,36 @@
-import React, { MouseEvent, useState } from "react"
-import { useTranslation } from "next-i18next"
-import { MdMenu } from "react-icons/md"
-import {
-  Button,
-  ButtonProps,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react"
+"use client"
 
-// Utils
+import { Fragment, useState } from "react"
+import { Menu } from "lucide-react"
+
+import { cn } from "@/lib/utils/cn"
 import { trackCustomEvent } from "@/lib/utils/matomo"
 
-// Components
-import { BaseLink } from "./Link"
+import { Button } from "./ui/buttons/Button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
+import { BaseLink } from "./ui/Link"
 
 export interface ListItem {
   text: string
-  to?: string
+  href?: string
   matomo?: {
     eventCategory: string
     eventAction: string
     eventName: string
   }
   callback?: (idx: number) => void
+  /** Nested sub-items rendered beneath this item, marked with a leading dash per level. */
+  items?: Array<ListItem>
 }
+
+/** Visual nesting marker; excluded from accessible names. Levels past the first indent the dash with an em space per extra level. */
+const SUB_ITEM_MARKER = "–" // en dash
+const SUB_ITEM_INDENT = " " // em space
 
 export interface List {
   text: string
@@ -33,91 +38,76 @@ export interface List {
   items: Array<ListItem>
 }
 
-export type ButtonDropdownProps = ButtonProps & {
+export type ButtonDropdownProps = {
   list: List
+  className?: string
 }
 
-const ButtonDropdown = ({ list, ...rest }: ButtonDropdownProps) => {
-  const { t } = useTranslation("common")
+const ButtonDropdown = ({ list, className }: ButtonDropdownProps) => {
   const [selectedItem, setSelectedItem] = useState(list.text)
-  const handleClick = (
-    e: MouseEvent<HTMLElement>,
-    item: ListItem,
-    idx: number
-  ) => {
-    const { matomo, callback } = item
 
-    if (matomo) {
-      trackCustomEvent(matomo)
-    }
-
-    if (callback) {
-      e.preventDefault()
-      callback(idx)
-    }
+  const handleClick = (item: ListItem, idx: number) => {
+    if (item.matomo) trackCustomEvent(item.matomo)
+    item.callback?.(idx)
     setSelectedItem(item.text)
   }
 
-  return (
-    <Menu matchWidth>
-      <MenuButton
-        as={Button}
-        leftIcon={<MdMenu />}
-        variant="outline"
-        _active={{ bg: "transparent" }}
-        {...rest}
-      >
-        {t(selectedItem)}
-      </MenuButton>
-      <MenuList
-        py={2}
-        borderRadius="base"
-        border="1px"
-        borderColor="text"
-        bg="dropdownBackground"
-        zIndex="popover"
-      >
-        {list.items.map((item, idx) => {
-          const { text, to } = item
-
-          return to ? (
-            <BaseLink
-              key={idx}
-              to={to!}
-              isPartiallyActive={false}
-              textDecor="none"
-              color="text"
-              fontWeight="normal"
-              _hover={{ textDecor: "none", color: "primary.base" }}
-              _focus={{ textDecor: "none", color: "primary.base" }}
-            >
-              <MenuItem
-                as="span"
-                onClick={(e) => handleClick(e, item, idx)}
-                p={2}
-                textAlign="center"
-                justifyContent="center"
-                bg="dropdownBackground"
-                _hover={{
-                  color: "primary.base",
-                  bg: "dropdownBackgroundHover",
-                }}
-                _focus={{
-                  color: "primary.base",
-                  bg: "dropdownBackgroundHover",
-                }}
+  const renderItems = (items: Array<ListItem>, depth = 0): React.ReactNode =>
+    items.map((item, idx) => {
+      const label = (
+        <>
+          {depth > 0 && (
+            <span aria-hidden className="me-2">
+              {SUB_ITEM_INDENT.repeat(depth - 1) + SUB_ITEM_MARKER}
+            </span>
+          )}
+          {item.text}
+        </>
+      )
+      return (
+        <Fragment key={item.text}>
+          <DropdownMenuItem
+            className="justify-start ps-8 pe-4 text-start"
+            onClick={() => handleClick(item, idx)}
+            asChild={!!item.href}
+          >
+            {item.href ? (
+              <BaseLink
+                href={item.href}
+                className="text-body no-underline focus-visible:outline-0"
               >
-                {t(text)}
-              </MenuItem>
-            </BaseLink>
-          ) : (
-            <MenuItem key={idx} onClick={(e) => handleClick(e, item, idx)}>
-              {t(text)}
-            </MenuItem>
-          )
-        })}
-      </MenuList>
-    </Menu>
+                {label}
+              </BaseLink>
+            ) : (
+              <span>{label}</span>
+            )}
+          </DropdownMenuItem>
+          {item.items?.length ? renderItems(item.items, depth + 1) : null}
+        </Fragment>
+      )
+    })
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          aria-label={list.ariaLabel}
+          className={cn("flex justify-between", className)}
+        >
+          <Menu aria-hidden />
+          <span className="flex-1 text-center">{selectedItem}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        scrollAffordance
+        className="w-(--radix-dropdown-menu-trigger-width)"
+        collisionPadding={16}
+        sideOffset={8}
+      >
+        {renderItems(list.items)}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 

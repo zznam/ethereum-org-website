@@ -1,233 +1,85 @@
-import {
-  Box,
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Kbd,
-  Menu,
-  MenuList,
-  type MenuListProps,
-  type MenuProps,
-  Text,
-  type UseDisclosureReturn,
-  useEventListener,
-} from "@chakra-ui/react"
+"use client"
 
-import { Button } from "@/components/Buttons"
-import { BaseLink } from "@/components/Link"
+import { useEffect, useRef } from "react"
 
-import MenuItem from "./MenuItem"
-import NoResultsCallout from "./NoResultsCallout"
+import type { LocaleDisplayInfo } from "@/lib/types"
+
+import { cn } from "@/lib/utils/cn"
+import { trackCustomEvent } from "@/lib/utils/matomo"
+
+import LanguagePickerMenu from "./LanguagePickerMenu"
 import { useLanguagePicker } from "./useLanguagePicker"
 
-type LanguagePickerProps = Omit<MenuListProps, "children"> & {
-  children: React.ReactNode
-  placement?: MenuProps["placement"]
-  handleClose?: () => void
-  menuState?: UseDisclosureReturn
+import { getPathname, usePathname } from "@/i18n/navigation"
+
+type LanguagePickerProps = {
+  className?: string
+  languages: LocaleDisplayInfo[]
+  onSelect?: (value: string) => void
 }
 
 const LanguagePicker = ({
-  children,
-  placement,
-  handleClose,
-  menuState,
-  ...props
+  languages,
+  className,
+  onSelect,
 }: LanguagePickerProps) => {
-  const {
-    t,
-    refs,
-    disclosure,
-    filterValue,
-    setFilterValue,
-    filteredNames,
-    handleInputFocus,
-  } = useLanguagePicker(handleClose, menuState)
-  const { inputRef, firstItemRef, noResultsRef, footerRef } = refs
-  const { onClose } = disclosure
+  const pathname = usePathname()
+  const { languages: sortedLanguages } = useLanguagePicker(languages)
+  const noResultsQuery = useRef("")
 
-  /**
-   * Adds a keydown event listener to focus filter input (\).
-   * @param {string} event - The keydown event.
-   */
-  useEventListener("keydown", (e) => {
-    if (e.key !== "\\") return
-    e.preventDefault()
-    inputRef.current?.focus()
-  })
+  useEffect(() => {
+    trackCustomEvent({
+      eventCategory: `Language picker`,
+      eventAction: "Open or close language picker",
+      eventName: "Opened",
+    })
+
+    return () => {
+      trackCustomEvent({
+        eventCategory: `Language picker`,
+        eventAction: "Open or close language picker",
+        eventName: "Closed",
+      })
+
+      // One event per session: the last filter query that matched nothing
+      const query = noResultsQuery.current.trim().toLowerCase().slice(0, 32)
+      if (query) {
+        trackCustomEvent({
+          eventCategory: `Language picker`,
+          eventAction: "No results query",
+          eventName: query,
+        })
+      }
+    }
+  }, [])
+
+  const handleMenuItemSelect = (currentValue: string) => {
+    onSelect?.(currentValue)
+
+    trackCustomEvent({
+      eventCategory: `Language picker`,
+      eventAction: "Locale chosen",
+      eventName: currentValue,
+    })
+
+    // Hard navigation, not a soft push: a soft nav to an intercepting `@modal`
+    // route (e.g. the tool-detail page) would re-open the modal instead of
+    // switching locale — a known Next.js intercepting-routes limitation.
+    const href = getPathname({ href: pathname, locale: currentValue })
+    window.location.href = `${href}${window.location.search}${window.location.hash}`
+  }
 
   return (
-    <Menu isLazy placement={placement} autoSelect={false} {...disclosure}>
-      {children}
-      <MenuList
-        position="relative"
-        overflow="auto"
-        borderRadius="base"
-        py="0"
-        onKeyDown={(e) => {
-          if (e.key === "Tab" || e.key === "\\") {
-            e.preventDefault()
-            ;(e.shiftKey ? inputRef : footerRef).current?.focus()
-          }
+    <div className={cn("flex flex-col", className)}>
+      <LanguagePickerMenu
+        className="min-h-0 flex-1 gap-2 overflow-y-auto p-4"
+        languages={sortedLanguages}
+        onSelect={handleMenuItemSelect}
+        onNoResults={(query) => {
+          noResultsQuery.current = query
         }}
-        {...props}
-      >
-        {/* Mobile Close bar */}
-        <Flex
-          justifyContent="end"
-          hideFrom="md"
-          position="sticky"
-          zIndex="sticky"
-          top="0"
-          bg="background.base"
-        >
-          <Button
-            p="4"
-            variant="ghost"
-            alignSelf="end"
-            onClick={() => onClose()}
-          >
-            {t("common:close")}
-          </Button>
-        </Flex>
-
-        {/* Main Language selection menu */}
-        <Box
-          position="relative"
-          w="100%"
-          minH="calc(100% - 53px)" // Fill height with space for close button on mobile
-          p="4"
-          bg="background.highlight"
-          sx={{ "[role=menuitem]": { py: "3", px: "2" } }}
-        >
-          <FormControl>
-            <FormLabel fontSize="xs" color="body.medium">
-              {t("page-languages-filter-label")}{" "}
-              <Text as="span" textTransform="lowercase">
-                ({filteredNames.length} {t("common:languages")})
-              </Text>
-            </FormLabel>
-            <InputGroup>
-              <Input
-                type="search"
-                autoComplete="off"
-                placeholder={t("page-languages-filter-placeholder")}
-                value={filterValue}
-                onChange={(e) => setFilterValue(e.target.value)}
-                onBlur={(e) => {
-                  if (e.relatedTarget?.tagName.toLowerCase() === "div") {
-                    e.currentTarget.focus()
-                  }
-                }}
-                ref={inputRef}
-                h="8"
-                mt="1"
-                mb="2"
-                bg="background.base"
-                color="body.base"
-                onKeyDown={(e) => {
-                  // Navigate to first result on enter
-                  if (e.key === "Enter") {
-                    e.preventDefault()
-                    firstItemRef.current?.click()
-                  }
-                  // If Tab/ArrowDown, focus on first item if available, NoResults link otherwise
-                  if (e.key === "Tab" || e.key === "ArrowDown") {
-                    e.preventDefault()
-                    ;(filteredNames.length === 0
-                      ? noResultsRef
-                      : firstItemRef
-                    ).current?.focus()
-                    e.stopPropagation()
-                  }
-                }}
-                onFocus={handleInputFocus}
-              />
-              <InputRightElement
-                hideBelow="md"
-                cursor="text"
-              >
-                <Kbd
-                  fontSize="sm"
-                  lineHeight="none"
-                  me="2"
-                  p="1"
-                  py="0.5"
-                  ms="auto"
-                  border="1px"
-                  borderColor="disabled"
-                  color="disabled"
-                  rounded="base"
-                >
-                  \
-                </Kbd>
-              </InputRightElement>
-            </InputGroup>
-
-            {filteredNames.map((displayInfo, index) => (
-              <MenuItem
-                key={"item-" + displayInfo.localeOption}
-                displayInfo={displayInfo}
-                ref={index === 0 ? firstItemRef : null}
-                onKeyDown={(e) => {
-                  if (e.key !== "\\") return
-                  e.preventDefault()
-                  inputRef.current?.focus()
-                }}
-                onClick={() =>
-                  onClose({
-                    eventAction: "Locale chosen",
-                    eventName: displayInfo.localeOption,
-                  })
-                }
-              />
-            ))}
-
-            {filteredNames.length === 0 && (
-              <NoResultsCallout
-                ref={noResultsRef}
-                onClose={() =>
-                  onClose({
-                    eventAction: "Translation program link (no results)",
-                    eventName: "/contributing/translation-program",
-                  })
-                }
-              />
-            )}
-          </FormControl>
-        </Box>
-
-        {/* Footer callout */}
-        <Flex
-          borderTop="2px"
-          borderColor="primary.base"
-          bg="primary.lowContrast"
-          p="3"
-          position="sticky"
-          bottom="0"
-          justifyContent="center"
-        >
-          <Text fontSize="xs" textAlign="center" color="body.base">
-            {t("page-languages-recruit-community")}{" "}
-            <BaseLink
-              ref={footerRef}
-              href="/contributing/translation-program"
-              onClick={() =>
-                onClose({
-                  eventAction: "Translation program link (menu footer)",
-                  eventName: "/contributing/translation-program",
-                })
-              }
-            >
-              {t("common:learn-more")}
-            </BaseLink>
-          </Text>
-        </Flex>
-      </MenuList>
-    </Menu>
+      />
+    </div>
   )
 }
 

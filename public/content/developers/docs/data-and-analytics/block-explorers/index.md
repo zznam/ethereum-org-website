@@ -5,28 +5,31 @@ lang: en
 sidebarDepth: 3
 ---
 
-Block explorers are your portal to Ethereum's data. You can use them to see real-time data on blocks, transactions, miners, accounts, and other on-chain activity.
+Block explorers are your portal to Ethereum's data. You can use them to see real-time data on blocks, transactions, validators, accounts, and other onchain activity.
 
 ## Prerequisites {#prerequisites}
 
 You should understand the basic concepts of Ethereum so you can make sense of the data that a block explorer gives you. Start with [an intro to Ethereum](/developers/docs/intro-to-ethereum/).
 
+## Open source tools {#open-source-tools}
+
+- [3xpl](https://3xpl.com/ethereum) - An ad-free Ethereum explorer that allows downloading its datasets (open-core: core modules are open source)
+- [Beaconcha.in](https://beaconcha.in/)
+- [Blockscout](https://eth.blockscout.com/)
+- [lazy-etherscan](https://github.com/woxjro/lazy-etherscan)
+- [Otterscan](https://otterscan.io/)
+
 ## Services {#services}
 
-- [Etherscan](https://etherscan.io/) -_Also available in Chinese, Korean, Russian, and Japanese_
-- [3xpl](https://3xpl.com/ethereum)
-- [Beaconcha.in](https://beaconcha.in/)
-- [Blockchair](https://blockchair.com/ethereum) -_Also available in Spanish, French, Italian, Dutch, Portuguese, Russian, Chinese, and Farsi_
-- [Blockscout](https://eth.blockscout.com/)
+- [Blockchair](https://blockchair.com/ethereum) - Private Ethereum explorer. Also for sorting and filtering (mempool) data. Available in Spanish, French, Italian, Dutch, Portuguese, Russian, Chinese, and Farsi
 - [Chainlens](https://www.chainlens.com/)
 - [DexGuru Block Explorer](https://ethereum.dex.guru/)
 - [Etherchain](https://www.etherchain.org/)
-- [Ethernow](https://www.ethernow.xyz/)
-- [Ethplorer](https://ethplorer.io/) -_Also available in Chinese, Spanish, French, Turkish, Russian, Korean and Vietnamese_
+- [Etherscan](https://etherscan.io/) - Also available in Chinese, Korean, Russian, and Japanese
+- [Ethplorer](https://ethplorer.io/) - A block explorer with a focus on tokens. Also available in Chinese, Spanish, French, Turkish, Russian, Korean and Vietnamese
+- [Ethseer](https://ethseer.io)
 - [EthVM](https://www.ethvm.com/)
 - [OKLink](https://www.oklink.com/eth)
-- [Otterscan](https://otterscan.io/)
-- [Rantom](https://rantom.app/)
 
 ## Data {#data}
 
@@ -50,7 +53,7 @@ New blocks are added to Ethereum every 12 seconds (unless a block proposer misse
 - Gas limit - The total gas limits set by the transactions in the block
 - Base fee per gas - The minimum multiplier required for a transaction to be included in a block
 - Burnt fees - How much ETH is burned in the block
-- Extra data - Any extra data the miner has included in the block
+- Extra data - Any extra data the builder has included in the block
 
 **Advanced data**
 
@@ -78,19 +81,19 @@ Block explorers have become a common place for people to track the progress of t
 - Transaction hash - A hash generated when the transaction is submitted
 - Status - An indication of whether the transaction is pending, failed or a success
 - Block - The block in which the transaction has been included
-- Timestamp - The time at which a miner mined the transaction
+- Timestamp - The time at which a transaction was included in a block proposed by a validator
 - From - The address of the account that submitted the transaction
 - To - The address of the recipient or smart contract that the transaction interacts with
 - Tokens transferred - A list of tokens that were transferred as part of the transaction
 - Value - The total ETH value being transferred
-- Transaction fee - The amount paid to the miner to process the transaction (calculated by gas price\*gas used)
+- Transaction fee - The amount paid to the validator to process the transaction (calculated by gas price\*gas used)
 
 **Advanced data**
 
 - Gas limit - The maximum numbers of gas units this transaction can consume
 - Gas used - The actual amount of gas units the transaction consumed
 - Gas price - The price set per gas unit
-- Nonce - The transaction number for the `from` address (bear in mind this starts at 0 so a nonce of `100` would actually be the 101st transaction submitted by this account
+- Nonce - The transaction number for the `from` address (bear in mind this starts at 0 so a nonce of `100` would actually be the 101st transaction submitted by this account)
 - Input data - Any extra information required by the transaction
 
 ### Accounts {#accounts}
@@ -230,17 +233,6 @@ The consensus layer top-level data includes the following:
 - Pending validators - Number of validators waiting for to be made active
 - Staked ETH - Amount of ETH staked in the network
 - Average balance - Average ETH balance of validators
-
-## Block explorers {#block-explorers}
-
-- [Etherscan](https://etherscan.io/) - a block explorer you can use to fetch data for Ethereum Mainnet and Goerli Testnet
-- [3xpl](https://3xpl.com/ethereum) - an ad-free open-source Ethereum explorer which allows downloading its datasets
-- [Beaconcha.in](https://beaconcha.in/) - an open source block explorer for Ethereum Mainnet and Goerli Testnet
-- [Blockchair](https://blockchair.com/ethereum) - the most private Ethereum explorer. Also for sorting and filtering (mempool) data
-- [Etherchain](https://www.etherchain.org/) - a block explorer for the Ethereum Mainnet
-- [Ethplorer](https://ethplorer.io/) - a block explorer with a focus on tokens for the Ethereum Mainnet and the Kovan testnet
-- [Rantom](https://rantom.app/) - A user-friendly open-source DeFi & NFT transaction viewer for detailed insights
-- [Ethernow](https://www.ethernow.xyz/) - a real-time transaction explorer that enables you to see the Ethereum Mainnet pre-chain layer
 
 ## Further reading {#further-reading}
 

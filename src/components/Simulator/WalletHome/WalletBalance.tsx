@@ -1,36 +1,29 @@
 import React from "react"
-import { Box, type BoxProps, Flex, Text } from "@chakra-ui/react"
+import { useTranslations } from "next-intl"
 
-import { getMaxFractionDigitsUsd } from "../utils"
+import { Flex } from "@/components/ui/flex"
+
+import { formatWalletUsd } from "../utils"
 
 import { AddressPill } from "./AddressPill"
 
-type WalletBalanceProps = BoxProps & {
+type WalletBalanceProps = {
   usdAmount?: number
 }
 
-export const WalletBalance = ({
-  usdAmount = 0,
-  ...boxProps
-}: WalletBalanceProps) => (
-  <Box zIndex={1} {...boxProps}>
-    <Text textAlign="center" color="body.medium" mb={{ base: 2, md: 4 }}>
-      Your total
-    </Text>
-    <Text
-      textAlign="center"
-      fontSize={{ base: "3xl", md: "5xl" }}
-      fontWeight="bold"
-    >
-      {Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        notation: "compact",
-        maximumFractionDigits: getMaxFractionDigitsUsd(usdAmount),
-      }).format(usdAmount)}
-    </Text>
-    <Flex justify="center" mb={4}>
-      <AddressPill />
-    </Flex>
-  </Box>
-)
+export const WalletBalance = ({ usdAmount = 0 }: WalletBalanceProps) => {
+  const t = useTranslations("component-wallet-simulator")
+  return (
+    <div className="z-[1]">
+      <p className="mb-2 text-center text-body-medium md:mb-4">
+        {t("sim-your-total")}
+      </p>
+      <p className="text-center text-3xl !leading-base font-bold md:text-5xl">
+        {formatWalletUsd(usdAmount)}
+      </p>
+      <Flex className="mb-4 justify-center">
+        <AddressPill />
+      </Flex>
+    </div>
+  )
+}

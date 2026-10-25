@@ -1,17 +1,29 @@
-import { Box, Heading, HStack, Stack, Text } from "@chakra-ui/react"
+import { ReactElement } from "react"
 
 import type { CommonHeroProps } from "@/lib/types"
 
+import Breadcrumbs, { type BreadcrumbsProps } from "@/components/Breadcrumbs"
 import { CallToAction } from "@/components/Hero/CallToAction"
 import { Image } from "@/components/Image"
+import { Stack } from "@/components/ui/flex"
 
+import { cn } from "@/lib/utils/cn"
+
+export type HubHeroProps = Omit<
+  CommonHeroProps,
+  "breadcrumbs" | "blurDataURL" | "title"
+> & {
+  className?: string
+  breadcrumbs?: BreadcrumbsProps
+}
 const HubHero = ({
+  breadcrumbs,
   heroImg,
-  title,
   header,
   description,
   buttons,
-}: CommonHeroProps) => {
+  className,
+}: HubHeroProps) => {
   if (buttons && buttons.length > 2) {
     throw new Error(
       "Can not have more than two call-to-action buttons in this hero component."
@@ -19,65 +31,62 @@ const HubHero = ({
   }
 
   return (
-    <Box position="relative">
+    <div className={cn("relative", className)}>
       <Image
         src={heroImg}
         alt=""
         priority
         sizes="100vw"
         style={{ width: "100vw", objectFit: "cover" }}
-        h={{
-          base: "192px",
-          md: "256px",
-          lg: "320px",
-          xl: "576px",
-          "2xl": "672px",
-        }}
+        className="h-[192px] w-screen object-cover md:h-[256px] lg:h-[320px] xl:h-[576px] 2xl:h-[672px]"
       />
       <Stack
-        spacing={{ base: "3", md: "4" }}
-        p={{ base: "4", lg: "8" }}
-        textAlign={{ base: "center", xl: "start" }}
-        borderRadius={{ xl: "base" }}
-        bg={{ xl: "hubHeroContentBg" }}
-        position={{ xl: "absolute" }}
-        insetInlineStart={{ xl: "8" }}
-        maxW={{ xl: "sm" }}
-        top={{ xl: "50%" }}
-        transform={{ xl: "translateY(-50%)" }}
-        backdropFilter={{ xl: "auto" }}
-        backdropBlur={{ xl: "base" }}
-        wordBreak="break-word"
+        data-label="hero-content"
+        className={cn(
+          "gap-4 p-4 lg:p-8",
+          "text-center xl:text-start",
+          "xl:rounded",
+          "xl:bg-background/80 xl:dark:bg-background-highlight/80",
+          "xl:absolute xl:top-1/2 xl:max-w-sm",
+          "xl:-translate-y-1/2 xl:transform",
+          "xl:backdrop-blur xl:backdrop-filter",
+          "break-words",
+          "xl:start-[32px]"
+        )}
       >
-        {title ? (
-          <Heading
-            as="h1"
-            size="sm"
-            color="body.medium"
-            fontWeight="normal"
-            textTransform="uppercase"
-          >
-            {title}
-          </Heading>
-        ) : null}
-        <Stack
-          alignSelf="center"
-          spacing={{ base: "2", md: "1" }}
-          maxW="container.md"
-        >
-          <Heading as={title ? "h2" : "h1"} size="2xl">
-            {header}
-          </Heading>
-          <Text size="lg">{description}</Text>
+        {breadcrumbs && (
+          <Breadcrumbs
+            {...breadcrumbs}
+            className="[&_ol]:justify-center xl:[&_ol]:justify-start"
+          />
+        )}
+        <Stack className="max-w-screen-md gap-2 self-center md:gap-1">
+          <h1 className="text-4xl lg:text-5xl">{header}</h1>
+
+          <p className="text-lg">{description}</p>
         </Stack>
-        <HStack justify={{ md: "center", xl: "start" }} spacing="4">
-          {(buttons || []).map((button, idx) => {
-            if (!button) return
-            return <CallToAction key={idx} {...button} />
-          })}
-        </HStack>
+        {buttons && (
+          <Stack
+            className={cn(
+              "flex-col gap-4 md:flex-row",
+              "md:justify-center xl:justify-start"
+            )}
+          >
+            {buttons?.map((button, idx) => {
+              if (!button) return
+
+              // If it's a React element, render it directly
+              if (typeof button === "object" && "type" in button) {
+                return <div key={idx}>{button as ReactElement<unknown>}</div>
+              }
+
+              // Otherwise, render as button props
+              return <CallToAction key={idx} index={idx} {...button} />
+            })}
+          </Stack>
+        )}
       </Stack>
-    </Box>
+    </div>
   )
 }
 

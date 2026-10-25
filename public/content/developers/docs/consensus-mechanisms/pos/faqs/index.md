@@ -20,7 +20,7 @@ Proof-of-work is much more energy-hungry because electricity is burned in the mi
 
 Proof-of-work versus proof-of-stake is a contentious topic. [Vitalik Buterin's blog](https://vitalik.eth.limo/general/2017/12/31/pos_faq.html#what-are-the-benefits-of-proof-of-stake-as-opposed-to-proof-of-work) and the debate between Justin Drake and Lyn Alden give a good summary of the arguments.
 
-<YouTube id="1m12zgJ42dI" />
+<VideoWatch slug="pow-vs-pos" />
 
 ## Is proof-of-stake energy efficient? {#is-pos-energy-efficient}
 
@@ -74,7 +74,7 @@ Validators have to stake ETH so that they have something to lose if they misbeha
 
 ## How are validators selected? {#how-are-validators-selected}
 
-A single validator is pseudo-randomly chosen to propose a block in each slot using an algorithm called RANDAO that mixes a hash from the block proposer with a seed that gets updated every block. This value is used to select a specific validator from the total validator set. The validator selection is fixed four epochs in advance.
+A single validator is pseudo-randomly chosen to propose a block in each slot using an algorithm called RANDAO that mixes a hash from the block proposer with a seed that gets updated every block. This value is used to select a specific validator from the total validator set. The validator selection is fixed two epochs in advance.
 
 [More on validator selection](/developers/docs/consensus-mechanisms/pos/block-proposal)
 
@@ -167,6 +167,6 @@ The Merge was the moment when Ethereum switched off its proof-of-work-based cons
 
 ## What are liveness and safety? {#what-are-liveness-and-safety}
 
-Liveness and safety are the two fundamental security concerns for a blockchain. Liveness is the availability of a finalizing chain. If the chain stops finalizing or users are not able to access it easily, those are liveness failures. Extremely high cost of access could also be considered a liveness failure. Safety refers to how difficult it is to attack the chain - i.e. finalize conflicting checkpoints.
+Liveness and safety are the two fundamental security concerns for a blockchain. Liveness is the availability of a finalizing chain. If the chain stops finalizing or users are not able to access it easily, those are liveness failures. Extremely high cost of access could also be considered a liveness failure. Safety refers to how difficult it is to attack the chain - i.e., finalize conflicting checkpoints.
 
 [Read more in the Casper paper](https://arxiv.org/pdf/1710.09437.pdf)

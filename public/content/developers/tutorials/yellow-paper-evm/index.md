@@ -4,6 +4,7 @@ description: Understanding the part of the Yellow Paper, the formal specificatio
 author: "qbzzt"
 tags: ["evm"]
 skill: intermediate
+breadcrumb: Yellow Paper EVM
 lang: en
 published: 2022-05-15
 ---
@@ -12,15 +13,17 @@ published: 2022-05-15
 
 ## Which Yellow Paper? {#which-yellow-paper}
 
-Like almost everything else in Ethereum, the Yellow Paper evolves over time. To be able to refer to a specific version, I uploaded [the current version at writing](yellow-paper-berlin.pdf). The section, page, and equation numbers I use will refer to that version. It is a good idea to have it open in a different window while reading this document.
+Like almost everything else in Ethereum, the Yellow Paper evolves over time. To be able to refer to a specific version, I uploaded [the version that was current at writing](yellow-paper-berlin.pdf) (the Berlin version, 2022). The section, page, and equation numbers in this tutorial refer to that version. [The latest version](https://ethereum.github.io/yellowpaper/paper.pdf) has been updated since then, so its numbers may differ. It is a good idea to have it open in a different window while reading this document.
 
 ### Why the EVM? {#why-the-evm}
 
-The original yellow paper was written right at the start of Ethereum's development. It describes the original proof-of-work based consensus mechanism that was originally used to secure the network. However, Ethereum switched off proof-of-work and started using proof-of-stake based consensus in September 2022. This tutorial will focus on the parts of the yellow paper defining the Ethereum Virtual Machine. The EVM was unchanged by the transition to proof-of-stake (except for the return value of the DIFFICULTY opcode).
+The original yellow paper was written right at the start of Ethereum's development. It describes the original proof-of-work based consensus mechanism that was originally used to secure the network. However, Ethereum switched off proof-of-work and started using proof-of-stake based consensus in September 2022. This tutorial will focus on the parts of the yellow paper defining the Ethereum Virtual Machine. The transition to proof-of-stake barely changed the EVM: the `DIFFICULTY` opcode (0x44) was renamed [`PREVRANDAO`](https://eips.ethereum.org/EIPS/eip-4399) and now returns a random value from the beacon chain.
+
+Later network upgrades did change the EVM. They added opcodes such as [`PUSH0`](https://eips.ethereum.org/EIPS/eip-3855), [`TLOAD` and `TSTORE`](https://eips.ethereum.org/EIPS/eip-1153) (transient storage), [`MCOPY`](https://eips.ethereum.org/EIPS/eip-5656), [`BLOBHASH`](https://eips.ethereum.org/EIPS/eip-4844), and [`BLOBBASEFEE`](https://eips.ethereum.org/EIPS/eip-7516), and changed the behavior of [`SELFDESTRUCT`](https://eips.ethereum.org/EIPS/eip-6780). The Yellow Paper does not cover all of these changes. The most up to date specification is the [Python execution layer specification](https://github.com/ethereum/execution-specs).
 
 ## 9 Execution model {#9-execution-model}
 
-This section (p. 12-14) includes most of the definition of the EVM.
+This section (p. 14-16) includes most of the definition of the EVM.
 
 The term _system state_ includes everything you need to know about the system to run it. In a typical computer, this means the memory, content of registers, etc.
 
@@ -34,7 +37,7 @@ This section gives the basics of the EVM and how it compares with other computat
 
 A [stack machine](https://en.wikipedia.org/wiki/Stack_machine) is a computer that stores intermediate data not in registers, but in a [**stack**](<https://en.wikipedia.org/wiki/Stack_(abstract_data_type)>). This is the preferred architecture for virtual machines because it is easy to implement meaning that bugs, and security vulnerabilities, are a lot less likely. The memory in the stack is divided into 256-bit words. This was chosen because it is convenient for Ethereum's core cryptographic operations such as Keccak-256 hashing and elliptic curve computations. The maximum size of the stack is 1024 items (1024 x 256 bits). When opcodes are executed they are usually getting their parameters from the stack. There are opcodes specifically for reorganizing elements in the stack such as `POP` (removes item from top of stack), `DUP_N` (duplicated N'th item in stack), etc.
 
-The EVM also has a volatile space called **memory** which is used to store data during execution. This memory is organized into 32-byte words. All memory locations are initialized to zero. If you execute this [Yul](https://docs.soliditylang.org/en/latest/yul.html) code to add a word to memory, it will fill 32 bytes of memory by padding the empty space in the word with zeros, i.e. it creates one word - with zeros in locations 0-29, 0x60 to 30, and 0xA7 to 31.
+The EVM also has a volatile space called **memory** which is used to store data during execution. This memory is organized into 32-byte words. All memory locations are initialized to zero. If you execute this [Yul](https://docs.soliditylang.org/en/latest/yul.html) code to add a word to memory, it will fill 32 bytes of memory by padding the empty space in the word with zeros, i.e., it creates one word - with zeros in locations 0-29, 0x60 to 30, and 0xA7 to 31.
 
 ```yul
 mstore(0, 0x60A7)
@@ -42,11 +45,13 @@ mstore(0, 0x60A7)
 
 `mstore` is one of three opcodes the EVM provides for interacting with memory - it loads a word into memory. The other two are `mstore8` which loads a single byte into memory, and `mload` which moves a word from memory to stack.
 
-The EVM also has a separate non-volatile **storage** model that is maintained as part of the system state - this memory is organized into word arrays (as opposed to word-addressable byte arrays in the stack). This storage is where contracts keep persistent data - a contract can only interact with its own storage. Storage is organized in key-value mappings.
+The EVM also has a separate non-volatile **storage** model that is maintained as part of the system state - this memory maps 256-bit keys to 256-bit values (as opposed to memory, which is a byte-addressable array). This storage is where contracts keep persistent data - a contract can only interact with its own storage. Storage is organized in key-value mappings.
 
-Although it is not mentioned in this section of the Yellow Paper, it is also useful to know there is a fourth type of memory. **Calldata** is byte-addressable read-only memory used to store the value passed with the `data` parameter of a transaction. The EVM has specific opcodes for managing `calldata`. `calldatasize` returns the size of the data. `calldataload` loads the data into the stack. `calldatacopy` copies the data into memory.
+Since the Cancun upgrade, there is also **transient storage** ([EIP-1153](https://eips.ethereum.org/EIPS/eip-1153)). It is accessed like storage, using the `TLOAD` and `TSTORE` opcodes, but it is cleared at the end of every transaction.
 
-The standard [Von Neumann architecture](https://en.wikipedia.org/wiki/Von_Neumann_architecture) stores code and data in the same memory. The EVM does not follow this standard for security reasons - sharing volatile memory makes it possible to change program code. Instead, code is saved to storage.
+Although it is not mentioned in this section of the Yellow Paper, it is also useful to know there is one more type of memory. **Calldata** is byte-addressable read-only memory used to store the value passed with the `data` parameter of a transaction. The EVM has specific opcodes for managing `calldata`. `calldatasize` returns the size of the data. `calldataload` loads the data into the stack. `calldatacopy` copies the data into memory.
+
+The standard [Von Neumann architecture](https://en.wikipedia.org/wiki/Von_Neumann_architecture) stores code and data in the same memory. The EVM does not follow this standard for security reasons - sharing volatile memory makes it possible to change program code. Instead, code is stored immutably as part of the contract's account in the world state, separate from both memory and the contract's storage.
 
 There are only two cases in which code is executed from memory:
 
@@ -61,11 +66,11 @@ This section explains how the gas fees are calculated. There are three costs:
 
 ### Opcode cost {#opcode-cost}
 
-The inherent cost of the specific opcode. To get this value, find the cost group of the opcode in Appendix H (p. 28, under equation (327)), and find the cost group in equation (324). This gives you a cost function, which in most cases uses parameters from Appendix G (p. 27).
+The inherent cost of the specific opcode. To get this value, find the cost group of the opcode in Appendix H (p. 29, under equation (329)), and find the cost group in equation (326). This gives you a cost function, which in most cases uses parameters from Appendix G (p. 28).
 
 For example, the opcode [`CALLDATACOPY`](https://www.evm.codes/#37) is a member of group _W<sub>copy</sub>_. The opcode cost for that group is _G<sub>verylow</sub>+G<sub>copy</sub>×⌈μ<sub>s</sub>[2]÷32⌉_. Looking at Appendix G, we see that both constants are 3, which gives us _3+3×⌈μ<sub>s</sub>[2]÷32⌉_.
 
-We still need to decipher the expression _⌈μ<sub>s</sub>[2]÷32⌉_. The outmost part, _⌈ \<value\> ⌉_ is the ceiling function, a function that given a value returns the smallest integer that is still not smaller than the value. For example, _⌈2.5⌉ = ⌈3⌉ = 3_. The inner part is _μ<sub>s</sub>[2]÷32_. Looking at section 3 (Conventions) on p. 3, _μ_ is the machine state. The machine state is defined in section 9.4.1 on p. 13. According to that section, one of the machine state parameters is _s_ for the stack. Putting it all together, it seems that _μ<sub>s</sub>[2]_ is location #2 in the stack. Looking at [the opcode](https://www.evm.codes/#37), location #2 in the stack is the size of the data in bytes. Looking at the other opcodes in group W<sub>copy</sub>, [`CODECOPY`](https://www.evm.codes/#39) and [`RETURNDATACOPY`](https://www.evm.codes/#3e), they also have a size of data in the same location. So _⌈μ<sub>s</sub>[2]÷32⌉_ is the number of 32 byte words required to store the data being copied. Putting everything together, the inherent cost of [`CALLDATACOPY`](https://www.evm.codes/#37) is 3 gas plus 3 per word of data being copied.
+We still need to decipher the expression _⌈μ<sub>s</sub>[2]÷32⌉_. The outmost part, _⌈ \<value\> ⌉_ is the ceiling function, a function that given a value returns the smallest integer that is still not smaller than the value. For example, _⌈2.5⌉ = ⌈3⌉ = 3_. The inner part is _μ<sub>s</sub>[2]÷32_. Looking at section 3 (Conventions) on p. 3, _μ_ is the machine state. The machine state is defined in section 9.4.1 on p. 15. According to that section, one of the machine state parameters is _s_ for the stack. Putting it all together, it seems that _μ<sub>s</sub>[2]_ is location #2 in the stack. Looking at [the opcode](https://www.evm.codes/#37), location #2 in the stack is the size of the data in bytes. Looking at the other opcodes in group W<sub>copy</sub>, [`CODECOPY`](https://www.evm.codes/#39) and [`RETURNDATACOPY`](https://www.evm.codes/#3e), they also have a size of data in the same location. So _⌈μ<sub>s</sub>[2]÷32⌉_ is the number of 32 byte words required to store the data being copied. Putting everything together, the inherent cost of [`CALLDATACOPY`](https://www.evm.codes/#37) is 3 gas plus 3 per word of data being copied.
 
 ### Running cost {#running-cost}
 
@@ -78,9 +83,9 @@ The cost of running the code we're calling.
 
 The cost of expanding memory (if necessary).
 
-In equation 324, this value is written as _C<sub>mem</sub>(μ<sub>i</sub>')-C<sub>mem</sub>(μ<sub>i</sub>)_. Looking at section 9.4.1 again, we see that _μ<sub>i</sub>_ is the number of words in memory. So _μ<sub>i</sub>_ is the number of words in memory before the opcode and _μ<sub>i</sub>'_ is the number of words in memory after the opcode.
+In equation 326, this value is written as _C<sub>mem</sub>(μ<sub>i</sub>')-C<sub>mem</sub>(μ<sub>i</sub>)_. Looking at section 9.4.1 again, we see that _μ<sub>i</sub>_ is the number of words in memory. So _μ<sub>i</sub>_ is the number of words in memory before the opcode and _μ<sub>i</sub>'_ is the number of words in memory after the opcode.
 
-The function _C<sub>mem</sub>_ is defined in equation 326: _C<sub>mem</sub>(a) = G<sub>memory</sub> × a + ⌊a<sup>2</sup> ÷ 512⌋_. _⌊x⌋_ is the floor function, a function that given a value returns the largest integer that is still not larger than the value. For example, _⌊2.5⌋ = ⌊2⌋ = 2._ When _a < √512_, _a<sup>2</sup> < 512_, and the result of the floor function is zero. So for the first 22 words (704 bytes), the cost rises linearly with the number of memory words required. Beyond that point _⌊a<sup>2</sup> ÷ 512⌋_ is positive. When the memory required is high enough the gas cost is proportional to the square of the amount of memory.
+The function _C<sub>mem</sub>_ is defined in equation 328: _C<sub>mem</sub>(a) = G<sub>memory</sub> × a + ⌊a<sup>2</sup> ÷ 512⌋_. _⌊x⌋_ is the floor function, a function that given a value returns the largest integer that is still not larger than the value. For example, _⌊2.5⌋ = ⌊2⌋ = 2._ When _a < √512_, _a<sup>2</sup> < 512_, and the result of the floor function is zero. So for the first 22 words (704 bytes), the cost rises linearly with the number of memory words required. Beyond that point _⌊a<sup>2</sup> ÷ 512⌋_ is positive. When the memory required is high enough the gas cost is proportional to the square of the amount of memory.
 
 **Note** that these factors only influence the _inherent_ gas cost - it does not take into account the fee market or tips to validators that determine how much an end user is required to pay - this is just the raw cost of running a particular operation on the EVM.
 
@@ -99,7 +104,7 @@ The execution environment is a tuple, _I_, that includes information that isn't 
 | _I<sub>s</sub>_ | [`CALLER`](https://www.evm.codes/#33)                                                                            | `msg.sender`                             |
 | _I<sub>v</sub>_ | [`CALLVALUE`](https://www.evm.codes/#34)                                                                         | `msg.value`                              |
 | _I<sub>b</sub>_ | [`CODECOPY`](https://www.evm.codes/#39)                                                                          | `address(this).code`                     |
-| _I<sub>H</sub>_ | Block header fields, such as [`NUMBER`](https://www.evm.codes/#43) and [`DIFFICULTY`](https://www.evm.codes/#44) | `block.number`, `block.difficulty`, etc. |
+| _I<sub>H</sub>_ | Block header fields, such as [`NUMBER`](https://www.evm.codes/#43) and [`PREVRANDAO`](https://www.evm.codes/#44) | `block.number`, `block.prevrandao`, etc. |
 | _I<sub>e</sub>_ | Depth of the call stack for calls between contracts (including contract creation)                                |
 | _I<sub>w</sub>_ | Is the EVM allowed to change state, or is it running statically                                                  |
 
@@ -108,15 +113,15 @@ A few other parameters are necessary to understand the rest of section 9:
 | Parameter | Defined in section   | Meaning                                                                                                                                                                                                                  |
 | --------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | _σ_       | 2 (p. 2, equation 1) | The state of the blockchain                                                                                                                                                                                              |
-| _g_       | 9.3 (p. 13)          | Remaining gas                                                                                                                                                                                                            |
-| _A_       | 6.1 (p. 8)           | Accrued substate (changes scheduled for when the transaction ends)                                                                                                                                                       |
-| _o_       | 9.3 (p. 13)          | Output - the returned result in the case of internal transaction (when one contract calls another) and calls to view functions (when you are just asking for information, so there is no need to wait for a transaction) |
+| _g_       | 9.3 (p. 14)          | Remaining gas                                                                                                                                                                                                            |
+| _A_       | 6.1 (p. 9)           | Accrued substate (changes scheduled for when the transaction ends)                                                                                                                                                       |
+| _o_       | 9.3 (p. 14)          | Output - the returned result in the case of internal transaction (when one contract calls another) and calls to view functions (when you are just asking for information, so there is no need to wait for a transaction) |
 
 ## 9.4 Execution overview {#94-execution-overview}
 
 Now that have all the preliminaries, we can finally start working on how the EVM works.
 
-Equations 137-142 give us the initial conditions for running the EVM:
+Equations 146-151 give us the initial conditions for running the EVM:
 
 | Symbol           | Initial value | Meaning                                                                                                                                                                                                                                                     |
 | ---------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -127,9 +132,9 @@ Equations 137-142 give us the initial conditions for running the EVM:
 | _μ<sub>s</sub>_  | _()_          | The stack, initially empty                                                                                                                                                                                                                                  |
 | _μ<sub>o</sub>_  | _∅_           | The output, empty set until and unless we stop either with return data ([`RETURN`](https://www.evm.codes/#f3) or [`REVERT`](https://www.evm.codes/#fd)) or without it ([`STOP`](https://www.evm.codes/#00) or [`SELFDESTRUCT`](https://www.evm.codes/#ff)). |
 
-Equation 143 tells us there are four possible conditions at each point in time during execution, and what to do with them:
+Equation 152 tells us there are four possible conditions at each point in time during execution, and what to do with them:
 
-1.  `Z(σ,μ,A,I)`. Z represents a function that tests whether an operation creates an invalid state transition (see [exceptional halting](#942-exceptional-halting)). If it evaluates to True, the new state is identical to the old one (except gas gets burned) because the changes have not been implemented.
+1.  `Z(σ,μ,A,I)`. Z represents a function that tests whether an operation creates an invalid state transition (see [exceptional halting](#942-exceptional-halt)). If it evaluates to True, the new state is identical to the old one (except gas gets burned) because the changes have not been implemented.
 2.  If the opcode being executed is [`REVERT`](https://www.evm.codes/#fd), the new state is the same as the old state, some gas is lost.
 3.  If the sequence of operations is finished, as signified by a [`RETURN`](https://www.evm.codes/#f3)), the state is updated to the new state.
 4.  If we aren't at one of the end conditions 1-3, continue running.
@@ -171,10 +176,10 @@ We have an exceptional halt if any of these conditions is true:
 - **_¬I<sub>w</sub> ∧ W(w,μ)_**
   Are we running statically ([¬ is negation](https://en.wikipedia.org/wiki/Negation) and _I<sub>w</sub>_ is true when we are allowed to change the blockchain state)? If so, and we're trying a state changing operation, it can't happen.
 
-  The function _W(w,μ)_ is defined later in equation 150. _W(w,μ)_ is true if one of these conditions is true:
+  The function _W(w,μ)_ is defined later in equation 159. _W(w,μ)_ is true if one of these conditions is true:
 
-  - **_w ∈ {CREATE, CREATE2, SSTORE, SELFDESTRUCT}_**
-    These opcodes change the state, either by creating a new contract, storing a value, or destroying the current contract.
+  - **_w ∈ \{CREATE, CREATE2, SSTORE, SELFDESTRUCT}_**
+    These opcodes change the state, either by creating a new contract, storing a value, or destroying the current contract. `TSTORE`, which was added after this version of the Yellow Paper, is also forbidden in a static context.
 
   - **_LOG0≤w ∧ w≤LOG4_**
     If we are called statically we cannot emit log entries.
@@ -190,9 +195,9 @@ We have an exceptional halt if any of these conditions is true:
 
 Here we formally define what are the [`JUMPDEST`](https://www.evm.codes/#5b) opcodes. We cannot just look for byte value 0x5B, because it might be inside a PUSH (and therefore data and not an opcode).
 
-In equation (153) we define a function, _N(i,w)_. The first parameter, _i_, is the opcode's location. The second, _w_, is the opcode itself. If _w∈[PUSH1, PUSH32]_ that means the opcode is a PUSH (square brackets define a range that includes the endpoints). If that case the next opcode is at _i+2+(w−PUSH1)_. For [`PUSH1`](https://www.evm.codes/#60) we need to advance by two bytes (the PUSH itself and the one byte value), for [`PUSH2`](https://www.evm.codes/#61) we need to advance by three bytes because it's a two byte value, etc. All other EVM opcodes are just one byte long, so in all other cases _N(i,w)=i+1_.
+In equation (162) we define a function, _N(i,w)_. The first parameter, _i_, is the opcode's location. The second, _w_, is the opcode itself. If _w∈[PUSH1, PUSH32]_ that means the opcode is a PUSH (square brackets define a range that includes the endpoints). If that case the next opcode is at _i+2+(w−PUSH1)_. For [`PUSH1`](https://www.evm.codes/#60) we need to advance by two bytes (the PUSH itself and the one byte value), for [`PUSH2`](https://www.evm.codes/#61) we need to advance by three bytes because it's a two byte value, etc. All other EVM opcodes are just one byte long, so in all other cases _N(i,w)=i+1_.
 
-This function is used in equation (152) to define _D<sub>J</sub>(c,i)_, which is the [set](<https://en.wikipedia.org/wiki/Set_(mathematics)>) of all valid jump destinations in code _c_, starting with opcode location _i_. This function is defined recursively. If _i≥||c||_, that means that we're at or after the end of the code. We are not going to find any more jump destinations, so just return the empty set.
+This function is used in equation (161) to define _D<sub>J</sub>(c,i)_, which is the [set](<https://en.wikipedia.org/wiki/Set_(mathematics)>) of all valid jump destinations in code _c_, starting with opcode location _i_. This function is defined recursively. If _i≥||c||_, that means that we're at or after the end of the code. We are not going to find any more jump destinations, so just return the empty set.
 
 In all other cases we look at the rest of the code by going to the next opcode and getting the set starting from it. _c[i]_ is the current opcode, so _N(i,c[i])_ is the location of the next opcode. _D<sub>J</sub>(c,N(i,c[i]))_ is therefore the set of valid jump destinations that starts at the next opcode. If the current opcode isn't a `JUMPDEST`, just return that set. If it is `JUMPDEST`, include it in the result set and return that.
 
@@ -201,12 +206,12 @@ In all other cases we look at the rest of the code by going to the next opcode a
 The halting function _H_, can return three types of values.
 
 - If we aren't in a halt opcode, return _∅_, the empty set. By convention, this value is interpreted as Boolean false.
-- If we have a halt opcode that doesn't produce output (either [`STOP`](https://www.evm.codes/#00) or [`SELFDESTRUCT`](https://www.evm.codes/#ff)), return a sequence of size zero bytes as the return value. Note that this is very different from the empty set. This value means that the EVM really did halt, just there's no return data to read.
+- If we have a halt opcode that doesn't produce output (either [`STOP`](https://www.evm.codes/#00) or [`SELFDESTRUCT`](https://www.evm.codes/#ff)), return a sequence of size zero bytes as the return value. Note that this is very different from the empty set. This value means that the EVM really did halt, just there's no return data to read. (Also note that since [EIP-6780](https://eips.ethereum.org/EIPS/eip-6780), `SELFDESTRUCT` only deletes the contract if it is called in the same transaction that created the contract. Otherwise, it just transfers the contract's ETH.)
 - If we have a halt opcode that does produce output (either [`RETURN`](https://www.evm.codes/#f3) or [`REVERT`](https://www.evm.codes/#fd)), return the sequence of bytes specified by that opcode. This sequence is taken from memory, the value at the top of the stack (_μ<sub>s</sub>[0]_) is the first byte, and the value after it (_μ<sub>s</sub>[1]_) is the length.
 
 ## H.2 Instruction set {#h2-instruction-set}
 
-Before we go to the final subsection of the EVM, 9.5, let's look at the instructions themselves. They are defined in Appendix H.2 which starts on p. 29. Anything that is not specified as changing with that specific opcode is expected to stay the same. Variables that do change are specified with as \<something\>′.
+Before we go to the final subsection of the EVM, 9.5, let's look at the instructions themselves. They are defined in Appendix H.2 which starts on p. 30. Anything that is not specified as changing with that specific opcode is expected to stay the same. Variables that do change are specified with as \<something\>′.
 
 For example, let's look at the [`ADD`](https://www.evm.codes/#01) opcode.
 
@@ -229,7 +234,7 @@ Instead of going over all the opcodes with an "eyes glaze over list", This artic
 |       |           |     |     | _μ′<sub>s</sub>[0] ≡ KEC(μ<sub>m</sub>[μ<sub>s</sub>[0] . . . (μ<sub>s</sub>[0] + μ<sub>s</sub>[1] − 1)])_ |
 |       |           |     |     | _μ′<sub>i</sub> ≡ M(μ<sub>i</sub>,μ<sub>s</sub>[0],μ<sub>s</sub>[1])_                                      |
 
-This is the first opcode that accesses memory (in this case, read only). However, it might expand beyond the current limits of the memory, so we need to update _μ<sub>i</sub>._ We do this using the _M_ function defined in equation 328 on p. 29.
+This is the first opcode that accesses memory (in this case, read only). However, it might expand beyond the current limits of the memory, so we need to update _μ<sub>i</sub>._ We do this using the _M_ function defined in equation 330 on p. 30.
 
 | Value | Mnemonic | δ   | α   | Description                       |
 | ----: | -------- | --- | --- | --------------------------------- |
@@ -240,7 +245,7 @@ The address whose balance we need to find is _μ<sub>s</sub>[0] mod 2<sup>160</s
 
 If _σ[μ<sub>s</sub>[0] mod 2<sup>160</sup>] ≠ ∅_, it means that there is information about this address. In that case, _σ[μ<sub>s</sub>[0] mod 2<sup>160</sup>]<sub>b</sub>_ is the balance for that address. If _σ[μ<sub>s</sub>[0] mod 2<sup>160</sup>] = ∅_, it means that this address is uninitialized and the balance is zero. You can see the list of account information fields in section 4.1 on p. 4.
 
-The second equation, _A'<sub>a</sub> ≡ A<sub>a</sub> ∪ {μ<sub>s</sub>[0] mod 2<sup>160</sup>}_, is related to the difference in cost between access to warm storage (storage that has recently been accessed and is likely to be cached) and cold storage (storage that hasn't been accessed and is likely to be in slower storage that is more expensive to retrieve). _A<sub>a</sub>_ is the list of addresses previously accessed by the transaction, which should therefore be cheaper to access, as defined in section 6.1 on p. 8. You can read more about this subject in [EIP-2929](https://eips.ethereum.org/EIPS/eip-2929).
+The second equation, _A'<sub>a</sub> ≡ A<sub>a</sub> ∪ \{μ<sub>s</sub>[0] mod 2<sup>160</sup>}_, is related to the difference in cost between access to warm storage (storage that has recently been accessed and is likely to be cached) and cold storage (storage that hasn't been accessed and is likely to be in slower storage that is more expensive to retrieve). _A<sub>a</sub>_ is the list of addresses previously accessed by the transaction, which should therefore be cheaper to access, as defined in section 6.1 on p. 9. You can read more about this subject in [EIP-2929](https://eips.ethereum.org/EIPS/eip-2929).
 
 | Value | Mnemonic | δ   | α   | Description                             |
 | ----: | -------- | --- | --- | --------------------------------------- |
@@ -253,7 +258,7 @@ Note that to use any stack item, we need to pop it, which means we also need to 
 
 Now that we have all the parts, we can finally understand how the execution cycle of the EVM is documented.
 
-Equation (155) says that given the state:
+Equation (164) says that given the state:
 
 - _σ_ (global blockchain state)
 - _μ_ (EVM state)
@@ -262,7 +267,7 @@ Equation (155) says that given the state:
 
 The new state is _(σ', μ', A', I')_.
 
-Equations (156)-(158) define the stack and the change in it due to an opcode (_μ<sub>s</sub>_). Equation (159) is the change in gas (_μ<sub>g</sub>_). Equation (160) is the change in the program counter (_μ<sub>pc</sub>_). Finally, equations (161)-(164) specify that the other parameters stay the same, unless explicitly changed by the opcode.
+Equations (165)-(167) define the stack and the change in it due to an opcode (_μ<sub>s</sub>_). Equation (168) is the change in gas (_μ<sub>g</sub>_). Equation (169) is the change in the program counter (_μ<sub>pc</sub>_). Finally, equations (170)-(173) specify that the other parameters stay the same, unless explicitly changed by the opcode.
 
 With this the EVM is fully defined.
 
@@ -274,4 +279,4 @@ Mathematical notation is precise and has allowed the Yellow Paper to specify eve
 - Programmers understand computer code.
   They may or may not understand mathematical notation.
 
-Maybe for these reasons, the newer [consensus layer specs](https://github.com/ethereum/consensus-specs/blob/dev/tests/core/pyspec/README.md) are written in Python. There are [execution layer specs in Python](https://ethereum.github.io/execution-specs), but they are not complete. Until and unless the entire Yellow Paper is also translated to Python or a similar language, the Yellow Paper will continue in service, and it is helpful to be able to read it.
+For these reasons, the [consensus layer specs](https://github.com/ethereum/consensus-specs) are written in Python, and so are the [execution layer specs](https://github.com/ethereum/execution-specs). The Python execution layer specification is now the maintained reference for how the EVM works, and it includes the changes from upgrades the Yellow Paper does not cover. The Yellow Paper is still a useful formal description, and being able to read it helps you read other related mathematical papers.

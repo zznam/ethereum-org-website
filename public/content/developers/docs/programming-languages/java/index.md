@@ -34,9 +34,9 @@ Learn how to use [Web3J](https://github.com/web3j/web3j) and Hyperledger Besu, t
 - [Web3j Cheat Sheet](<https://kauri.io/web3j-cheat-sheet-(java-ethereum)/5dfa1ea941ac3d0001ce1d90/c>)
 
 Learn how to use [ethers-kt](https://github.com/Kr1ptal/ethers-kt), an async, high-performance Kotlin library for interacting with EVM-based blockchains. Targeting JVM and Android platforms.
-- [Transfer ERC20 tokens](https://github.com/Kr1ptal/ethers-kt/blob/master/examples/src/main/kotlin/io/ethers/examples/abi/TransferERC20.kt)
-- [UniswapV2 swap with event listening](https://github.com/Kr1ptal/ethers-kt/blob/master/examples/src/main/kotlin/io/ethers/examples/tokenswapwitheventlistening/TokenSwapWithEventListening.kt)
-- [ETH / ERC20 balance tracker](https://github.com/Kr1ptal/ethers-kt/blob/master/examples/src/main/kotlin/io/ethers/examples/balancetracker/BalanceTracker.kt)
+- [Transfer ERC20 tokens](https://github.com/Kr1ptal/ethers-kt/blob/master/examples/src/jvmSharedMain/kotlin/io/ethers/examples/abi/TransferERC20.kt)
+- [UniswapV2 swap with event listening](https://github.com/Kr1ptal/ethers-kt/blob/master/examples/src/jvmSharedMain/kotlin/io/ethers/examples/tokenswapwitheventlistening/TokenSwapWithEventListening.kt)
+- [ETH / ERC20 balance tracker](https://github.com/Kr1ptal/ethers-kt/blob/master/examples/src/jvmSharedMain/kotlin/io/ethers/examples/balancetracker/BalanceTracker.kt)
 
 ## Intermediate articles {#intermediate-articles}
 
@@ -50,7 +50,6 @@ Learn how to use [ethers-kt](https://github.com/Kr1ptal/ethers-kt), an async, hi
 
 ## Java projects and tools {#java-projects-and-tools}
 
-- [Hyperledger Besu (Pantheon) (Ethereum Client)](https://docs.pantheon.pegasys.tech/en/stable/)
 - [Web3J (Library for Interacting with Ethereum Clients)](https://github.com/web3j/web3j)
 - [ethers-kt (Async, high-performance Kotlin/Java/Android library for EVM-based blockchains.)](https://github.com/Kr1ptal/ethers-kt)
 - [Eventeum (Event Listener)](https://github.com/ConsenSys/eventeum)
@@ -62,4 +61,3 @@ Looking for more resources? Check out [ethereum.org/developers.](/developers/)
 
 - [IO Builders](https://io.builders)
 - [Kauri](https://kauri.io)
-- [Besu HL chat](https://chat.hyperledger.org/channel/besu)

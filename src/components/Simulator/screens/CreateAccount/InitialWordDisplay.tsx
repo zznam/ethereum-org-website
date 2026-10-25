@@ -1,24 +1,21 @@
-import React from "react"
-import { Box, Text } from "@chakra-ui/react"
+import { useTranslations } from "next-intl"
 
 import { WordList } from "./WordList"
 
 type InitialWordDisplayProps = {
   words: Array<string>
 }
-export const InitialWordDisplay = ({ words }: InitialWordDisplayProps) => (
-  <Box bg="background.highlight">
-    <Box py={8}>
-      <Text
-        fontSize={{ base: "xl", md: "2xl" }}
-        lineHeight={8}
-        fontWeight="bold"
-        px={{ base: 4, md: 8 }}
-        mb={{ base: 0, md: 6 }}
-      >
-        Recovery phrase example
-      </Text>
-    </Box>
-    <WordList words={words} />
-  </Box>
-)
+export const InitialWordDisplay = ({ words }: InitialWordDisplayProps) => {
+  const t = useTranslations("component-wallet-simulator")
+
+  return (
+    <div className="bg-background-highlight">
+      <div className="py-8">
+        <p className="px-4 text-xl leading-8 font-bold md:mb-6 md:px-8 md:text-2xl">
+          {t("sim-ca-recovery-example")}
+        </p>
+      </div>
+      <WordList words={words} />
+    </div>
+  )
+}

@@ -1,24 +1,19 @@
 ---
-title: Resources for translators
+title: Resources
+metaTitle: Resources for translators
 lang: en
 description: Useful resources for ethereum.org translators
 ---
-
-# Resources {#resources}
 
 You can find some useful guides and tools for ethereum.org translators, as well as translation communities and updates below.
 
 ## Guides {#guides}
 
 - [Translation style guide](/contributing/translation-program/translators-guide/) _– instructions and tips for ethereum.org translators_
-- [Translation FAQs](/contributing/translation-program/faq/) _– frequently asked questions and answers about the ethereum.org Translation Program_
 - [Crowdin online editor guide](https://support.crowdin.com/online-editor/) _– an in-depth guide to using the Crowdin online editor and some of Crowdin's advanced features_
-- [Content buckets](/contributing/translation-program/content-buckets/) _– which pages are included in each content bucket of ethereum.org_
 
 ## Tools {#tools}
 
-- [Microsoft Language Portal](https://www.microsoft.com/en-us/language)
-  _– useful for finding and checking the standard translations of technical terms_
 - [Linguee](https://www.linguee.com/)
   _– search engine for translations and dictionary that enables searching by word or phrase_
 - [Proz term search](https://www.proz.com/search/)
@@ -37,10 +32,10 @@ You can find some useful guides and tools for ethereum.org translators, as well 
 
 To keep up-to-date with the latest Translation Program progress, you can follow the [Ethereum Foundation blog](https://blog.ethereum.org/):
 
-- [October 2021 milestones update](https://blog.ethereum.org/2021/10/04/translation-program-update/)
-- [December 2020 milestones update](https://blog.ethereum.org/2020/12/21/translation-program-milestones-updates-20/)
-- [July 2020 milestones update](https://blog.ethereum.org/2020/07/29/ethdotorg-translation-milestone/)
-- [August 2019 Translation Program launch](https://blog.ethereum.org/2019/08/20/translating-ethereum-for-our-global-community/)
+- [October 2021 milestones update](https://blog.ethereum.org/2021/10/04/translation-program-update)
+- [December 2020 milestones update](https://blog.ethereum.org/2020/12/21/translation-program-milestones-updates-20)
+- [July 2020 milestones update](https://blog.ethereum.org/2020/07/29/ethdotorg-translation-milestone)
+- [August 2019 Translation Program launch](https://blog.ethereum.org/2019/08/20/translating-ethereum-for-our-global-community)
 
 ## Office hours for translators {#office-hours}
 

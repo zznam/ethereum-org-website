@@ -1,25 +1,25 @@
-import { ReactNode, useEffect, useState } from "react"
-import { motion } from "framer-motion"
-import { useTranslation } from "next-i18next"
-import { MdExpandMore } from "react-icons/md"
-import { Box, HStack, Icon } from "@chakra-ui/react"
+"use client"
+import { useEffect, useState } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { motion } from "motion/react"
+import { useTranslations } from "next-intl"
 
 import { ChildOnlyProp } from "@/lib/types"
 import { DeveloperDocsLink } from "@/lib/interfaces"
 
-import { BaseLink, LinkProps } from "@/components/Link"
-
 import docLinks from "../data/developer-docs-links.yaml"
+
+import { HStack } from "./ui/flex"
+import { BaseLink, LinkProps } from "./ui/Link"
 
 export const dropdownIconContainerVariant = {
   open: {
-    rotate: 0,
-    y: 3,
+    rotate: 90,
     transition: {
       duration: 0.4,
     },
   },
-  closed: { rotate: -90, y: 0 },
+  closed: { rotate: 0 },
 }
 
 const innerLinksVariants = {
@@ -35,14 +35,7 @@ const innerLinksVariants = {
 
 const LinkContainer = ({ children }: ChildOnlyProp) => {
   return (
-    <HStack
-      w="full"
-      justify="space-between"
-      py={2}
-      pe={4}
-      ps={8}
-      _hover={{ bgColor: "ednBackground" }}
-    >
+    <HStack className="w-full justify-between py-2 ps-8 pe-4 hover:bg-background-highlight">
       {children}
     </HStack>
   )
@@ -51,12 +44,7 @@ const LinkContainer = ({ children }: ChildOnlyProp) => {
 const SideNavLink = ({ children, ...props }: LinkProps) => {
   return (
     <BaseLink
-      w="full"
-      textDecoration="none"
-      color="text"
-      fontWeight="normal"
-      _hover={{ textDecoration: "none", color: "primary.base" }}
-      _active={{ color: "primary.base" }}
+      className="w-full font-normal text-body no-underline hover:text-primary"
       {...props}
     >
       {children}
@@ -67,54 +55,62 @@ const SideNavLink = ({ children, ...props }: LinkProps) => {
 export type NavLinkProps = {
   item: DeveloperDocsLink
   path: string
-  isTopLevel?: boolean
 }
 
-const NavLink = ({ item, path, isTopLevel }: NavLinkProps) => {
-  const { t } = useTranslation("page-developers-docs")
-  const isLinkInPath =
-    isTopLevel || path.includes(item.to) || path.includes(item.path)
+const normalizePath = (path: string) => path.replace(/\/$/, "")
+
+const isPathMatch = (currentPath: string, targetPath?: string) => {
+  if (!targetPath) return false
+
+  const current = normalizePath(currentPath)
+  const target = normalizePath(targetPath)
+
+  return current === target || current.startsWith(`${target}/`)
+}
+
+const isItemInPath = (item: DeveloperDocsLink, path: string): boolean => {
+  if (isPathMatch(path, item.href)) return true
+
+  return item.items?.some((childItem) => isItemInPath(childItem, path)) ?? false
+}
+
+const NavLink = ({ item, path }: NavLinkProps) => {
+  const t = useTranslations("page-developers-docs")
+  const isLinkInPath = isItemInPath(item, path)
   const [isOpen, setIsOpen] = useState<boolean>(isLinkInPath)
 
   useEffect(() => {
-    // Only set on items that contain a link
-    // Otherwise items w/ `path` would re-open every path change
-    if (item.to) {
-      const shouldOpen = path.includes(item.to) || path.includes(item.path)
-      setIsOpen(shouldOpen)
-    }
-  }, [path, item.path, item.to])
+    setIsOpen(isLinkInPath)
+  }, [isLinkInPath])
 
   if (item.items) {
     return (
-      <Box>
+      <div>
         <LinkContainer>
-          {item.to && (
-            <SideNavLink to={item.to} isPartiallyActive={false}>
+          {item.href && (
+            <SideNavLink href={item.href} isPartiallyActive={false}>
               {t(item.id)}
             </SideNavLink>
           )}
-          {!item.to && (
-            <Box w="full" cursor="pointer" onClick={() => setIsOpen(!isOpen)}>
+          {!item.href && (
+            <div
+              className="w-full cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
+            >
               {t(item.id)}
-            </Box>
+            </div>
           )}
-          <Box
-            as={motion.div}
+          <motion.div
+            className="flex cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
             variants={dropdownIconContainerVariant}
             animate={isOpen ? "open" : "closed"}
-            cursor="pointer"
           >
-            <Icon as={MdExpandMore} boxSize={6} color="secondary" />
-          </Box>
+            <ChevronRight className="h-6 w-6 text-body-medium" />
+          </motion.div>
         </LinkContainer>
-        <Box
-          as={motion.div}
-          fontSize="sm"
-          lineHeight="tall"
-          fontWeight="normal"
-          ms={4}
+        <motion.div
+          className="ms-4 text-sm leading-relaxed font-normal"
           key={item.id}
           animate={isOpen ? "open" : "closed"}
           variants={innerLinksVariants}
@@ -123,18 +119,32 @@ const NavLink = ({ item, path, isTopLevel }: NavLinkProps) => {
           {item.items.map((childItem, idx) => (
             <NavLink item={childItem} path={path} key={idx} />
           ))}
-        </Box>
-      </Box>
+        </motion.div>
+      </div>
     )
   }
   return (
-    <Box>
+    <div>
       <LinkContainer>
-        <SideNavLink to={item.to} isPartiallyActive={false}>
+        <SideNavLink href={item.href} isPartiallyActive={false}>
           {t(item.id)}
         </SideNavLink>
       </LinkContainer>
-    </Box>
+    </div>
+  )
+}
+
+export const BackToDevelopersLink = () => {
+  const tCommon = useTranslations("common")
+  return (
+    <BaseLink
+      href="/developers/"
+      isPartiallyActive={false}
+      className="flex items-center gap-1 py-2 ps-7 pe-4 text-sm font-normal text-body-medium no-underline hover:text-primary"
+    >
+      <ChevronLeft className="size-4 rtl:rotate-180" />
+      {tCommon("back-to-developers")}
+    </BaseLink>
   )
 }
 
@@ -142,35 +152,19 @@ export interface SideNavProps {
   path: string
 }
 
-// TODO set tree state based on if current path is a child
-// of the given parent. Currently all `path` items default to open
-// and they only collapse when clicked on.
 const SideNav = ({ path }: SideNavProps) => {
-  const { t } = useTranslation("page-developers-docs")
+  const tCommon = useTranslations("common")
 
   return (
-    <Box
-      as="nav"
-      position="sticky"
-      top="19"
-      pt={8}
-      pb={16}
-      h="calc(100vh - 80px)" // TODO take footer into account for height?
-      w="calc((100% - 1448px) / 2 + 256px)"
-      minW="256px"
-      overflowY="auto"
-      transition="transform 0.2s ease"
-      bgColor="background.base"
-      boxShadow="1px 0px 0px rgba(0, 0, 0, 0.1)"
-      borderInlineEnd="1px solid"
-      borderInlineEndColor="border"
-      display={{ base: "none", lg: "block" }}
-      aria-label={t("common:nav-developers-docs")}
+    <nav
+      className="sticky top-19 h-[calc(100vh-80px)] w-[calc((100%-1448px)/2+256px)] min-w-64 overflow-y-auto border-e-2 bg-background pt-8 pb-16 transition-transform duration-200 max-lg:hidden"
+      aria-label={tCommon("nav-developers-docs")}
     >
+      <BackToDevelopersLink />
       {docLinks.map((item, idx) => (
-        <NavLink item={item} path={path} key={idx} isTopLevel />
+        <NavLink item={item} path={path} key={idx} />
       ))}
-    </Box>
+    </nav>
   )
 }
 

@@ -4,7 +4,7 @@ description: Learn how to develop for Ethereum using JavaScript-based projects a
 lang: en
 ---
 
-JavaScript is among the most popular languages in the Ethereum ecosystem. In fact, there's a [team](https://github.com/ethereumjs) dedicated to bringing as much of Ethereum to JavaScript as possible.
+JavaScript is among the most popular languages in the Ethereum ecosystem, with JavaScript and TypeScript implementations of everything from core protocol primitives to a production consensus client.
 
 There are opportunities to write JavaScript (or something close) at [all levels of the stack](/developers/docs/ethereum-stack/).
 
@@ -18,9 +18,10 @@ You can use these libraries to interact with smart contracts on Ethereum so it's
 
 **Check out**
 
-- [Web3.js](https://web3js.readthedocs.io/)
-- [Ethers.js](https://docs.ethers.io/) _– includes Ethereum wallet implementation and utilities in JavaScript and TypeScript._
-- [viem](https://viem.sh) – a TypeScript Interface for Ethereum that provides low-level stateless primitives for interacting with Ethereum.
+- [Web3.js](https://web3js.readthedocs.io)
+- [Ethers.js](https://ethers.org) – _includes Ethereum wallet implementation and utilities in JavaScript and TypeScript._
+- [viem](https://viem.sh) – _a TypeScript Interface for Ethereum that provides low-level stateless primitives for interacting with Ethereum._
+- [Drift](https://ryangoree.github.io/drift/) – _a TypeScript meta-library with built-in caching, hooks, and test mocks for effortless Ethereum development across web3 libraries._
 
 ### Smart contracts {#smart-contracts}
 
@@ -46,17 +47,20 @@ This will help you understand things like "what's the data structure of an accou
 
 If you prefer to read code, this JavaScript could be a great alternative to reading through our docs.
 
-**Check out the monorepo**  
-[`ethereumjs`](https://github.com/ethereumjs/ethereumjs-vm)
+**Check out the EVM**  
+[`@ethereumjs/evm`](https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/packages/evm)
 
 ### Nodes and clients {#nodes-and-clients}
 
-An Ethereumjs client is in active development that lets you dig into how Ethereum clients work in a language you understand; JavaScript!
+[Lodestar](https://lodestar.chainsafe.io/) is a production-ready consensus client written in TypeScript and maintained by ChainSafe. It includes a beacon node and validator client, and is a good place to see how Ethereum's proof-of-stake consensus works in a language you know.
 
-It used to be housed in a standalone [`repository`](https://github.com/ethereumjs/ethereumjs-client), however, was later merged into the EthereumVM monorepo as a package.
+**Check out Lodestar**  
+[`ChainSafe/lodestar`](https://github.com/ChainSafe/lodestar)
 
-**Check out the client**  
-[`ethereumjs-client`](https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/packages/client)
+On the execution side, the EthereumJS client is deprecated and archived, but its source code remains available to explore how an Ethereum client works in JavaScript.
+
+**Check out the archived client**  
+[`@ethereumjs/client`](https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/archive/client)
 
 ## Other projects {#other-projects}
 

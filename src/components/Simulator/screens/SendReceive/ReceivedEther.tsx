@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { MdClose, MdInfo } from "react-icons/md"
-import { Flex, Icon, Text } from "@chakra-ui/react"
+import { useEffect, useMemo, useState } from "react"
+import { Info, X } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
+import { useLocale, useTranslations } from "next-intl"
 
 import type { SimulatorNavProps } from "@/lib/types"
 
-import { getMaxFractionDigitsUsd } from "../../utils"
+import { formatWalletToken, formatWalletUsd } from "../../utils"
 import { WalletHome } from "../../WalletHome"
 import type { TokenBalance } from "../../WalletHome/interfaces"
 
@@ -22,6 +22,8 @@ export const ReceivedEther = ({
   ethPrice,
   sender,
 }: ReceivedEtherProps) => {
+  const t = useTranslations("component-wallet-simulator")
+  const locale = useLocale()
   const [received, setReceived] = useState(false)
   const [hideToast, setHideToast] = useState(false)
   const showToast = received && !hideToast
@@ -61,16 +63,9 @@ export const ReceivedEther = ({
 
   const tokenBalances = received ? tokensWithEthBalance : defaultTokenBalances
 
-  const displayEth: string = new Intl.NumberFormat("en", {
-    maximumFractionDigits: 5,
-  }).format(ethReceiveAmount)
+  const displayEth = formatWalletToken(ethReceiveAmount, locale)
   const usdReceiveAmount = ethReceiveAmount * ethPrice
-  const displayUsd: string = new Intl.NumberFormat("en", {
-    style: "currency",
-    currency: "USD",
-    notation: "compact",
-    maximumFractionDigits: getMaxFractionDigitsUsd(usdReceiveAmount),
-  }).format(usdReceiveAmount)
+  const displayUsd = formatWalletUsd(usdReceiveAmount)
   return (
     <motion.div
       key="wallet-step-index-2"
@@ -85,32 +80,29 @@ export const ReceivedEther = ({
       />
       <AnimatePresence>
         {showToast && !hidden && (
-          <Flex
+          <motion.div
             key="toast"
-            position="absolute"
-            inset={4}
-            top="auto"
-            bottom={32}
-            borderRadius="base"
-            h="fit-content"
-            bg="primary300"
-            gap={3}
-            fontSize="md"
-            align="center"
-            p={4}
-            color="background.base"
-            as={motion.div}
+            className="absolute inset-4 top-auto bottom-32 flex h-fit items-center gap-3 rounded bg-primary-high-contrast p-4 text-md text-background"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            data-testid="received-ether-toast"
           >
-            <Icon as={MdInfo} fontSize="xl" />
-            <Text m={0} fontWeight="bold" fontSize="xs">
-              You received {displayEth} ETH ({displayUsd})
-              {sender ? ` from ${sender}` : ""}!
-            </Text>
-            <Icon as={MdClose} fontSize="xl" onClick={() => setHidden(true)} />
-          </Flex>
+            <Info className="text-xl" />
+            <p className="m-0 text-xs font-bold">
+              {sender
+                ? t("sim-received-toast", {
+                    ethAmount: displayEth,
+                    usdAmount: displayUsd,
+                    sender,
+                  })
+                : t("sim-received-toast-no-sender", {
+                    ethAmount: displayEth,
+                    usdAmount: displayUsd,
+                  })}
+            </p>
+            <X className="text-xl" onClick={() => setHidden(true)} />
+          </motion.div>
         )}
       </AnimatePresence>
     </motion.div>

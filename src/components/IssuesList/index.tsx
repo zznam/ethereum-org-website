@@ -1,64 +1,71 @@
-import Emoji from "react-emoji-render"
-import {
-  Avatar,
-  Flex,
-  HStack,
-  SimpleGrid,
-  SimpleGridProps,
-  Stack,
-  Text,
-} from "@chakra-ui/react"
-
 import type { GHIssue } from "@/lib/types"
 
-import InlineLink from "../Link"
-import Tag from "../Tag"
+import Emoji from "@/components/Emoji"
 
-type IssuesListProps = SimpleGridProps & {
-  issues: GHIssue[]
+import { cn } from "@/lib/utils/cn"
+
+import { Avatar } from "../ui/avatar"
+import { Flex, HStack, Stack } from "../ui/flex"
+import { Grid } from "../ui/grid"
+import InlineLink from "../ui/Link"
+import { Tag } from "../ui/tag"
+
+import { getStaticGFIs } from "@/lib/data"
+
+type IssuesListProps = {
+  className?: string
 }
 
-const IssuesList = ({ issues, ...props }: IssuesListProps) => {
-  return (
-    <SimpleGrid columns={[1, null, 2]} spacing={4} {...props}>
-      {issues.map((issue) => (
-        <Stack
-          key={issue.title}
-          p={4}
-          spacing={4}
-          border="1px solid"
-          borderColor="body.light"
-          borderRadius="md"
-        >
-          <Stack spacing={2}>
-            <HStack spacing={2}>
-              <Avatar
-                name={issue.user.login}
-                src={issue.user.avatar_url}
-                w="32px"
-                h="32px"
-              />
-              <Text size="sm">by {issue.user.login}</Text>
-            </HStack>
+const IssuesList = async ({ className }: IssuesListProps) => {
+  let issues: GHIssue[] = []
+  try {
+    issues = (await getStaticGFIs()) ?? []
+  } catch (error) {
+    console.warn("Failed to fetch GFIs for IssuesList:", error)
+  }
 
-            <InlineLink href={issue.html_url} textDecor="none">
-              {issue.title}
-            </InlineLink>
-          </Stack>
-          <Flex flexWrap="wrap" gap="1">
-            {issue.labels.map((label) => {
-              return (
-                <Tag
-                  key={label.id}
-                  label={<Emoji text={label.name} />}
-                  variant="outline"
+  return (
+    <Grid className={cn("my-7", className)}>
+      {issues.map((issue) => {
+        // Skip issues authored by deleted ("ghost") accounts (user: null).
+        if (!issue.user) return null
+
+        return (
+          <Stack
+            className="gap-4 rounded-md border border-border p-4"
+            key={issue.title}
+          >
+            <Stack className="gap-2">
+              <HStack className="gap-2">
+                <Avatar
+                  name={issue.user.login}
+                  src={issue.user.avatar_url}
+                  size="sm"
+                  href={`https://github.com/${issue.user.login}`}
                 />
-              )
-            })}
-          </Flex>
-        </Stack>
-      ))}
-    </SimpleGrid>
+                <p className="text-sm">by {issue.user.login}</p>
+              </HStack>
+
+              <InlineLink
+                href={issue.html_url}
+                className="no-underline hover:underline"
+              >
+                {issue.title}
+              </InlineLink>
+            </Stack>
+            <Flex className="flex-wrap gap-1">
+              {issue.labels.map((label) => {
+                return (
+                  <Tag key={label.id} variant="outline">
+                    <Emoji text={label.name} />
+                  </Tag>
+                )
+              })}
+            </Flex>
+          </Stack>
+        )
+      })}
+    </Grid>
   )
 }
 

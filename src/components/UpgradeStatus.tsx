@@ -1,57 +1,40 @@
-import React from "react"
-import { useTranslation } from "next-i18next"
-import { Heading, useColorModeValue, VStack } from "@chakra-ui/react"
+import { getTranslations } from "next-intl/server"
 
 import type { TranslationKey } from "@/lib/types"
 
-import Text from "./OldText"
-
-export interface IStyledContainer {
-  isShipped: boolean
-}
+import { cn } from "@/lib/utils/cn"
 
 export type UpgradeStatusProps = {
-  children?: React.ReactNode
   dateKey: TranslationKey
   isShipped?: boolean
+  children?: React.ReactNode
 }
 
-const UpgradeStatus = ({
+const UpgradeStatus = async ({
   dateKey,
+  isShipped,
   children,
-  isShipped = false,
 }: UpgradeStatusProps) => {
-  const border = useColorModeValue("none", "2px solid")
-  const darkBorderColor = isShipped ? "#3fb181" : "#a4a4ff"
-  const borderColor = useColorModeValue(undefined, darkBorderColor)
-  const { t } = useTranslation("page-staking")
+  const ns = "page-upgrades"
+  const t = await getTranslations(ns)
+  const tCommon = await getTranslations("common")
+
+  const split = dateKey.split(ns + ":")
+  const whenKey = split[split.length - 1]
 
   return (
-    <VStack
-      as="aside"
-      alignItems="start"
-      bg={
-        isShipped ? "upgradeStatusShippedBackground" : "upgradeStatusBackground"
-      }
-      border={border}
-      borderColor={borderColor}
-      borderRadius="base"
-      boxShadow={`0px 4px 7px rgba(0, 0, 0, 0.05), 0px 10px 17px rgba(0, 0, 0, 0.03),
-       0px 14px 66px rgba(0, 0, 0, 0.07)`}
-      mb={8}
-      mt={{ base: 8, lg: 0 }}
-      p={6}
-      spacing={6}
-      width="100%"
+    <aside
+      className={cn(
+        "flow w-full rounded-base p-6 shadow-2xl",
+        isShipped ? "bg-tint-success" : "bg-tint-accent-a"
+      )}
     >
-      <Heading fontSize="sm" fontWeight="normal" textTransform="uppercase">
-        {t("common:consensus-when-shipping")}
-      </Heading>
-      <Text fontSize="2.5rem" fontWeight="bold" lineHeight="100%">
-        {t(dateKey)}
-      </Text>
-      <Text fontSize="xl">{children}</Text>
-    </VStack>
+      <h2 className="text-sm font-normal uppercase">
+        {tCommon("consensus-when-shipping")}
+      </h2>
+      <p className="text-h2 font-bold">{t(whenKey)}</p>
+      <p>{children}</p>
+    </aside>
   )
 }
 

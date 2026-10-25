@@ -1,10 +1,9 @@
 ---
-title: Adding Products
+title: Adding Ethereum products
+metaTitle: Adding Products
 description: The policy we use when adding dapps to ethereum.org
 lang: en
 ---
-
-# Adding Ethereum products {#adding-products}
 
 Anyone is free to suggest new dapps to the content on ethereum.org, where it's appropriate to do so. **No, we won't list your dapp on our homepage** 😜
 
@@ -82,7 +81,7 @@ Please also refer to our [terms of use](/terms-of-use/). Information on ethereum
 
 As is the fluid nature of Ethereum, teams and products come and go and innovation happens daily, so we'll undertake routine checks of our content to:
 
-- ensure that all dapps listed still fulfil our criteria
+- ensure that all dapps listed still fulfill our criteria
 - verify there aren't products that have been suggested that meet more of our criteria than the ones currently listed
 
 You can help with this by checking and letting us know. [Create an issue](https://github.com/ethereum/ethereum-org-website/issues/new?assignees=&labels=Type%3A+Feature&template=feature_request.yaml&title=) or send an email to [website@ethereum.org](mailto:website@ethereum.org)
@@ -93,8 +92,8 @@ _We're also investigating options for voting so the community can indicate their
 
 ## Add your product {#add-your-product}
 
-If you want to add a dapp to ethereum.org and it meets the criteria, create an issue on GitHub.
+If you want to add a dapp to ethereum.org and it meets the criteria, please let us know.
 
-<ButtonLink to="https://github.com/ethereum/ethereum-org-website/issues/new?assignees=&labels=feature+%3Asparkles%3A%2Ccontent+%3Afountain_pen%3A&template=suggest_dapp.yaml">
-  Create an issue
+<ButtonLink href="https://submitapp.paperform.co/">
+  Suggest an app
 </ButtonLink>

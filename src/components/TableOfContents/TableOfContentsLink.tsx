@@ -1,87 +1,60 @@
-import { cssVar, SystemStyleObject } from "@chakra-ui/react"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import type { ToCItem } from "@/lib/types"
 
-import { BaseLink } from "@/components/Link"
+import { cn } from "@/lib/utils/cn"
 
-import { useRtlFlip } from "@/hooks/useRtlFlip"
+import { BaseLink } from "../ui/Link"
+
+const variants = cva(
+  "group relative inline-block w-full no-underline lg:w-auto",
+  {
+    variants: {
+      variant: {
+        docs: "py-0.5 text-body-medium",
+        card: "[&_[data-label='marker']]:!hidden inline leading-base text-inherit",
+        left: "text-body-medium hover:text-primary-hover",
+      },
+    },
+    defaultVariants: {
+      variant: "docs",
+    },
+  }
+)
 
 export type TableOfContentsLinkProps = {
   depth: number
   item: ToCItem
   activeHash?: string
-}
+} & VariantProps<typeof variants>
 
 const Link = ({
   depth,
   item: { title, url },
   activeHash,
+  variant,
 }: TableOfContentsLinkProps) => {
-  const { flipForRtl } = useRtlFlip()
   const isActive = activeHash === url
-  const isNested = depth === 2
-
-  const classList: Array<string> = []
-  isActive && classList.push("active")
-  isNested && classList.push("nested")
-  const classes = classList.join(" ")
-
-  const $dotBg = cssVar("dot-bg")
-
-  const hoverOrActiveStyle: SystemStyleObject = {
-    color: "primary.base",
-    _after: {
-      content: `""`,
-      background: $dotBg.reference,
-      border: "1px",
-      borderColor: "primary.base",
-      borderRadius: "50%",
-      boxSize: 2,
-      position: "absolute",
-      insetInlineStart: "-1.29rem",
-      top: "50%",
-      mt: -1,
-    },
-  }
 
   return (
     <BaseLink
+      data-state-active={isActive}
       href={url}
-      className={classes}
-      textDecoration="none"
-      display="inline-block"
-      position="relative"
-      color="textTableOfContents"
-      fontWeight="normal"
-      mb="0.5rem !important"
-      width={{ base: "100%", lg: "auto" }}
-      _hover={{
-        ...hoverOrActiveStyle,
-      }}
-      sx={{
-        [$dotBg.variable]: "colors.background",
-        "&.active": {
-          [$dotBg.variable]: "colors.primary",
-          ...hoverOrActiveStyle,
-        },
-        "&.nested": {
-          _before: {
-            content: `"⌞"`,
-            opacity: 0.5,
-            display: "inline-flex",
-            position: "absolute",
-            insetInlineStart: -3.5,
-            top: -1,
-            transform: flipForRtl,
-          },
-          "&.active, &:hover": {
-            _after: {
-              insetInlineStart: "-2.29rem",
-            },
-          },
-        },
-      }}
+      className={variants({
+        variant,
+        className: isActive && "visited text-primary",
+      })}
     >
+      <div
+        data-label="marker"
+        className={cn(
+          "absolute top-1/2 -mt-1 hidden h-2 w-2 rounded-full border border-primary-hover bg-background group-hover:inline-block",
+          isActive && "inline-block"
+        )}
+        style={{
+          insetInlineStart: `calc(-16px - 8px * ${depth} - 4px - 1px)`,
+        }}
+      />
       {title}
     </BaseLink>
   )

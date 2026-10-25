@@ -1,87 +1,118 @@
 ---
-title: Katkıda Bulunma
-description: Ethereum.org'a katkıda bulunmanın farklı yolları hakkında bilgi edinin
+title: "ethereum.org'a Katkıda Bulunmak 🦄"
+metaTitle: "Katkıda Bulunmak"
+description: "ethereum.org'a katkıda bulunabileceğiniz farklı yollar hakkında bilgi edinin"
 lang: tr
 ---
 
-# Ethereum.org'a katkıda bulunma 🦄 {#contributing-to-ethereumorg}
+Ethereum.org, web sitesini çevirmeye, yazmaya, tasarlamaya ve sürdürmeye yardımcı olan **12.000'den fazla** katkıda bulunanı olan açık kaynaklı bir projedir.
 
-Ethereum.org web sitesi, daha geniş anlamda Ethereum gibi açık kaynaklı bir projedir. Bu nedenle, [Ethereum portalımızı](/about/) geliştirmeye yardımcı olmak istiyorsanız, bunu nasıl yapabileceğinizi gösterelim.
-
-<InfoBanner shouldCenter emoji=":tada:">
-  POAP token'ınızı talep edin! 2022'de ethereum.org'a katkıda bulunduysanız, sizi bekleyen benzersiz bir POAP bulunuyor.{" "} <a href="#poap">POAP'ler hakkında daha fazla bilgi</a>
-</InfoBanner>
+Biz, [Ethereum](/) ekosisteminde büyümenize ve eğitim almanıza yardımcı olurken aynı zamanda anlamlı bir şekilde katkıda bulunmanızı ve ilgili pratik deneyimi kazanmanızı sağlayacak misafirperver bir topluluğuz!
 
 ## Katkıda bulunma yolları {#ways-to-contribute}
 
-- [Açık bir konu üzerinde çalışın](https://github.com/ethereum/ethereum-org-website/issues) _– Yapılması gerektiğini belirlediğimiz işler_
-- [Çeviri programına katılın](/contributing/translation-program/) _– ethereum.org'u yeni dillere taşımamıza yardımcı olun_
-- [Web sitesinin tasarlanmasına yardımcı olun](/contributing/design/) _– Her seviyeden tasarımcı, web sitesini geliştirmek için katkıda bulunabilir_
-- [Topluluk kaynakları ekleyin](/contributing/content-resources/) _– Alakalı bir sayfaya faydalı bir makale veya kaynak ekleyin_
-- [Bir ürün ekleyin](/contributing/adding-products/) _– İlgili sayfaya bir merkeziyetsiz uygulama veya cüzdan ekleyin_
-- [Geliştirici araçları ekleyin](/contributing/adding-developer-tools/) _– İlgili sayfaya bir geliştirici aracı ekleyin_
-- [Bir borsa ekleyin](/contributing/adding-exchanges/) _– [Borsa bulucumuza](/get-eth/#country-picker) bir borsa ekleyin_
-- [Araştırmamızı geliştirin](https://www.notion.so/efdn/Ethereum-org-User-Persona-Memo-b44dc1e89152457a87ba872b0dfa366c) _– Araştırmamız hakkında geribildiriminizi bize aktarın veya kendi araştırmanızla katkıda bulunun_
-- [Bir özellik talebinde bulunun](https://github.com/ethereum/ethereum-org-website/issues/new?assignees=&labels=Type%3A+Feature&template=feature_request.yaml&title=) _– Yeni bir özellik veya tasarım hakkındaki fikirlerinizi bize bildirin_
-- [Bir sözlük terimi ekleyin](/contributing/adding-glossary-terms) _– Ethereum [sözlüğünü](/glossary/) genişletmeye devam etmemize yardımcı olun_
-- [İçerik oluşturun/düzenleyin](/contributing/#how-to-update-content) _– Yeni sayfalar önerin veya zaten burada olanlar üzerinde değişiklikler yapın_
-- [Bir katman 2 ekleyin](/contributing/adding-layer-2s/) _– İlgili bir sayfaya bir katman 2 ekleyin_
-- [Bir hisseleme ürünü veya hizmeti ekleyin](/contributing/adding-staking-products/) - _– Tekli hisselemeyi, ortak hisselemeyi veya bir hizmet olarak hisselemeyi kolaylaştıran bir proje ekleyin_
-- [Bir cüzdan ekleyin](/contributing/adding-wallets/) _– [Cüzdan bulma sayfası](/wallets/find-wallet/)_ için bir cüzdan ekleyin
-- [DeSci sayfamız için bir proje önerin](/contributing/adding-desci-projects/) _- Ethereum üzerinde geliştirilmiş ve merkeziyetsiz bilime katkıda bulunan bir proje ekleyin_
-- [Kısa Sınavlar](/contributing/quizzes/)_- İlgili bir sayfa için kısa sınav soru havuzları ekleyin, güncelleyin ve silin_
-- [Bir tasarım kaynağı önerin](/contributing/design/adding-design-resources/)_- Yararlı tasarım kaynaklarını ekleyin, güncelleyin ve silin_
+**Çeviriler**
+- [Bir çeviri hatası bildirin](https://github.com/ethereum/ethereum-org-website/issues/new/choose) – [Çeviri Programı](/contributing/translation-program/) sona eriyor ve artık yeni çevirmenlerin sisteme katılımını sağlamıyor
 
-_Herhangi bir sorunuz mu var?_ 🤔 [Discord sunucumuzdan](https://discord.gg/ethereum-org) bize ulaşın
+**Geliştirme**
+- [Açık bir sorun üzerinde çalışın](https://github.com/ethereum/ethereum-org-website/issues) – Yapılması gerektiğini belirlediğimiz işler
 
-## Nasıl ethereum.org üzerinde çalışılır {#how-to-update-content}
+**Tasarım**
+- [Web sitesini tasarlamaya yardımcı olun](/contributing/design/) – Her seviyeden tasarımcı web sitesini geliştirmeye katkıda bulunabilir
 
-İster siteye ekleme yapıyor, ister içerik oluşturuyor veya açık sorunlar üzerinde çalışıyor olun, bir [GitHub](https://github.com) hesabına ihtiyacınız olacak.
+**İçerik**
+- [İçerik oluşturun/düzenleyin](/contributing/#how-to-update-content) – Yeni sayfalar önerin veya halihazırda burada olanlarda ince ayarlar yapın
+- [Bir oluşturucu makalesi yazın](/contributing/adding-articles/) - [En Son](/latest/) bölümü için bir makale ile katkıda bulunun
+- [Topluluk kaynakları ekleyin](/contributing/content-resources/) – İlgili bir sayfaya yararlı bir makale veya kaynak ekleyin
+- [Bir rapor önerin](/contributing/adding-reports/) - [Raporlar](/reports/) sayfası için bir araştırma raporu önerin
+- [Hikayenizi paylaşın](/contributing/adding-community-stories/) - Açık kaynak ve sığınak (sanctuary) teknolojileriyle ilgili kişisel deneyimleriniz, Ethereum ekosisteminin hayatınızı nasıl etkilediği veya sizin ve topluluğunuzun Ethereum'u nasıl kullandığı hakkında bir hikaye gönderin
+- [Testler](/contributing/quizzes/) – İlgili bir sayfa için test soru bankaları ekleyin, güncelleyin ve silin
+- [Bir tasarım kaynağı önerin](/contributing/design/adding-design-resources/) – Yararlı tasarım kaynakları ekleyin, güncelleyin ve silin
+- [Bir video önerin](/contributing/adding-videos/) – Video galerisi için eğitici bir video önerin
 
-Tüm güncellemeler GitHub PR süreci aracılığıyla yapılır. Bu, web sitesinin yerel bir kopyasını oluşturmanız, değişikliklerinizi uygulamanız ve değişikliklerinizi birleştirmeyi istemeniz anlamına gelir. Bunu daha önce hiç yapmadıysanız, [GitHub depomuzun](https://github.com/ethereum/ethereum-org-website) en altındaki talimatları takip edin.
+**Özellik fikirleri**
+- [Bir özellik isteyin](https://github.com/ethereum/ethereum-org-website/issues/new?assignees=&labels=Type%3A+Feature&template=feature_request.yaml&title=) – Yeni bir özellik veya tasarım için sahip olduğunuz fikirleri bize bildirin
 
-Herhangi bir şey üzerinde çalışmak için izne ihtiyacınız yok, ancak ne yapmayı planladığınızı bize bildirmeniz her zaman en iyisidir. Bunu şu şekillerde yapabilirsiniz:
+**Ürün listelemeleri**
+- [Bir borsa ekleyin](/contributing/adding-exchanges/) – [Borsa bulucumuza](/get-eth/#country-picker) bir borsa ekleyin
+- [Bir ürün ekleyin](/contributing/adding-products/) – İlgili bir sayfaya bir merkeziyetsiz uygulama (dapp) veya cüzdan ekleyin
+- [Geliştirici araçları ekleyin](/contributing/adding-developer-tools/) – İlgili bir sayfaya bir geliştirici aracı ekleyin
+- [Bir katman 2 (l2) ekleyin](/contributing/adding-layer-2s/) – İlgili bir sayfaya bir katman 2 (l2) ekleyin
+- [Bir staking ürünü veya hizmeti ekleyin](/contributing/adding-staking-products/) – Bireysel staking, havuzlu staking veya hizmet olarak staking'i kolaylaştırmaya yardımcı olan bir proje ekleyin
+- [Bir cüzdan ekleyin](/contributing/adding-wallets/) – [Cüzdan bulma sayfası](/wallets/find-wallet/) için bir cüzdan ekleyin
+- [DeSci sayfamız için bir proje önerin](/contributing/adding-desci-projects/) – Merkeziyetsiz bilime (DeSci) katkıda bulunan, Ethereum üzerinde oluşturulmuş bir proje ekleyin
+- [Bir kaynak ekleyin](/contributing/adding-resources/) – İlgili herhangi bir sayfaya yararlı bir kaynak ekleyin
 
-- [GitHub](https://github.com/ethereum/ethereum-org-website) üzerinde bir konuya veya PR'ye yorum yapmak
-- [Discord sunucumuzda](https://discord.gg/ethereum-org) mesajlaşmak
+Sorularınız mı var? 🤔 [Discord sunucumuza](/discord/) katılın
+
+## Katkıda bulunmaya başlamak için iyi ilk görevler {#good-first-tasks-to-start-contributing}
+
+Bunlar, çözmemize yardımcı olabileceğiniz ve sorumluluk alabileceğiniz birkaç güncel görevdir. Web sitesindeki çoğu değişiklik GitHub üzerinden yapıldığından, çoğu için bir GitHub hesabına ihtiyacınız olacaktır.
+
+<IssuesList my={8} />
+
+<ButtonLink href="https://github.com/ethereum/ethereum-org-website/issues">Tüm görevleri görün</ButtonLink>
+
+## ethereum.org üzerinde nasıl çalışılır {#how-to-update-content}
+
+Katkıda bulunmak (web sitesine içerik veya görseller eklemek veya düzenlemek, hataları düzeltmek, açık görevler üzerinde çalışmak) için bir [GitHub](https://github.com/) hesabına ihtiyacınız olacaktır.
+
+Tüm güncellemeler GitHub PR (Çekme İsteği) süreci aracılığıyla yapılır. Bu, web sitesinin yerel bir kopyasını oluşturduğunuz, değişikliklerinizi yaptığınız ve değişikliklerinizin birleştirilmesini talep ettiğiniz anlamına gelir. Bunu daha önce hiç yapmadıysanız, [GitHub depomuzun](https://github.com/ethereum/ethereum-org-website) altındaki talimatları izleyin.
+
+Herhangi bir şey üzerinde çalışmak için izne ihtiyacınız yoktur, ancak ne yapmayı planladığınızı bize bildirmeniz her zaman en iyisidir. Bunu şu şekilde yapabilirsiniz:
+
+- [GitHub](https://github.com/ethereum/ethereum-org-website)'da bir soruna veya PR'a yorum yaparak
+- [Discord sunucumuzda](/discord/) mesajlaşarak
 
 Katkıda bulunmadan önce şunlara aşina olduğunuzdan emin olun:
 
-- gelişen [ethereum.org vizyonu](/about/)
-- [tasarım prensiplerimiz](/contributing/design-principles/)
+- [ethereum.org'un gelişen vizyonu](/about/)
+- [tasarım ilkelerimiz](/contributing/design-principles/)
 - [stil rehberimiz](/contributing/style-guide/)
 - [davranış kurallarımız](/community/code-of-conduct)
 
-## Siteyle ilgili kararlar nasıl alınır {#how-decisions-about-the-site-are-made}
+## Site hakkındaki kararlar nasıl alınır {#how-decisions-about-the-site-are-made}
 
-Bireysel PR'ler, tasarım evrimi ve büyük yükseltmeler hakkındaki kararlar, Ethereum ekosisteminden bir ekip tarafından verilir. Bu ekip; proje yöneticilerini, geliştiricileri, tasarımcıları, pazarlama ve iletişimleri ve konu uzmanlarını kapsar. Topluluk girdisi her kararı etkiler: Bu nedenle lütfen sorunlarla ilgili sorular sorun, PR gönderin veya ekiple iletişime geçin:
+Bireysel PR'lar, tasarım evrimi ve büyük yükseltmeler hakkındaki kararlar, Ethereum ekosisteminin dört bir yanından gelen bir ekip tarafından alınır. Bu ekipte proje yöneticileri, geliştiriciler, tasarımcılar, pazarlama ve iletişim uzmanları ile konu uzmanları yer alır. Topluluk girdisi her kararı şekillendirir: bu nedenle lütfen sorunlarda (issues) sorular sorun, PR'lar gönderin veya ekiple iletişime geçin:
 
 - [website@ethereum.org](mailto:website@ethereum.org)
 - [@ethdotorg](https://twitter.com/ethdotorg)
-- [Discord sunucusu](https://discord.gg/ethereum-org)
+- [Discord sunucusu](/discord/)
 
 ### İntihal üzerine bir not {#plagiarism}
 
-Yalnızca orijinal çalışmanızı veya kullanma izniniz olan içeriği, ethereum.org'a herhangi bir içerik veya yapı katkıda bulunurken kullanın. Ethereum ekosistemindeki birçok proje, bilginin ücretsiz paylaşımına izin veren açık kaynaklı lisanslama kullanır. Ancak bu bilgiyi bulamazsanız ethereum.org'a eklemeye çalışmayın. İntihal olarak kabul edilen herhangi bir çekme isteği reddedilecektir.
+ethereum.org'a herhangi bir içerik veya eser katkısında bulunurken yalnızca kendi orijinal çalışmanızı veya kullanma izniniz olan içeriği kullanın. Ethereum ekosistemindeki birçok proje, bilgilerin serbestçe paylaşılmasına izin veren açık kaynaklı lisanslama kullanır. Ancak, bu bilgiyi bulamıyorsanız, ethereum.org'a eklemeye çalışmayın. İntihal olarak değerlendirilen tüm çekme istekleri (pull requests) reddedilecektir.
 
-## Açık kaynak konusunda acemi misiniz? {#new-to-open-source}
+## Açık kaynağa yeni misiniz? {#new-to-open-source}
 
-GitHub depomuzda, özellikle açık kaynak konusunda acemi olan geliştiriciler için tasarlanmış [good first issue](https://github.com/ethereum/ethereum-org-website/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) etiketli, düşük giriş engellerine sahip sorunlarımız bulunuyor.
+GitHub depomuzda, açık kaynağa yeni başlayan geliştiriciler için özel olarak tasarlanmış, giriş engeli düşük ve [good first issue (iyi ilk sorun)](https://github.com/ethereum/ethereum-org-website/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) olarak etiketlenmiş sorunlarımız bulunmaktadır.
 
-## Katkıda bulunan bir kişi olarak POAP'nizi talep edin {#poap}
+## Zincir İçi Başarı Token'ınızı (OAT) Talep Edin {#oat}
 
-Katkınız ethereum.org ile birleştirilirse, sizin için benzersiz bir katkıda bulunan POAP'si basacağız. Proof of Attendance Protocol (POAP) tokeni, yani Katılım İspatı Protokolü, ekosistemi biraz daha harika hâle getirmeye yardımcı olduğunuzun zincir üstü kanıtıdır.
+Katkınız ethereum.org'da birleştirilirse, [Galxe](https://app.galxe.com/quest/ethereumorg) üzerinde özel bir rozet talep etme şansına sahip olacaksınız. Bir Zincir İçi Başarı Token'ı (OAT), ekosistemi biraz daha harika hale getirmeye yardımcı olduğunuzun bir kanıtıdır.
 
-[POAP'ler hakkında daha fazla bilgi](https://www.poap.xyz/)
+[OAT'ler hakkında daha fazlası](https://help.galxe.com/en/articles/9645630-create-quest-rewards#h_1c5d63ba03)
 
-### Nasıl talep edilir? {#how-to-claim}
+### Nasıl talep edilir {#how-to-claim}
 
-1. [Discord sunucumuza](https://discord.gg/ethereum-org) katılın.
-2. Katkınızın bağlantısını `#🥇 | proof-of-contribution` [kanalına](https://discord.com/channels/714888181740339261/1212737737916948530) yapıştırın.
-3. Ekibimizin bir üyesinin size POAP'nize bir bağlantı göndermesini bekleyin.
-4. POAP'nizi talep edin!
+1. [Discord sunucumuza](/discord/) katılın.
+2. Katkınızın bir bağlantısını `#🥇 | proof-of-contribution` kanalına yapıştırın.
+3. Ekibimizden bir üyenin size OAT'nizin bağlantısını göndermesini bekleyin.
+4. OAT'nizi talep edin!
 
-POAP'leri yalnızca, özel anahtarlarının sadece sizde bulunduğu cüzdanlar ile talep etmelisiniz. Özel anahtarlara sahip olmadığınız borsa hesapları veya diğer hesapları kullanmayın, çünkü bunlar POAP'lerinize erişmenize ve bunları yönetmenize izin vermez.
+OAT'leri talep etmek için yalnızca öz saklama cüzdanlarını kullanmalısınız. OAT'lerinize erişmenize ve bunları yönetmenize izin vermeyecekleri için borsa hesaplarını veya özel anahtarlarına sahip olmadığınız diğer hesapları kullanmayın.
+
+## GitPOAP'ınızı Talep Edin {#claim-gitpoap}
+
+GitPOAP ayrıca birleştirilmiş katkınızı otomatik olarak tanıyacak ve kendi platformlarında ayrı, benzersiz bir katkıda bulunanlar POAP'ı basmanıza izin verecektir!
+
+
+### Nasıl talep edilir {#how-to-claim-2}
+
+1. [GitPOAP](https://www.gitpoap.io)'ı ziyaret edin.
+2. Cüzdanınızla veya oturum açma seçeneği aracılığıyla e-postanızla bağlanın.
+3. Uygun olup olmadığınızı kontrol etmek için GitHub kullanıcı adınızı, ETH adresinizi, ENS adlarınızı veya herhangi bir GitPOAP'ı arayın.
+4. GitHub hesabınız uygunsa, bir GitPOAP basabileceksiniz!
 
 ## Katkıda Bulunanlar {#contributors}
 

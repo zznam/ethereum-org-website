@@ -1,8 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react"
-import { useRouter } from "next/router"
-import { Flex, type FlexProps, Grid } from "@chakra-ui/react"
+"use client"
+
+import { type ReactNode, useEffect, useMemo, useState } from "react"
+import { useSearchParams } from "next/navigation"
+import { useTranslations } from "next-intl"
 
 import { trackCustomEvent } from "@/lib/utils/matomo"
+
+import type { ModalProps } from "../ui/dialog-modal"
+import { Flex } from "../ui/flex"
 
 import { PATH_ID_QUERY_PARAM, SIMULATOR_ID } from "./constants"
 import { Explanation } from "./Explanation"
@@ -16,45 +21,54 @@ import { Phone } from "./Phone"
 import { SimulatorModal } from "./SimulatorModal"
 import { Template } from "./Template"
 import type { PathId, SimulatorData } from "./types"
-import { getValidPathId } from "./utils"
+import { getValidPathId, isValidPathId } from "./utils"
 
-type SimulatorProps = Pick<FlexProps, "children"> & {
+type SimulatorProps = {
+  children: ReactNode
   data: SimulatorData
 }
 export const Simulator = ({ children, data }: SimulatorProps) => {
-  const router = useRouter()
+  const t = useTranslations("component-wallet-simulator")
+  const searchParams = useSearchParams()
 
   // Track step
   const [step, setStep] = useState(0) // 0-indexed to use as array index
 
   // Track pathID
-  const pathId = getValidPathId(router.query.sim as string)
+  const pathIdString = searchParams?.get(PATH_ID_QUERY_PARAM)
+  const pathId = getValidPathId(pathIdString ?? null)
   const simulator: SimulatorDetails | null = pathId ? data[pathId] : null
   const totalSteps: number = simulator ? simulator.explanations.length : 0
 
   // If pathId present, modal is open, else closed
   const isOpen = !!pathId
 
+  // Shallow history updates only: router.replace() serves same-pathname navs
+  // from the client cache, which restores the URL it was created with -- on a
+  // direct load that URL includes ?sim=, making the modal impossible to close
   const clearUrlParams = () => {
-    const pathWithoutParams = router.asPath.replace(/\?[^\#]*/, "")
-    router.replace(pathWithoutParams)
+    window.history.replaceState(null, "", window.location.pathname)
   }
 
   // When simulator closed: log event, clear URL params and close modal
-  const onClose = (): void => {
-    trackCustomEvent({
-      eventCategory: "simulator",
-      eventAction: `${pathId}_click`,
-      eventName: `close-from-step-${step + 1}`,
-    })
-    // Clearing URL Params will reset pathId, and close modal
-    clearUrlParams()
+  const onClose: ModalProps["onOpenChange"] = (open) => {
+    if (!open) {
+      trackCustomEvent({
+        eventCategory: "simulator",
+        eventAction: `${pathId}_click`,
+        eventName: `close-from-step-${step + 1}`,
+      })
+      // Clearing URL Params will reset pathId, and close modal
+      clearUrlParams()
+    }
   }
 
   // Remove URL search param if invalid pathId
   useEffect(() => {
     setStep(0)
-    if (!pathId) clearUrlParams()
+    if (pathId && !isValidPathId(pathId)) {
+      clearUrlParams()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathId])
 
@@ -82,11 +96,11 @@ export const Simulator = ({ children, data }: SimulatorProps) => {
   }
 
   const openPath = (id: PathId): void => {
-    // Set new pathId in navigation
-    const params = new URLSearchParams()
-    params.set(PATH_ID_QUERY_PARAM, id)
-    const url = `?${params.toString()}#${SIMULATOR_ID}`
-    router.replace(url)
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}?${PATH_ID_QUERY_PARAM}=${id}`
+    )
   }
 
   // Navigation object passed to child components
@@ -111,11 +125,11 @@ export const Simulator = ({ children, data }: SimulatorProps) => {
     if (!nextPathId) return null
     const { title, Icon } = data[nextPathId]
     return {
-      primaryText: "Start next lesson",
+      primaryText: t("sim-start-next-lesson"),
       secondaryText: title,
       Icon,
     }
-  }, [data, simulator])
+  }, [data, simulator, t])
 
   const logFinalCta = (): void => {
     trackCustomEvent({
@@ -126,42 +140,20 @@ export const Simulator = ({ children, data }: SimulatorProps) => {
   }
 
   return (
-    <Grid
+    <div
       id={SIMULATOR_ID}
-      bg="cardGradient"
-      placeItems="center"
-      p={{ base: 4, md: 16 }}
-      w="full"
-      scrollMarginTop={{ base: "5rem" }}
-      scrollBehavior="smooth"
+      className="grid w-full scroll-mt-[5rem] place-items-center scroll-smooth bg-linear-primary p-4 md:p-16"
     >
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        bg="background.base"
-        px={{ base: 4, md: 16 }}
-        py={{ base: 8, md: 16 }}
-        alignItems="center"
-        textAlign={{ base: "center", md: "start" }}
-        gap={{ base: 16, md: 8, lg: 16 }}
-        maxW="1000px"
-        w="full"
-      >
+      <Flex className="w-full max-w-[1000px] items-center gap-16 bg-background px-4 py-8 text-center max-md:flex-col md:p-16 md:text-start md:max-lg:gap-8">
         {/* TEXT CONTENT */}
-        <Flex direction="column" px={4}>
-          {children}
-        </Flex>
+        <Flex className="flex-col px-4">{children}</Flex>
         {/* Button stack for path options */}
-        <Flex
-          direction="column"
-          gap={8}
-          w={{ base: "min(100%, 320px)", md: "300px" }}
-          minW={{ md: "300px" }}
-        >
+        <Flex className="w-[min(100%,_320px)] flex-col gap-8 md:w-[300px]">
           {Object.keys(data).map((id) => {
             const sim = data[id]
             const pathSummary = {
               primaryText: sim.title,
-              secondaryText: "How to?",
+              secondaryText: t("sim-how-to"),
               Icon: sim.Icon,
             }
             return (
@@ -181,7 +173,7 @@ export const Simulator = ({ children, data }: SimulatorProps) => {
           })}
         </Flex>
       </Flex>
-      <SimulatorModal isOpen={isOpen} onClose={onClose}>
+      <SimulatorModal open={isOpen} onOpenChange={onClose}>
         <Template>
           {explanation ? (
             <Explanation
@@ -201,7 +193,7 @@ export const Simulator = ({ children, data }: SimulatorProps) => {
               logFinalCta={logFinalCta}
             />
           ) : (
-            <Flex flex={1} minH={32} />
+            <Flex className="min-h-32 flex-1" />
           )}
           {Screen && (
             <Phone>
@@ -210,6 +202,6 @@ export const Simulator = ({ children, data }: SimulatorProps) => {
           )}
         </Template>
       </SimulatorModal>
-    </Grid>
+    </div>
   )
 }

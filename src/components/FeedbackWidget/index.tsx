@@ -1,26 +1,29 @@
-import { useTranslation } from "next-i18next"
+"use client"
+import { useContext } from "react"
+import { X } from "lucide-react"
+import { useTranslations } from "next-intl"
+
+import { Button } from "@/components/ui/buttons/Button"
+
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogCloseButton,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Box,
-  Button,
-} from "@chakra-ui/react"
+  Popover,
+  PopoverClose,
+  PopoverContent,
+  PopoverTrigger,
+} from "../ui/popover"
 
 import FixedDot from "./FixedDot"
 import { useFeedbackWidget } from "./useFeedbackWidget"
 
+import { FeedbackWidgetContext } from "@/contexts/FeedbackWidgetContext"
+
 const FeedbackWidget = () => {
-  const { t } = useTranslation("common")
+  const { showFeedbackWidget } = useContext(FeedbackWidgetContext)
+  const t = useTranslations("common")
   const {
-    bottomOffset,
+    offsetBottom,
     cancelRef,
     feedbackSubmitted,
-    getButtonProps,
     handleClose,
     handleOpen,
     handleSubmit,
@@ -28,107 +31,88 @@ const FeedbackWidget = () => {
     isExpanded,
     isOpen,
   } = useFeedbackWidget()
+
+  if (!showFeedbackWidget) return null
+
   return (
     <>
-      <FixedDot
-        {...getButtonProps()}
-        onClick={handleOpen}
-        bottomOffset={bottomOffset}
-        isExpanded={isExpanded}
-      />
-
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={handleClose}
-        isCentered
+      <Popover
+        onOpenChange={(open) => (open ? handleOpen : handleClose)()}
+        open={isOpen}
       >
-        <AlertDialogOverlay>
-          <AlertDialogContent
-            position="fixed"
-            maxW={1504}
-            m="auto"
-            alignItems="flex-end"
-            backgroundColor="transparent"
-            boxShadow="tableItemBox"
-            me={24}
-            bottom={{ base: `${bottomOffset + 5}rem`, lg: 20 }}
-          >
-            <Box
-              w="min(300px, calc(100% - 1rem))"
-              mx="2"
-              bgColor="ednBackground"
-              border="1px"
-              borderColor="background.base"
-              borderRadius="base"
-              py="4"
-              px="2"
-            >
-              <AlertDialogCloseButton />
+        <PopoverTrigger asChild>
+          <FixedDot
+            offsetBottom={offsetBottom}
+            isExpanded={isExpanded}
+            suppressScale={isOpen}
+          />
+        </PopoverTrigger>
 
-              <AlertDialogHeader
-                fontSize="xl"
-                fontWeight="bold"
-                lineHeight="6"
-                textAlign="center"
+        <PopoverContent
+          className="mx-2 w-80 max-w-[calc(100vw_-_1rem)] rounded-base bg-background p-4"
+          aria-labelledby="feedback-widget-title"
+          data-testid="feedback-widget-modal"
+        >
+          <div className="flex justify-end">
+            <PopoverClose asChild>
+              <Button
+                variant="ghost"
+                className="w-8 py-0 text-body [&>svg]:size-6"
+                size="sm"
+                aria-label={t("close")}
+                ref={cancelRef}
               >
-                {feedbackSubmitted
-                  ? t("feedback-widget-thank-you-title")
-                  : t("feedback-widget-prompt")}
-              </AlertDialogHeader>
+                <X />
+              </Button>
+            </PopoverClose>
+          </div>
 
-              {/* Body: */}
-              {feedbackSubmitted && (
-                <>
-                  <AlertDialogBody
-                    fontWeight="normal"
-                    fontSize="md"
-                    lineHeight="5"
-                    textAlign="center"
-                  >
-                    {t("feedback-widget-thank-you-subtitle")}
-                  </AlertDialogBody>
-                  <AlertDialogBody
-                    fontWeight="bold"
-                    fontSize="xs"
-                    lineHeight="4"
-                    letterSpacing="wide"
-                    color="searchBorder"
-                    textAlign="center"
-                  >
-                    {t("feedback-widget-thank-you-timing")}
-                  </AlertDialogBody>
-                </>
-              )}
+          <h2
+            id="feedback-widget-title"
+            className="text-center text-xl font-bold"
+          >
+            {feedbackSubmitted
+              ? t("feedback-widget-thank-you-title")
+              : t("feedback-widget-prompt")}
+          </h2>
 
-              <AlertDialogFooter display="flex" gap="6">
-                {feedbackSubmitted ? (
-                  <Button onClick={handleSurveyOpen} flex={1}>
-                    {t("feedback-widget-thank-you-cta")}
-                  </Button>
-                ) : (
-                  <>
-                    <Button
-                      variant="solid"
-                      onClick={() => handleSubmit(true)}
-                      flex={1}
-                    >
-                      {t("yes")}
-                    </Button>
-                    <Button
-                      variant="solid"
-                      onClick={() => handleSubmit(false)}
-                      flex={1}
-                    >
-                      {t("no")}
-                    </Button>
-                  </>
-                )}
-              </AlertDialogFooter>
-            </Box>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+          {feedbackSubmitted && (
+            <>
+              <p className="mt-space-half text-center text-md">
+                {t("feedback-widget-thank-you-subtitle")}
+              </p>
+              <p className="mt-space-half text-center text-xs text-body-medium">
+                {t("feedback-widget-thank-you-timing")}
+              </p>
+            </>
+          )}
+
+          <footer className="mt-8 flex gap-6">
+            {feedbackSubmitted ? (
+              <Button onClick={handleSurveyOpen} className="flex-1">
+                {t("feedback-widget-thank-you-cta")}
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="solid"
+                  onClick={() => handleSubmit(true)}
+                  className="flex-1"
+                >
+                  {t("yes")}
+                </Button>
+                <Button
+                  variant="solid"
+                  onClick={() => handleSubmit(false)}
+                  className="flex-1"
+                >
+                  {t("no")}
+                </Button>
+              </>
+            )}
+          </footer>
+        </PopoverContent>
+      </Popover>
     </>
   )
 }

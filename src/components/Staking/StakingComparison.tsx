@@ -1,25 +1,24 @@
-import { useTranslation } from "next-i18next"
-import { Box, Flex, Heading, useTheme } from "@chakra-ui/react"
+"use client"
+import { Cloud, Cpu, Droplets } from "lucide-react"
+import { useTranslations } from "next-intl"
+import type { JSX } from "react"
 
-import type { StakingPage, TranslationKey } from "@/lib/types"
+import type {
+  MatomoEventOptions,
+  StakingPage,
+  TranslationKey,
+} from "@/lib/types"
 
-import {
-  StakingGlyphCloudIcon,
-  StakingGlyphCPUIcon,
-  StakingGlyphTokenWalletIcon,
-} from "@/components/icons/staking"
-import InlineLink from "@/components/Link"
-import OldHeading from "@/components/OldHeading"
-import Text from "@/components/OldText"
+import { cn } from "@/lib/utils/cn"
 
-import { MatomoEventOptions, trackCustomEvent } from "@/lib/utils/matomo"
+import { ButtonLink } from "../ui/buttons/Button"
 
 interface DataType {
   title: TranslationKey
   linkText: TranslationKey
-  to: string
+  href: string
   matomo: MatomoEventOptions
-  color: string
+  glyphBgClassName: string
   glyph: JSX.Element
 }
 
@@ -29,47 +28,43 @@ export type StakingComparisonProps = {
 }
 
 const StakingComparison = ({ page, className }: StakingComparisonProps) => {
-  const theme = useTheme()
-  const { stakingGold, stakingGreen, stakingBlue } = theme.colors
-  const { t } = useTranslation("page-staking")
+  const t = useTranslations("page-staking")
 
   const solo: DataType = {
     title: "page-staking-dropdown-solo",
     linkText: "page-staking-learn-more-solo",
-    to: "/staking/solo/",
+    href: "/staking/solo/",
     matomo: {
       eventCategory: `StakingComparison`,
       eventAction: `Clicked`,
       eventName: "clicked solo staking",
     },
-    color: stakingGold,
-    glyph: <StakingGlyphCPUIcon color="stakingGold" boxSize="50px" />,
+    glyphBgClassName: "bg-staking-gold/20",
+    glyph: <Cpu className="size-12 shrink-0 text-staking-gold" />,
   }
   const saas: DataType = {
     title: "page-staking-saas-with-abbrev",
     linkText: "page-staking-learn-more-saas",
-    to: "/staking/saas/",
+    href: "/staking/saas/",
     matomo: {
       eventCategory: `StakingComparison`,
       eventAction: `Clicked`,
       eventName: "clicked staking as a service",
     },
-    color: stakingGreen,
-    glyph: <StakingGlyphCloudIcon color="stakingGreen" w="50px" h="28px" />,
+    glyphBgClassName: "bg-staking-green/20",
+    glyph: <Cloud className="size-12 shrink-0 text-staking-green" />,
   }
   const pools: DataType = {
-    title: "page-staking-dropdown-pools",
+    title: "page-staking-hierarchy-pools-h2",
     linkText: "page-staking-learn-more-pools",
-    to: "/staking/pools/",
+    href: "/staking/pools/",
     matomo: {
       eventCategory: `StakingComparison`,
       eventAction: `Clicked`,
       eventName: "clicked pooled staking",
     },
-    color: stakingBlue,
-    glyph: (
-      <StakingGlyphTokenWalletIcon color="stakingBlue" w="50px" h="39px" />
-    ),
+    glyphBgClassName: "bg-staking-blue/20",
+    glyph: <Droplets className="size-12 shrink-0 text-staking-blue" />,
   }
   const data: {
     [key in StakingPage]: (DataType & {
@@ -111,53 +106,42 @@ const StakingComparison = ({ page, className }: StakingComparisonProps) => {
   const selectedData = data[page]
 
   return (
-    <Flex
-      direction="column"
-      gap={8}
-      bg="linear-gradient(
-      83.46deg,
-      rgba(127, 127, 213, 0.2) 7.03%,
-      rgba(138, 168, 231, 0.2) 52.42%,
-      rgba(145, 234, 228, 0.2) 98.77%
-    )"
-      py={8}
-      px={{ base: 6, md: 8 }}
-      mt={16}
-      className={className}
+    <div
+      className={cn(
+        "mt-16 flex flex-col gap-10 rounded-base bg-background-highlight p-6 md:p-8",
+        className
+      )}
     >
-      <OldHeading fontSize="2rem">Comparison with other options</OldHeading>
+      {/* The section heading lives in the markdown page, not here */}
       {selectedData.map(
-        ({ title, linkText, to, color, content, glyph, matomo }, idx) => (
-          <Flex gap={6} direction={{ base: "column", md: "row" }} key={idx}>
-            {!!glyph && (
-              <Flex
-                direction="column"
-                justify="flex-start"
-                align="center"
-                w={12}
-                maxH={12}
+        (
+          { title, linkText, href, glyphBgClassName, content, glyph, matomo },
+          idx
+        ) => (
+          <div className="flex flex-col gap-4" key={idx}>
+            <div className="flex items-center gap-4">
+              <div
+                className={cn(
+                  "flex size-20 shrink-0 items-center justify-center rounded-full",
+                  glyphBgClassName
+                )}
               >
                 {glyph}
-              </Flex>
-            )}
-            <Box>
-              <Heading as="h3" fontSize="2xl" color={color} mb={2}>
-                {t(title)}
-              </Heading>
-              <Text>{t(content)}</Text>
-              <InlineLink
-                onClick={() => {
-                  trackCustomEvent(matomo)
-                }}
-                to={to}
-              >
-                {t(linkText)}
-              </InlineLink>
-            </Box>
-          </Flex>
+              </div>
+              <h3>{t(title)}</h3>
+            </div>
+            <p>{t(content)}</p>
+            <ButtonLink
+              href={href}
+              className="w-fit"
+              customEventOptions={matomo}
+            >
+              {t(linkText)}
+            </ButtonLink>
+          </div>
         )
       )}
-    </Flex>
+    </div>
   )
 }
 

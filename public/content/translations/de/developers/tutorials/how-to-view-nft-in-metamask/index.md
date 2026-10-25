@@ -1,38 +1,42 @@
 ---
-title: So zeigen Sie Ihren NFT in Ihrem Wallet an (Teil 3/3 der NFT-Tutorialreihe)
-description: In diesem Tutorial wird beschrieben, wie Sie einen existierenden NFT auf MetaMask einsehen können.
+title: So zeigen Sie Ihr NFT in Ihrer Wallet an (Teil 3/3 der NFT-Tutorial-Reihe)
+description: "Dieses Tutorial beschreibt, wie Sie ein bestehendes NFT in MetaMask anzeigen können!"
 author: "Sumi Mudgil"
-tags:
-  - "NFTs"
-  - "ERC-721"
-  - "Alchemy"
-  - "Non Fungible Token"
-  - "Solidity"
+tags: ["ERC-721", "Alchemy", "Solidity"]
 skill: beginner
+breadcrumb: NFT in Wallet anzeigen
 lang: de
 published: 2021-04-22
 ---
 
-Dieses Tutorial ist Teil 3/3 der NFT-Tutorialreihe, in dem wir unseren neu geprägten NFT betrachten. Die allgemeine Anleitung ist für alle ERC-721-Token auf MetaMask anwendbar, auch im Mainnet oder einem Testnet. Wenn Sie lernen möchten, wie Sie Ihren eigenen NFT auf Ethereum prägen können, sollten Sie sich [Teil 1 zum Schreiben und Bereitstellen eines NFT-Smart-Contracts](/developers/tutorials/how-to-write-and-deploy-an-nft) ansehen.
+Dieses Tutorial ist Teil 3/3 der NFT-Tutorial-Reihe, in dem wir unseren neu geprägten NFT ansehen. Sie können das allgemeine Tutorial jedoch für jeden ERC-721-Token verwenden, der MetaMask nutzt, einschließlich im Mainnet oder in jedem Testnetz. Wenn Sie lernen möchten, wie Sie Ihren eigenen NFT auf Ethereum prägen, sollten Sie sich [Teil 1: Wie man einen NFT-Smart-Contract schreibt und bereitstellt](/developers/tutorials/how-to-write-and-deploy-an-nft) ansehen!
 
-Herzlichen Glückwunsch! Sie haben es zum kürzesten und einfachsten Teil unserer NFT-Tutorialreihe geschafft. In diesem Teil erfahren Sie, wie Sie Ihren frisch geprägten NFT in einer virtuellen Geldbörse (Wallet) anzeigen können. Für dieses Beispiel verwenden wir MetaMask, da wir es bereits in den beiden vorangegangenen Teilen verwendet haben.
+Herzlichen Glückwunsch! Sie haben es zum kürzesten und einfachsten Teil unserer NFT-Tutorial-Reihe geschafft – wie Sie Ihren frisch geprägten NFT in einer virtuellen Wallet anzeigen. Wir werden für dieses Beispiel MetaMask verwenden, da wir dies auch in den vorherigen zwei Teilen verwendet haben.
 
-Als Voraussetzung sollten Sie MetaMask bereits auf ihrem Handy oder in Ihrem Browser installiert haben und es sollte das Konto enthalten, für die Sie Ihre NFTs geprägt haben. Die App können Sie kostenlos auf [iOS](https://apps.apple.com/us/app/metamask-blockchain-wallet/id1438144202) oder [Android](https://play.google.com/store/apps/details?id=io.metamask&hl=de_US&gl=US) erhalten.
+Als Voraussetzung sollten Sie MetaMask bereits installiert haben, entweder als Browser-Erweiterung oder als mobile App, und es sollte das Konto enthalten, auf das Sie Ihren NFT geprägt haben. Sie können MetaMask kostenlos von der [MetaMask-Downloadseite](https://metamask.io/download) herunterladen.
 
-## Schritt 1: Das Netzwerk auf Ropsten festlegen {#set-network-to-ropsten}
+## Schritt 1: Stellen Sie Ihr Netzwerk auf Sepolia ein {#set-network-to-sepolia}
 
-Drücken Sie oben in der App auf die Schaltfläche "Wallet". Daraufhin werden Sie aufgefordert, ein Netzwerk auszuwählen. Da unser NFT im Ropsten-Netzwerk geprägt wurde, sollten Sie als Netzwerk Ropsten auswählen.
+Da unser NFT im Sepolia-Testnetz geprägt wurde, sollten Sie Sepolia als Ihr Netzwerk auswählen. MetaMask verbirgt Testnetze standardmäßig, also schalten Sie diese zuerst ein:
 
-![So legen Sie Ropsten als Netzwerk auf MetaMask fest](./goerliMetamask.gif)
+1. Öffnen Sie das Menü in der oberen rechten Ecke und wählen Sie „Netzwerke“.
+2. Scrollen Sie in der Netzwerkliste nach unten und aktivieren Sie „Testnetzwerke anzeigen“.
+3. Wählen Sie „Sepolia“ aus der Netzwerkliste.
 
-## Schritt 2: Kollektion zu MetaMask hinzufügen {#add-nft-to-metamask}
+Sehen Sie sich den [Leitfaden von MetaMask zur Anzeige von Testnetzen](https://support.metamask.io/configure/networks/how-to-view-testnets-in-metamask/) an, falls die Menüs in Ihrer Version von MetaMask anders aussehen.
 
-Sobald Sie sich im Ropsten-Netzwerk befinden, wählen Sie die Registerkarte "Collectibles" (Sammelbare Elemente) auf der rechten Seite und fügen Sie die NFT-Smart-Contract-Adresse und die ERC-721-Token-ID Ihres NFT hinzu. Sie können sie anhand des Transaktions-Hashes Ihres NFT, der im zweiten Teil unseres Tutorials bereitgestellt wurde, auf Etherscan finden.
+## Schritt 2: Fügen Sie Ihr Sammlerstück zu MetaMask hinzu {#add-nft-to-metamask}
 
-![So finden Sie Ihren Transaktions-Hash und die ERC-721-Token-ID](./findNFTEtherscan.png)
+MetaMask erkennt NFTs nur in einigen Netzwerken automatisch, zu denen Sepolia nicht gehört. Daher müssen Sie Ihren NFT manuell importieren. Dafür benötigen Sie die NFT-Smart-Contract-Adresse und die ERC-721-Token-ID Ihres NFTs – diese sollten Sie auf Etherscan anhand des Transaktions-Hashs Ihres in Teil II unseres Tutorials geprägten NFTs finden können. Wenn Sie den Vertrag aus Teil 1 verwendet haben, hat Ihr erster NFT die Token-ID 1.
 
-Möglicherweise müssen Sie die Seite ein paar Mal aktualisieren, bis Sie den NFT sehen können. Aber keine Sorge, er wird da sein<Emoji text="😄" size={1} />.
+![So finden Sie Ihren Transaktions-Hash und Ihre ERC-721-Token-ID](./findNFTEtherscan.png)
 
-![So laden Sie Ihren NFT in MetaMask hoch](./findNFTMetamask.gif)
+Dann in MetaMask (Erweiterung oder mobil):
 
-Glückwunsch! Sie haben erfolgreich einen NFT gepräft und können ihn jetzt sehen. Wir können es kaum erwarten zu sehen, wie Sie die NFT-Welt im Sturm erobern werden!
+1. Gehen Sie auf dem Startbildschirm zum Abschnitt „NFTs“ und wählen Sie „NFT importieren“.
+2. Wählen Sie Sepolia als Netzwerk aus und fügen Sie Ihre NFT-Smart-Contract-Adresse in das Feld „Adresse“ ein.
+3. Geben Sie Ihre Token-ID in das Feld „Token-ID“ ein und wählen Sie „Importieren“.
+
+Möglicherweise müssen Sie ein paar Mal aktualisieren, um Ihren NFT zu sehen – aber er wird da sein <Emoji text="😄" size={1} />! Wenn MetaMask meldet, dass Sie nicht der Eigentümer des NFTs sind, überprüfen Sie, ob Sie das Konto ausgewählt haben, auf das Sie den NFT geprägt haben. Weitere Hilfe finden Sie im [Leitfaden von MetaMask zu NFTs](https://support.metamask.io/manage-crypto/nfts/nft-tokens-in-your-metamask-wallet/).
+
+Herzlichen Glückwunsch! Sie haben erfolgreich einen NFT geprägt und können ihn nun ansehen! Wir können es kaum erwarten zu sehen, wie Sie die NFT-Welt im Sturm erobern werden!

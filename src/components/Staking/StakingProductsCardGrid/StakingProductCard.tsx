@@ -1,26 +1,26 @@
-import { useTranslation } from "next-i18next"
+import { getTranslations } from "next-intl/server"
 import type { ComponentType, ReactNode, SVGProps } from "react"
-import {
-  Badge,
-  Box,
-  BoxProps,
-  Center,
-  Flex,
-  Heading,
-  HStack,
-  Icon,
-  List,
-  ListIcon,
-  ListItem,
-} from "@chakra-ui/react"
 
-import { ButtonLink } from "@/components/Buttons"
 import {
-  CautionProductGlyphIcon,
-  GreenCheckProductGlyphIcon,
-  UnknownProductGlyphIcon,
-  WarningProductGlyphIcon,
+  CautionProductGlyph,
+  GreenCheckProductGlyph,
+  UnknownProductGlyph,
+  WarningProductGlyph,
 } from "@/components/icons/staking"
+import SocialListItem from "@/components/SocialListItem"
+import { ButtonLink } from "@/components/ui/buttons/Button"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardParagraph,
+  CardTitle,
+} from "@/components/ui/card"
+import { ListItem, UnorderedList } from "@/components/ui/list"
+import { Tag } from "@/components/ui/tag"
+
+import { cn } from "@/lib/utils/cn"
 
 import { FlagType, Product } from "./types"
 
@@ -29,6 +29,7 @@ const getIconFromName = (
 ): ComponentType<SVGProps<SVGElement>> => {
   const {
     [imageName + "GlyphIcon"]: Icon,
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
   } = require("@/components/icons/staking")
   return Icon
 }
@@ -36,17 +37,17 @@ const getIconFromName = (
 const Status = ({ status }: { status: FlagType | undefined }) => {
   if (!status) return null
 
-  const styles = { fontSize: "2xl", m: 0 }
+  const styles = "me-2 size-5"
   switch (status) {
     case "green-check":
-      return <ListIcon as={GreenCheckProductGlyphIcon} {...styles} />
+      return <GreenCheckProductGlyph className={styles} />
     case "caution":
-      return <ListIcon as={CautionProductGlyphIcon} {...styles} />
+      return <CautionProductGlyph className={styles} />
     case "warning":
     case "false":
-      return <ListIcon as={WarningProductGlyphIcon} {...styles} />
+      return <WarningProductGlyph className={styles} />
     default:
-      return <ListIcon as={UnknownProductGlyphIcon} {...styles} />
+      return <UnknownProductGlyph className={styles} />
   }
 }
 
@@ -56,30 +57,31 @@ const StakingBadge = ({
 }: {
   type: "ui" | "platform"
   children: ReactNode
-}) => {
-  const uiTypeColor = type === "ui" && "stakingPillUI"
-  const platformTypeColor = type === "platform" && "stakingPillPlatform"
+}) => (
+  <Tag variant="solid" status={type === "ui" ? "success" : "tag"} size="small">
+    {children}
+  </Tag>
+)
 
-  return (
-    <Badge
-      size="lg"
-      background={uiTypeColor || platformTypeColor || undefined}
-      textTransform="initial"
-    >
-      {children}
-    </Badge>
-  )
-}
+const SOCIAL_PLATFORMS = [
+  "twitter",
+  "reddit",
+  "youtube",
+  "discord",
+  "stackExchange",
+  "webpage",
+] as const
+
+type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number]
 
 type StakingProductCardProps = {
   product: Product
 }
 
-export const StakingProductCard = ({
+export const StakingProductCard = async ({
   product: {
     name,
     imageName,
-    color,
     url,
     platforms,
     ui,
@@ -97,38 +99,34 @@ export const StakingProductCard = ({
     consensusDiversity,
     executionDiversity,
     economical,
+    socials,
     matomo,
   },
 }: StakingProductCardProps) => {
-  const PADDED_DIV_STYLE: BoxProps = {
-    px: 8,
-    py: 6,
-  }
+  const t = await getTranslations("page-staking")
+  const tCommon = await getTranslations("common")
 
-  const { t } = useTranslation("page-staking")
+  const validSocials = socials
+    ? (Object.entries(socials).filter(
+        ([platform, url]) =>
+          !!url && SOCIAL_PLATFORMS.includes(platform as SocialPlatform)
+      ) as [SocialPlatform, string][])
+    : []
+
   const Svg = getIconFromName(imageName)
-  type DataType = { label: string; status?: FlagType }
-  const data: DataType[] = [
+
+  const data: { label: string; status?: FlagType }[] = [
     {
       label: t("page-staking-considerations-solo-1-title"),
       status: openSource,
     },
-    {
-      label: t("page-staking-considerations-solo-2-title"),
-      status: audited,
-    },
-    {
-      label: t("page-staking-considerations-solo-3-title"),
-      status: bugBounty,
-    },
+    { label: t("page-staking-considerations-solo-2-title"), status: audited },
+    { label: t("page-staking-considerations-solo-3-title"), status: bugBounty },
     {
       label: t("page-staking-considerations-solo-4-title"),
       status: battleTested,
     },
-    {
-      label: t("page-staking-considerations-solo-5-title"),
-      status: trustless,
-    },
+    { label: t("page-staking-considerations-solo-5-title"), status: trustless },
     {
       label: t("page-staking-considerations-solo-6-title"),
       status: permissionless,
@@ -164,84 +162,82 @@ export const StakingProductCard = ({
   ].filter(({ status }) => !!status)
 
   return (
-    <Flex
-      direction="column"
-      background="offBackground"
-      borderRadius="base"
-      _hover={{
-        transition: "0.1s",
-        transform: "scale(1.01)",
-      }}
-    >
-      <HStack
-        {...PADDED_DIV_STYLE}
-        spacing={6}
-        background={color}
-        bgGradient="linear(0deg, rgba(0, 0, 0, 30%), rgba(0, 0, 0, 0))"
-        borderRadius="base"
-        maxH={24}
-      >
-        {!!Svg && <Icon as={Svg} fontSize="2rem" color="white" />}
-        <Heading as="h4" fontSize="2xl" color="white">
-          {name}
-        </Heading>
-      </HStack>
-      {typeof minEth !== "undefined" && (
-        <Center
-          fontWeight={700}
-          fontSize="base"
-          color="textTableOfContents"
-          textTransform="uppercase"
-          pt={6}
-        >
-          {minEth > 0 ? `From ${minEth} ETH` : "Any amount"}
-        </Center>
-      )}
-      <Flex
-        {...PADDED_DIV_STYLE}
-        flexWrap="wrap"
-        gap={1}
-        flex={1}
-        alignItems="flex-start"
-      >
-        {platforms.map((platform, idx) => (
-          <StakingBadge type="platform" key={idx}>
-            {platform}
-          </StakingBadge>
-        ))}
-        {ui.map((_ui, idx) => (
-          <StakingBadge type="ui" key={idx}>
-            {_ui}
-          </StakingBadge>
-        ))}
-      </Flex>
-      <Box {...PADDED_DIV_STYLE} py={0}>
-        <List m={0} gap={3}>
+    <Card hoverLift>
+      <CardHeader className="space-y-4">
+        <div className="flex gap-3">
+          {!!Svg && <Svg className="size-12 shrink-0" />}
+          <div className="flex min-w-0 flex-col justify-center">
+            <CardTitle size="sm" asChild>
+              <h4>{name}</h4>
+            </CardTitle>
+            {typeof minEth !== "undefined" && (
+              <CardParagraph size="sm">
+                {minEth > 0 ? (
+                  <>
+                    {tCommon("from")} <span dir="ltr">{minEth} ETH</span>
+                  </>
+                ) : (
+                  t("page-staking-any-amount")
+                )}
+              </CardParagraph>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-wrap items-start gap-1">
+          {platforms.map((platform, idx) => (
+            <StakingBadge type="platform" key={idx}>
+              {platform}
+            </StakingBadge>
+          ))}
+          {ui.map((_ui, idx) => (
+            <StakingBadge type="ui" key={idx}>
+              {_ui}
+            </StakingBadge>
+          ))}
+        </div>
+      </CardHeader>
+      <CardContent>
+        <UnorderedList className="m-0 list-none ps-0">
           {data.map(({ label, status }, idx) => (
             <ListItem
-              as={Flex}
               key={idx}
-              textTransform="uppercase"
-              fontSize="xs"
-              lineHeight="0.875rem"
-              letterSpacing="wider"
-              my="4"
-              ms="auto"
-              me={0}
-              gap="1em"
-              alignItems="center"
+              className={cn(
+                "flex items-center gap-1 text-base/none",
+                status !== "false" && "text-body!"
+              )}
             >
               <Status status={status} />
               {label}
             </ListItem>
           ))}
-        </List>
-      </Box>
-      <Box {...PADDED_DIV_STYLE}>
-        <ButtonLink href={url} customEventOptions={matomo} width="100%">
+        </UnorderedList>
+      </CardContent>
+      <CardFooter>
+        {validSocials.length > 0 && (
+          <div className="flex w-full items-center justify-center">
+            <CardParagraph className="me-2 text-body-medium">
+              {t("page-staking-products-follow")}
+            </CardParagraph>
+            {validSocials.map(([platform, socialUrl], idx) => (
+              <ButtonLink
+                key={idx}
+                href={socialUrl}
+                variant="ghost"
+                className="p-2!"
+                hideArrow
+              >
+                <SocialListItem
+                  className="p-0 **:[svg]:size-6 **:[svg]:p-0 **:[svg]:text-body hover:**:[svg]:text-primary-hover"
+                  socialIcon={platform as SocialPlatform}
+                />
+              </ButtonLink>
+            ))}
+          </div>
+        )}
+        <ButtonLink href={url} customEventOptions={matomo}>
           {t("page-staking-products-get-started")}
         </ButtonLink>
-      </Box>
-    </Flex>
+      </CardFooter>
+    </Card>
   )
 }

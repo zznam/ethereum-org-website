@@ -1,15 +1,15 @@
-import type { RefObject } from "react"
-import type { IconType } from "react-icons"
-import type { IconProps } from "@chakra-ui/react"
+import type { LucideIcon } from "lucide-react"
+import type { FC, RefObject, SVGProps } from "react"
 
 type LinkOnly = { href: string; items?: never }
 type ItemsOnly = { items: NavItem[]; href?: never }
 type LinkXorItems = LinkOnly | ItemsOnly
 
 export type NavItem = {
+  id?: string
   label: string
   description: string
-  icon?: IconType | ((props: IconProps) => JSX.Element)
+  icon?: LucideIcon | FC<SVGProps<SVGElement>>
 } & LinkXorItems
 
 export type NavSectionKey =
@@ -18,6 +18,7 @@ export type NavSectionKey =
   | "build"
   | "participate"
   | "research"
+  | "organizations"
 
 export type NavSectionDetail = {
   label: string
@@ -31,5 +32,5 @@ export type Level = 1 | 2 | 3 | 4
 
 export type LvlRefs = Record<
   "lvl1" | "lvl2" | "lvl3",
-  RefObject<HTMLDivElement>
+  RefObject<HTMLDivElement | null>
 >

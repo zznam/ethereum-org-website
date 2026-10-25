@@ -1,16 +1,14 @@
-import { Box, Flex, List, ListItem, useToken, VStack } from "@chakra-ui/react"
+"use client"
 
 import type { StakingPage } from "@/lib/types"
 
-import ButtonDropdown from "@/components/ButtonDropdown"
 import {
-  CautionProductGlyphIcon,
-  GreenCheckProductGlyphIcon,
-  WarningProductGlyphIcon,
+  CautionProductGlyph,
+  GreenCheckProductGlyph,
+  WarningProductGlyph,
 } from "@/components/icons/staking"
-import OldHeading from "@/components/OldHeading"
-import Text from "@/components/OldText"
-import Translation from "@/components/Translation"
+import { Flex } from "@/components/ui/flex"
+import TabNav from "@/components/ui/TabNav"
 
 import { trackCustomEvent } from "@/lib/utils/matomo"
 
@@ -27,22 +25,21 @@ const IndicatorGroup = ({
 }) => {
   const IndicatorIcon = ({ style }) => {
     if (indicatorType === "valid") {
-      return <GreenCheckProductGlyphIcon style={style} />
+      return <GreenCheckProductGlyph style={style} />
     }
 
     if (indicatorType === "caution") {
-      return <CautionProductGlyphIcon style={style} />
+      return <CautionProductGlyph style={style} />
     }
 
-    return <WarningProductGlyphIcon style={style} />
+    return <WarningProductGlyph style={style} />
   }
   return (
-    <VStack spacing={2} flex={1}>
+    <Flex className="items-center gap-2">
       <IndicatorIcon style={styleObj} />
-      <Text fontSize="xs" textAlign="center" maxW="{40}">
-        <Translation id={label} />
-      </Text>
-    </VStack>
+      {/* `label` arrives already translated from the hook */}
+      <p>{label}</p>
+    </Flex>
   )
 }
 
@@ -51,14 +48,9 @@ export type StakingConsiderationsProps = {
 }
 
 const StakingConsiderations = ({ page }: StakingConsiderationsProps) => {
-  // TODO: Replace with direct token implementation after UI migration is completed
-  const mdBp = useToken("breakpoints", "md")
-
   const {
-    StyledSvg,
     caution,
     description,
-    dropdownLinks,
     handleSelection,
     indicatorSvgStyle,
     title,
@@ -68,66 +60,39 @@ const StakingConsiderations = ({ page }: StakingConsiderationsProps) => {
     activeIndex,
   } = useStakingConsiderations({ page })
 
-  const activeStyles = {
-    bg: "background.highlight",
-    color: "body.base",
-    transition: "background 0.5s, color 0.5s"
-  }
-
   return (
-    <Flex flexDir={{ base: "column", md: "row" }}>
-      <ButtonDropdown list={dropdownLinks} hideFrom={mdBp} />
-      {/* TODO: Improve a11y */}
-      <Box flex={1} hideBelow={mdBp}>
-        {!!pageData && (
-          <List m={0}>
-            {/* TODO: Make mobile responsive */}
-            {pageData.map(({ title, matomo }, idx) => (
-              <ListItem
-                key={idx}
-                onClick={(e) => {
-                  handleSelection(idx)
-                  trackCustomEvent(matomo)
-                }}
-                py={1}
-                cursor="pointer"
-                display="table"
-                w="full"
-                h={8}
-                p="3"
-                mb="0"
-                _hover={activeStyles}
-                position="relative"
-                {...(idx === activeIndex
-                  ? activeStyles
-                  : { color: "primary.base" })}
-              >
-                {title}
-              </ListItem>
-            ))}
-          </List>
-        )}
-      </Box>
-      <Flex
-        alignItems="center"
-        flexDir="column"
-        bg="background.highlight"
-        flex={2}
-        minH="410px"
-        p={6}
-      >
-        <StyledSvg />
-        <OldHeading
-          as="h3"
-          fontWeight={700}
-          fontSize="27px"
-          lineHeight={1.4}
-          mt={10}
+    // `contain-inline-size` stops TabNav's scrollable row from leaking its full
+    // width out as an intrinsic minimum, which would otherwise stop the article
+    // shrinking and push the ToC aside off-screen just above the lg breakpoint.
+    <div className="flex flex-col gap-6 contain-inline-size">
+      <TabNav
+        className="justify-start"
+        sections={pageData.map(({ title, Svg }, idx) => ({
+          key: String(idx),
+          label: title,
+          // Attribute icons stay primary-colored whether or not the tab is active.
+          // `size-6` overrides the 1em width/height the glyphs carry, which TabNav's
+          // `[&_svg]:text-sm` would otherwise render at 14px.
+          icon: <Svg className="size-6 text-primary" />,
+        }))}
+        activeSection={String(activeIndex)}
+        onSelect={(key) => {
+          const idx = Number(key)
+          handleSelection(idx)
+          trackCustomEvent(pageData[idx].matomo)
+        }}
+      />
+      {/* min-h keeps the panel from jumping as descriptions change length between
+          tabs; taller on mobile where the text wraps more */}
+      <div className="flow flex min-h-72 flex-col rounded-4xl bg-background-highlight p-6 md:min-h-64">
+        <h3 className="text-2xl font-bold">{title}</h3>
+        <p className="text-lg">{description}</p>
+        {/* `mt-auto` pins the legend to the panel bottom so it holds position across
+            tabs; `pt-space-2x` keeps the flow gap once the text fills the panel */}
+        <Flex
+          data-flow="cta"
+          className="mt-auto flex-wrap gap-x-8 gap-y-2 pt-space-2x"
         >
-          {title}
-        </OldHeading>
-        <Text>{description}</Text>
-        <Flex gap={8} justifyContent="center" mt="auto">
           {!!valid && (
             <IndicatorGroup
               label={valid}
@@ -146,8 +111,8 @@ const StakingConsiderations = ({ page }: StakingConsiderationsProps) => {
             <IndicatorGroup label={warning} styleObj={indicatorSvgStyle} />
           )}
         </Flex>
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   )
 }
 

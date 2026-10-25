@@ -1,45 +1,34 @@
 ---
-title: Dokumentacja dotycząca rozwoju Ethereum
-description: Wprowadzenie dokumentacji dla deweloperów Ethereum.
+title: "Dokumentacja dla deweloperów Ethereum"
+description: "Wprowadzenie do dokumentacji dla deweloperów na ethereum.org."
 lang: pl
 ---
 
-Ta dokumentacja jest zaprojektowana tak, aby pomóc Ci budować z Ethereum. Obejmuje ona Ethereum jako koncepcję, wyjaśnia stoso technologii Ethereum, a także porusza zaawansowane tematy dotyczące bardziej złożonych zastosowań i przypadków.
+Ta dokumentacja została stworzona, aby pomóc Ci w budowaniu z wykorzystaniem [Ethereum](/). Obejmuje ona Ethereum jako koncepcję, wyjaśnia stos technologiczny Ethereum oraz dokumentuje zaawansowane tematy dla bardziej złożonych aplikacji i przypadków użycia.
 
-To jest przedsięwzięcie społeczności open-source, więc nie krępuj się sugerować nowych tematów, dodawać nowych treści i dostarczać przykładów wszędzie tam, gdzie uważasz, że może to być pomocne. Cała dokumentacja jest edytowalna przez GitHub — jeśli nie wiesz, jak [postępuj zgodnie z tymi instrukcjami](https://github.com/ethereum/ethereum-org-website/blob/dev/README.md).
+Wszystko tutaj jest open-source i utrzymywane przez społeczność, więc jeśli jakaś strona jest nieaktualna lub brakuje na niej czegoś przydatnego, otwórz zgłoszenie (issue) lub pull request. [Przewodnik edycji](https://github.com/ethereum/ethereum-org-website/blob/dev/docs/editing-markdown.md) wyjaśnia, jak to zrobić.
 
-## Moduły rozwojowe {#development-modules}
+## Wybierz punkt startowy {#pick-a-starting-point}
 
-Jeśli jest to Twoja pierwsza próba rozwoju Ethereum, zalecamy zacząć od początku i przebrnąć przez to jak przez książkę.
+Czytelnicy przychodzą z różnymi celami, a najszybsza ścieżka przez tę dokumentację zależy od tego, co chcesz zbudować. Kilka typowych punktów wejścia:
 
-### Podstawowe tematy {#fundamental-topics}
+- **Budowanie zdecentralizowanej aplikacji (dapp), która komunikuje się z Ethereum.** Zacznij od [technicznego wprowadzenia](/developers/docs/intro-to-ethereum/), a następnie zapoznaj się z [kontami](/developers/docs/accounts/) i [transakcjami](/developers/docs/transactions/). Wybierz [framework](/developers/docs/frameworks/), gdy będziesz gotowy do pisania kodu.
+- **Pisanie inteligentnego kontraktu.** Przejrzyj [wprowadzenie](/developers/docs/intro-to-ethereum/), jeśli koncepcje EVM są dla Ciebie nowe, a następnie przejdź do [inteligentnych kontraktów](/developers/docs/smart-contracts/) i [języka programowania](/developers/docs/programming-languages/).
+- **Uruchamianie węzła lub staking.** Przejdź do [węzłów i klientów](/developers/docs/nodes-and-clients/), a następnie do [sieci](/developers/docs/networking-layer/) i [mechanizmów konsensusu](/developers/docs/consensus-mechanisms/).
+- **Zrozumienie protokołu od podstaw.** Poniższe moduły są uporządkowane w tym celu. Przeczytaj je po kolei.
 
-- [Wprowadzenie do Ethereum](/developers/docs/intro-to-ethereum/) _– szybki przegląd Ethereum_
-- [Web2 vs Web3](/developers/docs/web2-vs-web3/) <em x-id="4">– podstawowe różnice wynikające ze stosowania aplikacji opartych na blockchainie</em>
-- [Wprowadzenie do dapps](/developers/docs/dapps/) <em x-id="4">– wprowadzenie do zdecentralizowanych aplikacji</em>
-- [Maszyna wirtualna Ethereum (EVM)](/developers/docs/evm/) _– EVM obsługuje wszystkie obliczenia w sieci Ethereum_
-- [Bloki](/developers/docs/blocks/) _– sposób, w jaki transakcje są grupowane w celu zapewnienia synchronizacji stanu wszystkich uczestników_
-- [Konta](/developers/docs/accounts/) _– podmioty w sieci, które mogą posiadać saldo i wysyłać transakcje_
-- [Transakcje](/developers/docs/transactions/) _– transakcje i inne akcje, które powodują zmianę stanu Ethereum_
-- [Eksploartor bloków](/developers/docs/data-and-analytics/block-explorers/) _– sSposób odczytu danych dotyczących transakcji, kont, bloków i sieci_
-- <a href="/developers/docs/gas/">Gaz</a> <em x-id="4">– moc obliczeniowa wymagana do przetwarzania transakcji, opłacona w ETH przez nadawców transakcji</em>
-- [Wydobycie](/developers/docs/consensus-mechanisms/pow/mining/) _– sposób przetwarzania transakcji i tworzenia bloków_
-- [Sieci](/developers/docs/networks/) _– implementacje Ethereum, w tym sieci testowe_
-- <a href="/developers/docs/nodes-and-clients/">Węzły i klienci</a> _– osoby uczestniczące w sieci i oprogramowanie, które uruchamiają w celu weryfikacji transakcji_
+## Moduły deweloperskie {#development-modules}
 
-### Stos Ethereum {#the-ethereum-stack}
+Jeśli to Twoje pierwsze podejście do programowania na Ethereum, zalecamy rozpoczęcie od początku i przechodzenie przez materiał jak przez książkę.
 
-- [Wprowadzenie do stosu](/developers/docs/ethereum-stack/) <em x-id="4">– przegląd stosu Ethereum/web3</em>
-- [Kontrakty inteligentne](/developers/docs/smart-contracts/) _– programy, które są zlokalizowane pod adresem Ethereum i uruchamiają funkcje, gdy są wyzwalane przez transakcje_
-- [Języki programowania](/developers/docs/programming-languages/) _– jak zacząć z Ethereum, używając języków, które już znasz,_
-- [Biblioteki klienta JavaScript](/developers/docs/apis/javascript/) _– wygodne biblioteki, które pozwalają aplikacji internetowej na interakcję z Ethereum i inteligentnymi kontraktami_
-- [Ochrona](/developers/docs/smart-contracts/security/)
-- [Pamięć](/developers/docs/storage/)
-- [Frameworki programistyczne](/developers/docs/frameworks/) _– narzędzia ułatwiające programowanie w Ethereum_
-- [Środowiska programistyczne](/developers/docs/ides/) _– najlepsze środowiska do pisania kodu aplikacji zdecentralizowanych_
+### Tematy podstawowe {#foundational-topics}
+
+<DeveloperDocsLinks headerId="foundational-topics" />
+
+### Stos technologiczny Ethereum {#ethereum-stack}
+
+<DeveloperDocsLinks headerId="ethereum-stack" />
 
 ### Zaawansowane {#advanced}
 
-- [Standardy tokenów](/developers/docs/standards/tokens/)
-- [Wyrocznie](/developers/docs/oracles/)
-- [Skalowanie](/developers/docs/scaling/)
+<DeveloperDocsLinks headerId="advanced" />

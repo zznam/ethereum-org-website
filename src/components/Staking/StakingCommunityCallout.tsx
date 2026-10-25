@@ -1,71 +1,67 @@
-import { useTranslation } from "next-i18next"
-import { Flex, type FlexProps } from "@chakra-ui/react"
+import React from "react"
+import { getTranslations } from "next-intl/server"
 
-import { ButtonLink } from "@/components/Buttons"
-import CalloutBanner from "@/components/CalloutBanner"
+import Discord from "@/components/icons/discord.svg"
+import Reddit from "@/components/icons/reddit.svg"
+import { ButtonLink } from "@/components/ui/buttons/Button"
+import Callout from "@/components/ui/callout"
 
-import { trackCustomEvent } from "@/lib/utils/matomo"
+import image from "@/public/images/enterprise-eth.png"
 
-import image from "@/public/enterprise-eth.png"
-
-export type StakingCommunityCalloutProps = FlexProps & {
-  id?: string
-}
-
-const StakingCommunityCallout = (props: StakingCommunityCalloutProps) => {
-  const { t } = useTranslation("page-staking")
+const StakingCommunityCallout = async (
+  props: React.HTMLAttributes<HTMLDivElement>
+) => {
+  const t = await getTranslations("page-staking")
+  const tCommon = await getTranslations("common")
 
   return (
-    <CalloutBanner
-      {...props}
+    <Callout
       image={image}
-      alt={t("page-staking-image-alt")}
-      titleKey={"page-staking-join-community"}
-      descriptionKey={"page-staking-join-community-desc"}
-      imageWidth={350}
+      title={t("page-staking-join-community")}
+      description={t("page-staking-join-community-desc")}
+      {...props}
     >
-      <Flex gap={4} direction={{ base: "column", md: "row" }}>
+      <ButtonLink
+        href="https://ethstaker.cc"
+        customEventOptions={{
+          eventCategory: "StakingCommunityCallout",
+          eventAction: "Clicked",
+          eventName: "clicked website",
+        }}
+      >
+        {tCommon("rollup-component-website")}
+      </ButtonLink>
+      <div className="flex items-center justify-around gap-4 @max-sm/content:*:w-full">
         <ButtonLink
-          onClick={() => {
-            trackCustomEvent({
-              eventCategory: `StakingCommunityCallout`,
-              eventAction: `Clicked`,
-              eventName: "clicked discord",
-            })
+          href="https://discord.gg/ethstaker"
+          customEventOptions={{
+            eventCategory: "StakingCommunityCallout",
+            eventAction: "Clicked",
+            eventName: "clicked discord",
           }}
-          to="https://discord.gg/ethstaker"
-          w={{ base: "full", md: "auto" }}
+          variant="outline"
+          isSecondary
+          hideArrow
         >
+          <Discord />
           Discord
         </ButtonLink>
         <ButtonLink
-          onClick={() => {
-            trackCustomEvent({
-              eventCategory: `StakingCommunityCallout`,
-              eventAction: `Clicked`,
-              eventName: "clicked reddit",
-            })
+          href="https://reddit.com/r/ethstaker"
+          customEventOptions={{
+            eventCategory: "StakingCommunityCallout",
+            eventAction: "Clicked",
+            eventName: "clicked reddit",
           }}
-          to="https://reddit.com/r/ethstaker"
-          w={{ base: "full", md: "auto" }}
+          variant="outline"
+          isSecondary
+          hideArrow
         >
+          <Reddit />
           Reddit
         </ButtonLink>
-        <ButtonLink
-          onClick={() => {
-            trackCustomEvent({
-              eventCategory: `StakingCommunityCallout`,
-              eventAction: `Clicked`,
-              eventName: "clicked website",
-            })
-          }}
-          to="https://ethstaker.cc"
-          w={{ base: "full", md: "auto" }}
-        >
-          {t("common:rollup-component-website")}
-        </ButtonLink>
-      </Flex>
-    </CalloutBanner>
+      </div>
+    </Callout>
   )
 }
 

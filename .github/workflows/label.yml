@@ -5,9 +5,35 @@ on:
 
 jobs:
   label:
-    runs-on: ${{ fromJSON((github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && vars.LOCAL_RUNNER_LABELS || '["ubuntu-latest"]') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
-      - uses: actions/labeler@v2
+      - uses: actions/labeler@v7
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Refine labels
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            try {
+              const { owner, repo, number: pull_number } = context.issue;
+              const { data: files } = await github.rest.pulls.listFiles({ owner, repo, pull_number });
+
+              const allInEn = files.every(file => file.filename.startsWith('src/intl/en/'));
+              const allInTranslations = files.every(file => file.filename.startsWith('public/content/translations/'));
+              
+              if (allInEn) {
+                await github.rest.issues.removeLabel({ owner, repo, issue_number: pull_number, name: 'translation 🌍' });
+              }
+              
+              if (allInTranslations) {
+                await github.rest.issues.removeLabel({ owner, repo, issue_number: pull_number, name: 'content 🖋️' });
+              }
+            } catch (error) {
+              console.warn("Problem occurred refining labels")
+            }

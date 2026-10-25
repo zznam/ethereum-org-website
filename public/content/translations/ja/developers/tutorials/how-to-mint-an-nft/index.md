@@ -1,89 +1,63 @@
 ---
-title: NFTのミント方法(NFTチュートリアルシリーズの2/3)
-description: このチュートリアルでは、スマートコントラクトとWeb3を使用してEthereumブロックチェーン上でNFTをミントする方法を説明します。
-author: "Sumi Mudgil"
-tags:
-  - "ERC-721"
-  - "alchemy"
-  - "Solidity"
-  - "スマートコントラクト"
+title: "NFTをミントする方法（NFTチュートリアルシリーズ パート2/3）"
+description: "このチュートリアルでは、スマート・コントラクト、Hardhat、およびEthers.jsを使用して、イーサリアムのブロックチェーン上でNFTをミントする方法について説明します。"
+author: "スミ・ムドギル"
+tags: ["ERC-721", "Alchemy", "Solidity", "スマートコントラクト"]
 skill: beginner
+breadcrumb: "NFTをミントする"
 lang: ja
 published: 2021-04-22
 ---
 
-[Beeple](https://www.nytimes.com/2021/03/11/arts/design/nft-auction-christies-beeple.html): $69,000,000 [3LAU](https://www.forbes.com/sites/abrambrown/2021/03/03/3lau-nft-nonfungible-tokens-justin-blau/?sh=5f72ef64643b): $11,000,000 [Grimes](https://www.theguardian.com/music/2021/mar/02/grimes-sells-digital-art-collection-non-fungible-tokens): $6,000,000
+「非代替性トークン (NFT) のミンティング」とは、ブロックチェーン上でERC-721トークンのユニークなインスタンスを公開する行為です。[このNFTチュートリアルシリーズのパート1](/developers/tutorials/how-to-write-and-deploy-an-nft/)で作成したスマート・コントラクトを使用して、Web3のスキルを活かし、NFTをミントしてみましょう。このチュートリアルの最後には、心（とウォレット）が望む限り、いくらでもNFTをミントできるようになります！
 
-いずれもAlchemyの強力なAPIを使ってNFTをミントしています。 このチュートリアルでは、<10分以内でNFTをミントする方法を説明します。
+さあ、始めましょう！
 
-「NFTのミント」とは、ブロックチェーン上にERC-721トークンのユニークなインスタンスを公開することです。 [NFTチュートリアルシリーズのパート1](/developers/tutorials/how-to-write-and-deploy-an-nft/)で作成したスマートコントラクトを使って、Web3のスキルを駆使し、NFTをミントしてみましょう。 このチュートリアルが終わるころには、あなた(とウォレット) の望むがままにNFTをミントできるようになります。
+## ステップ1：セットアップの確認 {#install-web3}
 
-さあ、始めましょう。
+NFTスマート・コントラクトの作成に関する最初のチュートリアルに従った場合、必要なものはすべて揃っています。[Ethersプラグイン](https://hardhat.org/docs/plugins/hardhat-ethers)と[Ethers.js](https://docs.ethers.org/v6/)（[イーサリアム](/)のブロックチェーンへのリクエスト作成を容易にするライブラリ）を含むHardhat 3プロジェクトです。ミンティングのコードはHardhatスクリプトとして記述するため、パート1のSepoliaネットワーク設定と`API_URL`および`PRIVATE_KEY`の値を再利用します。新しくインストールするものはありません。
 
-## ステップ1: Web3をインストールする {#install-web3}
+## ステップ2：`mint-nft.js`ファイルの作成 {#create-mintnftjs}
 
-NFTスマートコントラクトの作成に関する最初のチュートリアルに沿って進めている場合、すでにEthers.jsを使用していることと思います。 Web3はEthersと同様、イーサリアムブロックチェーンへのリクエストを簡単に作成するために使用されるライブラリです。 このチュートリアルでは、自動再試行と堅牢なWebSocketサポートを提供する拡張Web3ライブラリ、[Alchemy Web3](https://docs.alchemyapi.io/alchemy/documentation/alchemy-web3)を使用します。
-
-プロジェクトのホームディレクトリで以下を実行します。
-
-```
-npm install @alch/alchemy-web3
-```
-
-## ステップ2: `mint-nft.js`ファイルを作成する {#create-mintnftjs}
-
-scriptsディレクトリ内に`mint-nft.js`ファイルを作成し、以下のコード行を追加します。
+scriptsディレクトリ内に`mint-nft.js`ファイルを作成し、以下のコードを追加します。
 
 ```js
-require("dotenv").config()
-const API_URL = process.env.API_URL
-const { createAlchemyWeb3 } = require("@alch/alchemy-web3")
-const web3 = createAlchemyWeb3(API_URL)
+import { network } from "hardhat"
+
+const { ethers } = await network.create()
 ```
 
-## ステップ3: コントラクトABIを取得する {#contract-abi}
+デプロイ・スクリプトと同様に、`network.create()`はスクリプトの実行時に`--network`で選択したネットワークに接続し、そのネットワーク用の`ethers`オブジェクトを提供します。
 
-コントラクトABI(アプリケーションバイナリインターフェイス)は、スマートコントラクトと対話するためのインターフェイスです。 コントラクトABIの詳細については、[こちら](https://docs.alchemyapi.io/alchemy/guides/eth_getlogs#what-are-ab-is)をご覧ください。 Hardhatは自動的にABIを生成して、`MyNFT.json`ファイルに保存します。 このABIを使用するには、`mint-nft.js`に次のコードを追加して、ABIをパースする必要があります。
+## ステップ3：コントラクトABIの取得 {#contract-abi}
 
-```js
-const contract = require("../artifacts/contracts/MyNFT.sol/MyNFT.json")
+コントラクトのアプリケーション・バイナリ・インターフェース (ABI) は、スマート・コントラクトと対話するためのインターフェースです。[コントラクトABI](/glossary/#abi)について詳しく学ぶことができます。Hardhatは、コントラクトをコンパイルする際に自動的にABIを生成し、`artifacts/contracts/MyNFT.sol/MyNFT.json`ファイルに保存します。ステップ5でコントラクトのインスタンスを作成する際、Hardhat EthersプラグインがそこからABIを読み込んでくれるため、自分で読み込む必要はありません。
+
+ABIを確認したい場合は、コンソールに出力することができます。プロジェクトのルートディレクトリから、以下を実行します。
+
+```sh
+node -p "JSON.stringify(require('./artifacts/contracts/MyNFT.sol/MyNFT.json').abi)"
 ```
 
-ABIを表示したい場合は、次のコードを追加することでコンソールに出力できます:
+## ステップ4：IPFSを使用してNFTのメタデータを設定する {#config-meta}
 
-```js
-console.log(JSON.stringify(contract.abi))
-```
+パート1のチュートリアルを思い出していただくと、`mintNFT`スマート・コントラクト関数は、NFTのメタデータを記述したJSONドキュメントに解決されるべき`tokenURI`パラメータを受け取ります。このメタデータこそがNFTに命を吹き込むものであり、名前、説明、画像、その他の属性など、設定可能なプロパティを持たせることができます。
 
-`mint-nft.js`を実行し、コンソールに出力されたABIを表示するには、ターミナルに移動して次のコードを実行します。
+> _Interplanetary File System (IPFS) は、分散型ファイルシステムでデータを保存および共有するための分散型プロトコルおよびピア・ツー・ピアのネットワークです。_
 
-```js
-node scripts/mint-nft.js
-```
+NFTのアセットとメタデータを保存し、NFTが真に分散型であることを保証するために、便利なIPFSのアプリケーション・プログラミング・インターフェース（API）およびツールキットであるPinataを使用します。Pinataアカウントをお持ちでない場合は、[こちら](https://app.pinata.cloud)から無料アカウントにサインアップし、メールアドレスの確認手順を完了してください。
 
-## ステップ4: IPFSを使用してNFTのメタデータを設定する {#config-meta}
+アカウントを作成したら、以下の手順に従います。
 
-パート1のチュートリアルを思い出してください。スマートコントラクトの`mintNFT`関数は、NFTのメタデータを記述したJSONドキュメントで解決すべきtokenURIパラメータを取り込みます。その結果、NFTが生成され、名前、記述、画像、その他の属性などの設定可能なプロパティを実装することができます。
+- [Filesページ](https://app.pinata.cloud/ipfs/files)に移動し、ページ右上にある「Add」ボタンをクリックします。
 
-> _Interplanetary File System(IPFS)は、分散型ファイルシステムでデータを格納、共有するための分散プロトコルであり、ピアツーピアネットワークです。_
+- Pinataに画像をアップロードします。これがNFTの画像アセットになります。アセットの名前は自由につけて構いません。必ずパブリックIPFSにアップロードしてください。[プライベートIPFS](https://docs.pinata.cloud/files/private-ipfs)上のファイルは、NFTを表示するウォレットやマーケットプレイスから取得できません。
 
-私たちは、NFTアセットとメタデータを保存してNFTを真に分散化するために、便利なIPFS APIとツールキットであるPinataを使用します。 Pinataアカウントをお持ちでない場合は、[こちら](https://app.pinata.cloud)から無料アカウントにサインアップし、メールアドレスの認証手順を完了してください。
+- アップロード後、FilesページにファイルがCID（コンテンツ識別子）とともにリストされているのがわかります。CIDをコピーします。アップロードしたファイルは、`https://gateway.pinata.cloud/ipfs/<CID>`、またはPinataのサイドバーの「Gateways」の下にリストされている専用ゲートウェイから確認できます。例えば、私たちがIPFSで使用した画像は[こちら](https://gateway.pinata.cloud/ipfs/QmZdd5KYdCFApWn7eTZJ1qgJu18urJrP9Yh1TZcZrZxxB5)で確認できます。
 
-アカウント作成後の手順:
+さて、Pinataにもう1つドキュメントをアップロードする必要があります。しかしその前に、それを作成しなければなりません！
 
-- 「Files」ページに移動し、ページの左上にある青色の「Upload」ボタンをクリックします。
-
-- Pinataに画像をアップロードします。これがNFTの画像アセットになります。 アセットに好きな名前を付けてください。
-
-- アップロード後、「Files」ページのテーブルにファイル情報が表示されます。 また、CID列も表示されます。 隣のコピーボタンをクリックするとCIDをコピーできます。 アップロードは`https://gateway.pinata.cloud/ipfs/<CID>`で確認できます。 例えば、IPFSで使われている画像は、[こちら](https://gateway.pinata.cloud/ipfs/QmZdd5KYdCFApWn7eTZJ1qgJu18urJrP9Yh1TZcZrZxxB5)です。
-
-視覚型学習者のために、上記の手順を要約します。
-
-![Pinataに画像をアップロードする方法](./instructionsPinata.gif)
-
-次に、Pinataにもう1件ドキュメントをアップロードしますが、 その前にドキュメントを作成する必要があります。
-
-ルートディレクトリに`nft-metadata.json`というファイルを新規作成し、以下のjsonコードを追加してください。
+ルートディレクトリに`nft-metadata.json`という新しいファイルを作成し、以下のJSONコードを追加します。
 
 ```json
 {
@@ -103,227 +77,151 @@ node scripts/mint-nft.js
 }
 ```
 
-json内のデータは自由に変更できます。 属性セクションを削除または追加できます。 最も重要なことは、画像フィールドがIPFS画像の位置を指していることを確認することです。そうしないと、NFTに(とても可愛い)犬の写真が含まれます。
+JSONのデータは自由に変更してください。`attributes`セクションを削除したり追加したりできます。最も重要なのは、`image`フィールドが`ipfs://<image-CID>`の形式でIPFS画像の場所を指していることを確認することです。そうしないと、あなたのNFTには（とても可愛い！）犬の写真が含まれることになります。
 
-JSONファイルの編集が終わったら、保存して、画像のアップロードと同じ手順でPinataにアップロードしてください。
+JSONファイルの編集が完了したら保存し、画像をアップロードしたのと同じ手順でPinataにアップロードします。`nft-metadata.json`のCIDもコピーしておいてください。ステップ9で必要になります。
 
-![nft-metadata.jsonを Pinataにアップロードする方法](./uploadPinata.gif)
+## ステップ5：コントラクトのインスタンスを作成する {#instance-contract}
 
-## ステップ5: コントラクトのインスタンスを作成する {#instance-contract}
+さて、コントラクトと対話するために、コード内でそのインスタンスを作成する必要があります。そのためには、パート1でデプロイ・スクリプトが出力したコントラクトのアドレスが必要です。コントラクトをデプロイする際に使用したアドレスを検索することで、[Etherscan](https://sepolia.etherscan.io/)や[Blockscout](https://eth-sepolia.blockscout.com/)で見つけることもできます。
 
-ここで、私たちのコントラクトと対話するには、コード内でインスタンスを作成する必要があります インスタンスの作成には、コントラクトアドレスが必要になります。コントラクトをデプロイする際に使用したアドレスを検索することで、デプロイメントまたは[Etherscan](https://sepolia.etherscan.io/)から取得できます。
+![Etherscanでコントラクトのアドレスを表示する](./view-contract-etherscan.png)
 
-![Etherscanでコントラクトアドレスを表示する](./view-contract-etherscan.png)
+上記の例では、コントラクトのアドレスは0x5a738a5c5fe46a1fd5ee7dd7e38f722e2aef7778です。
 
-上記の例では、コントラクトのアドレスは、0x5a738a5c5fe46a1fd5ee7dd7e38f722e2aef7778です。
-
-次に、Web3の[コントラクトメソッド](https://docs.web3js.org/api/web3-eth-contract/class/Contract)を活用して、ABIとアドレスを使用したコントラクトを作成します。 `mint-nft.js`ファイルに以下を追加します。
+次に、Hardhat Ethersプラグインの`getContractAt`メソッドを使用して、名前（どのABIを使用するかを指示します）とアドレスを使用してコントラクトを作成します。`mint-nft.js`ファイルに以下を追加し、アドレスを自分のものに置き換えてください。
 
 ```js
 const contractAddress = "0x5a738a5c5fe46a1fd5ee7dd7e38f722e2aef7778"
-
-const nftContract = new web3.eth.Contract(contract.abi, contractAddress)
+const nftContract = await ethers.getContractAt("MyNFT", contractAddress)
 ```
 
-## ステップ6: `.env`ファイルをアップデートする {#update-env}
+## ステップ6：`.env`ファイルの確認 {#update-env}
 
-それでは、イーサリアムチェーンにトランザクションを作成して送信するために、公開されているイーサリアムのアカウントアドレスを使用してアカウントのノンスを取得します(以下で説明します)。
+送信するすべてのトランザクションは、アカウントの秘密鍵で署名される必要があります。チュートリアルのパート1を完了している場合、`.env`ファイルはすでに以下のようになっているはずです。
 
-`.env`ファイルにあなたの公開鍵を追加します。チュートリアルのパート1を完了している場合、`.env`ファイルは次のようになっているはずです。
-
-```js
-API_URL = "https://eth-sepolia.g.alchemy.com/v2/your-api-key"
-PRIVATE_KEY = "your-private-account-address"
-PUBLIC_KEY = "your-public-account-address"
+```text
+API_URL="https://eth-sepolia.g.alchemy.com/v2/your-api-key"
+PRIVATE_KEY="your-metamask-private-key"
 ```
 
-## ステップ7: トランザクションを作成する {#create-txn}
+パブリック・アドレスを追加する必要はありません。ethersが秘密鍵からそれを算出します。
 
-まず、`mintNFT(tokenData)`という名前の関数を定義し、次のようにトランザクションを作成してみましょう。
+## ステップ7：トランザクションの作成 {#create-txn}
 
-1. _PRIVATE_KEY_と_PUBLIC_KEY_を`.env`ファイルから取得します。
+まず、`mintNFT(tokenURI)`という名前の関数を定義し、以下の手順でトランザクションを作成しましょう。
 
-1. 次に、アカウントのノンスを確認します。 ノンスの指定は、あなたのアドレスから送信されたトランザクションの数を追跡するために使用されます。これは、セキュリティ目的で、[リプレイ攻撃](https://docs.alchemyapi.io/resources/blockchain-glossary#account-nonce)を防ぐために必要となります。 あなたのアドレスから送信されたトランザクションの数を取得するには、 [getTransactionCount](https://docs.alchemyapi.io/documentation/alchemy-api-reference/json-rpc#eth_gettransactioncount)を使用します。
+1. トランザクションを送信するアカウントを取得します。`ethers.getSigners()`はネットワークに設定されたアカウントを返します。Sepoliaの場合、これは`.env`に秘密鍵があるアカウントです。`mintNFT`は`onlyOwner`であるため、これはコントラクトをデプロイしたのと同じアカウントである必要があります。
 
-1. 最後に、以下の情報を使用してトランザクションを設定します。
+1. コントラクトのインスタンスで`mintNFT`関数を呼び出し、自分自身のアドレスを受信者として、メタデータのURIを指定します。これがこのトランザクションで実行したい計算であり、この場合はNFTのミンティングです。
 
-- `'from': PUBLIC_KEY` — トランザクションの発信元は公開アドレス
+ナンス（リプレイ攻撃を防ぐための、あなたのアドレスから送信されたトランザクションの数）、ガス・リミット、または手数料を自分で計算する必要はありません。ethersがトランザクションを送信する前にそれらを取得または見積もります。
 
-- `'to': contractAddress` — 対話し、トランザクションを送信したいコントラクト
-
-- `'nonce': nonce` — アドレスから送信されたトランザクションの数を持つアカウントのノンス
-
-- `'gas': estimatedGas` —トランザクションを完了するために必要な推定ガス
-
-- `'data': nftContract.methods.mintNFT(PUBLIC_KEY, md).encodeABI()` — このトランザクションで実行したい計算。今回の場合は、NFTを発行すること。
-
-`mint-nft.js`ファイルは、現在このような状態になっているはずです。
+現在の`mint-nft.js`ファイルは以下のようになっているはずです。
 
 ```js
-   require('dotenv').config();
-   const API_URL = process.env.API_URL;
-   const PUBLIC_KEY = process.env.PUBLIC_KEY;
-   const PRIVATE_KEY = process.env.PRIVATE_KEY;
+import { network } from "hardhat"
 
-   const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-   const web3 = createAlchemyWeb3(API_URL);
+const { ethers } = await network.create()
 
-   const contract = require("../artifacts/contracts/MyNFT.sol/MyNFT.json");
-   const contractAddress = "0x5a738a5c5fe46a1fd5ee7dd7e38f722e2aef7778";
-   const nftContract = new web3.eth.Contract(contract.abi, contractAddress);
-
-   async function mintNFT(tokenURI) {
-     const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, 'latest'); //get latest nonce
-
-   // トランザクション
-     const tx = {
-       'from': PUBLIC_KEY,
-       'to': contractAddress,
-       'nonce': nonce,
-       'gas': 500000,
-       'data': nftContract.methods.mintNFT(PUBLIC_KEY, tokenURI).encodeABI()
-     };
-   }​
-```
-
-## ステップ8: トランザクションに署名する {#sign-txn}
-
-さて、トランザクションを作成したら、それを送信するために署名する必要があります。 ここで秘密鍵を使用します。
-
-`web3.eth.sendSignedTransaction`はトランザクションハッシュを提供することで、トランザクションがきちんとマイニングされ、ネットワークによってドロップされていないことを確認できます。 トランザクション署名のセクションにいくつかエラーチェックを追加することで、トランザクションが正常に完了したかどうかを確認できるようにしておきます。
-
-```js
-require("dotenv").config()
-const API_URL = process.env.API_URL
-const PUBLIC_KEY = process.env.PUBLIC_KEY
-const PRIVATE_KEY = process.env.PRIVATE_KEY
-
-const { createAlchemyWeb3 } = require("@alch/alchemy-web3")
-const web3 = createAlchemyWeb3(API_URL)
-
-const contract = require("../artifacts/contracts/MyNFT.sol/MyNFT.json")
 const contractAddress = "0x5a738a5c5fe46a1fd5ee7dd7e38f722e2aef7778"
-const nftContract = new web3.eth.Contract(contract.abi, contractAddress)
+const nftContract = await ethers.getContractAt("MyNFT", contractAddress)
 
 async function mintNFT(tokenURI) {
-  const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest") //get latest nonce
+  const [signer] = await ethers.getSigners()
 
-  // トランザクション
-  const tx = {
-    from: PUBLIC_KEY,
-    to: contractAddress,
-    nonce: nonce,
-    gas: 500000,
-    data: nftContract.methods.mintNFT(PUBLIC_KEY, tokenURI).encodeABI(),
-  }
-
-  const signPromise = web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
-  signPromise
-    .then((signedTx) => {
-      web3.eth.sendSignedTransaction(
-        signedTx.rawTransaction,
-        function (err, hash) {
-          if (!err) {
-            console.log(
-              "The hash of your transaction is: ",
-              hash,
-              "\nCheck Alchemy's Mempool to view the status of your transaction!"
-            )
-          } else {
-            console.log(
-              "Something went wrong when submitting your transaction:",
-              err
-            )
-          }
-        }
-      )
-    })
-    .catch((err) => {
-      console.log(" Promise failed:", err)
-    })
+  // トランザクションを送信します。ethersがノンス、ガスリミット、手数料を自動的に入力します。
+  const tx = await nftContract.mintNFT(signer.address, tokenURI)
 }
 ```
 
-## ステップ9: `mintNFT`を呼び出し、ノード`mint-nft.js`を実行する {#call-mintnft-fn}
+## ステップ8：トランザクションへの署名 {#sign-txn}
 
-Pinataにアップロードした`metadata.json`を覚えているでしょうか。 Pinataからそのハッシュコードを取得し、`https://gateway.pinata.cloud/ipfs/<metadata-hash-code>`をパラメータとして、関数`mintNFT`に渡します。
+ネットワークは私たちの秘密鍵で設定されているため、ethersはトランザクションを送信する前に自動的にそれで署名します。
 
-ハッシュコードを取得する方法をこちらにご紹介します。
-
-![Pinataでnftメタデータハッシュコードを取得する方法](./metadataPinata.gif)_Pinataでnftメタデータハッシュコードを取得する方法_
-
-> 別のウィンドウで`https://gateway.pinata.cloud/ipfs/<metadata-hash-code>`を読み込んでみて、コピーしたハッシュコードが**metadata.json**にリンクしているか確認します。 以下のスクリーンショットと類似したページが表示されるはずです。
-
-![ページにjsonメタデータが表示されるはずです](./metadataJSON.png)_ページにjsonメタデータが表示されるはずです_
-
-最終的には、次のようなコードになっているはずです。
+`mintNFT`を呼び出すと、トランザクションが送信された後に戻り値としてトランザクション・ハッシュが得られます。これを使用して、トランザクションがマイニングされ、ネットワークによって破棄されなかったことを確認できます。その後、`tx.wait()`はトランザクションがブロックに含まれるまで待機します。また、トランザクションが正常に処理されたかどうかを知るために、いくつかのエラーチェックも追加しました。
 
 ```js
-require("dotenv").config()
-const API_URL = process.env.API_URL
-const PUBLIC_KEY = process.env.PUBLIC_KEY
-const PRIVATE_KEY = process.env.PRIVATE_KEY
+import { network } from "hardhat"
 
-const { createAlchemyWeb3 } = require("@alch/alchemy-web3")
-const web3 = createAlchemyWeb3(API_URL)
+const { ethers } = await network.create()
 
-const contract = require("../artifacts/contracts/MyNFT.sol/MyNFT.json")
 const contractAddress = "0x5a738a5c5fe46a1fd5ee7dd7e38f722e2aef7778"
-const nftContract = new web3.eth.Contract(contract.abi, contractAddress)
+const nftContract = await ethers.getContractAt("MyNFT", contractAddress)
 
 async function mintNFT(tokenURI) {
-  const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest") //get latest nonce
+  const [signer] = await ethers.getSigners()
 
-  //the transaction
-  const tx = {
-    from: PUBLIC_KEY,
-    to: contractAddress,
-    nonce: nonce,
-    gas: 500000,
-    data: nftContract.methods.mintNFT(PUBLIC_KEY, tokenURI).encodeABI(),
+  try {
+    // トランザクションを送信します。ethersがノンス、ガスリミット、手数料を自動的に入力します。
+    const tx = await nftContract.mintNFT(signer.address, tokenURI)
+    console.log("The hash of your transaction is:", tx.hash)
+
+    // トランザクションがブロックに含まれるのを待ちます。
+    const receipt = await tx.wait()
+    console.log("Your NFT was minted in block", receipt.blockNumber)
+  } catch (err) {
+    console.log("Something went wrong when submitting your transaction:", err)
   }
-
-  const signPromise = web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
-  signPromise
-    .then((signedTx) => {
-      web3.eth.sendSignedTransaction(
-        signedTx.rawTransaction,
-        function (err, hash) {
-          if (!err) {
-            console.log(
-              "The hash of your transaction is: ",
-              hash,
-              "\nCheck Alchemy's Mempool to view the status of your transaction!"
-            )
-          } else {
-            console.log(
-              "Something went wrong when submitting your transaction:",
-              err
-            )
-          }
-        }
-      )
-    })
-    .catch((err) => {
-      console.log("Promise failed:", err)
-    })
 }
-
-mintNFT("ipfs://QmYueiuRNmL4MiA2GwtVMm6ZagknXnSpQnB3z2gWbz36hP")
 ```
 
-次に、`node scripts/mint-nft.js`を実行してNFTをデプロイします。 数秒後にターミナル上に次のようなレスポンスが表示されるはずです。
+## ステップ9：`mintNFT`の呼び出しと`mint-nft.js`の実行 {#call-mintnft-fn}
 
-    The hash of your transaction is: 0x301791fdf492001fcd9d5e5b12f3aa1bbbea9a88ed24993a8ab2cdae2d06e1e8
-    
-    Alchemyのメンプールをチェックし、あなたのトランザクションのステータスを確認しましょう。
+Pinataにアップロードした`nft-metadata.json`を覚えていますか？PinataからそのCIDを取得し、`ipfs://<metadata-CID>`を関数`mintNFT`のパラメータとして渡します。ウォレットやマーケットプレイスは、任意のIPFSゲートウェイを通じて`ipfs://` URIを解決するため、あなたのNFTが単一のゲートウェイに依存することはありません。
 
-[Alchemy mempool](https://dashboard.alchemyapi.io/mempool)にアクセスして、トランザクションのステータス(保留中、マイニング中、ネットワークによってドロップされたかどうか)を確認します。 トランザクションが削除された場合は、 [Sepolia Etherscan](https://sepolia.etherscan.io/)を確認してトランザクションハッシュを検索することもできます。
+> 別のウィンドウで`https://gateway.pinata.cloud/ipfs/<metadata-CID>`を読み込み、コピーしたCIDが**nft-metadata.json**にリンクしていることを再確認してください。ページは以下のスクリーンショットのようになるはずです。
 
-![EtherscanでNFTトランザクションハッシュを表示する](./view-nft-etherscan.png)_EtherscanでNFTトランザクションハッシュを表示します_
+![ページにはJSONメタデータが表示されるはずです](./metadataJSON.png)_ページにはJSONメタデータが表示されるはずです_
 
-以上で完了です。 イーサリアムブロックチェーン上にデプロイしてNFTをミントしました。 <Emoji text=":money_mouth_face:" size={1} />
+全体として、コードは以下のようになるはずです。
 
-`mint-nft.js`を使えば、あなたの心(ウォレット)が望むだけ、NFTをミントすることができます。 NFTのメタデータを記述した新しいtokenURIを必ず渡してください(この作業を怠ると、異なるIDを備えた同一のものを大量に作成してしまいます)。
+```js
+import { network } from "hardhat"
 
-ウォレットにNFTを表示する方法については、[パート3: ウォレットにNFTを表示する方法](/developers/tutorials/how-to-view-nft-in-metamask/)をご覧ください。
+const { ethers } = await network.create()
+
+const contractAddress = "0x5a738a5c5fe46a1fd5ee7dd7e38f722e2aef7778"
+const nftContract = await ethers.getContractAt("MyNFT", contractAddress)
+
+async function mintNFT(tokenURI) {
+  const [signer] = await ethers.getSigners()
+
+  try {
+    // トランザクションを送信します。ethersがノンス、ガスリミット、手数料を自動的に入力します。
+    const tx = await nftContract.mintNFT(signer.address, tokenURI)
+    console.log("The hash of your transaction is:", tx.hash)
+
+    // トランザクションがブロックに含まれるのを待ちます。
+    const receipt = await tx.wait()
+    console.log("Your NFT was minted in block", receipt.blockNumber)
+  } catch (err) {
+    console.log("Something went wrong when submitting your transaction:", err)
+  }
+}
+
+await mintNFT("ipfs://QmYueiuRNmL4MiA2GwtVMm6ZagknXnSpQnB3z2gWbz36hP")
+```
+
+それでは、Sepoliaに対してスクリプトを実行し、NFTをミントします。
+
+```sh
+npx hardhat run scripts/mint-nft.js --network sepolia
+```
+
+数秒後、ターミナルに以下のような応答が表示されるはずです。
+
+```text
+The hash of your transaction is: 0x301791fdf492001fcd9d5e5b12f3aa1bbbea9a88ed24993a8ab2cdae2d06e1e8
+Your NFT was minted in block <block number>
+```
+
+トランザクションの詳細を確認するには、[Etherscan](https://sepolia.etherscan.io/)または[Blockscout](https://eth-sepolia.blockscout.com/)でそのハッシュを検索してください。
+
+![EtherscanでNFTのトランザクション・ハッシュを表示する](./view-nft-etherscan.png)_EtherscanでNFTのトランザクション・ハッシュを表示する_
+
+これで完了です！イーサリアムのブロックチェーン上でNFTをデプロイし、ミントすることができました <Emoji text=":money_mouth_face:" size={1} />
+
+`mint-nft.js`を使用すれば、心（とウォレット）が望む限り、いくらでもNFTをミントできます！ただし、NFTのメタデータを記述した新しい`tokenURI`を渡すことを忘れないでください（そうしないと、IDが異なるだけの同一のNFTを大量に作成することになります）。
+
+おそらく、ウォレットで自分のNFTを自慢したいと思うでしょう。ぜひ[パート3：ウォレットでNFTを表示する方法](/developers/tutorials/how-to-view-nft-in-metamask/)をチェックしてください！

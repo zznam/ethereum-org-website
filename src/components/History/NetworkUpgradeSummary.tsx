@@ -1,25 +1,24 @@
-import { useEffect, useState } from "react"
-import { useRouter } from "next/router"
-import { useTranslation } from "next-i18next"
-import { Flex, Stack, Text } from "@chakra-ui/react"
+"use client"
 
-import type { Lang } from "@/lib/types"
+import { useLocale, useTranslations } from "next-intl"
 
-import { getLocaleForNumberFormat } from "@/lib/utils/translations"
+import { Flex, Stack } from "@/components/ui/flex"
 
-import NetworkUpgradeSummaryData from "../../data/NetworkUpgradeSummaryData"
+import { dateTimeFormat, getValidDate } from "@/lib/utils/date"
+import { numberFormat } from "@/lib/utils/numbers"
+
+import networkUpgradeSummaryData from "@/data/networkUpgradeSummaryData"
+
 import Emoji from "../Emoji"
-import InlineLink from "../Link"
+import InlineLink from "../ui/Link"
 
 type NetworkUpgradeSummaryProps = {
   name: string
 }
 
 const NetworkUpgradeSummary = ({ name }: NetworkUpgradeSummaryProps) => {
-  const [formattedUTC, setFormattedUTC] = useState("")
-  const { locale } = useRouter()
-  const localeForStatsBoxNumbers = getLocaleForNumberFormat(locale as Lang)
-  const { t } = useTranslation("page-history")
+  const locale = useLocale()
+  const t = useTranslations("page-history")
 
   const {
     dateTimeAsString,
@@ -28,31 +27,29 @@ const NetworkUpgradeSummary = ({ name }: NetworkUpgradeSummaryProps) => {
     blockNumber,
     epochNumber,
     slotNumber,
-  } = NetworkUpgradeSummaryData[name]
-  // TODO fix dateTimeAsString
+  } = networkUpgradeSummaryData[name]
 
-  // calculate date format only on the client side to avoid hydration issues
-  useEffect(() => {
-    const date = new Date(dateTimeAsString as string)
-    const formattedDate = date.toLocaleString(locale, {
-      timeZone: "UTC",
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-    })
-    setFormattedUTC(`${formattedDate} +UTC`)
-  }, [dateTimeAsString, locale])
+  const upgradeDate = getValidDate(dateTimeAsString)
+  const formattedUTC = upgradeDate
+    ? dateTimeFormat(locale, {
+        timeZone: "UTC",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        timeZoneName: "short",
+      }).format(upgradeDate)
+    : null
 
   const blockTypeTranslation = (translationKey, explorerUrl, number) => {
     return (
-      <Flex whiteSpace="pre-wrap">
-        <Emoji fontSize="sm" me={2} text=":bricks:" />
+      <Flex className="whitespace-pre-wrap">
+        <Emoji className="me-2 text-sm" text=":bricks:" />
         {t(translationKey)}:{" "}
         <InlineLink href={`${explorerUrl}${number}`}>
-          {new Intl.NumberFormat(localeForStatsBoxNumbers).format(number)}
+          {numberFormat(locale).format(number)}
         </InlineLink>
       </Flex>
     )
@@ -60,35 +57,35 @@ const NetworkUpgradeSummary = ({ name }: NetworkUpgradeSummaryProps) => {
 
   return (
     <Stack>
-      {dateTimeAsString && (
+      {formattedUTC && (
         <Flex>
-          <Emoji fontSize="sm" me={2} text=":calendar:" />
-          <Text fontFamily="monospace">{formattedUTC}</Text>
+          <Emoji className="me-2 text-sm" text=":calendar:" />
+          <p className="font-monospace">{formattedUTC}</p>
         </Flex>
       )}
       {blockNumber &&
         blockTypeTranslation(
-          "page-history:page-history-block-number",
-          "https://etherscan.io/block/",
+          "page-history-block-number",
+          "https://eth.blockscout.com/block/",
           blockNumber
         )}
       {epochNumber &&
         blockTypeTranslation(
-          "page-history:page-history-epoch-number",
-          "https://beaconscan.com/epoch/",
+          "page-history-epoch-number",
+          "https://beaconcha.in/epoch/",
           epochNumber
         )}
       {slotNumber &&
         blockTypeTranslation(
-          "page-history:page-history-slot-number",
-          "https://beaconscan.com/slot/",
+          "page-history-slot-number",
+          "https://beaconcha.in/slot/",
           slotNumber
         )}
       {ethPriceInUSD && (
         <Flex>
-          <Emoji fontSize="sm" me={2} text=":money_bag:" />
-          {t("page-history:page-history-eth-price")}:{" "}
-          {new Intl.NumberFormat(localeForStatsBoxNumbers, {
+          <Emoji className="me-2 text-sm" text=":money_bag:" />
+          {t("page-history-eth-price")}:{" "}
+          {numberFormat(locale, {
             style: "currency",
             currency: "USD",
           }).format(ethPriceInUSD)}
@@ -96,9 +93,9 @@ const NetworkUpgradeSummary = ({ name }: NetworkUpgradeSummaryProps) => {
       )}
       {waybackLink && (
         <Flex>
-          <Emoji fontSize="sm" me={2} text=":desktop_computer:" />
+          <Emoji className="me-2 text-sm" text=":desktop_computer:" />
           <InlineLink href={waybackLink}>
-            {t("page-history:page-history-ethereum-org-wayback")}
+            {t("page-history-ethereum-org-wayback")}
           </InlineLink>
         </Flex>
       )}

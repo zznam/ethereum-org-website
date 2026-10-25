@@ -1,182 +1,112 @@
-import { useRef } from "react"
-import dynamic from "next/dynamic"
-import { useRouter } from "next/router"
-import { useTranslation } from "next-i18next"
-import { MdSearch } from "react-icons/md"
-import {
-  Box,
-  forwardRef,
-  IconButtonProps,
-  Portal,
-  ThemeTypings,
-  type UseDisclosureReturn,
-  useMergeRefs,
-} from "@chakra-ui/react"
-import { useDocSearchKeyboardEvents } from "@docsearch/react"
-import { DocSearchHit } from "@docsearch/react/dist/esm/types"
+"use client"
 
-import { Button } from "@/components/Buttons"
+import { type RefObject, useRef } from "react"
+import dynamic from "next/dynamic"
+import { useTranslations } from "next-intl"
+import { useDocSearchKeyboardEvents } from "typesense-docsearch-react"
+import * as Portal from "@radix-ui/react-portal"
+import { Slot } from "@radix-ui/react-slot"
+
+import { ErrorBoundary } from "@/components/ui/error-boundary"
 
 import { trackCustomEvent } from "@/lib/utils/matomo"
-import { sanitizeHitTitle } from "@/lib/utils/sanitizeHitTitle"
-import { sanitizeHitUrl } from "@/lib/utils/url"
 
 import SearchButton from "./SearchButton"
+import SearchInputButton from "./SearchInputButton"
 
-import "@docsearch/css"
+import { useDisclosure } from "@/hooks/useDisclosure"
+import { useKeyboardShortcut } from "@/hooks/useKeyboardShortcut"
 
 const SearchModal = dynamic(() => import("./SearchModal"))
 
-export const SearchIconButton = forwardRef<IconButtonProps, "button">(
-  (props, ref) => (
-    <Button
-      ref={ref}
-      variant="ghost"
-      isSecondary
-      px={2}
-      _hover={{
-        color: "primary.base",
-        transform: "rotate(5deg)",
-        transition: "transform 0.2s ease-in-out",
-      }}
-      transition="transform 0.2s ease-in-out"
-      {...props}
-    >
-      <MdSearch />
-    </Button>
-  )
-)
+interface SearchProps {
+  asChild?: boolean
+  children?: React.ReactElement<unknown>
+}
 
-type Props = Pick<UseDisclosureReturn, "isOpen" | "onOpen" | "onClose">
+const Search = ({ asChild = false, children }: SearchProps) => {
+  const disclosure = useDisclosure()
+  const { isOpen, onOpen, onClose } = disclosure
 
-const Search = forwardRef<Props, "button">(
-  ({ isOpen, onOpen, onClose }, ref) => {
-    const { locale } = useRouter()
-    const searchButtonRef = useRef<HTMLButtonElement>(null)
-    const mergedButtonRefs = useMergeRefs(ref, searchButtonRef)
-    const { t } = useTranslation("common")
+  const searchButtonRef = useRef<HTMLButtonElement>(null)
+  const t = useTranslations("common")
 
-    useDocSearchKeyboardEvents({
-      isOpen,
-      onOpen,
-      onClose,
-      searchButtonRef,
+  const handleOpen = () => {
+    onOpen()
+    trackCustomEvent({
+      eventCategory: "nav bar",
+      eventAction: "click",
+      eventName: "search open",
     })
-
-    const appId = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || ""
-    const apiKey = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY || ""
-    const indexName =
-      process.env.NEXT_PUBLIC_ALGOLIA_BASE_SEARCH_INDEX_NAME || "ethereumorg"
-
-    const breakpointToken: ThemeTypings["breakpoints"] = "xl"
-
-    return (
-      <>
-        <Box hideBelow={breakpointToken}>
-          <SearchButton
-            ref={mergedButtonRefs}
-            onClick={() => {
-              onOpen()
-              trackCustomEvent({
-                eventCategory: "nav bar",
-                eventAction: "click",
-                eventName: "search open",
-              })
-            }}
-            translations={{
-              buttonText: t("search"),
-              buttonAriaLabel: t("search"),
-            }}
-          />
-        </Box>
-        <Box hideFrom={breakpointToken}>
-          <SearchIconButton
-            onClick={() => {
-              onOpen()
-              trackCustomEvent({
-                eventCategory: "nav bar",
-                eventAction: "click",
-                eventName: "search open",
-              })
-            }}
-            ref={mergedButtonRefs}
-            aria-label={t("aria-toggle-search-button")}
-          />
-        </Box>
-        <Portal>
-          {isOpen && (
-            <SearchModal
-              apiKey={apiKey}
-              appId={appId}
-              indexName={indexName}
-              onClose={onClose}
-              searchParameters={{
-                facetFilters: [`lang:${locale}`],
-              }}
-              transformItems={(items) =>
-                items.map((item: DocSearchHit) => {
-                  const newItem: DocSearchHit = structuredClone(item)
-                  newItem.url = sanitizeHitUrl(item.url)
-                  const newTitle = sanitizeHitTitle(
-                    item._highlightResult.hierarchy.lvl0?.value || ""
-                  )
-                  newItem._highlightResult.hierarchy.lvl0.value = newTitle
-                  return newItem
-                })
-              }
-              placeholder={t("search-ethereum-org")}
-              translations={{
-                searchBox: {
-                  resetButtonTitle: t("clear"),
-                  resetButtonAriaLabel: t("clear"),
-                  cancelButtonText: t("close"),
-                  cancelButtonAriaLabel: t("close"),
-                },
-                footer: {
-                  selectText: t("docsearch-to-select"),
-                  selectKeyAriaLabel: t("docsearch-to-select"),
-                  navigateText: t("docsearch-to-navigate"),
-                  navigateUpKeyAriaLabel: t("up"),
-                  navigateDownKeyAriaLabel: t("down"),
-                  closeText: t("docsearch-to-close"),
-                  closeKeyAriaLabel: t("docsearch-to-close"),
-                  searchByText: t("docsearch-search-by"),
-                },
-                errorScreen: {
-                  titleText: t("docsearch-error-title"),
-                  helpText: t("docsearch-error-help"),
-                },
-                startScreen: {
-                  recentSearchesTitle: t(
-                    "docsearch-start-recent-searches-title"
-                  ),
-                  noRecentSearchesText: t("docsearch-start-no-recent-searches"),
-                  saveRecentSearchButtonTitle: t(
-                    "docsearch-start-save-recent-search"
-                  ),
-                  removeRecentSearchButtonTitle: t(
-                    "docsearch-start-remove-recent-search"
-                  ),
-                  favoriteSearchesTitle: t("docsearch-start-favorite-searches"),
-                  removeFavoriteSearchButtonTitle: t(
-                    "docsearch-start-remove-favorite-search"
-                  ),
-                },
-                noResultsScreen: {
-                  noResultsText: t("docsearch-no-results-text"),
-                  suggestedQueryText: t("docsearch-no-results-suggested-query"),
-                  reportMissingResultsText: t("docsearch-no-results-missing"),
-                  reportMissingResultsLinkText: t(
-                    "docsearch-no-results-missing-link"
-                  ),
-                },
-              }}
-            />
-          )}
-        </Portal>
-      </>
-    )
   }
-)
+
+  useDocSearchKeyboardEvents({
+    isOpen,
+    onOpen: handleOpen,
+    onClose,
+    // The fork's React 18-era types want a non-null ref; React 19's useRef
+    // yields RefObject<T | null>. Safe to narrow — the hook only reads .current.
+    searchButtonRef: searchButtonRef as RefObject<HTMLButtonElement>,
+  })
+
+  // DocSearch already opens on these chords, so there is nothing to do here.
+  // The registration exists only so the hook counts a keyboard-opened search
+  // separately from the button, which share the event above.
+  useKeyboardShortcut("search", () => {})
+
+  return (
+    <>
+      {asChild ? (
+        <Slot
+          ref={searchButtonRef}
+          onClick={handleOpen}
+          data-testid="search-button"
+        >
+          {children}
+        </Slot>
+      ) : (
+        <>
+          <SearchButton
+            onClick={handleOpen}
+            data-testid="search-button"
+            className="xl:hidden"
+          />
+          <SearchInputButton className="max-xl:hidden" onClick={handleOpen} />
+        </>
+      )}
+      <Portal.Root>
+        {isOpen && (
+          <ErrorBoundary
+            fallback={() => (
+              <div className="fixed inset-0 z-modal flex items-center justify-center bg-overlay">
+                <div className="mx-4 flex flex-col items-center gap-4 rounded-lg bg-background p-8 text-center shadow-lg">
+                  <p className="text-body-medium">
+                    {t("loading-error-refresh")}
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      className="rounded-md bg-primary px-4 py-2 text-sm text-white hover:bg-primary-hover"
+                      onClick={() => window.location.reload()}
+                    >
+                      {t("refresh")}
+                    </button>
+                    <button
+                      className="rounded-md border border-body-light px-4 py-2 text-sm text-body hover:bg-background-highlight"
+                      onClick={onClose}
+                    >
+                      {t("close")}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          >
+            <SearchModal onClose={onClose} />
+          </ErrorBoundary>
+        )}
+      </Portal.Root>
+    </>
+  )
+}
 
 export default Search

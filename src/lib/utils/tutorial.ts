@@ -1,20 +1,14 @@
-import { Lang } from "@/lib/types"
-
-import { Skill } from "@/components/TutorialMetadata"
-
-import { IExternalTutorial, ITutorial } from "@/pages/developers/tutorials"
+import { IExternalTutorial, ITutorial, Lang, Skill } from "@/lib/types"
 
 // Take all tutorials, and return a list of tutorials for a specific locale
 export const filterTutorialsByLang = (
-  internalTutorials: any,
+  internalTutorials: ITutorial[],
   externalTutorials: Array<IExternalTutorial>,
   locale: Lang
 ): Array<ITutorial> => {
   const internalTutorialsMap = internalTutorials.map((tutorial) => {
-    const lang = tutorial?.lang || "en"
-
     return {
-      to: tutorial.to || "",
+      href: tutorial.href || "",
       title: tutorial?.title || "",
       description: tutorial?.description || "",
       author: tutorial?.author || "",
@@ -29,7 +23,7 @@ export const filterTutorialsByLang = (
 
   const externalTutorialsMap = externalTutorials.map<ITutorial>(
     (tutorial: IExternalTutorial) => ({
-      to: tutorial.url,
+      href: tutorial.url,
       title: tutorial.title,
       description: tutorial.description,
       author: tutorial.author,
@@ -58,33 +52,4 @@ export const filterTutorialsByLang = (
     })
 
   return filteredTutorials
-}
-
-export const getSortedTutorialTagsForLang = (
-  filteredTutorialsByLang: Array<ITutorial> = []
-) => {
-  const allTags = filteredTutorialsByLang.reduce<Array<string>>(
-    (tags, tutorial) => {
-      return [...tags, ...(tutorial.tags || [])]
-    },
-    []
-  )
-
-  const reducedTags = allTags.reduce((acc, tag) => {
-    if (acc[tag]) {
-      acc[tag] = acc[tag] + 1
-    } else {
-      acc[tag] = 1
-    }
-    return acc
-  }, {})
-
-  const sortedTags = Object.keys(reducedTags)
-    .sort()
-    .reduce((obj, key) => {
-      obj[key] = reducedTags[key]
-      return obj
-    }, {})
-
-  return sortedTags
 }

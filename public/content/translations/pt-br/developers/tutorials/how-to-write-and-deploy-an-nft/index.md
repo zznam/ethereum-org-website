@@ -1,185 +1,185 @@
 ---
-title: Como escrever e implantar um NFT (Primeira parte da série de tutoriais sobre NFT)
-description: Este tutorial é a parte 1 de uma série sobre NFTs que o guiará passo a passo sobre como escrever e implantar um contrato inteligente não fungível (token ERC-721) usando Ethereum e o sistema de arquivos do Inter Planetary (IPFS).
+title: "Como escrever e implantar um NFT (Parte 1/3 da série de tutoriais sobre NFT)"
+description: "Este tutorial é a Parte 1 de uma série sobre NFTs que o guiará passo a passo sobre como escrever e implantar um contrato inteligente de Token Não Fungível (token ERC-721) usando Ethereum e o Inter Planetary File System (IPFS)."
 author: "Sumi Mudgil"
-tags:
-  - "ERC-721"
-  - "Alchemy"
-  - "Solidity"
-  - "contratos inteligentes"
-skill: intermediate
+tags: ["ERC-721", "Alchemy", "Solidity", "contratos inteligentes"]
+skill: beginner
+breadcrumb: Escrever e implantar NFT
 lang: pt-br
 published: 2021-04-22
 ---
 
-Com os NFTs trazendo a blockchain aos olhos do público, agora é uma excelente oportunidade para entender a tendência publicando seu próprio contrato NFT (ERC-721 Token) na blockchain Ethereum!
+Com os tokens não fungíveis (NFTs) trazendo a blockchain para os holofotes do público, agora é uma excelente oportunidade para entender o entusiasmo por si mesmo, publicando seu próprio contrato de NFT (token ERC-721) na blockchain Ethereum!
 
-A Alchemy tem muito orgulho por estar no espaço NFT com os maiores nomes incluindo Makersplace (recentemente atingiu a marca de 69 milhões de doláres em vendas de artes digitais), Dapper Labs (criadores do NBA Top Shot e Crypto Kitties), OpenSea (o maior mercado de NFT do mundo), Zora, Super Rare, NFTfi, Foundation, Enjin, Origin Protocol, Immutable e muito mais.
+Neste tutorial, vamos orientá-lo na criação e implantação de um contrato inteligente ERC-721 na rede de teste Sepolia usando [MetaMask](https://metamask.io/), [Solidity](https://docs.soliditylang.org/), [Hardhat](https://hardhat.org/), [Pinata](https://pinata.cloud/) e [Alchemy](https://alchemy.com/signup/eth) (não se preocupe se você ainda não entende o que nada disso significa — nós explicaremos!).
 
-Neste tutorial, nós vamos criar e implantar um contrato inteligente ERC-721 na rede de teste Sepolia usando [MetaMask](https://metamask.io/), [Solidity](https://docs.soliditylang.org/en/v0.8.0/), [Hardhat](https://hardhat.org/), [Pinata](https://pinata.cloud/) e [Alquimia](https://alchemy.com/signup/eth) (não se preocupe caso não entender o que tudo isso significa — explicaremos tudo!).
+Na Parte 2 deste tutorial, veremos como podemos usar nosso contrato inteligente para cunhar um NFT, e na Parte 3 explicaremos como visualizar seu NFT na MetaMask.
 
-Na parte 2 deste tutorial, veremos como podemos usar nosso contrato inteligente para gerar NFT, e na Parte 3, explicaremos como ver seu NFT no MetaMask.
+E, claro, se você tiver dúvidas em qualquer momento, não hesite em entrar em contato no [Discord da Alchemy](https://discord.gg/gWuC7zB) ou visite a [documentação da API de NFT da Alchemy](https://www.alchemy.com/docs/reference/nft-api-quickstart)!
 
-E claro, se você tiver dúvidas a qualquer momento, acesso o [Alchemy Discord](https://discord.gg/gWuC7zB) ou visite a página de [Documentação sobre a API NFT da Alchemy](https://docs.alchemy.com/alchemy/enhanced-apis/nft-api)!
+## Passo 1: Conectar-se à rede Ethereum {#connect-to-ethereum}
 
-## Etapa 1: Se conectar à rede Ethereum {#connect-to-ethereum}
+Existem várias maneiras de fazer solicitações à blockchain Ethereum, mas para facilitar as coisas, usaremos uma conta gratuita na [Alchemy](https://alchemy.com/signup/eth), uma plataforma de desenvolvedores de blockchain e API que nos permite nos comunicar com a cadeia Ethereum sem ter que executar nossos próprios nós.
 
-Existem várias maneiras de fazer solicitações para a blockchain Ethereum, mas para facilitar as coisas, usaremos uma conta gratuita na [Alchemy](https://alchemy.com/signup/eth), uma plataforma e API de desenvolvedores de blockchain que nos permite nos comunicar com a cadeia Ethereum sem ter que executar os nossos próprios nós.
+Neste tutorial, também aproveitaremos as ferramentas de desenvolvedor da Alchemy para monitoramento e análise para entender o que está acontecendo internamente na implantação do nosso contrato inteligente. Se você ainda não tem uma conta na Alchemy, pode se inscrever gratuitamente [aqui](https://alchemy.com/signup/eth).
 
-Neste tutorial, também aproveitaremos as ferramentas de desenvolvedor da Alchemy para fins de monitoramento e análise, para entender o que está acontecendo nos bastidores da nossa implantação de contrato inteligente. Se você ainda não tiver uma conta da Alchemy, inscreva-se gratuitamente [aqui](https://alchemy.com/signup/eth).
+## Passo 2: Crie seu aplicativo (e chave de API) {#make-api-key}
 
-## Etapa 2: Criar seu aplicativo (e chave de API) {#make-api-key}
+Depois de criar uma conta na Alchemy, você pode gerar uma chave de Interface de Programação de Aplicações (API) criando um aplicativo. Isso nos permitirá fazer solicitações à rede de teste Sepolia. Confira [este guia](https://www.alchemy.com/docs/choosing-a-web3-network) se você estiver curioso para saber mais sobre redes de teste.
 
-Assim que criar uma conta na Alchemy, você pode gerar uma chave de API criando um "app". Isso nos permitirá fazer solicitações à rede de teste Sepolia. Confira [este guia](https://docs.alchemyapi.io/guides/choosing-a-network) se você está curioso para aprender mais sobre as redes de teste.
+1. Navegue até a página "Create new app" (Criar novo aplicativo) no seu Painel da Alchemy selecionando "Select an app" (Selecionar um aplicativo) na barra de navegação e clicando em "Create new app"
 
-1. Vá até a página "Create App" no painel da Alchemy, passe o mouse sobre a palavra "Apps" na barra de navegação e clique em "Create App"
+![Crie seu aplicativo](./alchemy-create-new-app.png)
 
-![Crie seu aplicativo](./create-your-app.png)
+2. Dê um nome ao seu aplicativo (escolhemos "My First NFT!"), ofereça uma breve descrição e escolha um caso de uso. Em seguida, pesquise por "Ethereum" e selecione a rede. Usaremos a Sepolia, a rede de teste recomendada para o desenvolvimento de aplicativos (consulte [Redes Ethereum](/developers/docs/networks/#ethereum-testnets)).
 
-2. Nomeie seu app (nós escolhemos “Meu primeiro NFT!”), ofereça uma breve descrição, selecione “Ethereum” para a rede e escolha “Sepolia” para sua rede. Desde a fusão, as outras redes de teste foram descontinuadas.
+3. Clique em "Next" (Avançar) para prosseguir, depois em "Create app" (Criar aplicativo) e pronto! Seu aplicativo deve aparecer no menu suspenso da barra de navegação, com uma chave de API disponível para cópia.
 
-![Configure e publique seu aplicativo](./alchemy-explorer-sepolia.png)
+## Passo 3: Crie uma conta (endereço) Ethereum {#create-eth-address}
 
-3. Clique em "Create App", e é isso e tudo! Seu app deveria aparecer na tabela abaixo.
+Precisamos de uma conta Ethereum para enviar e receber transações. Para este tutorial, usaremos a MetaMask, uma carteira virtual no navegador usada para gerenciar o endereço da sua conta Ethereum. Se você quiser entender mais sobre como as transações na Ethereum funcionam, confira [esta página](/developers/docs/transactions/) da Fundação Ethereum.
 
-## Etapa 3: Criar uma conta Ethereum (endereço) {#create-eth-address}
+Você pode baixar e criar uma conta na MetaMask gratuitamente [aqui](https://metamask.io/download). Ao criar uma conta, ou se você já tiver uma, certifique-se de mudar para a rede de teste "Sepolia" usando o menu de seleção de rede (para que não estejamos lidando com dinheiro real). Se você não vir a Sepolia listada, abra o menu no canto superior direito, selecione "Networks" (Redes) e ative "Show test networks" (Mostrar redes de teste) (consulte o [guia da MetaMask para visualizar redes de teste](https://support.metamask.io/configure/networks/how-to-view-testnets-in-metamask/)).
 
-Precisamos de uma conta Ethereum para enviar e receber transações. Para este tutorial, usaremos uma carteira virtual no navegador, a MetaMask, para gerenciar o endereço da sua conta Ethereum. Se você quiser entender mais sobre como as transações no Ethereum funcionam, confira [esta página](/developers/docs/transactions/) na Fundação Ethereum.
+![Defina a Sepolia como sua rede](./metamask-sepolia.png)
 
-Você pode baixar e criar uma conta MetaMask gratuitamente [neste link](https://metamask.io/download.html). Quando você estiver criando uma conta, ou se você já tiver uma, certifique-se de mudar para a “Sepolia Test Network” no canto superior direito (para que não lidemos com dinheiro real).
+## Passo 4: Adicione ether de um Faucet {#step-4-add-ether-from-a-faucet}
 
-![Defina Sepolia como sua rede](./metamask-goerli.png)
+Para implantar nosso contrato inteligente na rede de teste, precisaremos de alguns ETH falsos. Para obter ETH da Sepolia, escolha um dos faucets listados nos [detalhes da rede Sepolia](/developers/docs/networks/#sepolia) e insira o endereço da sua conta. Se um não funcionar, tente outro, pois às vezes eles podem secar, e alguns têm regras de elegibilidade: por exemplo, o [faucet Sepolia da Alchemy](https://www.alchemy.com/faucets/ethereum-sepolia) exige que o endereço de recebimento tenha pelo menos 0.001 ETH na Rede Principal do Ethereum. Você deve ver o ETH na sua conta da MetaMask logo em seguida!
 
-## Etapa 4: Adicionar ether de um faucet {#step-4-add-ether-from-a-faucet}
+## Passo 5: Verificar seu saldo {#check-balance}
 
-Para implementar nosso contrato inteligente na rede de teste, precisaremos de alguns ETHs de imitação. Para obter ETH, você pode acessar a [Torneira da Sepolia](https://sepoliafaucet.com/) hospedada pela Alchemy, fazer login, inserir o endereço da sua conta e clicar em "Enviar-me ETH". Você deveria ver o ETH na sua conta MetaMask logo depois!
+Para confirmar que nosso saldo está lá, vamos fazer uma solicitação [eth_getBalance](https://www.alchemy.com/docs/chains/ethereum/ethereum-api-endpoints/eth-get-balance) usando a [ferramenta sandbox da Alchemy](https://sandbox.alchemy.com/?network=ETH_SEPOLIA&method=eth_getBalance&body.id=1&body.jsonrpc=2.0&body.method=eth_getBalance&body.params%5B0%5D=&body.params%5B1%5D=latest). Isso retornará a quantidade de ETH em nossa carteira. Depois de inserir o endereço da sua conta da MetaMask e clicar em "Send Request" (Enviar solicitação), você deverá ver uma resposta como esta:
 
-## Etapa 5: Verificar seu saldo {#check-balance}
+```json
+{ "jsonrpc": "2.0", "id": 0, "result": "0xde0b6b3a7640000" }
+```
 
-Para verificar novamente que temos saldo, vamos fazer uma solicitação através da ferramenta [eth_getBalance](https://docs.alchemyapi.io/alchemy/documentation/alchemy-api-reference/json-rpc#eth_getbalance) fornecida pelo [compositor da Alchemy](https://composer.alchemyapi.io?composer_state=%7B%22network%22%3A0%2C%22methodName%22%3A%22eth_getBalance%22%2C%22paramValues%22%3A%5B%22%22%2C%22latest%22%5D%7D). Ele mostrará a quantidade de ETH em nossa carteira. Depois de inserir o endereço da sua conta da MetaMask e clicar em "Send Request", você verá uma resposta como esta:
+> **Nota** Este resultado está em Wei, não em ETH. Wei é usado como a menor denominação de ether. A conversão de Wei para ETH é 1 eth = 10<sup>18</sup> Wei. Portanto, se convertermos 0xde0b6b3a7640000 para decimal, obteremos 1\*10<sup>18</sup> Wei, o que equivale a 1 ETH.
 
-    `{"jsonrpc": "2.0", "id": 0, "result": "0xde0b6b3a7640000"}`
+Ufa! Nosso dinheiro falso está todo lá.
 
-> **Nota** Este resultado está em wei, não em ETH. Lembre-se de que o wei é a menor unidade do ether. A conversão de wei para ETH é 1 eth = 10<sup>18</sup> wei. Então, se convertemos 0xde0b6b3a7640000 para decimal, temos 1\*10<sup>18</sup> wei, que é igual a 1 ETH.
+## Passo 6: Inicialize nosso projeto {#initialize-project}
 
-Ufa! O nosso dinheiro falso está todo lá.
+Primeiro, precisaremos criar uma pasta para o nosso projeto. Navegue até a sua linha de comando e digite:
 
-## Etapa 6: Dar início a nosso projeto {#initialize-project}
+```sh
+mkdir my-nft
+cd my-nft
+```
 
-Primeiro, precisamos criar uma pasta para o nosso projeto. Navegue até sua linha de comando e digite:
+Agora que estamos dentro da pasta do nosso projeto, usaremos o npm init para inicializar o projeto. Se você ainda não tem o npm instalado, siga [as instruções de instalação do Node.js](https://nodejs.org/en/download/) (precisaremos do Node.js e do npm para este tutorial).
 
-    mkdir my-nft
-    cd my-nft
+```sh
+npm init
+```
 
-Agora que estamos dentro da pasta do nosso projeto, vamos usar npm init para inicializá-lo. Se você ainda não tiver o npm instalado, siga [estas instruções](https://docs.alchemyapi.io/alchemy/guides/alchemy-for-macs#1-install-nodejs-and-npm) (nós também vamos precisar do [Node.js](https://nodejs.org/en/download/), então baixe isso também!).
+Não importa muito como você responde às perguntas de instalação; aqui está como fizemos para referência:
 
-    npm init
+```console
+package name: (my-nft)
+version: (1.0.0)
+description: My first NFT!
+entry point: (index.js)
+test command:
+git repository:
+keywords:
+author:
+license: (ISC)
+About to write to /Users/thesuperb1/Desktop/my-nft/package.json:
 
-Não importa realmente como você responde às questões de instalação; aqui está o que utilizamos de referência:
+{
+  "name": "my-nft",
+  "version": "1.0.0",
+  "description": "My first NFT!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+```
 
-    package name: (my-nft)
-    version: (1.0.0)
-    description: My first NFT!
-    entry point: (index.js)
-    test command:
-    git repository:
-    keywords:
-    author:
-    license: (ISC)
-    About to write to /Users/thesuperb1/Desktop/my-nft/package.json:
-    
-    {
-      "name": "my-nft",
-      "version": "1.0.0",
-      "description": "My first NFT!",
-      "main": "index.js",
-      "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-      },
-      "author": "",
-      "license": "ISC"
-    }
+Aprove o package.json. O Hardhat 3, que instalaremos a seguir, suporta apenas projetos de módulo ES, então marque o projeto como um:
 
-Aprove o package.json e estamos prontos para começar!
+```sh
+npm pkg set type=module
+```
 
-## Etapa 7: Instalar o [Hardhat](https://hardhat.org/getting-started/#overview) {#install-hardhat}
+E estamos prontos para começar!
 
-Hardhat é um ambiente de desenvolvimento para compilar, implementar, testar e depurar seu software de Ethereum. Ele ajuda os desenvolvedores na criação de contratos inteligentes e dapps localmente antes de implantar na cadeia real.
+## Passo 7: Instale o [Hardhat](https://hardhat.org/docs/getting-started) {#install-hardhat}
 
-Dentro do nosso projeto my-nft execute:
+O Hardhat é um ambiente de desenvolvimento para compilar, implantar, testar e depurar seu software Ethereum. Ele ajuda os desenvolvedores na construção de contratos inteligentes e aplicativos descentralizados (dapps) localmente antes de implantar na cadeia ativa.
 
-    npm install --save-dev hardhat
+O Hardhat 3 requer o Node.js v22.13.0 ou posterior. Dentro do nosso projeto my-nft, execute:
 
-Para mais detalhes, confira esta página sobre as [instruções de instalação](https://hardhat.org/getting-started/#overview).
+```sh
+npm install --save-dev hardhat
+```
 
-## Etapa 8: Criar o projeto Hardhat {#create-hardhat-project}
+Confira esta página para mais detalhes sobre as [instruções de instalação](https://hardhat.org/docs/getting-started).
 
-Dentro da nossa pasta de projeto, execute:
+## Passo 8: Crie o projeto Hardhat {#create-hardhat-project}
 
-    npx hardhat
+Executar `npx hardhat --init` geraria um projeto de exemplo completo, mas para este tutorial configuraremos as coisas manualmente para que você possa ver cada parte. Na raiz da pasta do seu projeto, crie um arquivo chamado `hardhat.config.js` com o seguinte conteúdo:
 
-Você deve então ver uma mensagem de boas-vindas e a opção de selecionar o que quer fazer. Selecione "criar uma hardhat.config.js vazia":
+```js
+import { defineConfig } from "hardhat/config"
 
-    888    888                      888 888               888
-    888    888                      888 888               888
-    888    888                      888 888               888
-    8888888888  8888b.  888d888 .d88888 88888b.   8888b.  888888
-    888    888     "88b 888P"  d88" 888 888 "88b     "88b 888
-    888    888 .d888888 888    888  888 888  888 .d888888 888
-    888    888 888  888 888    Y88b 888 888  888 888  888 Y88b.
-    888    888 "Y888888 888     "Y88888 888  888 "Y888888  "Y888
-    👷 Welcome to Hardhat v2.0.11 👷‍
-    ? O que você deseja fazer? …
-    Create a sample project
-    ❯ Create an empty hardhat.config.js
-    Quit
+export default defineConfig({
+  solidity: "0.8.34",
+})
+```
 
-Isso vai gerar um arquivo hardhat.config.js, no qual especificaremos todas as configurações para o nosso projeto (no passo 13).
+É aqui que especificaremos toda a configuração do nosso projeto (no passo 13). Por enquanto, ele apenas diz ao Hardhat qual versão do compilador Solidity usar.
 
-## Etapa 9: Adicionar as pastas do projeto {#add-project-folders}
+## Passo 9: Adicione as pastas do projeto {#add-project-folders}
 
-Para manter a organização do nosso projeto, vamos criar duas novas pastas. Navegue até o diretório raiz do seu projeto na sua linha de comando e digite:
+Para manter nosso projeto organizado, criaremos duas novas pastas. Navegue até o diretório raiz do seu projeto na sua linha de comando e digite:
 
-    mkdir contracts
-    mkdir scripts
+```sh
+mkdir contracts
+mkdir scripts
+```
 
-- contracts/ é onde manteremos o nosso código de contrato inteligente para o NFT
+- contracts/ é onde manteremos o código do nosso contrato inteligente de NFT
 
-- scripts/ é onde manteremos scripts para implantar e interagir com nosso contrato inteligente
+- scripts/ é onde manteremos os scripts para implantar e interagir com nosso contrato inteligente
 
-## Etapa 10: Escrever nosso contrato {#write-contract}
+## Passo 10: Escreva nosso contrato {#write-contract}
 
-Agora que nosso ambiente de trabalho está configurado, iremos para a parte mais emocionante: _escrever nosso contrato de código inteligente!_
+Agora que nosso ambiente está configurado, vamos para a parte mais emocionante: _escrever o código do nosso contrato inteligente!_
 
-Abra o projeto my-nft no seu editor favorito (nós gostamos do [VSCode](https://code.visualstudio.com/)). Os contratos inteligentes são escritos em uma linguagem chamada Solidity, que usaremos para escrever nosso contrato inteligente MyNFT.sol.
+Abra o projeto my-nft no seu editor favorito (nós gostamos do [VSCode](https://code.visualstudio.com/)). Os contratos inteligentes são escritos em uma linguagem chamada Solidity, que é o que usaremos para escrever nosso contrato inteligente MyNFT.sol.‌
 
-1. Navegue até a pasta de `contracts` e crie um novo arquivo chamado MyNFT.sol
+1. Navegue até a pasta `contracts` e crie um novo arquivo chamado MyNFT.sol
 
-2. Abaixo está o nosso código de contrato inteligente NFT, nossa base para a implementação do ERC-721 da biblioteca [OpenZeppelin](https://docs.openzeppelin.com/contracts/3.x/erc721). Copie e cole o conteúdo abaixo no seu arquivo MyNFT.sol.
+2. Abaixo está o código do nosso contrato inteligente de NFT, que baseamos na implementação ERC-721 da biblioteca [OpenZeppelin](https://docs.openzeppelin.com/contracts/5.x/erc721). Copie e cole o conteúdo abaixo no seu arquivo MyNFT.sol.
 
    ```solidity
-   //Contract based on [https://docs.openzeppelin.com/contracts/3.x/erc721](https://docs.openzeppelin.com/contracts/3.x/erc721)
+   // Contrato baseado em https://docs.openzeppelin.com/contracts/5.x/erc721
    // SPDX-License-Identifier: MIT
-   pragma solidity ^0.8.0;
+   pragma solidity ^0.8.24;
 
    import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-   import "@openzeppelin/contracts/utils/Counters.sol";
    import "@openzeppelin/contracts/access/Ownable.sol";
    import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
    contract MyNFT is ERC721URIStorage, Ownable {
-       using Counters for Counters.Counter;
-       Counters.Counter private _tokenIds;
+       uint256 private _nextTokenId;
 
-       constructor() ERC721("MyNFT", "NFT") {}
+       constructor(address initialOwner)
+           ERC721("MyNFT", "NFT")
+           Ownable(initialOwner)
+       {}
 
        function mintNFT(address recipient, string memory tokenURI)
            public onlyOwner
            returns (uint256)
        {
-           _tokenIds.increment();
-
-           uint256 newItemId = _tokenIds.current();
+           uint256 newItemId = ++_nextTokenId;
            _mint(recipient, newItemId);
            _setTokenURI(newItemId, tokenURI);
 
@@ -188,163 +188,188 @@ Abra o projeto my-nft no seu editor favorito (nós gostamos do [VSCode](https://
    }
    ```
 
-3. Como estamos herdando classes da biblioteca de contratos OpenZeppelin, na linha de comando execute `npm install @openzeppelin/contracts` para instalar a biblioteca em nossa pasta.
+3. Como estamos herdando classes da biblioteca de contratos da OpenZeppelin, na sua linha de comando execute `npm install @openzeppelin/contracts` para instalar a biblioteca na nossa pasta. Este tutorial usa a OpenZeppelin Contracts 5.x, que requer Solidity 0.8.24 ou posterior.
 
-Então, o que esse código _faz_ exatamente? Vamos por partes, linha por linha.
+Então, o que esse código _faz_ exatamente? Vamos analisá-lo, linha por linha.
 
-No topo do nosso contrato inteligente, importamos três [classes de contrato inteligente OpenZeppelin](https://openzeppelin.com/):
+No topo do nosso contrato inteligente, importamos três classes de contratos inteligentes da [OpenZeppelin](https://openzeppelin.com/):
 
-- @openzeppelin/contracts/token/ERC721/ERC721.sol contém a implementação do padrão ERC-721, que nosso contrato inteligente NFT herdará. (Para ser um NFT válido, seu contrato inteligente deve implementar todos os métodos do padrão ERC-721.) Para saber mais sobre as funções herdadas do ERC-721, confira a definição da interface [aqui](https://eips.ethereum.org/EIPS/eip-721).
+- @openzeppelin/contracts/token/ERC721/ERC721.sol contém a implementação do padrão ERC-721, que nosso contrato inteligente de NFT herdará. (Para ser um NFT válido, seu contrato inteligente deve implementar todos os métodos do padrão ERC-721.) Para saber mais sobre as funções herdadas do ERC-721, confira a definição da interface [aqui](https://eips.ethereum.org/EIPS/eip-721).
 
-- @openzeppelin/contracts/utils/Counters.sol fornece contadores que só podem ser incrementados ou diminuídos por um. Nosso contrato inteligente usa um contador para acompanhar o número total de NFTs impressos e definir o ID exclusivo em nosso novo NFT. (Cada NFT cunhado usando um contrato inteligente deve ter um ID único – aqui nosso ID exclusivo é determinado pelo número total de NFTs existentes. Por exemplo, o primeiro NFT que cunhamos com o nosso contrato inteligente tem um ID igual a "1," nosso segundo NFT tem um ID igual a "2," etc.)
+- @openzeppelin/contracts/access/Ownable.sol configura o [controle de acesso](https://docs.openzeppelin.com/contracts/5.x/access-control) no nosso contrato inteligente, para que apenas o proprietário do contrato inteligente (você) possa cunhar NFTs. O proprietário é o endereço `initialOwner` passado para o construtor. (Nota: incluir o controle de acesso é inteiramente uma preferência. Se você quiser que qualquer pessoa possa cunhar um NFT usando seu contrato inteligente, remova `Ownable` e `Ownable(initialOwner)` da definição do contrato e do construtor, e `onlyOwner` da função `mintNFT`.)
 
-- @openzeppelin/contratos/access/Ownable.sol configura [controle de acesso](https://docs.openzeppelin.com/contracts/3.x/access-control) em nosso contrato inteligente, então apenas o proprietário do contrato inteligente (você) pode 'cunhar' NFTs. (Observação, incluir controle de acesso é inteiramente uma preferência. Se você quer que qualquer pessoa consiga gerar um NFT usando seu contrato inteligente, remove a palavra "Ownable" na linha 10 e "onlyOwner" na linha 17.)
+- @openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol estende o ERC-721 para que cada token possa armazenar seu próprio URI de metadados, que definimos durante a cunhagem.
 
-Depois de seguir nossas instruções de importação, temos o nosso contrato inteligente de NFT, que é surpreendentemente curto – contém apenas um contador, um construtor e uma única função! Isso se deve aos nossos contratos OpenZeppelin herdados, que implementam a maioria dos métodos de que precisamos para criar um NFT, tal como `ownerOf`, que retorna o proprietário do NFT, e `transferFrom`, que transfere a propriedade do NFT de uma conta para outra.
+Após nossas declarações de importação, temos nosso contrato inteligente de NFT personalizado, que é surpreendentemente curto — ele contém apenas um contador, um construtor e uma única função! Isso se deve aos nossos contratos herdados da OpenZeppelin, que implementam a maioria dos métodos que precisamos para criar um NFT, como `ownerOf`, que retorna o proprietário do NFT, e `transferFrom`, que transfere a propriedade do NFT de uma conta para outra.
 
-No nosso construtor ERC-721, você notará que transmitimos duas cadeias de caracteres: "MyNFT" e "NFT" A primeira variável é o nome do contrato inteligente e a segunda é símbolo dele. Você pode nomear cada uma dessas variáveis como quiser!
+O contador, `_nextTokenId`, acompanha o número total de NFTs cunhados e define o ID exclusivo no nosso novo NFT. (Cada NFT cunhado usando um contrato inteligente deve receber um ID exclusivo — aqui, nosso ID exclusivo é determinado apenas pelo número total de NFTs existentes. `++_nextTokenId` aumenta o contador antes de ser usado, então o primeiro NFT que cunhamos com nosso contrato inteligente tem um ID de "1", nosso segundo NFT tem um ID de "2", etc.)
 
-Finalmente, temos nossa função `mintNFT(destinatário de endereço, string memory tokenURI)`, que nos permite cunhar um NFT! Você vai notar que essa função recebe duas variáveis:
+No nosso construtor ERC-721, você notará que passamos 2 strings, "MyNFT" e "NFT". A primeira variável é o nome do contrato inteligente e a segunda é o seu símbolo. Você pode nomear cada uma dessas variáveis como desejar!
 
-- `address recipient` especifica o endereço que receberá o seu NFT recém-cunhado
+Finalmente, temos nossa função `mintNFT(address recipient, string memory tokenURI)` que nos permite cunhar um NFT! Você notará que esta função recebe duas variáveis:
 
-- `string memory tokenURI` é uma string que deve ser resolvida em um documento JSON que descreve os metadados do NFT. Os metadados de um NFT são o que realmente o torna realidade, permitindo que tenha propriedades configuráveis, como um nome, descrição, imagem e outros atributos. Na parte 2 deste tutorial, descreveremos como configurar este metadado.
+- `address recipient` especifica o endereço que receberá seu NFT recém-cunhado
 
-`mintNFT` chama alguns métodos da biblioteca ERC-721 herdada, e retorna um número que representa a ID do NFT recém-cunhado.
+- `string memory tokenURI` é uma string que deve resolver para um documento JSON que descreve os metadados do NFT. Os metadados de um NFT são realmente o que lhe dá vida, permitindo que ele tenha propriedades configuráveis, como nome, descrição, imagem e outros atributos. Na parte 2 deste tutorial, descreveremos como configurar esses metadados.
 
-## Etapa 11: Vincular as contas MetaMask e Alchemy a seu projeto {#connect-metamask-and-alchemy}
+`mintNFT` chama alguns métodos da biblioteca ERC-721 herdada e, por fim, retorna um número que representa o ID do NFT recém-cunhado.
 
-Agora que criamos uma carteira MetaMask, uma conta Alchemy, e escrevemos o nosso contrato inteligente, é hora de vincular os três.
+## Passo 11: Conecte a MetaMask e a Alchemy ao seu projeto {#connect-metamask-and-alchemy}
 
-Toda transação enviada da sua carteira virtual requer uma assinatura, usando sua chave privada única. Para fornecer esta permissão a nosso programa, podemos armazenar nossa chave privada (e a chave Alchemy API) em um arquivo de ambiente.
+Agora que criamos uma carteira MetaMask, uma conta na Alchemy e escrevemos nosso contrato inteligente, é hora de conectar os três.
 
-Para saber mais sobre o envio de transações, confira [este tutorial](/developers/tutorials/sending-transactions-using-web3-and-alchemy/) sobre o envio de transações usando web3.
+Toda transação enviada da sua carteira virtual requer uma assinatura usando sua chave privada exclusiva. Para fornecer essa permissão ao nosso programa, podemos armazenar com segurança nossa chave privada (e a chave de API da Alchemy) em um arquivo de ambiente.
 
-Primeiro, instale o pacote dotenv na pasta do seu projeto:
+Para saber mais sobre o envio de transações, confira a [documentação de transações](/developers/docs/transactions/).
 
-    npm install dotenv --save
+Crie um arquivo `.env` no diretório raiz do nosso projeto e adicione sua chave privada da MetaMask e a URL da API HTTP da Alchemy a ele.
 
-Então crie um arquivo `.env` no diretório raiz do nosso projeto e adicione sua chave privada do MetaMask e sua URL HTTP da API Alchemy a ele.
+- Siga [estas instruções](https://support.metamask.io/configure/accounts/how-to-export-an-accounts-private-key/) para exportar sua chave privada da MetaMask
 
-- Siga [estas instruções](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key) para exportar sua chave privada do MetaMask
+- Veja abaixo como obter a URL da API HTTP da Alchemy e copiá-la para a sua área de transferência
 
-- Veja abaixo como obter o URL da API HTTP Alchemy e copiá-la para a área de transferência
+![Copie a URL da sua API da Alchemy](./copy-alchemy-api-url.mp4#842x480)
 
-![Copie o URL da API Alchemy](./copy-alchemy-api-url.gif)
+Seu `.env` agora deve ficar assim:
 
-Seu arquivo `.env` ficará assim:
+```text
+API_URL="https://eth-sepolia.g.alchemy.com/v2/your-api-key"
+PRIVATE_KEY="your-metamask-private-key"
+```
 
-    API_URL="https://eth-sepolia.g.alchemy.com/v2/your-api-key"
-    PRIVATE_KEY="your-metamask-private-key"
-
-Para realmente conectá-las ao nosso código, referenciaremos essas variáveis em nosso arquivo hardhat.config.js na etapa 13.
+Para realmente conectá-los ao nosso código, faremos referência a essas variáveis no nosso arquivo hardhat.config.js no passo 13. O Node.js pode ler arquivos `.env` por conta própria, então não há nenhum pacote extra para instalar.
 
 <EnvWarningBanner />
 
-## Etapa 12: Instalar o Ethers.js {#install-ethers}
+## Passo 12: Instale o Ethers.js {#install-ethers}
 
-Ethers.js é uma biblioteca que facilita a interação e o envio de solicitações ao Ethereum ao incorporar [métodos padrões JSON-RPC](/developers/docs/apis/json-rpc/) a outros métodos mais amigáveis ao usuário.
+O Ethers.js é uma biblioteca que facilita a interação e a realização de solicitações à Ethereum, envolvendo [métodos JSON-RPC padrão](/developers/docs/apis/json-rpc/) com métodos mais amigáveis.
 
-Hardhat torna muito fácil a integração de [plugins](https://hardhat.org/plugins/), para ferramentas adicionais e funcionalidades extendidas. Aproveitaremos o [plugin Ethers](https://hardhat.org/plugins/nomiclabs-hardhat-ethers.html) para implantação de contratos. ([Ethers.js](https://github.com/ethers-io/ethers.js/) tem alguns métodos de implantação de contratos bastante claros).
+O Hardhat torna super fácil integrar [Plugins](https://hardhat.org/docs/plugins/official-plugins) para ferramentas adicionais e funcionalidade estendida. Aproveitaremos o [plugin Ethers](https://hardhat.org/docs/plugins/hardhat-ethers) para a implantação de contratos (o [Ethers.js](https://docs.ethers.org/v6/) tem alguns métodos de implantação de contratos super limpos).
 
-No diretório do projeto, digite:
+No diretório do seu projeto, digite:
 
-    npm install --save-dev @nomiclabs/hardhat-ethers ethers@^5.0.0
+```sh
+npm install --save-dev @nomicfoundation/hardhat-ethers ethers
+```
 
-Também precisaremos de ethers em nosso hardhat.config.js na próxima etapa.
+Também adicionaremos o plugin ao nosso hardhat.config.js no próximo passo.
 
-## Etapa 13: Atualizar hardhat.config.js {#update-hardhat-config}
+## Passo 13: Atualize o hardhat.config.js {#update-hardhat-config}
 
-Até aqui, já adicionamos diversas dependências e plugins. Agora precisamos atualizar o hardhat.config.js para que nosso projeto reconheça todos eles.
+Adicionamos várias dependências e plugins até agora, agora precisamos atualizar o hardhat.config.js para que nosso projeto saiba sobre todos eles.
 
 Atualize seu hardhat.config.js para ficar assim:
 
-    /**
-    * @type import('hardhat/config').HardhatUserConfig
-    */
-    require('dotenv').config();
-    require("@nomiclabs/hardhat-ethers");
-    const { API_URL, PRIVATE_KEY } = process.env;
-    module.exports = {
-       solidity: "0.8.1",
-       defaultNetwork: "sepolia",
-       networks: {
-          hardhat: {},
-          sepolia: {
-             url: API_URL,
-             accounts: [`0x${PRIVATE_KEY}`]
-          }
-       },
-    }
+```js
+import { existsSync } from "node:fs"
+import hardhatEthers from "@nomicfoundation/hardhat-ethers"
+import { configVariable, defineConfig } from "hardhat/config"
 
-## Etapa 14: Compilar nosso contrato {#compile-contract}
+// Carrega API_URL e PRIVATE_KEY do arquivo .env para o process.env, se existir
+if (existsSync(".env")) process.loadEnvFile()
 
-Para ter certeza de que tudo está funcionando, vamos compilar nosso contrato. A tarefa de compilação é uma das tarefas integradas do Hardhat.
+export default defineConfig({
+  plugins: [hardhatEthers],
+  solidity: "0.8.34",
+  networks: {
+    sepolia: {
+      type: "http",
+      url: configVariable("API_URL"),
+      accounts: [configVariable("PRIVATE_KEY")],
+    },
+  },
+})
+```
+
+`configVariable` diz ao Hardhat para ler cada valor de uma variável de ambiente apenas quando for necessário, para que comandos como `compile` funcionem mesmo antes de os valores serem definidos. Se você preferir não manter sua chave privada em um arquivo de texto simples, o Hardhat também pode ler [variáveis de configuração de um repositório de chaves criptografado](https://hardhat.org/docs/guides/configuration-variables).
+
+## Passo 14: Compile nosso contrato {#compile-contract}
+
+Para garantir que tudo esteja funcionando até agora, vamos compilar nosso contrato. A tarefa de compilação é uma das tarefas integradas do Hardhat.
 
 Na linha de comando, execute:
 
-    npx hardhat compile
-
-Você pode receber o aviso do identificador de licença SPDX não fornecido no arquivo fonte, mas não há necessidade de se preocupar com isso. Esperemos que tudo mais esteja bem! Se não, você sempre pode enviar uma mensagem no [discord Alchemy](https://discord.gg/u72VCg3).
-
-## Etapa 15: Escrever nosso script de implantação {#write-deploy}
-
-Agora que nosso contrato está escrito e nosso arquivo de configuração está pronto, é hora de escrever o script de implantação do contrato.
-
-Navegue até a pasta `scripts/` e crie um novo arquivo chamado `deploy.js`, adicionando o seguinte conteúdo:
-
-```js
-async function main() {
-  const MyNFT = await ethers.getContractFactory("MyNFT")
-
-  // Start deployment, returning a promise that resolves to a contract object
-  const myNFT = await MyNFT.deploy()
-  await myNFT.deployed()
-  console.log("Contract deployed to address:", myNFT.address)
-}
-
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error)
-    process.exit(1)
-  })
+```sh
+npx hardhat compile
 ```
 
-A Hardhat fez um trabalho incrível ao explicar o que cada uma dessas linhas de código faz em seu [Tutorial sobre contratos](https://hardhat.org/tutorial/testing-contracts.html#writing-tests). Adotamos aqui as explicações deles.
+Na primeira vez que você compilar, o Hardhat fará o download do compilador Solidity. Você deve então ver algo como `Compiled 1 Solidity file with solc 0.8.34`. Se não, você sempre pode enviar uma mensagem no [Discord da Alchemy](https://discord.gg/gWuC7zB).
 
-    const MyNFT = await ethers.getContractFactory("MyNFT");
+## Passo 15: Escreva nosso script de implantação {#write-deploy}
 
-Uma ContractFactory em ethers.js é uma abstração usada para implantar novos contratos inteligentes, então a MyNFT aqui representa uma fábrica para instâncias do nosso contrato NFT. Ao usar o plug-in hardhat-ethers, as instâncias ContractFactory e Contract são conectadas ao primeiro signatário por padrão.
+Agora que nosso contrato está escrito e nosso arquivo de configuração está pronto, é hora de escrever nosso script de implantação de contrato.
 
-    const myNFT = await MyNFT.deploy();
+Navegue até a pasta `scripts/` e crie um novo arquivo chamado `deploy.js`, adicionando o seguinte conteúdo a ele:
 
-Ao chamar deploy() em uma ContractFactory, a implantação se iniciará e retornará uma Promise que se resolve em um Contract. Este é o objeto que tem um método para cada uma de nossas funções de contrato inteligente.
+```js
+import { network } from "hardhat"
 
-## Etapa 16: Implantar nosso contrato {#deploy-contract}
+const { ethers } = await network.create()
 
-Finalmente estamos prontos para implantar o nosso contrato inteligente! Navegue de volta para a raiz do diretório do seu projeto e, na linha de comando, execute:
+const [deployer] = await ethers.getSigners()
+const MyNFT = await ethers.getContractFactory("MyNFT")
 
-    npx hardhat --network sepo lia run scripts/deploy.js
+// Inicia a implantação, retornando uma promise que resolve para um objeto de contrato
+const myNFT = await MyNFT.deploy(deployer.address)
+await myNFT.waitForDeployment()
+console.log("Contract deployed to address:", await myNFT.getAddress())
+```
 
-Você deverá ver algo assim:
+Vamos analisar o que cada uma dessas linhas de código faz.
 
-    Contrato implantado no endereço: 0x4C5266cCc4b3F426965d2f51b6D910325a0E7650
+```js
+const { ethers } = await network.create()
+```
 
-Se nós formos ao [Sepolia etherscan](https://sepolia.etherscan.io/) e procurarmos o endereço do nosso contrato, poderemos ver que ele foi implantado com sucesso. Se você não puder ver o endereço imediatamente, por favor, aguarde um momento, pois pode levar algum tempo. A transação ficará parecida com isto:
+No Hardhat 3, um script abre uma conexão com uma rede explicitamente. `network.create()` conecta-se à rede que você escolhe com a opção `--network` ao executar o script, e o plugin `hardhat-ethers` adiciona um objeto `ethers` a essa conexão.
 
-![Veja o seu endereço de transação no Etherscan](./etherscan-sepoila-contract-creation.png)
+```js
+const [deployer] = await ethers.getSigners()
+```
 
-O endereço do remetente (From) deve corresponder ao seu endereço da conta MetaMask e o endereço do destinatário (To) deve dizer "Contract Creation". Se clicarmos na transação, veremos o nosso endereço de contrato no campo "To":
+`getSigners()` retorna as contas configuradas para a rede. Na Sepolia, essa é a conta cuja chave privada você colocou no `.env`. Passamos seu endereço para o construtor para que você se torne o proprietário do contrato.
 
-![Veja o seu endereço de contrato no Etherscan](./etherscan-sepolia-tx-details.png)
+```js
+const MyNFT = await ethers.getContractFactory("MyNFT")
+```
 
-Sim! Você acabou de implantar seu contrato inteligente NFT na cadeia Ethereum (testnet)!
+Uma ContractFactory no ethers.js é uma abstração usada para implantar novos contratos inteligentes, então MyNFT aqui é uma fábrica para instâncias do nosso contrato de NFT. Ao usar o plugin hardhat-ethers, as instâncias de ContractFactory e Contract são conectadas ao primeiro signatário por padrão.
 
-Para entender o que está acontecendo nos bastidores, vamos navegar até a guia Explorer no [painel do Alchemy](https://dashboard.alchemyapi.io/explorer). Se você tem vários aplicativos Alchemy certifique-se de filtrar por app e selecionar "MyNFT".
+```js
+const myNFT = await MyNFT.deploy(deployer.address)
+```
 
-![Exibir chamadas feitas "em segundo plano" com o Explorer Dashboard do Alquimia](./alchemy-explorer-goerli.png)
+Chamar deploy() em uma ContractFactory iniciará a implantação e retornará uma Promise que é resolvida em um Contract. Este é o objeto que tem um método para cada uma das funções do nosso contrato inteligente. Os argumentos que você passa para deploy() vão para o construtor do contrato, aqui o endereço `initialOwner`.
 
-Aqui você verá um punhado de chamadas JSON-RPC que Hardhat/Ethers fizeram em segundo plano para nós quando chamamos a função .deploy() . Dois importantes pontos a destacar aqui são [eth_sendRawTransaction](/developers/docs/apis/json-rpc/#eth_sendrawtransaction), que é a solicitação para realmente escrever nosso contrato inteligente na cadeia Sepolia, e [eth_getTransactionByHash](/developers/docs/apis/json-rpc/#eth_gettransactionbyhash), que é uma solicitação para ler informações sobre nossa transação dado o hash (um padrão típico ao enviar transações). Para saber mais sobre o envio de transações, confira [este tutorial](/developers/tutorials/sending-transactions-using-web3-and-alchemy/) sobre como enviar transações usando a web3.
+`waitForDeployment()` aguarda até que a transação de implantação seja incluída em um bloco, e `getAddress()` retorna o endereço do novo contrato. Consulte a [documentação de contratos do ethers.js](https://docs.ethers.org/v6/api/contract/) para mais detalhes.
 
-Isso é tudo para a Parte 1 deste tutorial. Na [Parte 2, interagiremos com o nosso contrato inteligente cunhando um NFT](/developers/tutorials/how-to-mint-an-nft/), e na [Parte 3, mostraremos como ver o seu NFT na sua carteira Ethereum](/developers/tutorials/how-to-view-nft-in-metamask/)!
+## Passo 16: Implante nosso contrato {#deploy-contract}
+
+Finalmente estamos prontos para implantar nosso contrato inteligente! Navegue de volta para a raiz do diretório do seu projeto e, na linha de comando, execute:
+
+```sh
+npx hardhat run scripts/deploy.js --network sepolia
+```
+
+Você deve então ver algo como:
+
+```text
+Contract deployed to address: 0x4C5266cCc4b3F426965d2f51b6D910325a0E7650
+```
+
+Se formos ao [Etherscan da Sepolia](https://sepolia.etherscan.io/) e pesquisarmos o endereço do nosso contrato, deveremos ser capazes de ver que ele foi implantado com sucesso. Se você não conseguir vê-lo imediatamente, aguarde um pouco, pois pode levar algum tempo. A transação será parecida com esta:
+
+![Visualize o endereço da sua transação no Etherscan](./etherscan-sepoila-contract-creation.png)
+
+O endereço "From" (De) deve corresponder ao endereço da sua conta da MetaMask e o endereço "To" (Para) dirá "Contract Creation" (Criação de Contrato). Se clicarmos na transação, veremos o endereço do nosso contrato no campo "To":
+
+![Visualize o endereço do seu contrato no Etherscan](./etherscan-sepolia-tx-details.png)
+
+Isso aí! Você acabou de implantar seu contrato inteligente de NFT na cadeia (rede de teste) Ethereum!
+
+Para entender o que está acontecendo internamente, você pode observar as solicitações que seu aplicativo recebeu no seu [painel da Alchemy](https://dashboard.alchemy.com/).
+
+Lá você verá um punhado de chamadas JSON-RPC que o Hardhat/Ethers fez internamente para nós quando chamamos a função .deploy(). Duas importantes a serem destacadas aqui são [eth_sendRawTransaction](/developers/docs/apis/json-rpc/#eth-sendrawtransaction), que é a solicitação para realmente escrever nosso contrato inteligente na cadeia Sepolia, e [eth_getTransactionByHash](/developers/docs/apis/json-rpc/#eth-gettransactionbyhash), que é uma solicitação para ler informações sobre nossa transação dado o hash (um padrão típico ao enviar transações). Para saber mais sobre o envio de transações, confira a [documentação de transações](/developers/docs/transactions/).
+
+Isso é tudo para a Parte 1 deste tutorial. Na [Parte 2, nós realmente interagiremos com nosso contrato inteligente cunhando um NFT](/developers/tutorials/how-to-mint-an-nft/), e na [Parte 3 mostraremos como visualizar seu NFT na sua carteira Ethereum](/developers/tutorials/how-to-view-nft-in-metamask/)!

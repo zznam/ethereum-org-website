@@ -1,250 +1,123 @@
-import { useRouter } from "next/router"
-import {
-  Badge,
-  Box,
-  type BoxProps,
-  chakra,
-  Divider,
-  Flex,
-  type HeadingProps,
-  Kbd,
-  Text,
-  type TextProps,
-  useToken,
-} from "@chakra-ui/react"
+import { MDXRemoteProps } from "next-mdx-remote"
 
-import type { ChildOnlyProp, TranslationKey } from "@/lib/types"
+import type { ChildOnlyProp } from "@/lib/types"
 import type { MdPageContent, TutorialFrontmatter } from "@/lib/interfaces"
 
-import PostMergeBanner from "@/components/Banners/PostMergeBanner"
-import { ButtonLink } from "@/components/Buttons"
+import Breadcrumbs from "@/components/Breadcrumbs"
 import CallToContribute from "@/components/CallToContribute"
-import Card from "@/components/Card"
-import Codeblock from "@/components/Codeblock"
-import CrowdinContributors from "@/components/CrowdinContributors"
+import ContentFeedback from "@/components/ContentFeedback"
 import Emoji from "@/components/Emoji"
 import EnvWarningBanner from "@/components/EnvWarningBanner"
-import FeedbackCard from "@/components/FeedbackCard"
-import GitHubContributors from "@/components/GitHubContributors"
-import GlossaryTooltip from "@/components/Glossary/GlossaryTooltip"
-import InfoBanner from "@/components/InfoBanner"
+import FileContributors from "@/components/FileContributors"
+import { Image } from "@/components/Image"
 import MainArticle from "@/components/MainArticle"
-import {
-  Heading1 as MdHeading1,
-  Heading2 as MdHeading2,
-  Heading3 as MdHeading3,
-  Heading4 as MdHeading4,
-} from "@/components/MdComponents"
-import { mdxTableComponents } from "@/components/Table"
+import MarkdownCard from "@/components/MarkdownCard"
+import PageActions from "@/components/PageActions"
 import TableOfContents from "@/components/TableOfContents"
-import TooltipLink from "@/components/TooltipLink"
 import TutorialMetadata from "@/components/TutorialMetadata"
+import { ButtonLink } from "@/components/ui/buttons/Button"
+import { mdxTableComponents } from "@/components/ui/mdx-table-components"
 import YouTube from "@/components/YouTube"
 
 import { getEditPath } from "@/lib/utils/editPath"
 
-import { DEFAULT_LOCALE } from "@/lib/constants"
-
-import { useClientSideGitHubLastEdit } from "@/hooks/useClientSideGitHubLastEdit"
-
-type ContentContainerProps = Pick<BoxProps, "children" | "dir">
-
-const ContentContainer = (props: ContentContainerProps) => {
-  const boxShadow = useToken("colors", "tableBoxShadow")
-
-  return (
-    <Box
-      as={MainArticle}
-      maxW="1000px"
-      minW={0}
-      background="background.base"
-      boxShadow={{ base: "none", lg: boxShadow }}
-      m={{ base: "2.5rem 0rem", lg: "2rem 2rem 6rem" }}
-      p={{ base: "3rem 2rem", lg: 16 }}
-      borderRadius="4px"
-      {...props}
-      sx={{
-        ".citation": {
-          p: { color: "text200" },
-        },
-      }}
-    />
-  )
-}
-
-const Heading1 = (props: HeadingProps) => (
-  <MdHeading1
-    fontSize={{ base: "1.75rem", lg: "2.5rem" }}
-    fontFamily="monospace"
-    textTransform="uppercase"
-    {...props}
-  />
-)
-
-const Heading2 = (props: HeadingProps) => (
-  <MdHeading2
-    fontSize={{ base: "2xl", md: "2rem" }}
-    fontFamily="monospace"
-    textTransform="uppercase"
-    scrollMarginTop={40}
-    mt={12}
-    {...props}
-  />
-)
-
-const Heading3 = (props: HeadingProps) => (
-  <MdHeading3
-    fontWeight={{ base: "semibold" }}
-    fontSize={{ base: "1rem", md: "1.5rem" }}
-    scrollMarginTop={40}
-    {...props}
-  />
-)
-
-const Heading4 = (props: HeadingProps) => (
-  <MdHeading4
-    fontWeight={{ base: "semibold" }}
-    fontSize={{ base: "1rem", md: "1.25rem" }}
-    scrollMarginTop={40}
-    {...props}
-  />
-)
-
-const StyledDivider = (props) => (
-  <Divider
-    my={16}
-    w="10%"
-    h="1"
-    opacity="1"
-    backgroundColor="homeDivider"
-    {...props}
-  />
-)
-
-const Paragraph = (props: TextProps) => (
-  <Text as="p" mt={8} mb={4} mx={0} color="text300" fontSize="md" {...props} />
-)
-
-const ListItem = (props) => {
-  return <chakra.li color="text300" {...props} />
-}
-
-const KBD = (props) => {
-  const borderColor = useToken("colors", "primary.base")
-
-  return (
-    <Kbd
-      verticalAlign="middle"
-      p="0.15rem 0.45rem"
-      borderRadius="2px"
-      border={`1px solid ${borderColor}`}
-      {...props}
-    />
-  )
-}
-
 export const tutorialsComponents = {
-  a: TooltipLink,
-  h1: Heading1,
-  h2: Heading2,
-  h3: Heading3,
-  h4: Heading4,
-  p: Paragraph,
-  kbd: KBD,
-  li: ListItem,
-  pre: Codeblock,
   ...mdxTableComponents,
-  Badge,
   ButtonLink,
   CallToContribute,
-  Card,
+  Card: MarkdownCard,
   Emoji,
   EnvWarningBanner,
-  GlossaryTooltip,
-  InfoBanner,
-  StyledDivider,
   YouTube,
-}
+} as MDXRemoteProps["components"]
+
 type TutorialLayoutProps = ChildOnlyProp &
   Pick<
     MdPageContent,
-    "tocItems" | "crowdinContributors" | "contentNotTranslated"
-  > &
-  Required<Pick<MdPageContent, "lastUpdatedDate">> & {
+    | "tocItems"
+    | "contributors"
+    | "contentNotTranslated"
+    | "slug"
+    | "lastEditLocaleTimestamp"
+  > & {
     frontmatter: TutorialFrontmatter
     timeToRead: number
   }
 
 export const TutorialLayout = ({
   children,
+  slug,
   frontmatter,
   tocItems,
   timeToRead,
-  lastUpdatedDate,
-  crowdinContributors,
+  lastEditLocaleTimestamp,
+  contributors,
   contentNotTranslated,
 }: TutorialLayoutProps) => {
-  const { asPath: relativePath } = useRouter()
-  const absoluteEditPath = getEditPath(relativePath)
-
-  const borderColor = useToken("colors", "border")
-  const postMergeBannerTranslationString =
-    frontmatter.postMergeBannerTranslation as TranslationKey | null
-  const gitHubLastEdit = useClientSideGitHubLastEdit(relativePath)
-  const intlLastEdit =
-    "data" in gitHubLastEdit ? gitHubLastEdit.data! : lastUpdatedDate
-  const useGitHubContributors =
-    frontmatter.lang === DEFAULT_LOCALE || crowdinContributors.length === 0
+  const absoluteEditPath = getEditPath(slug)
+  const heroImage = frontmatter.image
+  const hideEditButton =
+    slug.startsWith("latest/") || !!frontmatter.hideEditButton
 
   return (
-    <>
-      {!!frontmatter.showPostMergeBanner && (
-        <PostMergeBanner
-          translationString={postMergeBannerTranslationString!}
-        />
-      )}
-      <Flex
-        w="100%"
-        borderBottom={`1px solid ${borderColor}`}
-        m={{ base: "2rem 0rem", lg: "0 auto" }}
-        p={{ base: "0", lg: "0 2rem 0 0" }}
-        background={{ base: "background.base", lg: "ednBackground" }}
+    <div className="flex justify-between gap-8">
+      <main
+        className="max-w-4xl min-w-0 px-4 py-8 md:px-8 lg:py-16"
+        dir={contentNotTranslated ? "ltr" : "unset"}
       >
-        <ContentContainer dir={contentNotTranslated ? "ltr" : "unset"}>
-          <Heading1>{frontmatter.title}</Heading1>
+        <MainArticle className="flow">
+          <Breadcrumbs
+            slug={slug}
+            label={frontmatter.breadcrumb || frontmatter.title}
+          />
+          <h1>{frontmatter.title}</h1>
           <TutorialMetadata frontmatter={frontmatter} timeToRead={timeToRead} />
+          <PageActions
+            slug={slug}
+            isTranslated={!contentNotTranslated}
+            editPath={absoluteEditPath}
+            hideEditButton={hideEditButton}
+            className="-ms-2 mb-6 lg:mt-6"
+          />
           <TableOfContents
+            className="pt-6"
             items={tocItems}
             maxDepth={frontmatter.sidebarDepth!}
-            editPath={absoluteEditPath}
             isMobile
-            pt={8}
           />
-          {children}
-          {useGitHubContributors ? (
-            <GitHubContributors
-              relativePath={relativePath}
-              lastUpdatedDate={lastUpdatedDate}
-            />
-          ) : (
-            <CrowdinContributors
-              relativePath={relativePath}
-              lastUpdatedDate={intlLastEdit}
-              contributors={crowdinContributors}
+          {heroImage && (
+            <Image
+              src={heroImage}
+              alt=""
+              width={frontmatter.imageWidth ?? 1200}
+              height={frontmatter.imageHeight ?? 630}
+              blurDataURL={frontmatter.blurDataURL}
+              preload
+              sizes="(max-width: 1024px) 100vw, 1024px"
+              className="my-6 max-h-128 w-full rounded-xl object-cover"
             />
           )}
-          <FeedbackCard />
-        </ContentContainer>
-        {tocItems && (
-          <TableOfContents
-            items={tocItems}
-            maxDepth={frontmatter.sidebarDepth!}
-            editPath={absoluteEditPath}
-            hideEditButton={!!frontmatter.hideEditButton}
-            pt={16}
-          />
-        )}
-      </Flex>
-    </>
+          {children}
+          {!frontmatter.hideEditButton && (
+            <FileContributors
+              className="my-10 border-t"
+              contributors={contributors}
+              lastEditLocaleTimestamp={lastEditLocaleTimestamp}
+            />
+          )}
+        </MainArticle>
+
+        {/* End-of-page actions */}
+        <ContentFeedback />
+      </main>
+
+      {tocItems && (
+        <TableOfContents
+          className="pt-16"
+          items={tocItems}
+          maxDepth={frontmatter.sidebarDepth!}
+        />
+      )}
+    </div>
   )
 }

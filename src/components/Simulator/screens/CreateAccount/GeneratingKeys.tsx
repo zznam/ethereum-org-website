@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react"
-import { motion } from "framer-motion"
-import { PiCheckThin } from "react-icons/pi"
-import { Flex, Grid, Icon, Spinner, Text } from "@chakra-ui/react"
+import { Check } from "lucide-react"
+import { motion } from "motion/react"
+import { useTranslations } from "next-intl"
 
 import type { PhoneScreenProps } from "@/lib/types"
+
+import { Flex } from "@/components/ui/flex"
+import { Spinner } from "@/components/ui/spinner"
+
+import { cn } from "@/lib/utils/cn"
 
 import { ProgressCta } from "../../ProgressCta"
 
@@ -22,6 +27,7 @@ export const GeneratingKeys = ({
   ctaLabel,
   generateNewWords,
 }: GeneratingKeysProps) => {
+  const t = useTranslations("component-wallet-simulator")
   const { progressStepper } = nav
   const [loading, setLoading] = useState(true)
   const [complete, setComplete] = useState(false)
@@ -48,16 +54,18 @@ export const GeneratingKeys = ({
   }, [loading])
 
   return (
-    <Grid placeItems="center" h="full" bg="background.highlight">
-      <Flex direction="column" alignItems="center" gap={4}>
+    <div className="grid h-full place-items-center bg-background-highlight">
+      <Flex className="flex-col items-center gap-4">
+        {/* eslint-disable-next-line no-constant-condition */}
         {loading ? (
           <motion.div
             key="spinner"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
+            data-testid="loading-spinner"
           >
-            <Spinner w={SPINNER_SIZE} h={SPINNER_SIZE} />
+            <Spinner className={SPINNER_SIZE} />
           </motion.div>
         ) : (
           <motion.div
@@ -66,33 +74,34 @@ export const GeneratingKeys = ({
             animate={{ scale: 1 }}
             transition={{ type: "spring", delay: 0.25 }}
           >
-            <Icon
-              as={PiCheckThin}
-              w={SPINNER_SIZE}
-              h={SPINNER_SIZE}
-              transform="rotate(-10deg)"
+            <Check
+              className={cn(
+                SPINNER_SIZE,
+                "size-[1em] -rotate-[10deg] stroke-1"
+              )}
             />
           </motion.div>
         )}
-
-        <Text textAlign="center" px={{ base: 4, md: 8 }}>
-          {loading
-            ? "Generating example recovery phrase"
-            : "Example account created"}
-        </Text>
+        <p className="px-4 text-center md:px-8">
+          {loading ? t("sim-ca-generating") : t("sim-ca-account-created")}
+        </p>
         {complete && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: BUTTON_FADE_DURATION * 1e-3 }}
-            style={{ position: "absolute", bottom: 0, width: "100%" }}
+            className="absolute bottom-0 w-full"
           >
-            <ProgressCta progressStepper={progressStepper} insetInline={0}>
+            <ProgressCta
+              className="inset-x-0"
+              progressStepper={progressStepper}
+              data-testid="generating-keys-cta"
+            >
               {ctaLabel}
             </ProgressCta>
           </motion.div>
         )}
       </Flex>
-    </Grid>
+    </div>
   )
 }

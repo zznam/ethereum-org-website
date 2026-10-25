@@ -2,15 +2,16 @@
 title: "Uniswap-v2 Contract Walk-Through"
 description: How does the Uniswap-v2 contract work? Why is it written that way?
 author: Ori Pomerantz
-tags: ["solidity"]
+tags: ["solidity", "dapps"]
 skill: intermediate
+breadcrumb: Uniswap v2 walkthrough
 published: 2021-05-01
 lang: en
 ---
 
 ## Introduction {#introduction}
 
-[Uniswap v2](https://uniswap.org/whitepaper.pdf) can create an exchange market between any two ERC-20 tokens. In this article we will go over the source code for the contracts that implement this protocol and see why they are written this way.
+[Uniswap v2](https://app.uniswap.org/whitepaper.pdf) can create an exchange market between any two ERC-20 tokens. In this article we will go over the source code for the contracts that implement this protocol and see why they are written this way.
 
 ### What Does Uniswap Do? {#what-does-uniswap-do}
 
@@ -22,11 +23,11 @@ _Traders_ send one type of token to the pool and receive the other (for example,
 
 When liquidity providers want their assets back they can burn the pool tokens and receive back their tokens, including their share of the rewards.
 
-[Click here for a fuller description](https://docs.uniswap.org/contracts/v2/concepts/core-concepts/swaps/).
+[Click here for a fuller description](https://developers.uniswap.org/docs/protocols/v2/concepts/swapping).
 
 ### Why v2? Why not v3? {#why-v2}
 
-[Uniswap v3](https://uniswap.org/whitepaper-v3.pdf) is an upgrade that is much more complicated than the v2. It is easier to first learn v2 and then go to v3.
+[Uniswap v3](https://app.uniswap.org/whitepaper-v3.pdf) is an upgrade that is much more complicated than the v2. It is easier to first learn v2 and then go to v3.
 
 ### Core Contracts vs Periphery Contracts {#contract-types}
 
@@ -81,7 +82,7 @@ This is most common flow, used by traders:
 5. Check if the amounts are acceptable (callers can specify a minimum amount below which they'd rather not add liquidity)
 6. Call the core contract.
 
-#### In the core contract (UniswapV2Pair.sol) {#in-the-core-contract-uniswapv2pairsol-2}
+#### In the core contract (UniswapV2Pair.sol) {#in-the-core-contract-uniswapv2pairsol-2-2}
 
 7. Mint liquidity tokens and send them to the caller
 8. Call `_update` to update the reserve amounts
@@ -107,9 +108,9 @@ This is most common flow, used by traders:
 
 These are the secure contracts which hold the liquidity.
 
-### UniswapV2Pair.sol {#UniswapV2Pair}
+### UniswapV2Pair.sol {#uniswapv2pair}
 
-[This contract](https://github.com/Uniswap/uniswap-v2-core/blob/master/contracts/UniswapV2Pair.sol) implements the actual pool that exchanges tokens. It is the core Uniswap functionality.
+[This contract](https://github.com/Uniswap/v2-core/blob/master/contracts/UniswapV2Pair.sol) implements the actual pool that exchanges tokens. It is the core Uniswap functionality.
 
 ```solidity
 pragma solidity =0.5.16;
@@ -135,7 +136,7 @@ This contract inherits from `UniswapV2ERC20`, which provides the ERC-20 function
     using SafeMath  for uint;
 ```
 
-The [SafeMath library](https://docs.openzeppelin.com/contracts/2.x/api/math) is used to avoid overflows and underflows. This is important because otherwise we might end up with a situation where a value should be `-1`, but is instead `2^256-1`.
+The [SafeMath library](https://docs.openzeppelin.com/contracts/3.x/api/math) is used to avoid overflows and underflows. This is important because otherwise we might end up with a situation where a value should be `-1`, but is instead `2^256-1`.
 
 ```solidity
     using UQ112x112 for uint224;
@@ -144,7 +145,7 @@ The [SafeMath library](https://docs.openzeppelin.com/contracts/2.x/api/math) is 
 A lot of calculations in the pool contract require fractions. However, fractions are not supported by the EVM.
 The solution that Uniswap found is to use 224 bit values, with 112 bits for the integer part, and 112 bits for the fraction. So `1.0` is represented as `2^112`, `1.5` is represented as `2^112 + 2^111`, etc.
 
-More details about this library are available [later in the document](#FixedPoint).
+More details about this library are available [later in the document](#fixedpoint).
 
 #### Variables {#pair-vars}
 
@@ -375,9 +376,9 @@ Each cost accumulator is updated with the latest cost (reserve of the other toke
 | Trader B deposits 10 token0 and gets 8.984 token1 back   | 1,060.000 |   943.396 | 5,030     |                                        0.890 |       20+10\*0.907 = 29.07 |
 | Trader C deposits 40 token0 and gets 34.305 token1 back  | 1,100.000 |   909.090 | 5,100     |                                        0.826 |    29.07+70\*0.890 = 91.37 |
 | Trader D deposits 100 token1 and gets 109.01 token0 back |   990.990 | 1,009.090 | 5,110     |                                        1.018 |    91.37+10\*0.826 = 99.63 |
-| Trader E deposits 10 token0 and gets 10.079 token1 back  | 1,000.990 |   999.010 | 5,150     |                                        0.998 | 99.63+40\*1.1018 = 143.702 |
+| Trader E deposits 10 token0 and gets 10.079 token1 back  | 1,000.990 |   999.010 | 5,150     |                                        0.998 |   99.63+40\*1.018 = 140.35 |
 
-Let's say we want to calculate the average price of **Token0** between the timestamps 5,030 and 5,150. The difference in the value of `price0Cumulative` is 143.702-29.07=114.632. This is the average across two minutes (120 seconds). So the average price is 114.632/120 = 0.955.
+Let's say we want to calculate the average price of **Token0** between the timestamps 5,030 and 5,150. The difference in the value of `price0Cumulative` is 140.35-29.07=111.28. This is the average across two minutes (120 seconds). So the average price is 111.28/120 = 0.927.
 
 This price calculation is the reason we need to know the old reserve sizes.
 
@@ -398,7 +399,7 @@ Finally, update the global variables and emit a `Sync` event.
     function _mintFee(uint112 _reserve0, uint112 _reserve1) private returns (bool feeOn) {
 ```
 
-In Uniswap 2.0 traders pay a 0.30% fee to use the market. Most of that fee (0.25% of the trade) always goes to the liquidity providers. The remaining 0.05% can go either to the liquidity providers or to an address specified by the factory as a protocol fee, which pays Uniswap for their development effort.
+In Uniswap 2.0 traders pay a 0.30% fee to use the market. Most of that fee (0.25% of the trade) always goes to the liquidity providers. The remaining 0.05% can go either to the liquidity providers or to an address specified by the factory as a protocol fee, which pays Uniswap for their development effort. On Ethereum mainnet this protocol fee is turned on: the factory's `feeTo` address is set, so the 0.05% goes to that address rather than to the liquidity providers.
 
 To reduce calculations (and therefore gas costs), this fee is only calculated when liquidity is added or removed from the pool, rather than at each transaction.
 
@@ -429,7 +430,7 @@ The liquidity providers get their cut simply by the appreciation of their liquid
                 if (rootK > rootKLast) {
 ```
 
-If there is new liquidity on which to collect a protocol fee. You can see the square root function [later in this article](#Math)
+If there is new liquidity on which to collect a protocol fee. You can see the square root function [later in this article](#math)
 
 ```solidity
                     uint numerator = totalSupply.mul(rootK.sub(rootKLast));
@@ -437,7 +438,7 @@ If there is new liquidity on which to collect a protocol fee. You can see the sq
                     uint liquidity = numerator / denominator;
 ```
 
-This complicated calculation of fees is explained in [the whitepaper](https://uniswap.org/whitepaper.pdf) on page 5. We know that between the time `kLast` was calculated and the present no liquidity was added or removed (because we run this calculation every time liquidity is added or removed, before it actually changes), so any change in `reserve0 * reserve1` has to come from transaction fees (without them we'd keep `reserve0 * reserve1` constant).
+This complicated calculation of fees is explained in [the whitepaper](https://app.uniswap.org/whitepaper.pdf) on page 5. We know that between the time `kLast` was calculated and the present no liquidity was added or removed (because we run this calculation every time liquidity is added or removed, before it actually changes), so any change in `reserve0 * reserve1` has to come from transaction fees (without them we'd keep `reserve0 * reserve1` constant).
 
 ```solidity
                     if (liquidity > 0) _mint(feeTo, liquidity);
@@ -454,8 +455,8 @@ Use the `UniswapV2ERC20._mint` function to actually create the additional liquid
     }
 ```
 
-If there is no fee set `kLast` to zero (if it isn't that already). When this contract was written there was a [gas refund feature](https://eips.ethereum.org/EIPS/eip-3298) that encouraged contracts to reduce the overall size of the Ethereum state by zeroing out storage they did not need.
-This code gets that refund when possible.
+If there is no fee set `kLast` to zero (if it isn't that already). Ethereum has a gas refund feature that encourages contracts to reduce the overall size of the Ethereum state by zeroing out storage they do not need.
+This code gets that refund when possible. Since the London upgrade ([EIP-3529](https://eips.ethereum.org/EIPS/eip-3529)) the refund is smaller and capped at a fifth of the transaction's gas, but it still exists.
 
 #### Externally Accessible Functions {#pair-external}
 
@@ -468,7 +469,7 @@ Note that while any transaction or contract _can_ call these functions, they are
     function mint(address to) external lock returns (uint liquidity) {
 ```
 
-This function is called when a liquidity provider adds liquidity to the pool. It mints additional liquidity tokens as a reward. It should be called from [a periphery contract](#UniswapV2Router02) that calls it after adding the liquidity in the same transaction (so nobody else would be able to submit a transaction that claims the new liquidity before the legitimate owner).
+This function is called when a liquidity provider adds liquidity to the pool. It mints additional liquidity tokens as a reward. It should be called from [a periphery contract](#uniswapv2router02) that calls it after adding the liquidity in the same transaction (so nobody else would be able to submit a transaction that claims the new liquidity before the legitimate owner).
 
 ```solidity
         (uint112 _reserve0, uint112 _reserve1,) = getReserves(); // gas savings
@@ -555,7 +556,7 @@ Update the state variables (`reserve0`, `reserve1`, and if needed `kLast`) and e
 ```
 
 This function is called when liquidity is withdrawn and the appropriate liquidity tokens need to be burned.
-It should also be called [from a periphery account](#UniswapV2Router02).
+It should also be called [from a periphery account](#uniswapv2router02).
 
 ```solidity
         (uint112 _reserve0, uint112 _reserve1,) = getReserves(); // gas savings
@@ -601,7 +602,7 @@ The rest of the `burn` function is the mirror image of the `mint` function above
     function swap(uint amount0Out, uint amount1Out, address to, bytes calldata data) external lock {
 ```
 
-This function is also supposed to be called from [a periphery contract](#UniswapV2Router02).
+This function is also supposed to be called from [a periphery contract](#uniswapv2router02).
 
 ```solidity
         require(amount0Out > 0 || amount1Out > 0, 'UniswapV2: INSUFFICIENT_OUTPUT_AMOUNT');
@@ -690,9 +691,9 @@ In that case there are two solutions:
 }
 ```
 
-### UniswapV2Factory.sol {#UniswapV2Factory}
+### UniswapV2Factory.sol {#uniswapv2factory}
 
-[This contract](https://github.com/Uniswap/uniswap-v2-core/blob/master/contracts/UniswapV2Factory.sol) creates the pair exchanges.
+[This contract](https://github.com/Uniswap/v2-core/blob/master/contracts/UniswapV2Factory.sol) creates the pair exchanges.
 
 ```solidity
 pragma solidity =0.5.16;
@@ -705,7 +706,7 @@ contract UniswapV2Factory is IUniswapV2Factory {
     address public feeToSetter;
 ```
 
-These state variables are necessary to implement the protocol fee (see [the whitepaper](https://uniswap.org/whitepaper.pdf), p. 5).
+These state variables are necessary to implement the protocol fee (see [the whitepaper](https://app.uniswap.org/whitepaper.pdf), p. 5).
 The `feeTo` address accumulates the liquidity tokens for the protocol fee, and `feeToSetter` is the address allowed to change `feeTo` to a different address.
 
 ```solidity
@@ -755,7 +756,7 @@ This is the main function of the factory, to create a pair exchange between two 
         (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
 ```
 
-We want the address of the new exchange to be deterministic, so it can be calculated in advance off chain (this can be useful for [layer 2 transactions](/developers/docs/scaling/)).
+We want the address of the new exchange to be deterministic, so it can be calculated in advance offchain (this can be useful for [layer 2 transactions](/developers/docs/scaling/)).
 To do this we need to have a consistent order of the token addresses, regardless of the order in which we have received them, so we sort them here.
 
 ```solidity
@@ -812,12 +813,12 @@ Save the new pair information in the state variables and emit an event to inform
 
 These two functions allow `feeSetter` to control the fee recipient (if any), and to change `feeSetter` to a new address.
 
-### UniswapV2ERC20.sol {#UniswapV2ERC20}
+### UniswapV2ERC20.sol {#uniswapv2erc20}
 
-[This contract](https://github.com/Uniswap/uniswap-v2-core/blob/master/contracts/UniswapV2ERC20.sol) implements the ERC-20 liquidity token. It is similar to the [OpenZeppelin ERC-20 contract](/developers/tutorials/erc20-annotated-code), so I will only explain the part that is different, the `permit` functionality.
+[This contract](https://github.com/Uniswap/v2-core/blob/master/contracts/UniswapV2ERC20.sol) implements the ERC-20 liquidity token. It is similar to the [OpenZeppelin ERC-20 contract](/developers/tutorials/erc20-annotated-code), so I will only explain the part that is different, the `permit` functionality.
 
-Transactions on Ethereum cost ether (ETH), which is equivalent to real money. If you have ERC-20 tokens but not ETH, you can't send transactions, so you can't do anything with them. One solution to avoid this problem is [meta-transactions](https://docs.uniswap.org/contracts/v2/guides/smart-contract-integration/supporting-meta-transactions).
-The owner of the tokens signs a transaction that allows somebody else to withdraw tokens off chain and sends it using the Internet to the recipient. The recipient, which does have ETH, then submits the permit on behalf of the owner.
+Transactions on Ethereum cost ether (ETH), which is equivalent to real money. If you have ERC-20 tokens but not ETH, you can't send transactions, so you can't do anything with them. One solution to avoid this problem is [meta-transactions](https://developers.uniswap.org/docs/protocols/v2/concepts/meta-transactions).
+The owner of the tokens signs a transaction that allows somebody else to withdraw tokens offchain and sends it using the Internet to the recipient. The recipient, which does have ETH, then submits the permit on behalf of the owner.
 
 ```solidity
     bytes32 public DOMAIN_SEPARATOR;
@@ -903,14 +904,14 @@ If everything is OK, treat this as [an ERC-20 approve](https://eips.ethereum.org
 
 The periphery contracts are the API (application program interface) for Uniswap. They are available for external calls, either from other contracts or decentralized applications. You could call the core contracts directly, but that's more complicated and you might lose value if you make a mistake. The core contracts only contain tests to make sure they aren't cheated, not sanity checks for anybody else. Those are in the periphery so they can be updated as needed.
 
-### UniswapV2Router01.sol {#UniswapV2Router01}
+### UniswapV2Router01.sol {#uniswapv2router01}
 
-[This contract](https://github.com/Uniswap/uniswap-v2-periphery/blob/master/contracts/UniswapV2Router01.sol) has problems, and [should no longer be used](https://docs.uniswap.org/contracts/v2/reference/smart-contracts/router-01). Luckily, the periphery contracts are stateless and don't hold any assets, so it is easy to deprecate it and suggest people use the replacement, `UniswapV2Router02`, instead.
+[This contract](https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router01.sol) has problems, and should no longer be used. Luckily, the periphery contracts are stateless and don't hold any assets, so it is easy to deprecate it and suggest people use the replacement, `UniswapV2Router02`, instead.
 
-### UniswapV2Router02.sol {#UniswapV2Router02}
+### UniswapV2Router02.sol {#uniswapv2router02}
 
-In most cases you would use Uniswap through [this contract](https://github.com/Uniswap/uniswap-v2-periphery/blob/master/contracts/UniswapV2Router02.sol).
-You can see how to use it [here](https://docs.uniswap.org/contracts/v2/reference/smart-contracts/router-02).
+In most cases you would use Uniswap through [this contract](https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router02.sol).
+You can see how to use it [here](https://developers.uniswap.org/docs/protocols/v2/guides/swapping).
 
 ```solidity
 pragma solidity =0.6.6;
@@ -1044,7 +1045,7 @@ If the current reserves are empty then this is a new pair exchange. The amounts 
             uint amountBOptimal = UniswapV2Library.quote(amountADesired, reserveA, reserveB);
 ```
 
-If we need to see what amounts will be, we get the optimal amount using [this function](https://github.com/Uniswap/uniswap-v2-periphery/blob/master/contracts/libraries/UniswapV2Library.sol#L35). We want the same ratio as the current reserves.
+If we need to see what amounts will be, we get the optimal amount using [this function](https://github.com/Uniswap/v2-periphery/blob/master/contracts/libraries/UniswapV2Library.sol#L36). We want the same ratio as the current reserves.
 
 ```solidity
             if (amountBOptimal <= amountBDesired) {
@@ -1068,7 +1069,7 @@ Putting it all together we get this graph. Assume you're trying to deposit a tho
 
 ![Graph](liquidityProviderDeposit.png)
 
-You could deposit liquidity directly into the core contract (using [UniswapV2Pair::mint](https://github.com/Uniswap/uniswap-v2-core/blob/master/contracts/UniswapV2Pair.sol#L110)), but the core contract only checks that it is not getting cheated itself, so you run the risk of losing value if the exchange rate changes between the time you submit your transaction and the time it is executed. If you use the periphery contract, it figures the amount you should deposit and deposits it immediately, so the exchange rate doesn't change and you don't lose anything.
+You could deposit liquidity directly into the core contract (using [UniswapV2Pair::mint](https://github.com/Uniswap/v2-core/blob/master/contracts/UniswapV2Pair.sol#L110)), but the core contract only checks that it is not getting cheated itself, so you run the risk of losing value if the exchange rate changes between the time you submit your transaction and the time it is executed. If you use the periphery contract, it figures the amount you should deposit and deposits it immediately, so the exchange rate doesn't change and you don't lose anything.
 
 ```solidity
     function addLiquidity(
@@ -1084,8 +1085,8 @@ You could deposit liquidity directly into the core contract (using [UniswapV2Pai
 
 This function can be called by a transaction to deposit liquidity. Most parameters are the same as in `_addLiquidity` above, with two exceptions:
 
-. `to` is the address that gets the new liquidity tokens minted to show the liquidity provider's portion of the pool
-. `deadline` is a time limit on the transaction
+- `to` is the address that gets the new liquidity tokens minted to show the liquidity provider's portion of the pool
+- `deadline` is a time limit on the transaction
 
 ```solidity
     ) external virtual override ensure(deadline) returns (uint amountA, uint amountB, uint liquidity) {
@@ -1255,7 +1256,7 @@ Remove liquidity for ETH is almost the same, except that we receive the WETH tok
     }
 ```
 
-These functions relay meta-transactions to allow users without ether to withdraw from the pool, using [the permit mechanism](#UniswapV2ERC20).
+These functions relay meta-transactions to allow users without ether to withdraw from the pool, using [the permit mechanism](#uniswapv2erc20).
 
 ```solidity
 
@@ -1323,7 +1324,7 @@ This function performs internal processing that is required for the functions th
         for (uint i; i < path.length - 1; i++) {
 ```
 
-As I'm writing this there are [388,160 ERC-20 tokens](https://etherscan.io/tokens). If there was a pair exchange for each token pair, it would be over a 150 billion pair exchanges. The entire chain, at the moment, [only has 0.1% that number of accounts](https://etherscan.io/chart/address). Instead, the swap functions support the concept of a path. A trader can exchange A for B, B for C, and C for D, so there is no need for a direct A-D pair exchange.
+As I'm writing this there are [388,160 ERC-20 tokens](https://eth.blockscout.com/tokens). If there was a pair exchange for each token pair, it would be over 150 billion pair exchanges. The entire chain, at the moment, [only has 0.1% that number of accounts](https://eth.blockscout.com/stats/accountsGrowth). Instead, the swap functions support the concept of a path. A trader can exchange A for B, B for C, and C for D, so there is no need for a direct A-D pair exchange.
 
 The prices on these markets tend to be synchronized, because when they are out of sync it creates an opportunity for arbitrage. Imagine, for example, three tokens, A, B, and C. There are three pair exchanges, one for each pair.
 
@@ -1430,7 +1431,7 @@ Finally, transfer the initial ERC-20 token to the account for the first pair exc
     }
 ```
 
-The previous function, `swapTokensForTokens`, allows a trader to specify an exact number of input tokens he is willing to give and the minimum number of output tokens he is willing to receive in return. This function does the reverse swap, it lets a trader specify the number of output tokens he wants, and the maximum number of input tokens he is willing to pay for them.
+The previous function, `swapExactTokensForTokens`, allows a trader to specify an exact number of input tokens he is willing to give and the minimum number of output tokens he is willing to receive in return. This function does the reverse swap, it lets a trader specify the number of output tokens he wants, and the maximum number of input tokens he is willing to pay for them.
 
 In both cases, the trader has to give this periphery contract first an allowance to allow it to transfer them.
 
@@ -1518,7 +1519,7 @@ These four variants all involve trading between ETH and tokens. The only differe
     function _swapSupportingFeeOnTransferTokens(address[] memory path, address _to) internal virtual {
 ```
 
-This is the internal function to swap tokens that have transfer or storage fees to solve ([this issue](https://github.com/Uniswap/uniswap-interface/issues/835)).
+This is the internal function to swap tokens that have transfer or storage fees to solve ([this issue](https://github.com/Uniswap/interface/issues/835)).
 
 ```solidity
         for (uint i; i < path.length - 1; i++) {
@@ -1665,17 +1666,17 @@ These are the same variants used for normal tokens, but they call `_swapSupporti
 }
 ```
 
-These functions are just proxies that call the [UniswapV2Library functions](#uniswapV2library).
+These functions are just proxies that call the [UniswapV2Library functions](#uniswapv2library).
 
-### UniswapV2Migrator.sol {#UniswapV2Migrator}
+### UniswapV2Migrator.sol {#uniswapv2migrator}
 
 This contract was used to migrate exchanges from the old v1 to v2. Now that they have been migrated, it is no longer relevant.
 
 ## The Libraries {#libraries}
 
-The [SafeMath library](https://docs.openzeppelin.com/contracts/2.x/api/math) is well documented, so there's no need to document it here.
+The [SafeMath library](https://docs.openzeppelin.com/contracts/3.x/api/math) is well documented, so there's no need to document it here.
 
-### Math {#Math}
+### Math {#math}
 
 This library contains some math functions that are not normally needed in Solidity code, so they aren't part of the language.
 
@@ -1720,7 +1721,7 @@ We should never need the square root of zero. The square roots of one, two, and 
 }
 ```
 
-### Fixed Point Fractions (UQ112x112) {#FixedPoint}
+### Fixed Point Fractions (UQ112x112) {#fixedpoint}
 
 This library handles fractions, which are normally not part of Ethereum arithmetic. It does this by encoding the number _x_ as _x\*2^112_. This lets us use the original addition and subtraction opcodes without a change.
 
@@ -1757,7 +1758,7 @@ Because y is `uint112`, the most it can be is 2^112-1. That number can still be 
 
 If we divide two `UQ112x112` values, the result is no longer multiplied by 2^112. So instead we take an integer for the denominator. We would have needed to use a similar trick to do multiplication, but we don't need to do multiplication of `UQ112x112` values.
 
-### UniswapV2Library {#uniswapV2library}
+### UniswapV2Library {#uniswapv2library}
 
 This library is used only by the periphery contracts
 
@@ -1794,7 +1795,7 @@ Sort the two tokens by address, so we'll be able to get the address of the pair 
     }
 ```
 
-This function calculates the address of the pair exchange for the two tokens. This contract is created using [the CREATE2 opcode](https://eips.ethereum.org/EIPS/eip-1014), so we can calculate the address using the same algorithm if we know the parameters it uses. This is a lot cheaper than asking the factory, and
+This function calculates the address of the pair exchange for the two tokens. This contract is created using [the CREATE2 opcode](https://eips.ethereum.org/EIPS/eip-1014), so we can calculate the address using the same algorithm if we know the parameters it uses. This is a lot cheaper than asking the factory, and it does not require an external call.
 
 ```solidity
     // fetches and sorts the reserves for a pair
@@ -1881,7 +1882,7 @@ These two functions handle identifying the values when it is necessary to go thr
 
 ### Transfer Helper {#transfer-helper}
 
-[This library](https://github.com/Uniswap/uniswap-lib/blob/master/contracts/libraries/TransferHelper.sol) adds success checks around ERC-20 and Ethereum transfers to treat a revert and a `false` value return the same way.
+[This library](https://github.com/Uniswap/solidity-lib/blob/master/contracts/libraries/TransferHelper.sol) (in a repository that is now archived) adds success checks around ERC-20 and Ethereum transfers to treat a revert and a `false` value return the same way.
 
 ```solidity
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -1932,7 +1933,7 @@ For the sake of backwards compatibility with token that were created prior to th
     }
 ```
 
-This function implements [ERC-20's transfer functionality](https://eips.ethereum.org/EIPS/eip-20#transfer), which allows an account to spend out the allowance provided by a different account.
+This function implements [ERC-20's transfer functionality](https://eips.ethereum.org/EIPS/eip-20#transfer), which moves tokens from the caller (this contract) to `to`.
 
 ```solidity
 
@@ -1969,3 +1970,5 @@ This function transfers ether to an account. Any call to a different contract ca
 This is a long article of about 50 pages. If you made it here, congratulations! Hopefully by now you've understood the considerations in writing a real-life application (as opposed to short sample programs) and are better to be able to write contracts for your own use cases.
 
 Now go and write something useful and amaze us.
+
+[See here for more of my work](https://cryptodocguy.pro/).

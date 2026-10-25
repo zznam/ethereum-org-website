@@ -1,84 +1,119 @@
 ---
-title: 貢献
-description: ethereum.orgに貢献できる様々な方法
+title: "ethereum.org への貢献 🦄"
+metaTitle: "貢献"
+description: "ethereum.org に貢献するさまざまな方法について学びましょう"
 lang: ja
 ---
 
-# ethereum.org への貢献 🦄 {#contributing-to-ethereumorg}
+ethereum.org は、ウェブサイトの翻訳、執筆、デザイン、保守を支援する **12,000人以上** の貢献者によって運営されているオープンソースプロジェクトです。
 
-ethereum.org のウェブサイトは、より広範なイーサリアムと同様に、オープンソースプロジェクトです。 [イーサリアムへのポータル](/about/)の改善にご協力いただける場合は、こちらをご覧ください。
+私たちは、あなたが[イーサリアム](/)エコシステムで成長し、学ぶのを支援すると同時に、有意義な貢献をして関連する実践的な経験を得ることができる、歓迎的なコミュニティです！
 
-<InfoBanner shouldCenter emoji=":tada:">
-  出席証明プロトコル(POAP)トークンが得られます。 2022年にethereum.orgに貢献した人は、ユニークな出席証明プロトコル(POAP)が準備されています。{" "}<a href="#poap">POAPについての詳細</a>
-</InfoBanner>
+## 貢献する方法 {#ways-to-contribute}
 
-## 貢献の方法 {#ways-to-contribute}
+**翻訳**
+- [翻訳エラーを報告する](https://github.com/ethereum/ethereum-org-website/issues/new/choose) – [翻訳プログラム](/contributing/translation-program/)は縮小しており、新規翻訳者のオンボーディングは行っていません
 
-- [未解決の問題に取り組む](https://github.com/ethereum/ethereum-org-website/issues) _- 必要と判断されたタスク_
-- [翻訳プログラムへの参加](/contributing/translation-program/) _- ethereum.org を翻訳する_
-- [コミュニティリソースの追加](/contributing/content-resources/) _- 関連ページに役立つ記事やリソースを追加する_
-- [プロダクトの追加](/contributing/adding-products/) _- 関連ページに分散型アプリ(Dapp)やウォレットを追加する_
-- [デベロッパーツールの追加](/contributing/adding-developer-tools/) _- 関連ページにデベロッパーツールを追加する_
-- [取引所の追加](/contributing/adding-exchanges/) *- [取引所を探す](/get-eth/#country-picker)*に取引所を追加する
-- [研究への改善](https://www.notion.so/efdn/Ethereum-org-User-Persona-Memo-b44dc1e89152457a87ba872b0dfa366c) _- 私たちの研究に対するご意見、ご感想の共有_
-- [機能のリクエスト](https://github.com/ethereum/ethereum-org-website/issues/new?assignees=&labels=feature+%3Asparkles%3A&projects=&template=feature_request.yaml&title=Feature+request) _- 新しい機能やデザインについてのアイデアを共有_
-- [用語の追加](/contributing/adding-glossary-terms) *- イーサリアム[用語集](/glossary/)*の継続的な拡張
-- [コンテンツの作成/編集](/contributing/#how-to-update-content) _- 新しいページの提案、すでにあるものに手を加える_
-- [レイヤー 2 の追加](/contributing/adding-layer-2s/) _- 関連ページにレイヤー 2 を追加する_
-- [ステーキング製品やサービスの追加](/contributing/adding-staking-products/) - _ソロステーキング、プールステーキング、またはステーキング・アズ・ア・サービスを促進するプロジェクトを追加する_
-- [ウォレットの追加](/contributing/adding-wallets/) _- [ウォレットを探すページ](/wallets/find-wallet/)にウォレットを追加する_
-- [分散型サイエンス(DeSci)ページのプロジェクトの提案](/contributing/adding-desci-projects/)_- 分散型サイエンスに貢献するイーサリアム上のプロジェクトを追加する_
+**開発**
+- [オープンなIssueに取り組む](https://github.com/ethereum/ethereum-org-website/issues) – 私たちが特定した、対応が必要な作業
 
-*ご質問がある場合は*🤔、[Discord サーバー](https://discord.gg/ethereum-org)でご連絡ください
+**デザイン**
+- [ウェブサイトのデザインを支援する](/contributing/design/) – あらゆるレベルのデザイナーがウェブサイトの改善に貢献できます
 
-## ethereum.org での活動方法 {#how-to-update-content}
+**コンテンツ**
+- [コンテンツの作成/編集](/contributing/#how-to-update-content) – 新しいページを提案したり、既存のページを微調整したりします
+- [ビルダー向けの記事を書く](/contributing/adding-articles/) - [最新情報](/latest/)セクションに記事を寄稿します
+- [コミュニティリソースを追加する](/contributing/content-resources/) – 関連するページに役立つ記事やリソースを追加します
+- [レポートを提案する](/contributing/adding-reports/) - [レポート](/reports/)ページに調査レポートを提案します
+- [あなたのストーリーを共有する](/contributing/adding-community-stories/) - オープンソースやサンクチュアリ技術に関する個人的な経験、イーサリアムエコシステムがあなたの人生にどのような影響を与えたか、またはあなたとあなたのコミュニティがイーサリアムをどのように使用しているかについてのストーリーを提出します
+- [クイズ](/contributing/quizzes/) – 関連するページのクイズ問題バンクを追加、更新、削除します
+- [デザインリソースを提案する](/contributing/design/adding-design-resources/) – 役立つデザインリソースを追加、更新、削除します
+- [動画を提案する](/contributing/adding-videos/) – 動画ギャラリーに教育的な動画を提案します
 
-サイトにコンテンツを作成するにしても、あるいはオープンな問題に取り組むにしても、[GitHub](https://github.com)アカウントが必要になります。
+**機能のアイデア**
+- [機能をリクエストする](https://github.com/ethereum/ethereum-org-website/issues/new?assignees=&labels=Type%3A+Feature&template=feature_request.yaml&title=) – 新しい機能やデザインに関するアイデアがあればお知らせください
 
-すべてのアップデートは、GitHub の PR プロセスを通して行われます。 つまり、ウェブサイトのローカルコピーを作成し、変更を加え、更新するようリクエストします。 初めての場合は、[GitHub リポジトリ](https://github.com/ethereum/ethereum-org-website)の一番下にある説明に従ってください。
+**プロダクトの掲載**
+- [取引所を追加する](/contributing/adding-exchanges/) – [取引所検索](/get-eth/#country-picker)に取引所を追加します
+- [プロダクトを追加する](/contributing/adding-products/) – 関連するページに分散型アプリケーション (dapp) やウォレットを追加します
+- [開発者ツールを追加する](/contributing/adding-developer-tools/) – 関連するページに開発者ツールを追加します
+- [レイヤー2を追加する](/contributing/adding-layer-2s/) – 関連するページにレイヤー2を追加します
+- [ステーキングプロダクトまたはサービスを追加する](/contributing/adding-staking-products/) – ソロ・ステーキング、プール・ステーキング、またはステーキング・アズ・ア・サービスを促進するプロジェクトを追加します
+- [ウォレットを追加する](/contributing/adding-wallets/) – [ウォレット検索ページ](/wallets/find-wallet/)にウォレットを追加します
+- [DeSciページにプロジェクトを提案する](/contributing/adding-desci-projects/) – 分散型科学に貢献する、イーサリアム上に構築されたプロジェクトを追加します
+- [リソースを追加する](/contributing/adding-resources/) – 関連するページに役立つリソースを追加します
 
-作業するのに許可は必要ありませんが、何をするつもりなのかお知らせください。 これは次の方法で行うことができます。
+質問がありますか？ 🤔 私たちの[ディスコードサーバー](/discord/)に参加してください
 
-- [GitHub](https://github.com/ethereum/ethereum-org-website)の問題や PR にコメントする
-- [Discord サーバー](https://discord.gg/ethereum-org)でメッセージする
+## 貢献を始めるのに適した最初のタスク {#good-first-tasks-to-start-contributing}
 
-貢献するにあたって、以下のことを確認してください。
+これらは、あなたが解決を支援し、担当できる現在のタスクのいくつかです。ウェブサイトへの変更のほとんどはGitHubを通じて行われるため、ほとんどのタスクでGitHubアカウントが必要になります。
 
-- 進化する[ethereum.org のビジョン](/about/)
-- [デザイン原則](/contributing/design-principles/)
-- [スタイルガイド](/contributing/style-guide/)
+<IssuesList my={8} />
 
-## サイトに関する決定 {#how-decisions-about-the-site-are-made}
+<ButtonLink href="https://github.com/ethereum/ethereum-org-website/issues">すべてのタスクを見る</ButtonLink>
 
-個々の PR、デザインの進化、メジャーなアップグレードに関する決定は、イーサリアムのエコシステム全体からなるチームによって行われます。 このチームには、プロジェクトマネージャー、デベロッパー、デザイナー、マーケティング、コミュニケーションなど各領域の専門家が含まれます。 コミュニティからの情報は、すべての決定に反映されるため、問題でご質問、PR の送信、チームへの連絡をお願いします。
+## ethereum.org での作業方法 {#how-to-update-content}
+
+貢献する（ウェブサイトへのコンテンツやビジュアルの追加・編集、バグの修正、オープンなタスクへの取り組み）には、[GitHub](https://github.com/)アカウントが必要です。
+
+すべての更新はGitHubのPR（プルリクエスト）プロセスを通じて行われます。つまり、ウェブサイトのローカルコピーを作成し、変更を加えて、その変更のマージをリクエストします。これまでに行ったことがない場合は、私たちの[GitHubリポジトリ](https://github.com/ethereum/ethereum-org-website)の下部にある手順に従ってください。
+
+作業を始めるのに許可は必要ありませんが、何を計画しているかを事前にお知らせいただくのが常に最善です。以下の方法でお知らせいただけます：
+
+- [GitHub](https://github.com/ethereum/ethereum-org-website)のIssueまたはPRにコメントする
+- 私たちの[ディスコードサーバー](/discord/)でメッセージを送る
+
+貢献する前に、以下についてよく理解しておいてください：
+
+- 進化し続ける[ethereum.orgのビジョン](/about/)
+- 私たちの[デザイン原則](/contributing/design-principles/)
+- 私たちの[スタイルガイド](/contributing/style-guide/)
+- 私たちの[行動規範](/community/code-of-conduct)
+
+## サイトに関する決定はどのように行われるか {#how-decisions-about-the-site-are-made}
+
+個々のPR、デザインの進化、および主要なアップグレードに関する決定は、イーサリアムエコシステム全体から集まったチームによって行われます。このチームには、プロジェクトマネージャー、開発者、デザイナー、マーケティングおよびコミュニケーション担当者、そして専門家が含まれます。コミュニティからの意見はすべての決定に反映されます。そのため、Issueで質問を提起したり、PRを提出したり、チームに連絡したりしてください：
 
 - [website@ethereum.org](mailto:website@ethereum.org)
 - [@ethdotorg](https://twitter.com/ethdotorg)
-- [Discord サーバー](https://discord.gg/ethereum-org)
+- [ディスコードサーバー](/discord/)
 
-### 盗用に関する注意点 {#plagiarism}
+### 盗用に関する注意 {#plagiarism}
 
-ethereum.org にコンテンツや成果物を提供する際は、オリジナルの作品や使用許可を得たコンテンツのみを使用するようにしてください。 イーサリアムのエコシステム内の多くのプロジェクトは、自由に情報を共有できるオープンソースライセンスを採用しています。 ただし、この情報が見つからない場合は、ethereum.org には追加しないでください。 盗用とみなされたプルリクエストは拒絶されます。
+ethereum.org にコンテンツや成果物を貢献する際は、あなた自身のオリジナル作品、または使用許可を得ているコンテンツのみを使用してください。イーサリアムエコシステム内の多くのプロジェクトは、情報の自由な共有を許可するオープンソースライセンスを使用しています。ただし、この情報が見つからない場合は、ethereum.org に追加しようとしないでください。盗用とみなされたプルリクエストはすべて拒否されます。
 
-## オープンソースが初めての場合 {#new-to-open-source}
+## オープンソースは初めてですか？ {#new-to-open-source}
 
-GitHub リポジトリには、オープンソースに初めて触れるデベロッパーのために特別に設計された、分かりやすい初心者向けの問題があり、[good first issue(初心者向け)](https://github.com/ethereum/ethereum-org-website/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)のラベル付けされています。
+私たちのGitHubリポジトリには、オープンソースに初めて参加する開発者向けに特別に設計された、参加障壁の低いIssueがあり、[good first issue](https://github.com/ethereum/ethereum-org-website/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)というラベルが付けられています。
 
-## コントリビューターの出席証明プロトコル(POAP) {#poap}
+## オンチェーン・アチーブメント・トークン (OAT) を請求する {#oat}
 
-貢献が ethereum.org に取り入れられた場合、コントリビューターにユニークな出席証明プロトコル(POAP)を発行します。 この出席証明プロトコル(POAP)トークンは、あなたがエコシステムをより素晴らしいものにするために貢献したことを示すオンチェーンの証明です。
+あなたの貢献が ethereum.org にマージされると、[Galxe](https://app.galxe.com/quest/ethereumorg)で特別なバッジを請求する機会が得られます。オンチェーン・アチーブメント・トークン (OAT) は、あなたがエコシステムを少しだけ素晴らしいものにするのに貢献したことの証明です。
 
-[出席証明プロトコル(POAP)の詳細](https://www.poap.xyz/)
+[OATの詳細](https://help.galxe.com/en/articles/9645630-create-quest-rewards#h_1c5d63ba03)
 
-### 申請方法 {#how-to-claim}
+### 請求方法 {#how-to-claim}
 
-1. [Discord サーバー](https://discord.gg/ethereum-org)に参加します。
-2. `#🥇 | proof-of-contribution`[チャンネル](https://discord.com/channels/714888181740339261/1212737737916948530)にあなたの投稿へのリンクを貼り付けます。
-3. 出席証明プロトコル(POAP)へのリンクが送られるまでお待ちください。
-4. 出席証明プロトコル(POAP)を受け取ります。
+1. 私たちの[ディスコードサーバー](/discord/)に参加します。
+2. `#🥇 | proof-of-contribution` チャンネルにあなたの貢献へのリンクを貼り付けます。
+3. チームメンバーからOATへのリンクが送られてくるのを待ちます。
+4. OATを請求します！
 
-出席証明プロトコル(POAP)の受け取りには、セルフ・カストディのウォレットのみを使用してください。 取引所のアカウントや秘密鍵を保有していないその他のアカウントなどは、使わないでください。これらのアカウントでは、出席証明プロトコル(POAP)へのアクセスや管理ができません。
+OATを請求する際は、セルフカストディウォレットのみを使用してください。取引所のアカウントや、あなたが秘密鍵を保持していないその他のアカウントは使用しないでください。これらを使用すると、OATにアクセスして管理することができなくなります。
 
-## コントリビューター {#contributors}
+## GitPOAPを請求する {#claim-gitpoap}
+
+GitPOAPもマージされたあなたの貢献を自動的に認識し、彼らのプラットフォーム上で独自の貢献者POAPをミントできるようにします！
+
+
+### 請求方法 {#how-to-claim-2}
+
+1. [GitPOAP](https://www.gitpoap.io)にアクセスします。
+2. サインインオプションから、ウォレットまたはメールアドレスで接続します。
+3. GitHubのユーザー名、ETHアドレス、ENS名、または任意のGitPOAPを検索して、資格があるかどうかを確認します。
+4. あなたのGitHubアカウントに資格がある場合、GitPOAPをミントすることができます！
+
+## 貢献者 {#contributors}
 
 <Contributors />

@@ -1,249 +1,244 @@
 ---
-title: Uso dei WebSocket
-description: Guida all'uso di WebSocket e Alchemy per creare richieste JSON-RPC e iscriversi a eventi.
+title: Usare i WebSocket
+description: Guida all'uso dei WebSocket per effettuare richieste JSON-RPC e iscriversi agli eventi, con qualsiasi fornitore di nodi di Ethereum.
 author: "Elan Halpern"
 lang: it
-tags:
-  - "fornisce servizi e strumenti Api per la creazione e il monitoraggio di applicazioni su Ethereum. \nFile: glossario"
-  - "websocket"
-  - "query"
-  - "javascript"
+tags: ["Alchemy", "websocket", "interrogazione", "JavaScript"]
 skill: beginner
-source: Documentazione di Alchemy
-sourceUrl: https://docs.alchemyapi.io/guides/using-websockets
+breadcrumb: WebSocket
+source: Alchemy docs
+sourceUrl: https://www.alchemy.com/docs/reference/best-practices-for-using-websockets-in-web3
 published: 2020-12-01
 ---
 
-Questa è una guida entry level su come utilizzare Websocket e Alchemy per fare richieste alla blockchain Ethereum.
+Questa è una guida di base all'uso dei WebSocket per effettuare richieste alla blockchain di Ethereum. Gli esempi usano metodi JSON-RPC standard, quindi funzionano con qualsiasi nodo o fornitore di nodi che offra un endpoint WebSocket, incluso Alchemy.
 
-## WebSocket e HTTP {#websockets-vs-http}
+## WebSocket vs HTTP {#websockets-vs-http}
 
-A differenza di HTTP, con i WebSocket non serve fare continuamente richieste quando si desiderano informazioni specifiche. I WebSocket mantengono una connessione con la rete (se configurati correttamente) e monitorano le modifiche.
+A differenza dell'HTTP, con i WebSocket non è necessario effettuare continuamente richieste quando si desiderano informazioni specifiche. I WebSocket mantengono una connessione di rete per te (se implementati correttamente) e restano in ascolto dei cambiamenti.
 
-Come avviene con ogni connessione di rete, non presupporre che un WebSocket rimanga aperto per sempre senza interruzioni; gestire correttamente a mano la caduta di connessione e la riconnessione può essere complicato. Un altro lato negativo dei WebSocket è che non si ottengono codici di stato HTTP come risposta ma solo il messaggio di errore.
+Come per qualsiasi connessione di rete, non si dovrebbe presumere che un WebSocket rimanga aperto per sempre senza interruzioni, ma gestire correttamente le connessioni interrotte e la riconnessione manualmente può essere difficile da implementare in modo corretto. Un altro svantaggio dei WebSocket è che non si ottengono i codici di stato HTTP nella risposta, ma solo il messaggio di errore.
 
-​[Alchemy Web3](https://docs.alchemy.com/reference/api-overview) aggiunge automaticamente la gestione degli errori di WebSocket e i nuovi tentativi senza necessità di configurazione alcuna.
+Le librerie client possono gestirlo al posto tuo. Ad esempio, il [trasporto WebSocket di Viem](https://viem.sh/docs/clients/transports/websocket) si riconnette in caso di guasto del socket e invia ping di keep-alive per impostazione predefinita.
 
-## Facciamo una prova {#try-it-out}
+## Provalo {#try-it-out}
 
-Il modo più facile per testare i WebSocket è installare uno strumento da riga di comando per eseguire richieste WebSocket come [wscat](https://github.com/websockets/wscat). Usando wscat, è possibile inviare richieste come di seguito:
+Hai bisogno di un URL WebSocket per un nodo di Ethereum. I fornitori di nodi te ne forniscono uno quando crei una chiave per l'interfaccia di programmazione delle applicazioni (API), di solito nella forma `wss://<provider-host>/<your-api-key>`. Ad esempio, un URL della Mainnet di Ethereum di Alchemy ha questo aspetto: `wss://eth-mainnet.g.alchemy.com/v2/<your-api-key>` ([registrati per un account Alchemy gratuito](https://auth.alchemy.com/signup)). Consulta i [nodi come servizio](/developers/docs/nodes-and-clients/nodes-as-a-service/) per altri fornitori, oppure usa l'endpoint WebSocket del [tuo nodo](/developers/docs/nodes-and-clients/run-a-node/). Anche gli endpoint pubblici come `wss://ethereum-rpc.publicnode.com` funzionano per esperimenti rapidi, ma hanno limiti di frequenza e potrebbero non supportare ogni tipo di iscrizione.
 
-_Nota: se hai un conto di Alchemy, puoi sostituire `demo` con la tua chiave API. [Registrati qui per avere un conto gratuito di Alchemy!](https://auth.alchemyapi.io/signup)_
+Il modo più semplice per testare i WebSocket è installare uno strumento a riga di comando per effettuare richieste WebSocket come [wscat](https://github.com/websockets/wscat). Usando wscat, puoi inviare richieste nel modo seguente:
 
+```sh
+npx wscat -c wss://<provider-host>/<your-api-key>
+
+> {"jsonrpc": "2.0", "id": 0, "method": "eth_gasPrice"}
+
+< {"jsonrpc": "2.0", "result": "0x41f9de2", "id": 0}
 ```
-wscat -c wss://eth-mainnet.ws.alchemyapi.io/ws/demo
 
->  {"jsonrpc":  "2.0", "id": 0, "method":  "eth_gasPrice"}
-
-<  {"jsonrpc":  "2.0", "result":  "0xb2d05e00", "id": 0}
-
-```
+Le righe che iniziano con `>` sono quelle che digiti, e le righe che iniziano con `<` sono quelle che il nodo restituisce.
 
 ## Come usare i WebSocket {#how-to-use-websockets}
 
-Per iniziare, apri un WebSocket usando l'URL WebSocket della tua app. Puoi trovare l'URL WebSocket della tua app aprendo la pagina dell'app [nel dashboard](https://dashboard.alchemyapi.io/) e facendo clic su "View Key". Tieni presente che l'URL della tua app per WebSocket è diverso dall'URL per le richieste HTTP, ma entrambi sono visualizzabili facendo clic su "View Key".
+Per iniziare, apri un WebSocket usando l'URL WebSocket del tuo fornitore. Con Alchemy, puoi trovarlo aprendo la tua app nella [dashboard](https://dashboard.alchemy.com/) e visualizzando la sua chiave per l'interfaccia di programmazione delle applicazioni (API). Nota che l'URL per i WebSocket (`wss://`) è diverso dall'URL per le richieste HTTP (`https://`), sebbene la maggior parte dei fornitori usi la stessa chiave API per entrambi.
 
-![Dove trovare l'URL WebSocket nella dashboard di Alchemy](./use-websockets.gif)
+![Dove trovare il tuo URL WebSocket nella dashboard di Alchemy](./use-websockets.mp4#602x280)
 
-Tutte le API elencate in [Alchemy API Reference](https://docs.alchemyapi.io/documentation/alchemy-api-reference/) possono essere utilizzate tramite WebSocket. A questo scopo, usa lo stesso payload che verrebbe inviato come corpo di una richiesta HTTP POST, ma invialo tramite il WebSocket.
+Qualsiasi dei [metodi JSON-RPC](/developers/docs/apis/json-rpc/) supportati dal tuo fornitore può essere usato tramite WebSocket. Per farlo, usa lo stesso payload che verrebbe inviato come corpo di una richiesta HTTP POST, ma invialo invece attraverso il WebSocket.
 
-## Con Web3 {#with-web3}
+## Con il Web3 {#with-web3}
 
-Passare ai WebSocket usando una libreria client come Web3 è semplice. Basta passare l'URL WebSocket anziché quello HTTP quando crei un'istanza del client Web3. Per esempio:
+Passare ai WebSocket mentre si usa una libreria client come [Viem](https://viem.sh/) è semplice. Usa il trasporto `webSocket` con il tuo URL WebSocket invece del trasporto `http`. Ad esempio, dopo `npm install viem`, salvalo come `index.mjs` ed esegui `node index.mjs`:
 
 ```js
-const web3 = new Web3("wss://eth-mainnet.ws.alchemyapi.io/ws/your-api-key")
+import { createPublicClient, webSocket } from "viem"
+import { mainnet } from "viem/chains"
 
-web3.eth.getBlockNumber().then(console.log) // -> 7946893
+const client = createPublicClient({
+  chain: mainnet,
+  transport: webSocket("wss://<provider-host>/<your-api-key>"),
+})
+
+console.log(await client.getBlockNumber()) // -> 26243602n
+
+// Iscriviti ai nuovi blocchi tramite lo stesso WebSocket
+const unwatch = client.watchBlocks({
+  onBlock: (block) => {
+    console.log(block.number, block.hash)
+    unwatch()
+    process.exit(0)
+  },
+})
 ```
 
-## API per l'iscrizione {#subscription-api}
+## API di iscrizione {#subscription-api}
 
-Se ti connetti tramite WebSocket, puoi usare altri due metodi: `eth_subscribe` e `eth_unsubscribe`. Ti consentiranno di attendere determinati eventi e di ricevere notifiche immediate.
+Quando si è connessi tramite un WebSocket, è possibile usare due metodi aggiuntivi: `eth_subscribe` e `eth_unsubscribe`. Questi metodi ti permetteranno di restare in ascolto di eventi particolari e di essere notificato immediatamente.
 
 ### `eth_subscribe` {#eth-subscribe}
 
-Crea una nuova iscrizione agli eventi specificati. [Scopri di più su`eth_subscribe`](https://docs.alchemy.com/reference/eth-subscribe).
+Crea una nuova iscrizione per gli eventi specificati. [Scopri di più su `eth_subscribe`](https://geth.ethereum.org/docs/interacting-with-geth/rpc/pubsub).
 
 #### Parametri {#parameters}
 
-1. Tipi di iscrizioni
+1. Tipi di iscrizione
 2. Parametri opzionali
 
-Il primo argomento specifica il tipo di evento da attendere. Il secondo argomento contiene opzioni aggiuntive che dipendono dal primo argomento. I diversi tipi di descrizione, le loro opzioni e i payload degli eventi sono descritti di seguito.
+Il primo argomento specifica il tipo di evento da ascoltare. Il secondo argomento contiene opzioni aggiuntive che dipendono dal primo argomento. I diversi tipi di descrizione, le loro opzioni e i payload dei loro eventi sono descritti di seguito.
 
 #### Restituisce {#returns}
 
-L'ID dell'iscrizione: questo ID sarà allegato a ogni evento ricevuto e può anche essere usato per annullare l'iscrizione usando `eth_unsubscribe`.
+L'ID dell'iscrizione: questo ID sarà allegato a tutti gli eventi ricevuti e può anche essere usato per annullare l'iscrizione usando `eth_unsubscribe`.
 
 #### Eventi di iscrizione {#subscription-events}
 
-Mentre l'iscrizione è attiva, ricevi eventi che sono oggetti con i seguenti campi:
+Mentre l'iscrizione è attiva, riceverai eventi che sono oggetti con i seguenti campi:
 
-- `jsonrpc`: sempre "2.0"
-- `method`: sempre "eth_subscription"
-- `params`: un oggetto con i campi seguenti:
-  - `subscription`: ID dell'iscrizione restituito dalla chiamata `eth_subscription` che ha creato questa iscrizione.
-  - `result`: oggetto i cui contenuti variano in base al tipo di iscrizione.
+- `jsonrpc`: Sempre "2.0"
+- `method`: Sempre "eth_subscription"
+- `params`: Un oggetto con i seguenti campi:
+  - `subscription`: L'ID dell'iscrizione restituito dalla chiamata `eth_subscribe` che ha creato questa iscrizione.
+  - `result`: Un oggetto il cui contenuto varia a seconda del tipo di iscrizione.
 
 #### Tipi di iscrizione {#subscription-types}
 
-1. `alchemy_newFullPendingTransactions`
+1. `newHeads`
 
-Restituisce le informazione della transazione per tutte le transazioni aggiunte allo stato in sospeso. Questo tipo esegue l'iscrizione alle transazioni in sospeso, analogamente alla chiamata Web3 standard di `web3.eth.subscribe("pendingTransactions")`, ma è diverso perché emette _informazioni complete sulla transazione_ anziché solo gli hash della transazione.
+Emette un evento ogni volta che un nuovo header viene aggiunto alla catena, anche durante una riorganizzazione della catena.
 
-Esempio:
-
-```json
->  {"jsonrpc":  "2.0",  "id":  1,  "method":  "eth_subscribe",  "params":  ["alchemy_newFullPendingTransactions"]}
-
-<  {"id":1,"result":"0x9a52eeddc2b289f985c0e23a7d8427c8","jsonrpc":"2.0"}
-<  {
-      "jsonrpc":"2.0",
-      "method":"eth_subscription",
-      "params":{
-          "result":{
-          "blockHash":null,
-          "blockNumber":null,
-          "from":"0xa36452fc31f6f482ad823cd1cf5515177d57667f",
-          "gas":"0x1adb0",
-          "gasPrice":"0x7735c4d40",
-          "hash":"0x50bff0736c713458c92dd1848d12f3354149be1363123dae35e94e0f2a9d56bf",
-"input":"0xa9059cbb0000000000000000000000000d0707963952f2fba59dd06f2b425ace40b492fe0000000000000000000000000000000000000000000015b1111266cfca100000",
-          "nonce":"0x0",
-          "to":"0xea38eaa3c86c8f9b751533ba2e562deb9acded40",
-          "transactionIndex":null,
-          "value":"0x0",
-          "v":"0x26",
-          "r":"0x195c2c1ed126088e12d290aa93541677d3e3b1d10f137e11f86b1b9227f01e3b",
-          "s":"0x60fc4edbf1527832a2a36dbc1e63ed6193a6eee654472fbebbf88ef1750b5344"},
-          "subscription":"0x9a52eeddc2b289f985c0e23a7d8427c8"
-      }
-  }
-
-```
-
-2. `newHeads`
-
-Emette un evento ogni volta che una nuova intestazione viene aggiunta alla catena, anche durante una riorganizzazione della catena.
-
-Quando si verifica la riorganizzazione della catena, questa iscrizione emetterà un evento contenente tutte le nuove intestazioni della nuova catena. In particolare, significa che potresti vedere più intestazioni emesse con la stessa altezza e quando ciò si verifica l'ultima dovrebbe essere considerata quella corretta dopo una riorganizzazione.
+Quando si verifica una riorganizzazione della catena, questa iscrizione emetterà un evento contenente tutti i nuovi header per la nuova catena. In particolare, questo significa che potresti vedere più header emessi con la stessa altezza, e quando ciò accade l'header successivo dovrebbe essere considerato quello corretto dopo una riorganizzazione.
 
 Esempio:
 
 ```json
->  {"jsonrpc":  "2.0",  "id":  1,  "method":  "eth_subscribe",  "params":  ["newHeads"]}
+> {"jsonrpc": "2.0", "id": 1, "method": "eth_subscribe", "params": ["newHeads"]}
 
-<  {"jsonrpc":"2.0","id":2,"result":"0x9ce59a13059e417087c02d3236a0b1cc"}
-<  {
-  "jsonrpc":  "2.0",
-  "method":  "eth_subscription",
-  "params":  {
-      "result":  {
-          "extraData":  "0xd983010305844765746887676f312e342e328777696e646f7773",
-          "gasLimit":  "0x47e7c4",
-          "gasUsed":  "0x38658",
-          "logsBloom":
-"0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-          "nonce":  "0x084149998194cc5f",
-          "number":  "0x1348c9",
-          "parentHash":  "0x7736fab79e05dc611604d22470dadad26f56fe494421b5b333de816ce1f25701",
-          "receiptRoot":  "0x2fab35823ad00c7bb388595cb46652fe7886e00660a01e867824d3dceb1c8d36",
-          "sha3Uncles":  "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-          "stateRoot":  "0xb3346685172db67de536d8765c43c31009d0eb3bd9c501c9be3229203f15f378",
-          "timestamp":  "0x56ffeff8",
-          "transactionsRoot":  "0x0167ffa60e3ebc0b080cdb95f7c0087dd6c0e61413140e39d94d3468d7c9689f"
-      },
-  "subscription":  "0x9ce59a13059e417087c02d3236a0b1cc"
+< {"jsonrpc":"2.0","result":"0xe0d4abf5caf333fbf94c5f02182e6469","id":1}
+< {
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "result": {
+      "baseFeePerGas": "0x41f9de2",
+      "blobGasUsed": "0xc0000",
+      "difficulty": "0x0",
+      "excessBlobGas": "0xa88af38",
+      "extraData": "0xe29ca82051756173617220287175617361722e77696e2920e29ca8",
+      "gasLimit": "0x3938700",
+      "gasUsed": "0x1a17224",
+      "hash": "0xedc43a71b7ff13880bdbe7b748a225b91a11a91e79173fe28011363c10acaea5",
+      "logsBloom": "0x4beaef4e7dbb1bfdb3df673fab6cdf1cf9fc0e7f743d672c761551767b7dad953d79cf86e56e6195ae1b57dff20a0fd46e57c545af166ff49394df3839e269a6ff877b6baf9d899fd9666c58b7dfa7add4febf78b466e7f71af2dcbad53fdcfa3f7277d2fbfffcff953f9ef37b3af8fffb296a3adb94dc463ff0d6d5173f1beda0fd662d77eaedb34ff99f3eeed38a77e7d0cd63e917d4efbdfcb7d0d19437f98ff60773d0effbfbdfdbef9ebbf6a2c35efedd677a795d3ccd777e127eeb657f6a8dffaf64f3b8d998b516c78e661ef77fded57fb66d687fab17739b3ef5aa2765777d8cce0ef59a9ceebeceabbb7f76ed7fc65df7e8bccf7938eb3fb7de57f7",
+      "miner": "0x396343362be2a4da1ce0c1c210945346fb82aa49",
+      "mixHash": "0xa72c9201f502df607d0d7551ccc171ce37a5146747f04c6c495b0aebecb045c7",
+      "nonce": "0x0000000000000000",
+      "number": "0x1907212",
+      "parentBeaconBlockRoot": "0x34f3f289459913dd80ec9c20aa535866cd2bd310ac26e47570601e263d593735",
+      "parentHash": "0xe62c150ffbbd04e95343f945b70fa53756aba6c0bf96c0440d1ae354fa007a7c",
+      "receiptsRoot": "0x94951d882544da76e30b145b26a39b126e8acfba9db929351b84b2f4c847e3ed",
+      "requestsHash": "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+      "size": "0x1f4bc",
+      "stateRoot": "0x12771ea73858277034cf6604aee0abbf889c15091ab8ef9be81bf7258458a036",
+      "timestamp": "0x6ad92b47",
+      "transactionsRoot": "0xbd58ebe5c8c5519e458266a7db3ad049a7bffa106dc9a14f2fe6edb3f8ad5d70",
+      "withdrawalsRoot": "0x56a083b6140663c9e98c30167ee90a1ffb157505ba89cb584583b71cba100d2a"
+    },
+    "subscription": "0xe0d4abf5caf333fbf94c5f02182e6469"
   }
 }
-
 ```
 
-3. `logs`
+2. `logs`
 
-Emette registri che fanno parte di blocchi appena aggiunti, corrispondenti ai criteri specificati per il filtro.
+Emette i log che fanno parte dei blocchi appena aggiunti e che corrispondono ai criteri di filtro specificati.
 
-Quando avviene la riorganizzazione della catena, i registri che fanno parte dei blocchi sulla vecchia catena saranno emessi di nuovo con la proprietà `removed` impostata su `true`. Inoltre, vengono emessi i registri che fanno parte dei blocchi sulla nuova catena. Significa che sarà possibile trovare registri della stessa transazione diverse volte nel caso di una riorganizzazione.
+Quando si verifica una riorganizzazione della catena, i log che fanno parte dei blocchi sulla vecchia catena verranno emessi di nuovo con la proprietà `removed` impostata su `true`. Inoltre, vengono emessi i log che fanno parte dei blocchi sulla nuova catena, il che significa che è possibile vedere i log per la stessa transazione più volte in caso di riorganizzazione.
 
 Parametri
 
 1. Un oggetto con i seguenti campi:
-   - `address` (facoltativo): una stringa rappresentante un indirizzo o un array di stringhe analoghe.
-     - Saranno emessi solo i registri creati da uno di questi indirizzi.
-   - `topics`: array di specificatori di argomento.
-     - Ogni specificatore di argomento è `null`, una stringa rappresentante un argomento o un array di stringhe.
-     - Ogni posizione nell'array che non è `null` limita i registri emessi a quelli aventi uno degli argomenti indicati in quella posizione.
+   - `address` (opzionale): una stringa che rappresenta un indirizzo o un array di tali stringhe.
+     - Verranno emessi solo i log creati da uno di questi indirizzi.
+   - `topics`: un array di specificatori di topic.
+     - Ogni specificatore di topic è `null`, una stringa che rappresenta un topic o un array di stringhe.
+     - Ogni posizione nell'array che non è `null` limita i log emessi solo a quelli che hanno uno dei topic dati in quella posizione.
 
-Alcuni esempi di specifiche di argomento:
+Alcuni esempi di specifiche dei topic:
 
-- `[]`: ogni argomento è consentito.
-- `[A]`: A in prima posizione (e tutto il resto segue).
-- `[null, B]`: tutto nella prima posizione e B nella seconda (e tutto il resto segue).
-- `[A, B]`: A in prima posizione e B in seconda (e tutto il resto segue).
-- `[[A, B], [A, B]]`: (A o B) in prima posizione e (A o B) in seconda posizione (e tutto il resto segue).
+- `[]`: Qualsiasi topic consentito.
+- `[A]`: A in prima posizione (e qualsiasi cosa dopo).
+- `[null, B]`: Qualsiasi cosa in prima posizione e B in seconda posizione (e qualsiasi cosa dopo).
+- `[A, B]`: A in prima posizione e B in seconda posizione (e qualsiasi cosa dopo).
+- `[[A, B], [A, B]]`: (A o B) in prima posizione e (A o B) in seconda posizione (e qualsiasi cosa dopo).
+
+Esempio:
+
+Questo esempio resta in ascolto degli eventi `Deposit` dal [contratto dell'ether incapsulato (weth)](https://etherscan.io/address/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2) sulla Mainnet di Ethereum:
+
+```json
+> {"jsonrpc": "2.0", "id": 1, "method": "eth_subscribe", "params": ["logs", {"address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", "topics": ["0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c"]}]}
+
+< {"jsonrpc":"2.0","result":"0x69a0e61ae8e3d61a93479858e8f1b43a","id":1}
+< {
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "result": {
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "blockHash": "0x168e06e5733df993078bb635cb9925f80ff39d12a36bd301052c44d7bf6b6068",
+      "blockNumber": "0x190720e",
+      "blockTimestamp": "0x6ad92b17",
+      "data": "0x000000000000000000000000000000000000000000000000039ed0c3d7848a1c",
+      "logIndex": "0x11",
+      "removed": false,
+      "topics": [
+        "0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c",
+        "0x00000000000000000000000023617e59a5925b2a4bf75d73ff6711cd0b29de85"
+      ],
+      "transactionHash": "0xc956e7012c2af8ff87db88e059336842ee872bfc93de1eac9760510d0bd801be",
+      "transactionIndex": "0xb"
+    },
+    "subscription": "0x69a0e61ae8e3d61a93479858e8f1b43a"
+  }
+}
+```
+
+3. `newPendingTransactions`
+
+Emette l'hash di ogni transazione che viene aggiunta allo stato in sospeso del nodo (la sua mempool).
 
 Esempio:
 
 ```json
->  {"jsonrpc":  "2.0",  "id":  1,  "method":  "eth_subscribe",  "params":  ["logs",  {"address":  "0x8320fe7702b96808f7bbc0d4a888ed1468216cfd",  "topics":  ["0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab902"]}]}
+> {"jsonrpc": "2.0", "id": 1, "method": "eth_subscribe", "params": ["newPendingTransactions"]}
 
-<  {"jsonrpc":"2.0","id":2,"result":"0x4a8a4c0517381924f9838102c5a4dcb7"}
-<  {
-  "jsonrpc":  "2.0",
-  "method":  "eth_subscription",
-  "params":  {
-      "subscription":  "0x4a8a4c0517381924f9838102c5a4dcb7",
-      "result":  {
-          "address":  "0x8320fe7702b96808f7bbc0d4a888ed1468216cfd",
-          "blockHash":  "0x61cdb2a09ab99abf791d474f20c2ea89bf8de2923a2d42bb49944c8c993cbf04",
-          "blockNumber":  "0x29e87",
-          "data": "0x00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000003",
-          "logIndex":"0x0",
-          "topics":["0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab902"],
-          "transactionHash":  "0xe044554a0a55067caafd07f8020ab9f2af60bdfe337e395ecd84b4877a3d1ab4",
-          "transactionIndex":  "0x0"
-      }
-  }
-}
-
+< {"jsonrpc":"2.0","result":"0x1c2365b029179adf1e84b9e327315249","id":1}
+< {"jsonrpc":"2.0","method":"eth_subscription","params":{"result":"0x4a62d0ad7c8868fbbfa10604e68638e637c6fc6f64fd1fb4ca042dcd0158c992","subscription":"0x1c2365b029179adf1e84b9e327315249"}}
 ```
+
+Alcuni fornitori offrono anche i propri tipi di iscrizione. Ad esempio, [`alchemy_pendingTransactions`](https://www.alchemy.com/docs/reference/alchemy-pendingtransactions) di Alchemy emette _oggetti di transazione completi_ invece di soli hash, e accetta i filtri opzionali `fromAddress`, `toAddress` e `hashesOnly`. Questi non fanno parte dell'interfaccia di programmazione delle applicazioni (API) JSON-RPC standard, quindi funzionano solo con quel fornitore.
 
 ### `eth_unsubscribe` {#eth-unsubscribe}
 
-Annulla un'iscrizione esistente in modo che non siano inviati altri eventi.
+Annulla un'iscrizione esistente in modo che non vengano inviati ulteriori eventi.
 
 Parametri
 
-1. ID di iscrizione, come precedentemente restituito da una chiamata `eth_subscribe`.
+1. ID dell'iscrizione, come restituito in precedenza da una chiamata `eth_subscribe`.
 
 Restituisce
 
-`true` se un'iscrizione è stata annullata o `false` se non esiste alcuna iscrizione con l'ID dato.
+`true` se un'iscrizione è stata annullata con successo, o `false` se non esisteva alcuna iscrizione con l'ID fornito.
+
+Un'iscrizione esiste solo sulla connessione WebSocket che l'ha creata, quindi `eth_unsubscribe` deve essere inviato su quella stessa connessione. Non può essere inviato come richiesta HTTP separata. La chiusura della connessione annulla anche tutte le sue iscrizioni.
 
 Esempio:
 
-**Richiesta**
-
-```
-curl https://eth-mainnet.alchemyapi.io/v2/your-api-key
--X POST
--H "Content-Type: application/json"
--d '{"id": 1, "method": "eth_unsubscribe", "params": ["0x9cef478923ff08bf67fde6c64013158d"]}'
-
-
-```
-
-**Risultato**
-
 ```json
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "result": true
-}
+> {"jsonrpc": "2.0", "id": 2, "method": "eth_unsubscribe", "params": ["0xe0d4abf5caf333fbf94c5f02182e6469"]}
+
+< {"jsonrpc":"2.0","result":true,"id":2}
 ```
 
 ---
 
-[Registrati con Alchemy](https://auth.alchemyapi.io/signup) gratuitamente, dai un'occhiata alla [nostra documentazione](https://docs.alchemyapi.io/) e, per le notizie più recenti, seguici su [Twitter](https://twitter.com/AlchemyPlatform).
+[Registrati su Alchemy](https://auth.alchemy.com) gratuitamente, dai un'occhiata alla [documentazione di Alchemy](https://www.alchemy.com/docs/) e, per le ultime notizie, segui Alchemy su [Twitter](https://x.com/Alchemy).

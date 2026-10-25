@@ -1,138 +1,65 @@
-import { useRouter } from "next/router"
-import { useTranslation } from "next-i18next"
-import { MdInfoOutline } from "react-icons/md"
-import { Box, Code, Flex, Icon, VStack } from "@chakra-ui/react"
+import { useLocale, useTranslations } from "next-intl"
 
-import type { ChildOnlyProp, Lang, StakingStatsData } from "@/lib/types"
+import type { StakingStatsData } from "@/lib/types"
 
-import InlineLink from "@/components/Link"
-import Text from "@/components/OldText"
-import Tooltip from "@/components/Tooltip"
+import BigNumber from "@/components/BigNumber"
 
-import { getLocaleForNumberFormat } from "@/lib/utils/translations"
+import { numberFormat } from "@/lib/utils/numbers"
 
-const Cell = ({ children }: ChildOnlyProp) => (
-  <VStack
-    spacing={2}
-    py={4}
-    px={8}
-    borderInlineStart={{ md: "1px" }}
-    borderTop={{ base: "1px", md: "none" }}
-    // `!important` needed to force an override of the user-agent
-    borderColor="preBorder !important"
-    _first={{
-      borderInlineStart: "none",
-      borderTop: "none",
-    }}
-  >
-    {children}
-  </VStack>
-)
-
-const Value = ({ children }: ChildOnlyProp) => (
-  <Code
-    fontWeight="bold"
-    fontSize="2rem"
-    background="none"
-    color="primary.base"
-    p={0}
-  >
-    {children}
-  </Code>
-)
-
-const Label = ({ children }: ChildOnlyProp) => (
-  <Flex alignItems="center" textTransform="uppercase" fontSize="sm">
-    {children}
-  </Flex>
-)
-
-// BeaconchainTooltip component
-const BeaconchainTooltip = ({ children }: ChildOnlyProp) => (
-  <Tooltip content={children}>
-    <Box as="span" marginInlineStart={2}>
-      <Icon
-        as={MdInfoOutline}
-        color="text"
-        _hover={{ color: "primary.base" }}
-        _active={{ color: "primary.base" }}
-        _focus={{ color: "primary.base" }}
-        boxSize={4}
-        verticalAlign="middle"
-      />
-    </Box>
-  </Tooltip>
-)
+const DUNE = { sourceName: "Dune Analytics", sourceUrl: "https://dune.com/" }
 
 // StatsBox component
 type StakingStatsBoxProps = {
   data: StakingStatsData
 }
 const StakingStatsBox = ({ data }: StakingStatsBoxProps) => {
-  const { locale } = useRouter()
-  const { t } = useTranslation("page-staking")
-
-  const localeForStatsBoxNumbers = getLocaleForNumberFormat(locale! as Lang)
+  const locale = useLocale()
+  const t = useTranslations("page-staking")
 
   // Helper functions
   const formatInteger = (amount: number): string =>
-    new Intl.NumberFormat(localeForStatsBoxNumbers).format(amount)
+    amount
+      ? numberFormat(locale, { maximumFractionDigits: 0 }).format(amount)
+      : "—"
 
   const formatPercentage = (amount: number): string =>
-    new Intl.NumberFormat(localeForStatsBoxNumbers, {
+    numberFormat(locale, {
       style: "percent",
       minimumSignificantDigits: 2,
       maximumSignificantDigits: 2,
     }).format(amount)
 
   const totalEth = formatInteger(data.totalEthStaked)
-  const totalValidators = formatInteger(data.validatorscount)
+  const percentStaked = formatPercentage(data.stakedPercentage)
   const currentApr = formatPercentage(data.apr)
 
   return (
-    <Flex direction={{ base: "column", md: "row" }}>
-      <Cell>
-        <Value>{totalEth}</Value>
-        <Label>
-          {t("page-staking-stats-box-metric-1")}
-          <BeaconchainTooltip>
-            <Box textTransform="none">
-              <Text>{t("page-staking-stats-box-metric-1-tooltip")}</Text>
-              {t("common:data-provided-by")}{" "}
-              <InlineLink href="https://beaconcha.in/">Beaconcha.in</InlineLink>
-            </Box>
-          </BeaconchainTooltip>
-        </Label>
-      </Cell>
-      <Cell>
-        <Value>{totalValidators}</Value>
-        <Label>
-          {t("page-staking-stats-box-metric-2")}
-          <BeaconchainTooltip>
-            <Box textTransform="none">
-              <Text>{t("page-staking-stats-box-metric-2-tooltip")}</Text>
-              {t("common:data-provided-by")}{" "}
-              <InlineLink href="https://beaconcha.in/">Beaconcha.in</InlineLink>
-            </Box>
-          </BeaconchainTooltip>
-        </Label>
-      </Cell>
-      <Cell>
-        <Value>{currentApr}</Value>
-        <Label>
-          {t("page-staking-stats-box-metric-3")}
-          <BeaconchainTooltip>
-            <Box textTransform="none">
-              <Text>{t("page-staking-stats-box-metric-3-tooltip")}</Text>
-              {t("common:data-provided-by")}{" "}
-              <InlineLink href="https://beaconcha.in/ethstore">
-                Beaconcha.in
-              </InlineLink>
-            </Box>
-          </BeaconchainTooltip>
-        </Label>
-      </Cell>
-    </Flex>
+    <div className="flex flex-col md:flex-row">
+      <BigNumber
+        variant="ruled"
+        value={totalEth}
+        sourceDescription={t("page-staking-stats-box-metric-1-tooltip")}
+        {...DUNE}
+      >
+        {t("page-staking-stats-box-metric-1")}
+      </BigNumber>
+      <BigNumber
+        variant="ruled"
+        value={percentStaked}
+        sourceDescription={t("page-staking-stats-box-metric-2-tooltip")}
+        {...DUNE}
+      >
+        {t("page-staking-stats-box-metric-2")}
+      </BigNumber>
+      <BigNumber
+        variant="ruled"
+        value={currentApr}
+        sourceDescription={t("page-staking-stats-box-metric-3-tooltip")}
+        {...DUNE}
+      >
+        {t("page-staking-stats-box-metric-3")}
+      </BigNumber>
+    </div>
   )
 }
 

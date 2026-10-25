@@ -1,29 +1,48 @@
-import React, { ReactNode, useEffect } from "react"
-import {
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverProps,
-  PopoverTrigger,
-  useDisclosure,
-} from "@chakra-ui/react"
+"use client"
+
+import { ComponentProps, ReactNode, useEffect } from "react"
+import { Portal } from "@radix-ui/react-portal"
 
 import { isMobile } from "@/lib/utils/isMobile"
+import { trackCustomEvent } from "@/lib/utils/matomo"
 
-export interface IProps extends PopoverProps {
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import {
+  Tooltip as Tooltipcomponent,
+  TooltipContent,
+  TooltipTrigger,
+} from "../ui/tooltip"
+
+import { useDisclosure } from "@/hooks/useDisclosure"
+import { useIsClient } from "@/hooks/useIsClient"
+
+export type TooltipProps = ComponentProps<typeof Popover> & {
   content: ReactNode
   children?: ReactNode
   onBeforeOpen?: () => void
+  container?: HTMLElement | null
+  asChild?: boolean
+  /** Base `bg-background` instead of `bg-background-highlight`, for when nested in an already-highlighted container. */
+  nested?: boolean
+  customMatomoEvent?: {
+    eventCategory: string
+    eventAction: string
+    eventName: string
+  }
 }
 
-const Tooltip: React.FC<IProps> = ({
+const Tooltip = ({
   content,
   children,
   onBeforeOpen,
-  ...rest
-}) => {
+  container,
+  asChild,
+  nested,
+  customMatomoEvent,
+  ...props
+}: TooltipProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const isClient = useIsClient()
 
   // Close the popover when the user scrolls.
   // This is useful for mobile devices where the popover is open by clicking the
@@ -56,22 +75,54 @@ const Tooltip: React.FC<IProps> = ({
     onOpen()
   }
 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      handleOpen()
+      customMatomoEvent &&
+        trackCustomEvent({
+          ...customMatomoEvent,
+        })
+    } else {
+      onClose()
+    }
+  }
+
+  // Avoid rendering on the server since the user can't interact with it and we
+  // need to use different components depending on the device
+  if (!isClient) {
+    return null
+  }
+
+  // Use Popover on mobile devices since the user can't hover
+  const Component = isMobile() ? Popover : Tooltipcomponent
+  const Trigger = isMobile() ? PopoverTrigger : TooltipTrigger
+  const Content = isMobile() ? PopoverContent : TooltipContent
+
   return (
-    <Popover
-      isOpen={isOpen}
-      onOpen={handleOpen}
-      onClose={onClose}
-      placement="top"
-      trigger={isMobile() ? "click" : "hover"}
-      gutter={8}
-      {...rest}
+    <Component
+      open={isOpen}
+      onOpenChange={handleOpenChange}
+      delayDuration={200}
+      {...props}
     >
-      <PopoverTrigger>{children}</PopoverTrigger>
-      <PopoverContent>
-        <PopoverArrow />
-        <PopoverBody>{content}</PopoverBody>
-      </PopoverContent>
-    </Popover>
+      <Trigger
+        asChild={asChild}
+        className="focus-visible:rounded-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-hover"
+      >
+        {children}
+      </Trigger>
+      <Portal container={container}>
+        <Content
+          side="top"
+          sideOffset={2}
+          nested={nested}
+          className="z-[10000] w-fit max-w-80 px-5 text-sm"
+          data-testid="tooltip-popover"
+        >
+          {content}
+        </Content>
+      </Portal>
+    </Component>
   )
 }
 
