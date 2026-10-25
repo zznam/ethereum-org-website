@@ -1,6 +1,6 @@
 ---
 title: Dapp Development Frameworks
-description: Explore the advantages of frameworks and compare available options.
+description: "Compare Ethereum development frameworks like Foundry and Hardhat. Learn what a framework gives you for compiling, testing and deploying smart contracts."
 lang: en
 ---
 
@@ -64,19 +64,20 @@ Before diving into frameworks, we recommend you first read through our introduct
 - [GitHub](https://github.com/paulrberg/create-eth-app)
 - [Templates](https://github.com/PaulRBerg/create-eth-app/tree/develop/templates)
 
-**Scaffold-Eth -** **_Ethers.js + Hardhat + React components and hooks for web3: everything you need to get started building decentralized applications powered by smart contracts._**
+**Scaffold-ETH 2 -** **_Next.js, Wagmi, Viem and RainbowKit with your choice of Hardhat or Foundry: contract hot reload, custom React hooks, a burner wallet and local faucet, and extension modules for full-stack dapp development._**
 
+- [Website](https://scaffoldeth.io/)
 - [GitHub](https://github.com/scaffold-eth/scaffold-eth-2)
 
 **Tenderly -** **_Web3 development platform that enables blockchain developers to build, test, debug, monitor, and operate smart contracts and improve dapp UX._**
 
 - [Website](https://tenderly.co/)
-- [Documentation](https://docs.tenderly.co/ethereum-development-practices)
+- [Documentation](https://docs.tenderly.co/)
 
 **The Graph -** **_The Graph for querying blockchain data efficiently._**
 
 - [Website](https://thegraph.com/)
-- [Tutorial](/developers/tutorials/the-graph-fixing-web3-data-querying/)
+- [Documentation](https://thegraph.com/docs/en/)
 
 **Alchemy -** **_Ethereum Development Platform._**
 
@@ -101,30 +102,54 @@ Before diving into frameworks, we recommend you first read through our introduct
 - [GitHub](https://github.com/chainstack)
 - [Discord](https://discord.gg/BSb5zfp9AT)
 
+**Crossmint -** **_Enterprise-grade web3 development platform, that allows you to build NFT applications on all major chains EVM Chains(and others)._**
+
+- [Website](https://www.crossmint.com)
+- [Documentation](https://docs.crossmint.com)
+- [Discord](https://discord.com/invite/crossmint)
+
 **Brownie -** **_Python-based development environment and testing framework._**
 
 - [Documentation](https://eth-brownie.readthedocs.io/en/latest/)
 - [GitHub](https://github.com/eth-brownie/brownie)
 - **Brownie is currently unmaintained**
 
-**Truffle -** **_A development environment, testing framework, build pipeline, and other tools._**
-
-- [trufflesuite.com](https://www.trufflesuite.com/)
-- [GitHub](https://github.com/trufflesuite/truffle)
-- **Truffle development has ended** - [read more](https://twitter.com/trufflesuite/status/1704946902393860589?t=NlIWeLTbBSAaJmS5uUAhSA&s=19)
-
 **OpenZeppelin SDK -** **_The Ultimate Smart Contract Toolkit: A suite of tools to help you develop, compile, upgrade, deploy and interact with smart contracts._**
 
-- [OpenZeppelin SDK](https://openzeppelin.com/sdk/)
 - [GitHub](https://github.com/OpenZeppelin/openzeppelin-sdk)
 - [Community Forum](https://forum.openzeppelin.com/c/support/17)
 - **OpenZeppelin SDK development has ended**
 
 **Catapulta -** **_Multi-chain smart contracts deployment tool, automate verifications in block explorers, keep track deployed smart contracts and share deployment reports, plug-n-play for Foundry and Hardhat projects._**
 
-- [Website](https://catapulta.sh/)
-- [Documentation](https://catapulta.sh/docs)
-- [Github](https://github.com/catapulta-sh)
+- [GitHub](https://github.com/catapulta-sh)
+
+**GoldRush (powered by Covalent) -** **_GoldRush offers the most comprehensive blockchain data API suite for developers, analysts, and enterprises. Whether you are building a DeFi dashboard, a wallet, a trading bot, an AI agent or a compliance platform, the data APIs provide fast, accurate, and developer-friendly access to the essential onchain data you need_**
+
+- [Website](https://goldrush.dev/)
+- [Documentation](https://goldrush.dev/docs/chains/ethereum)
+- [GitHub](https://github.com/covalenthq)
+- [Discord](https://www.covalenthq.com/discord/)
+
+**Wake -** **_All-in-one Python framework for contracts testing, fuzzing, deployment, vulnerability scanning and code navigation._**
+
+- [Homepage](https://getwake.io/)
+- [Documentation](https://ackeeblockchain.com/wake/docs/latest/)
+- [GitHub](https://github.com/Ackee-Blockchain/wake)
+- [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=AckeeBlockchain.tools-for-solidity)
+
+**Veramo -** **_Open source, modular and agnostic framework that makes it easy for decentralized application developers to build decentralized identities and verifiable credentials into their applications._**
+
+- [Homepage](https://veramo.io/)
+- [Documentation](https://veramo.io/docs/basics/introduction)
+- [GitHub](https://github.com/uport-project/veramo)
+- [Discord](https://discord.com/invite/FRRBdjemHV)
+- [NPM Package](https://www.npmjs.com/package/@veramo/core)
+
+**Moccasin -** **_A fast, Pythonic smart contract development and testing framework for Vyper, built on Titanoboa._**
+
+- [Documentation](https://cyfrin.github.io/moccasin/)
+- [GitHub](https://github.com/Cyfrin/moccasin)
 
 ## Further reading {#further-reading}
 
@@ -133,3 +158,7 @@ _Know of a community resource that helped you? Edit this page and add it!_
 ## Related topics {#related-topics}
 
 - [Set up a local development environment](/developers/local-environment/)
+
+## Tutorials: Development frameworks on Ethereum {#tutorials}
+
+- [Hello World Smart Contract for Beginners](/developers/tutorials/hello-world-smart-contract/) _– Build and deploy a hello world smart contract using Hardhat._

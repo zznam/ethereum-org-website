@@ -1,45 +1,30 @@
-import React from "react"
-import { Box, Flex, type FlexProps, Text } from "@chakra-ui/react"
+import { useLocale } from "next-intl"
 
-import { getMaxFractionDigitsUsd } from "../utils"
+import { Flex } from "@/components/ui/flex"
+
+import { formatWalletToken, formatWalletUsd } from "../utils"
 
 import { TokenBalance } from "./interfaces"
 
-type TokenBalanceItemProps = FlexProps & {
+type TokenBalanceItemProps = {
   item: TokenBalance
 }
-export const TokenBalanceItem = ({
-  item,
-  ...flexProps
-}: TokenBalanceItemProps) => {
+export const TokenBalanceItem = ({ item }: TokenBalanceItemProps) => {
   const { name, ticker, amount, usdConversion, Icon } = item
+  const locale = useLocale()
   const usdAmount = amount * usdConversion
-  const usdValue = Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    notation: "compact",
-    maximumFractionDigits: getMaxFractionDigitsUsd(usdAmount),
-  }).format(usdAmount)
-  const tokenAmount = Intl.NumberFormat("en", {
-    maximumFractionDigits: 5,
-  }).format(amount)
+  const usdValue = formatWalletUsd(usdAmount)
+  const tokenAmount = formatWalletToken(amount, locale)
   return (
-    <Flex gap={4} {...flexProps}>
-      <Icon />
-      <Text flex={1} fontWeight="medium">
-        {name}
-      </Text>
-      <Box
-        textAlign="end"
-        lineHeight={1.5}
-        fontWeight="bold"
-        sx={{ p: { m: 0 } }}
-      >
-        <Text>{usdValue}</Text>
-        <Text color="body.medium">
+    <Flex className="gap-4">
+      <Icon className="text-3xl" />
+      <p className="flex-1 font-medium">{name}</p>
+      <div className="text-end text-sm leading-normal font-bold [&_p]:m-0">
+        <p>{usdValue}</p>
+        <p className="text-body-medium">
           {tokenAmount} {ticker}
-        </Text>
-      </Box>
+        </p>
+      </div>
     </Flex>
   )
 }

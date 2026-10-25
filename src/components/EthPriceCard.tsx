@@ -1,192 +1,93 @@
-import { useEffect, useState } from "react"
-import { useRouter } from "next/router"
-import { useTranslation } from "next-i18next"
-import { MdInfoOutline } from "react-icons/md"
-import {
-  Box,
-  Flex,
-  type FlexProps,
-  Heading,
-  Icon,
-  Text,
-} from "@chakra-ui/react"
+"use client"
 
-import type { LoadingState } from "@/lib/types"
+import { ArrowUpRight, Info } from "lucide-react"
+import { useLocale, useTranslations } from "next-intl"
 
-import InlineLink from "@/components/Link"
 import Tooltip from "@/components/Tooltip"
+import InlineLink from "@/components/ui/Link"
+import { Skeleton } from "@/components/ui/skeleton"
 
-import { useRtlFlip } from "@/hooks/useRtlFlip"
+import { cn } from "@/lib/utils/cn"
+import { formatPriceUSD, numberToPercent } from "@/lib/utils/numbers"
 
-type EthPriceResponse = {
-  ethereum: {
-    usd: string
-    usd_24h_change: number
-  }
-}
+import { Flex } from "./ui/flex"
 
-type EthPriceState = {
-  currentPriceUSD: string
-  percentChangeUSD: number
-}
+import { useGasEthPrice } from "@/hooks/useGasEthPrice"
 
-export type EthPriceCardProps = FlexProps & {
-  isLeftAlign?: boolean
-}
+const EthPriceCard = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
+  const locale = useLocale()
+  const t = useTranslations("common")
+  const { ethPrice, ethPercentChange24h } = useGasEthPrice()
 
-const EthPriceCard = ({ isLeftAlign = false, ...props }: EthPriceCardProps) => {
-  const { locale } = useRouter()
-  const { t } = useTranslation()
-  const [state, setState] = useState<LoadingState<EthPriceState>>({
-    loading: true,
-  })
-  const { flipForRtl } = useRtlFlip()
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_24hr_change=true"
-        )
-        if (!response.ok) throw new Error(response.statusText)
-        const data: EthPriceResponse = await response.json()
-        if (data && data.ethereum) {
-          const currentPriceUSD = data.ethereum.usd
-          const percentChangeUSD = +data.ethereum.usd_24h_change / 100
-          setState({
-            loading: false,
-            data: { currentPriceUSD, percentChangeUSD },
-          })
-        }
-      } catch (error: unknown) {
-        error instanceof Error && console.error(error.message)
-        setState({
-          loading: false,
-          error,
-        })
-      }
-    }
-    fetchData()
-  }, [])
-
-  const hasError = "error" in state
-  const hasData = "data" in state
-
-  const formatPrice = (price: string) =>
-    new Intl.NumberFormat(locale, {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(+price)
-
-  const formatPercentage = (amount: number): string =>
-    new Intl.NumberFormat(locale, {
-      style: "percent",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(amount)
-
-  const getPriceString = (): string => {
-    if (state.loading) return t("loading")
-    if (hasError) return t("loading-error-refresh")
-    return formatPrice(state.data.currentPriceUSD)
-  }
-
-  const price = getPriceString()
-
-  const isNegativeChange = hasData && state.data.percentChangeUSD < 0
-
-  const change = hasData ? formatPercentage(state.data.percentChangeUSD) : ""
+  const isLoading = ethPrice === 0
+  const hasChange = typeof ethPercentChange24h === "number"
+  const isNegativeChange = hasChange && ethPercentChange24h < 0
 
   const tooltipContent = (
-    <Box>
+    <div>
       {t("data-provided-by")}{" "}
       <InlineLink href="https://www.coingecko.com/en/coins/ethereum">
         coingecko.com
       </InlineLink>
-    </Box>
+    </div>
   )
 
   return (
     <Flex
-      direction="column"
-      align={isLeftAlign ? "flex-start" : "center"}
-      justify="space-between"
-      background={
-        isNegativeChange
-          ? "priceCardBackgroundNegative"
-          : "priceCardBackgroundPositive"
-      }
-      border="1px solid"
-      borderColor={
-        isNegativeChange ? "priceCardBorderNegative" : "priceCardBorder"
-      }
-      p={6}
-      w="full"
-      maxW="420px"
-      maxH="192px"
-      borderRadius="base"
+      className={cn(
+        "w-full max-w-[320px] flex-col items-center gap-2 rounded-base border bg-background px-8 py-5",
+        className
+      )}
       {...props}
     >
-      <Heading
-        as="h4"
-        color="text200"
-        m={0}
-        fontSize="sm"
-        fontWeight="medium"
-        lineHeight="140%"
-        letterSpacing="0.04em"
-        textTransform="uppercase"
-      >
-        {t("eth-current-price")}
+      <h4 className="m-0 flex items-center text-sm leading-xs font-medium tracking-wider uppercase">
+        {t("eth-current-price")}&nbsp;
         <Tooltip content={tooltipContent}>
-          <Box as="span" ms={2}>
-            <Icon as={MdInfoOutline} boxSize="14px" />
-          </Box>
+          <Info className="size-[0.875em] text-sm" />
         </Tooltip>
-      </Heading>
+      </h4>
 
-      <Box
-        m={hasError ? "1rem 0" : 0}
-        lineHeight="1.4"
-        fontSize={hasError ? "md" : "5xl"}
-        color={hasError ? "fail" : "text"}
-      >
-        {price}
-      </Box>
-      <Flex
-        w="full"
-        align="center"
-        justify={isLeftAlign ? "flex-start" : "center"}
-        minH="33px" /* prevents jump when price loads*/
-      >
-        <Box
-          fontSize="2xl"
-          lineHeight="140%"
-          me={4}
-          color={isNegativeChange ? "fail300" : "success.base"}
-        >
-          <Text
-            as="span"
-            _after={{
-              content: isNegativeChange ? '"↘"' : '"↗"',
-              transform: flipForRtl,
-              display: "inline-block",
-            }}
-          >
-            {change}
-          </Text>
-        </Box>
-        <Box
-          fontSize="sm"
-          lineHeight="140%"
-          letterSpacing="0.04em"
-          textTransform="uppercase"
-          color="text300"
-        >
+      <div className="flex w-full items-center justify-center text-4xl leading-xs">
+        {isLoading ? (
+          <Skeleton className="h-[1lh] w-48" />
+        ) : (
+          formatPriceUSD(ethPrice, locale)
+        )}
+      </div>
+
+      {/* min-h-[33px] prevents jump when price loads */}
+      <Flex className="min-h-[33px] w-full flex-wrap items-center justify-center gap-x-2 gap-y-1">
+        <div className="flex h-7 items-center">
+          {isLoading ? (
+            <Skeleton className="h-full w-20" />
+          ) : (
+            hasChange && (
+              <span
+                className={cn(
+                  "flex items-center text-2xl leading-xs",
+                  isNegativeChange ? "text-error" : "text-success"
+                )}
+              >
+                {numberToPercent(ethPercentChange24h, locale, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+                <ArrowUpRight
+                  className={cn(
+                    "rtl:-scale-x-100",
+                    isNegativeChange && "-scale-y-100 rtl:-scale-100"
+                  )}
+                />
+              </span>
+            )
+          )}
+        </div>
+        <div className="text-center text-sm leading-xs tracking-wider text-body-medium uppercase">
           ({t("last-24-hrs")})
-        </Box>
+        </div>
       </Flex>
     </Flex>
   )

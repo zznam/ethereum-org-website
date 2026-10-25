@@ -1,10 +1,20 @@
-import InfoBanner from "@/components/InfoBanner"
+import { TriangleAlert } from "lucide-react"
+
 import Translation from "@/components/Translation"
 
+import { Alert, AlertContent, AlertDescription, AlertIcon } from "./ui/alert"
+
 const ProductDisclaimer = () => (
-  <InfoBanner emoji="⚠️" isWarning>
-    <Translation id="product-disclaimer" />
-  </InfoBanner>
+  <Alert variant="warning">
+    <AlertIcon size="lg">
+      <TriangleAlert />
+    </AlertIcon>
+    <AlertContent>
+      <AlertDescription>
+        <Translation id="product-disclaimer" />
+      </AlertDescription>
+    </AlertContent>
+  </Alert>
 )
 
 export default ProductDisclaimer

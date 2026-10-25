@@ -1,185 +1,185 @@
 ---
-title: NFTの作成&デプロイ方法(NFTチュートリアルシリーズの1/3)
-description: このチュートリアルは、イーサリアムとInterPlanetary File System(IPFS)を使用して、非代替性トークン(ERC-721トークン)のスマートコントラクトを作成、デプロイする方法について、段階的に学ぶNFTシリーズのパート1です
-author: "Sumi Mudgil"
-tags:
-  - "ERC-721"
-  - "Alchemy"
-  - "Solidity"
-  - "スマートコントラクト"
+title: "NFTの作成とデプロイ方法（NFTチュートリアルシリーズのパート1/3）"
+description: "このチュートリアルはNFTに関するシリーズのパート1であり、イーサリアムとInter Planetary File System（IPFS）を使用して、非代替性トークン（ERC-721トークン）のスマート・コントラクトを作成およびデプロイする方法をステップバイステップで説明します。"
+author: "スミ・ムドギル"
+tags: ["ERC-721", "Alchemy", "Solidity", "スマート・コントラクト"]
 skill: beginner
+breadcrumb: "NFTの作成とデプロイ"
 lang: ja
 published: 2021-04-22
 ---
 
-NFTによってブロックチェーンが世間の目に触れるようになった今、イーサリアムブロックチェーン上に自分のNFTコントラクト(ERC-721トークン)を公開することで、自身のモチベーションを高める絶好の機会となります。
+NFTがブロックチェーンを世間の注目を集める中、イーサリアムのブロックチェーン上に独自のNFTコントラクト（ERC-721トークン）を公開することで、その熱狂を自ら理解する絶好の機会です！
 
-Alchemyは、Makersplace(直近では、Christie'sでレコードデジタルアートワークが$69Mで落札され、記録を更新)、 Dapper Labs(NBA Top Shot&Crypto Kittiesのクリエイター)、OpenSea(世界最大のNFTマーケットプレイス)、Zora、Super Rare、NFTFi、Foundation、Enjin、Origin Protocol、Immutableなど、NFTスペースで著名人の力になれることを非常に誇りに思っています。
+このチュートリアルでは、[メタマスク](https://metamask.io/)、[Solidity](https://docs.soliditylang.org/)、[Hardhat](https://hardhat.org/)、[Pinata](https://pinata.cloud/)、および[Alchemy](https://alchemy.com/signup/eth)を使用して、Sepoliaテストネット上にERC-721スマート・コントラクトを作成およびデプロイする手順を説明します（これらの意味がまだわからなくても心配しないでください。後で説明します！）。
 
-このチュートリアルでは、[MetaMask](https://metamask.io/)、[Solidity](https://docs.soliditylang.org/en/v0.8.0/)、[Hardhat](https://hardhat.org/)、[Pinata](https://pinata.cloud/)、[Alchemy](https://alchemy.com/signup/eth)を使用してSepoliaテストネットワーク上でERC-721スマートコントラクトの作成とデプロイのウォークスルーを行います(現時点でしっかりと理解できていなくても、心配はご無用です。後ほどご説明します) 。
+このチュートリアルのパート2では、スマート・コントラクトを使用してNFTをミントする方法を説明し、パート3ではメタマスクでNFTを表示する方法を説明します。
 
-チュートリアルのパート2では、スマートコントラクトを使用してNFTをミントする方法について、パート3では、MetaMaskでNFTを表示する方法について説明します。
+もちろん、途中で質問がある場合は、遠慮なく[Alchemyのディスコード](https://discord.gg/gWuC7zB)で質問するか、[AlchemyのNFT APIドキュメント](https://www.alchemy.com/docs/reference/nft-api-quickstart)にアクセスしてください！
 
-ご質問があれば[Alchemy Discord](https://discord.gg/gWuC7zB)にお問い合わせいただくか、 [AlchemyのNFT API docs](https://docs.alchemy.com/alchemy/enhanced-apis/nft-api)をご覧ください。
+## ステップ1：イーサリアムのネットワークに接続する {#connect-to-ethereum}
 
-## ステップ1: イーサリアムネットワークに接続する {#connect-to-ethereum}
+イーサリアムのブロックチェーンにリクエストを送信する方法はたくさんありますが、簡単にするために、独自のノードを実行せずにイーサリアムのチェーンと通信できるブロックチェーン開発者プラットフォームおよびAPIである[Alchemy](https://alchemy.com/signup/eth)の無料アカウントを使用します。
 
-イーサリアムのブロックチェーンにリクエストを行う方法はたくさんありますが、ここでは分かりやすくするため、[Alchemy](https://alchemy.com/signup/eth)の無料アカウントを使用します。このアカウントはブロックチェーンの開発者プラットフォームとAPIで、独自のノードを実行せずにイーサリアムチェーンと通信できるものです。
+このチュートリアルでは、Alchemyの監視および分析用の開発者ツールも活用して、スマート・コントラクトのデプロイの内部で何が起こっているかを理解します。まだAlchemyアカウントを持っていない場合は、[こちら](https://alchemy.com/signup/eth)から無料でサインアップできます。
 
-このチュートリアルでは、スマートコントラクトのデプロイメントの仕組みを理解するために、Alchemyの開発者用ツールも活用します。 Alchemyアカウントをお持ちでない場合は、 [こちら](https://alchemy.com/signup/eth)から無料で登録できます。
+## ステップ2：アプリ（およびAPIキー）を作成する {#make-api-key}
 
-## ステップ2: アプリ(およびAPIキー)を作成する {#make-api-key}
+Alchemyアカウントを作成したら、アプリを作成してアプリケーション・プログラミング・インターフェース（API）キーを生成できます。これにより、Sepoliaテストネットにリクエストを送信できるようになります。テストネットについて詳しく知りたい場合は、[こちらのガイド](https://www.alchemy.com/docs/choosing-a-web3-network)をご覧ください。
 
-Alchemyのアカウントを作成すると、アプリを作成することでAPIキーを生成できます。 これにより、Sepoliaテストネットワークへのリクエストが可能になります。 テストネットワークの詳細については、[こちらのガイド](https://docs.alchemyapi.io/guides/choosing-a-network)をご覧ください。
+1. ナビゲーションバーの「Select an app」を選択し、「Create new app」をクリックして、Alchemyダッシュボードの「Create new app」ページに移動します。
 
-1. ナビゲーションバーの「Apps」にマウスを合わせて、「Create App)」をクリックし、Alchemyダッシュボードの「Create App」ページに移動してください。
+![アプリの作成](./alchemy-create-new-app.png)
 
-![アプリを作成する](./create-your-app.png)
+2. アプリに名前を付け（ここでは「My First NFT!」としました）、簡単な説明を入力し、ユースケースを選択します。次に、「Ethereum」を検索してネットワークを選択します。アプリケーション開発に推奨されるテストネットであるSepoliaを使用します（[イーサリアムのネットワーク](/developers/docs/networks/#ethereum-testnets)を参照）。
 
-2. アプリに名前を付け(私たちは「My First NFT!」にしました)、簡単な説明を記述し、「Ethereum」チェーンを選択して、ネットワークに「Sepolia」を設定します。 マージ以降、他のテストネットは非推奨となっています。
+3. 「Next」をクリックして進み、「Create app」をクリックすれば完了です！ナビゲーションバーのドロップダウンメニューにアプリが表示され、コピー可能なAPIキーが利用できるようになります。
 
-![アプリを設定して公開する](./alchemy-explorer-sepolia.png)
+## ステップ3：イーサリアムのアカウント（アドレス）を作成する {#create-eth-address}
 
-3. 「Create app」をクリックして完了です。 下記のテーブルにアプリが表示されます。
+トランザクションを送受信するには、イーサリアムのアカウントが必要です。このチュートリアルでは、イーサリアムのアカウントのアドレスを管理するためにブラウザ上の仮想ウォレットであるメタマスクを使用します。イーサリアム上のトランザクションの仕組みについて詳しく知りたい場合は、イーサリアム財団の[こちらのページ](/developers/docs/transactions/)をご覧ください。
 
-## ステップ 3: イーサリアムアカウント(アドレス)を作成する {#create-eth-address}
+メタマスクのアカウントは、[こちら](https://metamask.io/download)から無料でダウンロードして作成できます。アカウントを作成する際、またはすでにアカウントを持っている場合は、ネットワーク選択メニューを使用して「Sepolia」テストネットに切り替えてください（実際の資金を扱わないようにするためです）。Sepoliaがリストに表示されない場合は、右上隅のメニューを開き、「Networks」を選択して、「Show test networks」をオンに切り替えます（[テストネットの表示に関するメタマスクのガイド](https://support.metamask.io/configure/networks/how-to-view-testnets-in-metamask/)を参照）。
 
-トランザクションの送受信には、イーサリアムアカウントが必要です。 このチュートリアルでは、イーサリアムアカウントアドレスを管理するためにブラウザの仮想ウォレットであるMetamaskを使用します。 イーサリアムのトランザクションの仕組みの詳細については、イーサリアム・ファウンデーションの[こちらのページ](/developers/docs/transactions/)をご覧ください。
+![Sepoliaをネットワークとして設定する](./metamask-sepolia.png)
 
-Metamaskのアカウントは[こちら](https://metamask.io/download.html)から無料でダウンロード、作成できます。 アカウントを作成後、またはすでにアカウントをお持ちの場合は(実際に支払いが発生しないように)右上の「Sepolia Test Network」に切り替えてください。
+## ステップ4：フォーセットからイーサを追加する {#step-4-add-ether-from-a-faucet}
 
-![Sepoliaをネットワークとして設定する](./metamask-goerli.png)
+スマート・コントラクトをテストネットにデプロイするには、テスト用のETHが必要です。SepoliaのETHを取得するには、[Sepoliaネットワークの詳細](/developers/docs/networks/#sepolia)にリストされているフォーセットのいずれかを選択し、アカウントのアドレスを入力します。フォーセットが枯渇している場合や、利用資格のルールがある場合があるため、機能しない場合は別のフォーセットを試してください。たとえば、[AlchemyのSepoliaフォーセット](https://www.alchemy.com/faucets/ethereum-sepolia)では、受信アドレスがイーサリアム・メインネット上で少なくとも0.001 ETHを保持している必要があります。すぐにメタマスクのアカウントにETHが表示されるはずです！
 
-## ステップ4: フォーセットからイーサリアムを追加する {#step-4-add-ether-from-a-faucet}
+## ステップ5：残高を確認する {#check-balance}
 
-テストネットワークにスマートコントラクトをデプロイするには、偽のETHが複数必要になります。 ETHを取得するには、Alchemyがホストする[Sepoliaフォーセット](https://sepoliafaucet.com/)へ行き、ログインしてアカウントアドレスを入力し、「Send Me ETH」をクリックしてください。 MetamaskアカウントにETHが表示されるはずです。
+残高があることを再確認するために、[Alchemyのサンドボックスツール](https://sandbox.alchemy.com/?network=ETH_SEPOLIA&method=eth_getBalance&body.id=1&body.jsonrpc=2.0&body.method=eth_getBalance&body.params%5B0%5D=&body.params%5B1%5D=latest)を使用して[eth_getBalance](https://www.alchemy.com/docs/chains/ethereum/ethereum-api-endpoints/eth-get-balance)リクエストを送信してみましょう。これにより、ウォレット内のETHの量が返されます。メタマスクのアカウントのアドレスを入力して「Send Request」をクリックすると、次のようなレスポンスが表示されるはずです。
 
-## ステップ5: 残高を確認する {#check-balance}
+```json
+{ "jsonrpc": "2.0", "id": 0, "result": "0xde0b6b3a7640000" }
+```
 
-残高を再度確認するには、 [Alchemy CHAINS APIS](https://docs.alchemyapi.io/alchemy/documentation/alchemy-api-reference/json-rpc#eth_getbalance)を使用して [eth_getBalance](https://composer.alchemyapi.io?composer_state=%7B%22network%22%3A0%2C%22methodName%22%3A%22eth_getBalance%22%2C%22paramValues%22%3A%5B%22%22%2C%22latest%22%5D%7D)をリクエストしてみましょう。 リクエストすると、ウォレット内のETHの量が返却されます。 Metamaskアカウントアドレスを入力して「Send Request」をクリックすると、次のようなレスポンスが表示されます。
+> **注** この結果はETHではなくWeiで表示されています。Weiはイーサの最小単位として使用されます。WeiからETHへの変換は、1 eth = 10<sup>18</sup> Weiです。したがって、0xde0b6b3a7640000を10進数に変換すると、1\*10<sup>18</sup> Weiとなり、1 ETHに等しくなります。
 
-    `{"jsonrpc": "2.0", "id": 0, "result": "0xde0b6b3a7640000"}`
+ふう！テスト用の資金がちゃんと入っていますね。
 
-> **注:** この結果の単位はweiであり、ETHではありません。 weiはETHの最小単位として使われています。 「wei」 から「ETH」への変換は次の通りです: 1 eth = 10<sup>18</sup> wei 。 例えば、0xde0b6b3a7640000を10進数に変換すると1*10<sup>18</sup> weiとなり、1ETHに相当します。
+## ステップ6：プロジェクトを初期化する {#initialize-project}
 
-ご安心ください。 私たちの偽物のお金はすべてそこにあります。
+まず、プロジェクト用のフォルダを作成する必要があります。コマンドラインに移動して、次のように入力します。
 
-## ステップ6: プロジェクトを初期化する {#initialize-project}
+```sh
+mkdir my-nft
+cd my-nft
+```
 
-まず、プロジェクトのフォルダを作成する必要があります。 コマンドラインに移動し、次のように入力します。
+プロジェクトフォルダ内に移動したので、`npm init`を使用してプロジェクトを初期化します。まだnpmをインストールしていない場合は、[Node.jsのインストール手順](https://nodejs.org/en/download/)に従ってください（このチュートリアルではNode.jsとnpmが必要です）。
 
-    mkdir my-nft
-    cd my-nft
+```sh
+npm init
+```
 
-プロジェクトフォルダに入ったら、 npm initを使用してプロジェクトを初期化します。 npmがインストールされていない場合は、[こちらの手順](https://docs.alchemyapi.io/alchemy/guides/alchemy-for-macs#1-install-nodejs-and-npm)に従ってください。([Node.js](https://nodejs.org/en/download/)も必要となりますので、こちらもダウンロードしてください。)
+インストールの質問にどのように答えても問題ありません。参考までに、以下のように入力しました。
 
-    npm init
+```console
+package name: (my-nft)
+version: (1.0.0)
+description: My first NFT!
+entry point: (index.js)
+test command:
+git repository:
+keywords:
+author:
+license: (ISC)
+About to write to /Users/thesuperb1/Desktop/my-nft/package.json:
 
-インストール時の質問に対する回答方法は自由です。参考までに過去の回答方法は次のとおりです。
+{
+  "name": "my-nft",
+  "version": "1.0.0",
+  "description": "My first NFT!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+```
 
-    package name: (my-nft)
-    version: (1.0.0)
-    description: My first NFT!
-    entry point: (index.js)
-    test command:
-    git repository:
-    keywords:
-    author:
-    license: (ISC)
-    About to write to /Users/thesuperb1/Desktop/my-nft/package.json:
-    
-    {
-      "name": "my-nft",
-      "version": "1.0.0",
-      "description": "My first NFT!",
-      "main": "index.js",
-      "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-      },
-      "author": "",
-      "license": "ISC"
-    }
+`package.json`を承認します。次にインストールするHardhat 3はESモジュールプロジェクトのみをサポートしているため、プロジェクトをESモジュールとしてマークします。
 
-「package.json」を承認してください。これで準備が完了しました。
+```sh
+npm pkg set type=module
+```
 
-## ステップ7: [Hardhat](https://hardhat.org/getting-started/#overview)をインストールする {#install-hardhat}
+これで準備完了です！
 
-Hardhatは、イーサリアムのソフトウェアをコンパイル、デプロイ、テスト、デバッグするための開発環境です。 開発者がライブチェーンにデプロイする前に、スマートコントラクトやDappsをローカルに構築する際に役立ちます。
+## ステップ7：[Hardhat](https://hardhat.org/docs/getting-started)をインストールする {#install-hardhat}
 
-「my-nft」プロジェクトの中で実行してください。
+Hardhatは、イーサリアムのソフトウェアをコンパイル、デプロイ、テスト、およびデバッグするための開発環境です。ライブチェーンにデプロイする前に、ローカルでスマート・コントラクトや分散型アプリケーション (dapp) を構築する際に開発者を支援します。
 
-    npm install --save-dev hardhat
+Hardhat 3にはNode.js v22.13.0以降が必要です。`my-nft`プロジェクト内で以下を実行します。
 
-[インストール手順](https://hardhat.org/getting-started/#overview)の詳細については、こちらのページをご覧ください。
+```sh
+npm install --save-dev hardhat
+```
 
-## ステップ8: Hardhatプロジェクトを作成する {#create-hardhat-project}
+[インストール手順](https://hardhat.org/docs/getting-started)の詳細については、こちらのページをご覧ください。
 
-プロジェクトフォルダ内で実行してください。
+## ステップ8：Hardhatプロジェクトを作成する {#create-hardhat-project}
 
-    npx hardhat
+`npx hardhat --init`を実行すると完全なサンプルプロジェクトが生成されますが、このチュートリアルではすべての要素を理解できるように手動で設定します。プロジェクトフォルダのルートに、以下の内容で`hardhat.config.js`というファイルを作成します。
 
-次に、ウェルカムメッセージと選択肢が表示されます。 「create an empty hardhat.config.js」を選択してください。
+```js
+import { defineConfig } from "hardhat/config"
 
-    888    888                      888 888               888
-    888    888                      888 888               888
-    888    888                      888 888               888
-    8888888888  8888b.  888d888 .d88888 88888b.   8888b.  888888
-    888    888     "88b 888P"  d88" 888 888 "88b     "88b 888
-    888    888 .d888888 888    888  888 888  888 .d888888 888
-    888    888 888  888 888    Y88b 888 888  888 888  888 Y88b.
-    888    888 "Y888888 888     "Y88888 888  888 "Y888888  "Y888
-    👷 Welcome to Hardhat v2.0.11 👷‍
-    ? What do you want to do? …
-    Create a sample project
-    ❯ Create an empty hardhat.config.js
-    Quit
+export default defineConfig({
+  solidity: "0.8.34",
+})
+```
 
-「hardhat.config.js」というファイルが生成され、ここでプロジェクトのセットアップの全てを指定します (ステップ13)。
+ここでプロジェクトのすべての設定を指定します（ステップ13で実施）。今のところ、使用するSolidityコンパイラのバージョンをHardhatに指示するだけです。
 
-## ステップ9: プロジェクトフォルダを追加する {#add-project-folders}
+## ステップ9：プロジェクトフォルダを追加する {#add-project-folders}
 
-プロジェクトを整理するために、2つの新しいフォルダを作成します。 コマンドラインでプロジェクトのルートディレクトリに移動し、次のように入力します。
+プロジェクトを整理するために、2つの新しいフォルダを作成します。コマンドラインでプロジェクトのルートディレクトリに移動し、次のように入力します。
 
-    mkdir contracts
-    mkdir scripts
+```sh
+mkdir contracts
+mkdir scripts
+```
 
-- 「contracts/」は、NFT スマートコントラクトコードを保持する場所です。
+- `contracts/`は、NFTスマート・コントラクトのコードを保存する場所です。
 
-- 「scripts/」 は、スマートコントラクトをデプロイして対話するスクリプトを保持する場所です。
+- `scripts/`は、スマート・コントラクトをデプロイし、対話するためのスクリプトを保存する場所です。
 
-## ステップ10: コントラクトを作成する {#write-contract}
+## ステップ10：コントラクトを記述する {#write-contract}
 
-さて、環境が整ったところで、もっと面白いことをやりましょう。_スマートコントラクトのコードの作成です。_
+環境が整ったので、さらにエキサイティングな作業に進みましょう。_スマート・コントラクトのコードを記述します！_
 
-お気に入りのエディタでmy-nftプロジェクトを開きます(通常は[VScode](https://code.visualstudio.com/)を使用しています)。 スマートコントラクトは、Solidityと呼ばれる言語で記述されています。MyNFT.solスマートコントラクトの作成にこの言語を使用します。
+お気に入りのエディタ（私たちは[VSCode](https://code.visualstudio.com/)が好きです）で`my-nft`プロジェクトを開きます。スマート・コントラクトはSolidityと呼ばれる言語で記述されており、これを使用して`MyNFT.sol`スマート・コントラクトを記述します。‌
 
-1. `contracts`フォルダに移動し、MyNFT.solという名前の新規ファイルを作成します。
+1. `contracts`フォルダに移動し、`MyNFT.sol`という新しいファイルを作成します。
 
-2. 以下は、 NFTスマートコントラクトコードです。これは[OpenZeppelin](https://docs.openzeppelin.com/contracts/3.x/erc721)ライブラリのERC-721実装に基づいています。 以下の内容をコピーして、MyNFT.solファイルに貼り付けます。
+2. 以下は、[オープンツェッペリン](https://docs.openzeppelin.com/contracts/5.x/erc721)ライブラリのERC-721実装に基づいたNFTスマート・コントラクトのコードです。以下の内容をコピーして、`MyNFT.sol`ファイルに貼り付けます。
 
    ```solidity
-   //Contract based on [https://docs.openzeppelin.com/contracts/3.x/erc721](https://docs.openzeppelin.com/contracts/3.x/erc721)
+   // https://docs.openzeppelin.com/contracts/5.x/erc721 に基づくコントラクト
    // SPDX-License-Identifier: MIT
-   pragma solidity ^0.8.0;
+   pragma solidity ^0.8.24;
 
    import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-   import "@openzeppelin/contracts/utils/Counters.sol";
    import "@openzeppelin/contracts/access/Ownable.sol";
    import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
    contract MyNFT is ERC721URIStorage, Ownable {
-       using Counters for Counters.Counter;
-       Counters.Counter private _tokenIds;
+       uint256 private _nextTokenId;
 
-       constructor() ERC721("MyNFT", "NFT") {}
+       constructor(address initialOwner)
+           ERC721("MyNFT", "NFT")
+           Ownable(initialOwner)
+       {}
 
        function mintNFT(address recipient, string memory tokenURI)
            public onlyOwner
            returns (uint256)
        {
-           _tokenIds.increment();
-
-           uint256 newItemId = _tokenIds.current();
+           uint256 newItemId = ++_nextTokenId;
            _mint(recipient, newItemId);
            _setTokenURI(newItemId, tokenURI);
 
@@ -188,163 +188,188 @@ Hardhatは、イーサリアムのソフトウェアをコンパイル、デプ�
    }
    ```
 
-3. OpenZeppelinのコントラクトライブラリからクラスを継承しているので、コマンドラインで`npm install @openzeppelin/contracts`を実行して、ライブラリをフォルダにインストールします。
+3. オープンツェッペリンのコントラクトライブラリからクラスを継承しているため、コマンドラインで`npm install @openzeppelin/contracts`を実行して、ライブラリをフォルダにインストールします。このチュートリアルではOpenZeppelin Contracts 5.xを使用しており、これにはSolidity 0.8.24以降が必要です。
 
-では、このコードの_役割_は一体何でしょうか。 一行ずつ分解してみましょう。
+では、このコードは正確に<em>何をする</em>のでしょうか？1行ずつ分解してみましょう。
 
-スマートコントラクトの先頭で、3つの[OpenZeppelin](https://openzeppelin.com/)スマートコントラクトのクラスをインポートしています。
+スマート・コントラクトの先頭で、3つの[オープンツェッペリン](https://openzeppelin.com/)のスマート・コントラクトクラスをインポートします。
 
-- @openzeppelin/contracts/token/ERC721/ERC721.solには、ERC-721標準の実装が含まれており、NFTスマートコントラクトはこれを継承しています。 (有効なNFTであるためには、スマートコントラクトはERC-721標準のすべてのメソッドを実装する必要があります。) 継承されたERC-721関数の詳細については、[こちら](https://eips.ethereum.org/EIPS/eip-721)のインターフェイス定義をご覧ください。
+- `@openzeppelin/contracts/token/ERC721/ERC721.sol`には、NFTスマート・コントラクトが継承するERC-721標準の実装が含まれています。（有効なNFTであるためには、スマート・コントラクトがERC-721標準のすべてのメソッドを実装している必要があります。）継承されたERC-721関数の詳細については、[こちら](https://eips.ethereum.org/EIPS/eip-721)のインターフェース定義を確認してください。
 
-- @openzeppelin/contracts/utils/Counters.solは、1つずつ増減するカウンタを提供しており、 私たちのスマートコントラクトは、ミントされたNFTの合計数を追跡し、新しいNFTにユニークなIDを設定するためにカウンタを使用しています。 (スマートコントラクトを使用してミントされた各NFTには、ユニークなIDが割り当てられている必要があります。ここでは、ユニークIDは、存在するNFTの合計数によって決定されます。 例えば、スマートコントラクトでミントした最初のNFTには「1」のIDが付与され、2番目のNFTには「2」のIDが付与されます。)
+- `@openzeppelin/contracts/access/Ownable.sol`は、スマート・コントラクトに[アクセス制御](https://docs.openzeppelin.com/contracts/5.x/access-control)を設定し、スマート・コントラクトの所有者（あなた）のみがNFTをミントできるようにします。所有者は、コンストラクタに渡される`initialOwner`アドレスです。（注：アクセス制御を含めるかどうかは完全に好みの問題です。誰でもスマート・コントラクトを使用してNFTをミントできるようにしたい場合は、コントラクト定義とコンストラクタから`Ownable`と`Ownable(initialOwner)`を削除し、`mintNFT`関数から`onlyOwner`を削除してください。）
 
-- @openzeppelin/contracts/access/Ownable.solは[アクセスコントロール](https://docs.openzeppelin.com/contracts/3.x/access-control)をスマートコントラクトに設定するため、スマートコントラクトの所有者(あなた)だけがNFTをミントできます。 (注: アクセス制御の実装は完全に任意です。 スマートコントラクトを使って誰でもNFTをミントできるようにしたい場合は、10行目の「Ownable」、17行目の「onlyOwner」を削除します。)
+- `@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol`はERC-721を拡張し、各トークンが独自のメタデータURIを保存できるようにします。これはミント時に設定します。
 
-インポートステートメントの後にカスタムNFTスマートコントラクトがありますが、非常に短いもので、カウンタ、コンストラクタ、単一の関数しか含まれていません。 これは、NFTの所有者を返す`ownerOf`とNFTの所有権を他のアカウントに転送する`transferFrom`など、NFTを作成するために必要な大部分のメソッドを実装しているOpenZeppelinコントラクトを継承したおかげです。
+インポート文の後に、カスタムNFTスマート・コントラクトがあります。これは驚くほど短く、カウンター、コンストラクタ、および単一の関数のみが含まれています！これは、NFTの所有者を返す`ownerOf`や、あるアカウントから別のアカウントへNFTの所有権を移転する`transferFrom`など、NFTを作成するために必要なほとんどのメソッドを実装している、継承されたオープンツェッペリンのコントラクトのおかげです。
 
-ERC-721コンストラクタでは、「MyNFT」と「NFT」の2つの文字列を渡すことに気づくでしょう。 最初の変数はスマートコントラクトの名前で、2番目の変数はそのシンボルです。 これらの変数にはそれぞれに自由に名前を付けることができます。
+カウンターである`_nextTokenId`は、ミントされたNFTの総数を追跡し、新しいNFTに一意のIDを設定します。（スマート・コントラクトを使用してミントされた各NFTには一意のIDを割り当てる必要があります。ここでは、一意のIDは存在するNFTの総数によって決定されます。`++_nextTokenId`は使用される前にカウンターを増やすため、スマート・コントラクトでミントする最初のNFTのIDは「1」、2番目のNFTのIDは「2」のようになります。）
 
-最後に、`mintNFT(address recipient, string memory tokenURI)`という関数で、NFTをミントすることできます。 この関数には2つの変数が必要です。
+ERC-721コンストラクタでは、「MyNFT」と「NFT」という2つの文字列を渡していることに気付くでしょう。最初の変数はスマート・コントラクトの名前で、2番目はそのシンボルです。これらの変数は好きな名前に設定できます！
+
+最後に、NFTをミントできる関数`mintNFT(address recipient, string memory tokenURI)`があります！この関数は2つの変数を受け取ります。
 
 - `address recipient`は、新しくミントされたNFTを受け取るアドレスを指定します。
 
-- `string memory tokenURI`は、NFTのメタデータを記述したJSONドキュメントに解決される必要がある文字列です。 NFTのメタデータは、名前、説明、画像、その他の属性など、設定可能なプロパティを持つことができます。 チュートリアルのパート2では、このメタデータの設定方法について説明します。
+- `string memory tokenURI`は、NFTのメタデータを記述するJSONドキュメントに解決されるべき文字列です。NFTのメタデータは、名前、説明、画像、その他の属性など、設定可能なプロパティを持たせることで、NFTに命を吹き込むものです。このチュートリアルのパート2では、このメタデータを設定する方法を説明します。
 
-`mintNFT`は継承されたERC-721ライブラリから複数のメソッドを呼び出し、最終的にミントされたばかりのNFTのIDを示す数値を返します。
+`mintNFT`は、継承されたERC-721ライブラリからいくつかのメソッドを呼び出し、最終的に新しくミントされたNFTのIDを表す数値を返します。
 
-## ステップ11: MetaMaskとAlchemyをプロジェクトに接続する {#connect-metamask-and-alchemy}
+## ステップ11：メタマスクとAlchemyをプロジェクトに接続する {#connect-metamask-and-alchemy}
 
-ここまででMetaMaskウォレットとAlchemyアカウントを作成し、スマートコントラクトを書きました。次はこの3つのアカウントを繋げていきましょう。
+メタマスクのウォレット、Alchemyアカウントを作成し、スマート・コントラクトを記述したので、これら3つを接続する時が来ました。
 
-仮想ウォレットから送信されるすべてのトランザクションには、固有の秘密鍵を使用した署名が必要です。 この許可をプログラムに与えるために、秘密鍵(とAlchemyのAPIキー)を環境ファイルに安全に格納する作業を行います。
+仮想ウォレットから送信されるすべてのトランザクションには、固有の秘密鍵を使用した署名が必要です。プログラムにこの権限を提供するために、秘密鍵（およびAlchemyのAPIキー）を環境ファイルに安全に保存できます。
 
-トランザクションの送信の詳細については、web3を使用したトランザクションの送信に関する[こちらのチュートリアル](/developers/tutorials/sending-transactions-using-web3-and-alchemy/)をご覧ください。
+トランザクションの送信について詳しく知りたい場合は、[トランザクションのドキュメント](/developers/docs/transactions/)をご覧ください。
 
-まず、プロジェクトディレクトリにdotenvパッケージをインストールします。
+プロジェクトのルートディレクトリに`.env`ファイルを作成し、メタマスクの秘密鍵とHTTP Alchemy API URLを追加します。
 
-    npm install dotenv --save
+- [こちらの手順](https://support.metamask.io/configure/accounts/how-to-export-an-accounts-private-key/)に従って、メタマスクから秘密鍵をエクスポートします。
 
-次に、 `.env`ファイルをプロジェクトのルートディレクトリに作成し、そのファイルにMetamaskの秘密鍵とHTTP Alchemy APIのURLを追加します。
+- 以下の手順を参照してHTTP Alchemy API URLを取得し、クリップボードにコピーします。
 
-- MetaMaskから秘密鍵をエクスポートするには、 [こちらの手順](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key)に従ってください。
-
-- HTTP Alchemy API URLを取得し、クリップボードにコピーするには、以下を参照してください。
-
-![Alchemy API URLをコピーする](./copy-alchemy-api-url.gif)
+![Alchemy API URLをコピーする](./copy-alchemy-api-url.mp4#842x480)
 
 `.env`ファイルは次のようになります。
 
-    API_URL="https://eth-sepolia.g.alchemy.com/v2/your-api-key"
-    PRIVATE_KEY="your-metamask-private-key"
+```text
+API_URL="https://eth-sepolia.g.alchemy.com/v2/your-api-key"
+PRIVATE_KEY="your-metamask-private-key"
+```
 
-これらの変数を実際にコードに接続するために、ステップ13で hardhat.config.jsファイル内のこれらの変数を参照します。
+これらを実際にコードに接続するために、ステップ13で`hardhat.config.js`ファイル内のこれらの変数を参照します。Node.jsは単独で`.env`ファイルを読み込むことができるため、追加のパッケージをインストールする必要はありません。
 
 <EnvWarningBanner />
 
-## ステップ12: Ethers.jsをインストールする {#install-ethers}
+## ステップ12：Ethers.jsをインストールする {#install-ethers}
 
-Ethers.jsは、よりユーザーフレンドリーなメソッドで[標準のJSON-RPCメソッド](/developers/docs/apis/json-rpc/)をラップすることにより、イーサリアムとの対話やリクエストを簡単にするライブラリです。
+Ethers.jsは、[標準のJSON-RPCメソッド](/developers/docs/apis/json-rpc/)をよりユーザーフレンドリーなメソッドでラップすることで、イーサリアムとの対話やリクエストの送信を容易にするライブラリです。
 
-Hardhatは、追加のツールと拡張機能のための[プラグイン](https://hardhat.org/plugins/)の統合を非常に簡単にしてくれます。 コントラクトのデプロイメントに[Ethersプラグイン](https://hardhat.org/plugins/nomiclabs-hardhat-ethers.html)を利用します([Ethers.js](https://github.com/ethers-io/ethers.js/)には、複数の非常にクリーンなコントラクトのデプロイメント方法があります)。
+Hardhatを使用すると、追加のツールや拡張機能のための[プラグイン](https://hardhat.org/docs/plugins/official-plugins)を非常に簡単に統合できます。コントラクトのデプロイには[Ethersプラグイン](https://hardhat.org/docs/plugins/hardhat-ethers)を活用します（[Ethers.js](https://docs.ethers.org/v6/)には非常に洗練されたコントラクトのデプロイメソッドがあります）。
 
-プロジェクトのホームディレクトリで以下を実行します。
+プロジェクトディレクトリで次のように入力します。
 
-    npm install --save-dev @nomiclabs/hardhat-ethers ethers@^5.0.0
-
-次のステップでは、 hardhat.config.js でもイーサリアムが必要になります。
-
-## ステップ13: hardhat.config.jsをアップデートする {#update-hardhat-config}
-
-これまでにいくつかの依存関係とプラグインを追加しました。プロジェクトがそれらすべてを知るように、 hardhat.config.js を更新する必要があります。
-
-「hardhat.config.js」を以下のように更新してください:
-
-    /**
-    * @type import('hardhat/config').HardhatUserConfig
-    */
-    require('dotenv').config();
-    require("@nomiclabs/hardhat-ethers");
-    const { API_URL, PRIVATE_KEY } = process.env;
-    module.exports = {
-       solidity: "0.8.1",
-       defaultNetwork: "sepolia",
-       networks: {
-          hardhat: {},
-          sepolia: {
-             url: API_URL,
-             accounts: [`0x${PRIVATE_KEY}`]
-          }
-       },
-    }
-
-## ステップ14: コントラクトをコンパイルする {#compile-contract}
-
-ここまででしっかりと動作していることを確認するため、コントラクトをコンパイルしてみましょう。 コンパイルは、Hardhat の組み込まれた機能の1つです。
-
-コマンドラインで以下を実行します。
-
-    npx hardhat compile
-
-SPDX license identifier not provided in source file という警告が表示されるかもしれません。しかし、それについて心配する必要はありません — うまくいけば、他のすべてが良く見えるでしょう！ 表示された場合は、いつでも[Alchemy discord](https://discord.gg/u72VCg3)でメッセージを送信できます。
-
-## ステップ15: デプロイスクリプトを書く {#write-deploy}
-
-コントラクトの作成と設定ファイルの作成が完了したら、いよいよコントラクトのデプロイのためのスクリプトを作成します。
-
-`scripts/` フォルダに移動し、 `deploy.js` という名前の新しいファイルを作成し、以下の内容を追加します:
-
-```js
-async function main() {
-  const MyNFT = await ethers.getContractFactory("MyNFT")
-
-  // Start deployment, returning a promise that resolves to a contract object
-  const myNFT = await MyNFT.deploy()
-  await myNFT.deployed()
-  console.log("Contract deployed to address:", myNFT.address)
-}
-
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error)
-    process.exit(1)
-  })
+```sh
+npm install --save-dev @nomicfoundation/hardhat-ethers ethers
 ```
 
-Hardhatがコードの各行で行っている驚くべき内容については、Hardhatの[コントラクトチュートリアル](https://hardhat.org/tutorial/testing-contracts.html#writing-tests)で説明されています。以下では、その説明を採用しています。
+次のステップで、プラグインを`hardhat.config.js`にも追加します。
 
-    const MyNFT = await ethers.getContractFactory("MyNFT");
+## ステップ13：hardhat.config.jsを更新する {#update-hardhat-config}
 
-ethers.js の中の ContractFactory は新しいスマートコントラクトを作成するための抽象化です。ここでの MyNFT は NFT コントラクトのインスタンスのためのファクトリです。 hardhat-ethers プラグインを使用する場合、 ContractFactory および Contract インスタンスはデフォルトで最初の署名者に接続されます。
+これまでいくつかの依存関係とプラグインを追加してきましたが、プロジェクトがそれらすべてを認識できるように`hardhat.config.js`を更新する必要があります。
 
-    const myNFT = await MyNFT.deploy();
+`hardhat.config.js`を次のように更新します。
 
-ContractFactory の deploy() を呼び出すとデプロイメントが開始し、 Contract を解決するための Promise が返されます。 これは、スマートコントラクトの各関数に対するメソッドを持つオブジェクトです。
+```js
+import { existsSync } from "node:fs"
+import hardhatEthers from "@nomicfoundation/hardhat-ethers"
+import { configVariable, defineConfig } from "hardhat/config"
 
-## ステップ16: コントラクトをデプロイする {#deploy-contract}
+// .envファイルが存在する場合、API_URLとPRIVATE_KEYを.envファイルからprocess.envに読み込む
+if (existsSync(".env")) process.loadEnvFile()
 
-ようやく、スマートコントラクトをデプロイする準備が整いました。 プロジェクトディレクトリのルートに戻り、コマンドラインで以下を実行します:
+export default defineConfig({
+  plugins: [hardhatEthers],
+  solidity: "0.8.34",
+  networks: {
+    sepolia: {
+      type: "http",
+      url: configVariable("API_URL"),
+      accounts: [configVariable("PRIVATE_KEY")],
+    },
+  },
+})
+```
 
-    npx hardhat --network sepolia run scripts/deploy.js
+`configVariable`は、必要な場合にのみ環境変数から各値を読み込むようにHardhatに指示するため、値が設定される前でも`compile`などのコマンドが機能します。秘密鍵をプレーンテキストファイルに保存したくない場合は、Hardhatは[暗号化されたキーストアから設定変数](https://hardhat.org/docs/guides/configuration-variables)を読み込むこともできます。
 
-次のような画面が表示されるはずです。
+## ステップ14：コントラクトをコンパイルする {#compile-contract}
 
-    Contract deployed to address: 0x4C5266cCc4b3F426965d2f51b6D910325a0E7650
+これまでのところすべてが機能していることを確認するために、コントラクトをコンパイルしてみましょう。コンパイルタスクは、組み込みのHardhatタスクの1つです。
 
-[Sepolia etherscan](https://sepolia.etherscan.io/)に移動し、コントラクトアドレスを検索すると、正常にデプロイされたことが確認できるはずです。 すぐに見られない場合は、しばらくお待ちください。 トランザクションは以下のようなものになります。
+コマンドラインから以下を実行します。
 
-![Etherscan でトランザクションアドレスを表示する](./etherscan-sepoila-contract-creation.png)
+```sh
+npx hardhat compile
+```
 
-From アドレスは MetaMask アカウントアドレスと一致し、To アドレスは「Contract Creation」となります。 トランザクション内容をクリックすると、To フィールドにコントラクトアドレスが表示されます:
+初めてコンパイルするとき、HardhatはSolidityコンパイラをダウンロードします。その後、`Compiled 1 Solidity file with solc 0.8.34`のようなメッセージが表示されるはずです。表示されない場合は、いつでも[Alchemyのディスコード](https://discord.gg/gWuC7zB)でメッセージを送信できます。
 
-![Etherscanでコントラクトアドレスを表示する](./etherscan-sepolia-tx-details.png)
+## ステップ15：デプロイスクリプトを記述する {#write-deploy}
 
-Yassss！ イーサリアム(テストネット)チェーンにNFTスマートコントラクトをデプロイできました。
+コントラクトが記述され、設定ファイルの準備が整ったので、コントラクトのデプロイスクリプトを記述する時が来ました。
 
-内部で何が起こっているのかを理解するために、[Alchemyダッシュボード](https://dashboard.alchemyapi.io/explorer)のExplorerタブに移動してみましょう。 Alchemy のアプリが複数ある場合は、必ずアプリでフィルタリングし、「MyNFT」を選択してください。
+`scripts/`フォルダに移動し、`deploy.js`という新しいファイルを作成して、次の内容を追加します。
 
-![Alchemy のエクスプローラーダッシュボードで「内部」で行われた通話を表示する](./alchemy-explorer-goerli.png)
+```js
+import { network } from "hardhat"
 
-ここでは、 .deploy() 関数を呼び出した際に、Hardhat/Ethers が内部で作った JSON-RPC の呼び出しをいくつか見ることができます。 ここで呼び出している2つの重要なJSON-RPCは、実際にSepoliaチェーン上でコントラクトを書き込むリクエストの[eth_sendRawTransaction](/developers/docs/apis/json-rpc/#eth_sendrawtransaction)と、(トランザクションを送信する際の典型的なパターンである) ハッシュを与えられたトランザクションに関する情報を読み取るリクエスト[eth_getTransactionByHash](/developers/docs/apis/json-rpc/#eth_gettransactionbyhash)です。 トランザクションの送信の詳細については、このチュートリアルの [Web3 を使用したトランザクションの送信](/developers/tutorials/sending-transactions-using-web3-and-alchemy/) をご覧ください。
+const { ethers } = await network.create()
 
-以上がこのチュートリアルのパート1です。 [パート2](/developers/tutorials/how-to-mint-an-nft/) では、NFT を発行することで実際にスマートコントラクトとやりとりをします。そして、[パート3](/developers/tutorials/how-to-view-nft-in-metamask/) では、Etherreum ウォレット内の NFT を確認する方法を示します！
+const [deployer] = await ethers.getSigners()
+const MyNFT = await ethers.getContractFactory("MyNFT")
+
+// デプロイを開始し、コントラクトオブジェクトに解決されるPromiseを返す
+const myNFT = await MyNFT.deploy(deployer.address)
+await myNFT.waitForDeployment()
+console.log("Contract deployed to address:", await myNFT.getAddress())
+```
+
+これらのコードの各行が何をするのかを見ていきましょう。
+
+```js
+const { ethers } = await network.create()
+```
+
+Hardhat 3では、スクリプトはネットワークへの接続を明示的に開きます。`network.create()`は、スクリプトの実行時に`--network`オプションで選択したネットワークに接続し、`hardhat-ethers`プラグインはその接続に`ethers`オブジェクトを追加します。
+
+```js
+const [deployer] = await ethers.getSigners()
+```
+
+`getSigners()`は、ネットワークに設定されたアカウントを返します。Sepoliaでは、これは`.env`に秘密鍵を入力したアカウントです。あなたがコントラクトの所有者になるように、そのアドレスをコンストラクタに渡します。
+
+```js
+const MyNFT = await ethers.getContractFactory("MyNFT")
+```
+
+Ethers.jsの`ContractFactory`は、新しいスマート・コントラクトをデプロイするために使用される抽象化であるため、ここでの`MyNFT`はNFTコントラクトのインスタンスのファクトリです。`hardhat-ethers`プラグインを使用する場合、`ContractFactory`と`Contract`インスタンスはデフォルトで最初の署名者に接続されます。
+
+```js
+const myNFT = await MyNFT.deploy(deployer.address)
+```
+
+`ContractFactory`で`deploy()`を呼び出すとデプロイが開始され、`Contract`に解決されるPromiseが返されます。これは、スマート・コントラクトの各関数のメソッドを持つオブジェクトです。`deploy()`に渡す引数はコントラクトのコンストラクタに渡されます。ここでは`initialOwner`アドレスです。
+
+`waitForDeployment()`は、デプロイのトランザクションがブロックに含まれるまで待機し、`getAddress()`は新しいコントラクトのアドレスを返します。詳細については、[Ethers.jsのコントラクトドキュメント](https://docs.ethers.org/v6/api/contract/)を参照してください。
+
+## ステップ16：コントラクトをデプロイする {#deploy-contract}
+
+ついにスマート・コントラクトをデプロイする準備が整いました！プロジェクトディレクトリのルートに戻り、コマンドラインで以下を実行します。
+
+```sh
+npx hardhat run scripts/deploy.js --network sepolia
+```
+
+すると、次のようなメッセージが表示されるはずです。
+
+```text
+Contract deployed to address: 0x4C5266cCc4b3F426965d2f51b6D910325a0E7650
+```
+
+[SepoliaのEtherscan](https://sepolia.etherscan.io/)にアクセスしてコントラクトのアドレスを検索すると、正常にデプロイされたことが確認できるはずです。すぐに表示されない場合は、時間がかかることがあるため、しばらくお待ちください。トランザクションは次のようになります。
+
+![Etherscanでトランザクションのアドレスを表示する](./etherscan-sepoila-contract-creation.png)
+
+「From」アドレスはメタマスクのアカウントのアドレスと一致し、「To」アドレスには「Contract Creation」と表示されます。トランザクションをクリックすると、「To」フィールドにコントラクトのアドレスが表示されます。
+
+![Etherscanでコントラクトのアドレスを表示する](./etherscan-sepolia-tx-details.png)
+
+やりました！イーサリアム（テストネット）チェーンにNFTスマート・コントラクトをデプロイしました！
+
+内部で何が起こっているかを理解するために、[Alchemyダッシュボード](https://dashboard.alchemy.com/)でアプリが受信したリクエストを確認できます。
+
+そこには、`.deploy()`関数を呼び出したときにHardhat/Ethersが内部で行ったいくつかのJSON-RPC呼び出しが表示されます。ここで注目すべき重要な2つは、スマート・コントラクトを実際にSepoliaチェーンに書き込むためのリクエストである[eth_sendRawTransaction](/developers/docs/apis/json-rpc/#eth-sendrawtransaction)と、ハッシュを指定してトランザクションに関する情報を読み取るためのリクエストである[eth_getTransactionByHash](/developers/docs/apis/json-rpc/#eth-gettransactionbyhash)（トランザクションを送信する際の典型的なパターン）です。トランザクションの送信について詳しく知りたい場合は、[トランザクションのドキュメント](/developers/docs/transactions/)をご覧ください。
+
+このチュートリアルのパート1は以上です。[パート2では、NFTをミントすることで実際にスマート・コントラクトと対話します](/developers/tutorials/how-to-mint-an-nft/)。そして[パート3では、イーサリアムのウォレットでNFTを表示する方法を紹介します](/developers/tutorials/how-to-view-nft-in-metamask/)！

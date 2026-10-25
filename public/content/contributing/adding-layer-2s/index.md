@@ -1,10 +1,8 @@
 ---
-title: Adding Layer 2s
+title: Adding layer 2s
 description: The policy we use when adding a layer 2 to ethereum.org
 lang: en
 ---
-
-# Adding layer 2s {#adding-layer-2}
 
 We want to make sure we list the best resources possible so users can navigate the layer 2 space in a safe and confident manner.
 
@@ -78,7 +76,7 @@ _We do not consider other scaling solutions that don't use Ethereum for data ava
 
 **Links to dapps in the layer 2 ecosystem**
 
-- We want to be able to provide information on what users can expect to be able to do on this layer 2. (e.g. https://portal.arbitrum.io/, https://www.optimism.io/apps)
+- We want to be able to provide information on what users can expect to be able to do on this layer 2. (e.g., https://portal.arbitrum.io/, https://www.optimism.io/apps)
 
 **Token contract lists**
 
@@ -92,6 +90,6 @@ _We do not consider other scaling solutions that don't use Ethereum for data ava
 
 If you want to add a layer 2 to ethereum.org, create an issue on GitHub.
 
-<ButtonLink to="https://github.com/ethereum/ethereum-org-website/issues/new?assignees=&labels=feature+%3Asparkles%3A%2Ccontent+%3Afountain_pen%3A&template=suggest_layer2.yaml">
+<ButtonLink href="https://github.com/ethereum/ethereum-org-website/issues/new?assignees=&labels=feature+%3Asparkles%3A%2Ccontent+%3Afountain_pen%3A&template=suggest_layer2.yaml">
   Create an issue
 </ButtonLink>

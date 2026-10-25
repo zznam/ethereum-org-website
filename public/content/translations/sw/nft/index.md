@@ -1,93 +1,117 @@
 ---
-title: Ishara zisizokuvu (NFTs)
+title: Tokeni zisizoweza kubadilishana (NFT)
+metaTitle: NFT ni nini? | Faida na matumizi
 description: Muhtasari wa NFT kwenye Ethereum
 lang: sw
 template: use-cases
-emoji: ":frame_with_picture:"
 sidebarDepth: 2
-image: /infrastructure_transparent.png
-alt: Nembo ya Eth ikionyeshwa kwa kupitia hologramu.
-summaryPoint1: Njia ya kuwakilisha kitu chochote cha pekee kama mali zilizojengwa na Ethereum.
-summaryPoint2: NFT zinawapatia waundaji wa maudhui nguvu zaidi kuliko zamani.
-summaryPoint3: Inaendeshwa na mikataba erevu kwenye mnyororo wa bloku wa Ethereum.
+image: /images/infrastructure_transparent.png
+alt: Nembo ya Eth ikionyeshwa kupitia hologramu.
+summaryPoints:
+  - "Njia ya kuwakilisha kitu chochote cha kipekee kama rasilimali inayotegemea Ethereum."
+  - "NFT zinawapa waundaji wa maudhui nguvu zaidi kuliko hapo awali."
+  - "Inawezeshwa na mikataba mahiri kwenye mnyororo wa vitalu wa Ethereum."
 ---
 
-## What are NFTs? {#what-are-nfts}
+## NFT ni nini? {#what-are-nfts}
 
-NFT ni tokeni zilizo na ubinafsi wa kipekee. Kila NTF ina sifa tofauti (haziwezi kuigwa) na ni chache. Hii ni tofauti na tokeni kama ERC-20 ambapo kila tokeni kwenye kikundi hufanana na huwa na sifa sawa ('inaweza kuigwa'). Hujali bili ya dola mahususi uliyo nayo kwenye pochi yako kwa sababu zote zinafanana na thamani zao ni sawa. Hata hivyo, _unajali_ tokeni ya kidijitali unayomiliki, kwa sababu zote huwa na sifa zao za binafsi na unaweza kuzitofautisha kutoka kwen ye nyingine ('haziwezi kuigwa').
+NFT ni tokeni ambazo ni **za kipekee kibinafsi**. Kila NFT ina sifa tofauti (isiyoweza kubadilishana) na ni adimu kwa uthibitisho. Hii ni tofauti na tokeni kama vile [ETH](/glossary/#ether) au tokeni nyingine zinazotegemea [Ethereum](/) kama USDC ambapo kila tokeni inafanana na ina sifa sawa ('inayoweza kubadilishana'). Hujali ni noti gani hasa ya dola (au ETH) uliyo nayo kwenye mkoba wako, kwa sababu zote zinafanana na zina thamani sawa. Hata hivyo, _unajali_ ni NFT gani hasa unayomiliki, kwa sababu zote zina sifa za kibinafsi zinazozitofautisha na nyingine ('zisizoweza kubadilishana').
 
-Upekee wa kila tokeni za kidijitali zisizoweza kuigwa ni kuwezesha ishara ya vitu kama sanaa, vitu vinavyokusanywa ama mali isiyohamishika, ambapo kila tokeni maalum ya kidijitali isiyoweza kuigwa huwakilisha ulimwengu halisi ama bidhaa ya kidijitali. Umiliki wa mali unalindwa na mnyororo wa bloku wa Ethereum – hakuna anayeweza kubadili nyaraka za umiliki ama kutoa/kubandika nakala mpya za NFT.
+Upekee wa kila NFT unawezesha uundaji wa tokeni wa vitu kama sanaa, vitu vya kukusanywa, au hata mali isiyohamishika, ambapo NFT moja mahususi ya kipekee inawakilisha kitu fulani mahususi cha kipekee cha ulimwengu halisi au cha kidijitali. Umiliki wa rasilimali unaweza kuthibitishwa hadharani kwenye [mnyororo wa vitalu](/glossary/#blockchain) wa Ethereum.
 
-<YouTube id="Xdkkux6OxfM" />
+<VideoWatch slug="learn-nfts-and-defi" />
 
-## Mtandao wa mali {#internet-of-assets}
+## Mtandao wa rasilimali {#internet-of-assets}
 
-Tokeni zisizoweza kuigwa na Ethereum husuluhisha shida zinazokuwepo kwenye intaneti leo. Kwa kuwa kila kitu kinakuwa cha kidijitali, kuna haja ya kuiga sifa za vitu halisi kama uhaba, upekee na ushahidi wa umiliki. kwa njia isiyoweza kudhibitiwa na mashirika yasiyogatuliwa. Kwa mfano, ukiwa na tokeni za kidijitali zisizoigwa, unaweza kumiliki muziki wa sampuli ya MP3 ambao hauko kwenye programu ya muziki maalum au unaweza kumiliki tovuti ya mtandao wa kijamii ambao unaweza kuuza ama kubadilishana lakini hauwezi kuchukuliwa kihohela kutoka kwako na mtoaji jukwaa.
+NFT na Ethereum zinatatua baadhi ya matatizo yaliyopo kwenye mtandao leo. Kadiri kila kitu kinavyozidi kuwa cha kidijitali, kuna hitaji la kunakili sifa za vitu halisi kama vile uhaba, upekee, na uthibitisho wa umiliki kwa njia ambayo haidhibitiwi na shirika kuu. Kwa mfano, ukiwa na NFT, unaweza kumiliki faili la muziki la mp3 kwenye programu zote zinazotegemea Ethereum na kutofungwa na programu mahususi ya muziki ya kampuni moja kama Spotify au Apple Music. Unaweza kumiliki jina la mtandao wa kijamii ambalo unaweza kuuza au kubadilisha, lakini **haliwezi kuchukuliwa kutoka kwako kiholela** na mtoa huduma wa jukwaa.
 
-Hivi ndivyo mtandao wa NFT unafanya kazi ukilinganisha na intaneti ambao wengi wengi tunatumia leo...
+Hivi ndivyo mtandao wa NFT unavyoonekana ukilinganishwa na mtandao ambao wengi wetu tunautumia leo...
 
 ### Ulinganisho {#nft-comparison}
 
-| Intaneti/Mtandao wa NFT                                                                                                                             | Intaneti ya leo                                                                                                                                 |
-| --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Unamiliki mali yako! Ni wewe tu unayeweza kuziuza ama kuzibadilisha mwenyewe.                                                                       | Unaweza kukodisha mali kutoka kwenye mashirika mengine.                                                                                         |
-| NFT zina sifa za kipekee za kidijitlai, hakuna NFT mbili zitakazofanana.                                                                            | Mara nyingi nakala ya chombo haiwezi kutofautishwa na ya asili.                                                                                 |
-| Umiliki wa tokeni zisizoweza kuigwa unawekwa kwenye mnyororo wa bloku ili kila mtu aweze kuthibitisha.                                              | Rekodi za umiliki wa vitu vya kidijitali zinahifadhiwa kwenye seva zinazodhibitiwa na taasisi – lazima uziamini.                                |
-| Tokeni zisizoigwa ni mikataba erevu kwenye Ethereum. Hii inamaana kuwa zinaweza kutumika kwenye mikataba erevu mingine na programu kwenye Ethereum! | Kampuni zenye bidhaa za kidigitali huhitaji kuwa na "hifadhi yenye ukingo".                                                                     |
-| Waunda maudhui wanaweza kuuza kazi zao sehemu yoyote na kufikia soko la ulimwengu mzima.                                                            | Waundaji wanategemea miundombinu na usambazaji wa majukwaa wanayotumia. Mara nyingi hili hufuata sheria na masharit na vizuizi vya kijiografia. |
-| Watengenezaji wa tokeni zisizoigwa wanaweza kuhifadhi haki za kazi na mirabaha ya programu zao moja kwa moja kwenye mkataba wa tokeni zisizoigwa.   | Majukwaa kama ya huduma za kutiririsha muziki, yanapata faida nyingi kutoka kwenye mauzo.                                                       |
+| Mtandao wa NFT                                                                                                         | Mtandao wa leo                                                                                                                                     |
+| ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Unamiliki rasilimali zako!** Ni wewe tu unayeweza kuziuza au kuzibadilisha.                                                                    | **Unakodisha rasilimali** kutoka kwa shirika fulani na inaweza kuchukuliwa kutoka kwako.                                                                            |
+| NFT ni **za kipekee kidijitali**, hakuna NFT mbili zinazofanana.                                                                    | **Nakala mara nyingi haiwezi kutofautishwa** na asili.                                                                                   |
+| Umiliki wa NFT umehifadhiwa kwenye mnyororo wa vitalu ili mtu yeyote **athibitishe hadharani**.                                                   | Ufikiaji wa rekodi za umiliki wa vitu vya kidijitali **unadhibitiwa na taasisi** – lazima ukubaliane na neno lao.                                 |
+| NFT ni [mikataba mahiri](/glossary/#smart-contract) kwenye Ethereum. Hii inamaanisha **zinaweza kutumika kwa urahisi katika mikataba mahiri mingine** na programu kwenye Ethereum! | Kampuni zilizo na vitu vya kidijitali kwa kawaida **zinahitaji miundombinu yao wenyewe iliyofungwa**.                                                                 |
+| **Waundaji wa maudhui wanaweza kuuza kazi zao popote** na wanaweza kufikia soko la kimataifa.                                           | Waundaji wanategemea miundombinu na usambazaji wa majukwaa wanayotumia. Haya mara nyingi yanategemea masharti ya matumizi na **vikwazo vya kijiografia**. |
+| Waundaji wa NFT **wanaweza kuhifadhi haki za umiliki** juu ya kazi zao wenyewe, na kupanga mirabaha moja kwa moja kwenye mkataba wa NFT.     | Majukwaa, kama vile **huduma za kutiririsha muziki, huhifadhi faida kubwa kutokana na mauzo**.                                                                |
 
-## NFT zinafanyaje kazi? {#how-nfts-work}
+## NFT zinatumika kwa ajili gani? {#nft-use-cases}
 
-Kama aina yeyote ya tokeni inayotolewa kwenye Ethereum, tokeni zisizoigwa zinatolewa na mkataba erevu. Mkataba erevu hutimiza moja viwango kadhaa vya tokeni zisizoigwa (haswa ERC-721 au ERC-1155) ambavyo hufafanua kazi ya mkataba huo. Mkataba huu unaweza kuunda ('kuzalisha') tokeni zisizoigwa na kuzipa kwa mmiliki maalum. Umiliki unafafanuliwa kwenye mkataba kwa kuweka tokeni zisizoigwa kwenye anwani maalum. Tokeni isiyoigwa ina kitambulisho na kwa kawaida ina maelezo ya data ambayo hufanya tokeni hii mahususi kuwa ya kipekee.
-
-Mtu anapotengeneza ama kuzalisha tokeni zisizoigwa, anatekeleza kazi ndani ya mkataba erevu ambao huteua tokeni isiyoigwa kwenye anwani yake. Habari hii huhifadhiwa hifadhi ya mkataba wake ambayo ni sehemu ya mnyororo wa bloku. Mtengenezaji wa mkataba anaweza kuandika mantiki zaidi kwenye mkataba, kwa mfano, kuweka kiwango cha usambazaji ama kufafanua mrabaha utakaolipwa kwa mtengenezaji kila mara tokeni zinapohamishwa.
-
-## NFT zinatumika kufanya nini? {#nft-use-cases}
-
-Tokeni zisizoigwa hutumika kwa mambo mengi, ikiwa ni pamoja na:
+NFT zinatumika kwa mambo mengi, ikiwa ni pamoja na:
 
 - kuthibitisha kwamba ulihudhuria tukio
-- kuthibitisha kwamba ulimaliza kozi
-- umiliki wa vitu vya michezo
+- kuthibitisha kwamba ulikamilisha kozi
+- vitu vinavyoweza kumilikiwa kwa ajili ya michezo
 - sanaa ya kidijitali
-- kugeuza mali za kidunia kuwa tokeni
-- kuthibitisha utambulisho wako kwenye mtandao
-- kuzuia ufikiaji wa maudhui
+- uundaji wa tokeni wa [rasilimali za ulimwengu halisi](/real-world-assets/)
+- kuthibitisha utambulisho wako mtandaoni
+- kudhibiti ufikiaji wa maudhui
 - ukataji tiketi
-- majina ya kikoa kwenye intaneti iliyogatuliwa
-- dhamana kwenye mambo ya fedha yaliyogatuliwa
+- majina ya vikoa vya mtandao yaliyogatuliwa
+- dhamana katika [fedha zilizogatuliwa](/glossary/#defi)
 
-Labda wewe ni msanii amabaye angependa kushiriki kazi yake kupitia tokeni zisizoigwa, bila wewe kupoteza udhibiti ama kuwapa waamuzi faida zako. Wewe unaweza kutengeneza mkataba mpya na kuweka bayana hesabu ya tokeni zisizoigizwa, vipengele vyao na kiungo chao kwa kazi mahususi ya sanaa. Kama msanii, unaweza kuprogramu ndani ya mkataba-erevu mrabaha unaofaa kulipwa (kwa mfano hamisha 5% ya bei ya mauzo kwa mwenye mkataba kila wakati tokeni isiyoigwa) inapohamishwa. Vile vile unaweza kuthibitisha kwamba wewe ndiwe umetengeneza tokeni isiyoigwa kwa sababu wewe ndiwe mmiliki wa pochi iliyotuma mkataba huo. Wanunuzi wako wanaweza kuthibitisha kuthibitisha kwa urahisi kwamba wao ndio wamiliki wa tokeni isiyoigwa halisi kutoka kwenye mkusanyiko wako kwa sababu anwani ya pochi zao inashirikishwa na tokeni kutoka kwenye mkataba wako. Wanaweza kuitumia katika mfumo wa ikologia ya Ethereum, inayoaminika kwa uhalisi wake.
+Labda wewe ni msanii ambaye anataka kushiriki kazi yake akitumia NFT, bila kupoteza udhibiti na kutoa faida yako kwa waamuzi. Unaweza kuunda mkataba mpya na kubainisha idadi ya NFT, sifa zake na kiungo cha sanaa fulani mahususi. Kama msanii, **unaweza kupanga kwenye mkataba mahiri mirabaha** unayopaswa kulipwa (k.m., kuhamisha 5% ya bei ya mauzo kwa mmiliki wa mkataba kila wakati NFT inapohamishwa). Pia unaweza kuthibitisha kila wakati kwamba uliunda NFT kwa sababu unamiliki [mkoba](/glossary/#wallet) uliosambaza mkataba. Wanunuzi wako wanaweza kuthibitisha kwa urahisi kwamba wanamiliki **NFT halisi** kutoka kwenye mkusanyiko wako kwa sababu [anwani](/glossary/#address) ya mkoba wao inahusishwa na tokeni katika mkataba mahiri wako. Wanaweza kuitumia katika mfumo mzima wa ikolojia wa Ethereum, wakiwa na uhakika na uhalisi wake.
 
-Ama zingatia tiketi ya mechi ijayo. Kama mratibu wa matukio anavyoweza kuamua idadi ya tiketi za kuchapisha, muundaji wa NFT anaweza kuamua idadi ya kuwepo kwa nakala za kazi yake. Wakati mwingine huwa na nakala za ziada, kama vile Tiketi 5000 za Kiingilio cha Jumla. Wakati mwingine nyingine zinachapishwa zinazofanana, ila kila moja ina tofauti ndogo na yenzake, kama vile tiketi yeneye nambari ya kiti. Hizi zinaweza kununuliwa na kuuzwa kutoka kwa mshirika mmoja mpaka kwa mwingine kusipokuwepo na ulipaji wa washikaji tiketi na wanunuzi watakuwa na uhakika wa tiketi halisi kwa kuangalia anwani ya mkataba huo.
+<Alert variant="update">
+<AlertEmoji text=":eyes:"/>
+<AlertContent className="justify-between flex-row items-center">
+  <div>Gundua, nunua au unda sanaa/vitu vyako vya kukusanywa vya NFT...</div>
+  <ButtonLink href="/apps/categories/collectibles">
+    Gundua sanaa ya NFT
+  </ButtonLink>
+</AlertContent>
+</Alert>
 
-Kwenye ethereum.org, tokeni zisizoigwa zinatumika kuonyesha kwamba watu wamechangia kwenye hazina ya GitHub ama kushiriki kwa wito uliotolewa, vile vile tuna jina la kikoa cheti cha tokeni isiyoigwa. Ukichangia kwenye ethereum.org, unaweza kudai NFT ya POAP. Mikutano mingine ya sarafu za kidijitali imetumia POAPs kama tiketi. [Zaidi juu ya uchangiaji](/contributing/#poap).
+Au fikiria tiketi ya tukio la michezo. Kama vile **mratibu wa tukio anavyoweza kuchagua idadi ya tiketi za kuuza**, muundaji wa NFT anaweza kuamua ni nakala ngapi zipo. Wakati mwingine hizi ni nakala halisi, kama vile tiketi 5000 za Kiingilio cha Kawaida. Wakati mwingine kadhaa huundwa ambazo zinafanana sana, lakini kila moja ni tofauti kidogo, kama vile tiketi yenye kiti kilichopangwa. Hizi zinaweza kununuliwa na kuuzwa rika-kwa-rika bila kuwalipa washughulikiaji wa tiketi na mnunuzi daima akiwa na uhakika wa uhalisi wa tiketi kwa kuangalia anwani ya mkataba.
 
-![POAP za ethereum.org](./poap.png)
+Kwenye ethereum.org, **NFT zinatumika kuonyesha kwamba watu wamechangia kwa maana** kwenye hazina yetu ya GitHub (kupanga tovuti, kuandika au kurekebisha makala...), kutafsiri maudhui yetu, au kuhudhuria simu zetu za jamii, na hata tuna jina letu la kikoa la NFT. Ikiwa unachangia kwenye ethereum.org, unaweza kudai NFT ya [POAP](/glossary/#poap). Baadhi ya mikutano ya kripto imetumia POAP kama tiketi. [Zaidi kuhusu kuchangia](/contributing/#poap). Pia unaweza kugundua ukurasa wetu wa [vitu vya kukusanywa vya ethereum.org](/collectibles/) ili kuona NFT za mafanikio ya jamii.
 
-Tovuti hii pia inatumia jina mbadala la kikoa linaloendeshwa na NFT, **ethereum.eth**. Anwani yetu ya `.org` inasimamiwa na mfumo wa majina wa kati/jadi(DNS), wakati ethereum`.eth` imesajiliwa kwenye huduma za majina ya Ethereum (ENS). Na hii linamilikiwa na kuendeshwa na sisi. [Angalia rekodi zetu za ENS](https://app.ens.domains/name/ethereum.eth)
+![ethereum.org POAP](./poap.png)
 
-[Zaidi juu ya ENS](https://app.ens.domains)
+Tovuti hii pia ina jina mbadala la kikoa linalowezeshwa na NFT, **ethereum.eth**. Anwani yetu ya `.org` inasimamiwa kuu na mtoa huduma wa mfumo wa majina ya vikoa (DNS), ilhali ethereum`.eth` imesajiliwa kwenye Ethereum kupitia Huduma ya Jina la Ethereum (ENS). Na inamilikiwa na kusimamiwa na sisi. [Angalia rekodi yetu ya ENS](https://app.ens.domains/name/ethereum.eth)
+
+[Zaidi kuhusu ENS](https://app.ens.domains)
 
 <Divider />
 
+## NFT zinafanyaje kazi? {#how-nfts-work}
+
+NFT, kama vitu vyovyote vya kidijitali kwenye mnyororo wa vitalu wa Ethereum, zinaundwa kupitia programu maalum ya kompyuta inayotegemea Ethereum inayoitwa "mkataba mahiri". Mikataba hii inafuata sheria fulani, kama vile viwango vya [ERC-721](/glossary/#erc-721) au [ERC-1155](/glossary/#erc-1155), ambavyo huamua kile mkataba unaweza kufanya.
+
+Mkataba mahiri wa NFT unaweza kufanya mambo machache muhimu:
+
+- **Kuunda NFT:** Unaweza kutengeneza NFT mpya.
+- **Kukabidhi Umiliki:** Unafuatilia nani anamiliki NFT zipi kwa kuziunganisha na anwani mahususi za Ethereum.
+- **Kupa Kila NFT Kitambulisho:** Kila NFT ina nambari inayoifanya iwe ya kipekee. Zaidi ya hayo, kwa kawaida kuna baadhi ya taarifa (data fafanuzi) zilizoambatishwa kwayo, zinazoelezea kile NFT inachowakilisha.
+
+Mtu "anapounda" au "kuchapisha" NFT, kimsingi anamwambia mkataba mahiri umpe umiliki wa NFT fulani. Taarifa hii inahifadhiwa kwa usalama na hadharani kwenye mnyororo wa vitalu.
+
+Zaidi ya hayo, muundaji wa mkataba anaweza kuongeza sheria za ziada. Wanaweza kuweka kikomo cha idadi ya NFT fulani inayoweza kutengenezwa au kuamua kwamba wanapaswa kupata ada ndogo ya mrahaba wakati wowote NFT inapobadilisha mikono.
+
 ### Usalama wa NFT {#nft-security}
 
-Usalama wa Ethereum unakuja kutokana na ushahidi wa hisa. Mfumo huu umebuniwa ili uweze kuondoa vitendo ya kihasidi kiuchumi na basi kuifanya Ethereum sugu kwa uharibifu. Hii ndiyo inayofanya tokeni zisizoigwa kuwezekana. Mara tu bloku yenye muamala wako wa NFT inapokamilika, inaweza kugharimu mshambulizi mamilioni ya ETH kuibadilisha. Mtu yeyote anayetumia programu ya Ethereum anaweza kujua haraka mambo yasiyofaa ya kuhitilafiana na NFT, na mtu huyu mbaya atatozwa malipo na kuondolewa.
+Usalama wa Ethereum unatokana na [Uthibitisho wa Dau (PoS)](/glossary/#pos). Mfumo umeundwa ili kuvunja moyo kiuchumi vitendo viovu, na kuifanya Ethereum isiweze kuchezewa. Hiki ndicho kinachofanya NFT ziwezekane. Pindi [kitalu](/glossary/#block) kilicho na muamala wako wa NFT kinapokuwa [kiliokamilishwa](/glossary/#finality) itamgharimu mshambuliaji mamilioni ya ETH kukibadilisha. Mtu yeyote anayeendesha programu ya Ethereum angeweza kugundua mara moja uchezewaji usio wa uaminifu wa NFT, na mhusika mbaya angeadhibiwa kiuchumi na kutolewa.
 
-Maswala ya usalama yanayohusiana na NFT sana sana yanahusiana na utapeli wa kutumia barua pepe, hatari za mkataba-erevu au makosa ya mtumiaji (kama vile kuweka wazi funguo za siri) na hivyo kufanya usalam bora wa pochi uwe muhimu sana kwa wamiliki NFT.
+Masuala ya usalama yanayohusiana na NFT mara nyingi yanahusiana na ulaghai wa kuhadaa ili kupata maelezo ya kibinafsi, udhaifu wa mkataba mahiri au makosa ya mtumiaji (kama vile kufichua funguo za faragha bila kukusudia), na kufanya usalama mzuri wa mkoba kuwa muhimu kwa wamiliki wa NFT.
 
-<ButtonLink to="/security/">
-  Maelezo zaidi kuhusu usalama
+<ButtonLink href="/security/">
+  Zaidi kuhusu usalama
 </ButtonLink>
 
-## Soma zaidi {#further-reading}
+## Usomaji zaidi {#further-reading}
 
-- [Mwongozo wa wa mwanafunzi wa NFT](https://linda.mirror.xyz/df649d61efb92c910464a4e74ae213c4cab150b9cbcc4b7fb6090fc77881a95d) – _Linda Xie, Januari 2020_
-- [Mfuatliliaji EtherscanNFT](https://etherscan.io/nft-top-contracts)
+- [Mwongozo wa wanaoanza kuhusu NFT](https://linda.mirror.xyz/df649d61efb92c910464a4e74ae213c4cab150b9cbcc4b7fb6090fc77881a95d) – _Linda Xie, Januari 2020_
+- [Kifuatiliaji cha NFT cha Etherscan](https://etherscan.io/nft-top-contracts)
+- [Kifuatiliaji cha NFT cha Blockscout](https://eth.blockscout.com/tokens?type=ERC-721,ERC-1155,ERC-404)
 - [Kiwango cha tokeni cha ERC-721](/developers/docs/standards/tokens/erc-721/)
 - [Kiwango cha tokeni cha ERC-1155](/developers/docs/standards/tokens/erc-1155/)
+- [Wiki ya Viwango vya NFT](https://nft-standards.gitbook.io/nft-standards-wiki)
+## Rasilimali nyingine {#other-resources}
+
+- [NFTScan](https://nftscan.com/)
 
 <Divider />
 

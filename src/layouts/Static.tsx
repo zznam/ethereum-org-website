@@ -1,87 +1,59 @@
-import { useRouter } from "next/router"
-import { Box, chakra, Flex, type HeadingProps, Icon } from "@chakra-ui/react"
-
-import type { ChildOnlyProp, Lang } from "@/lib/types"
+import type { ChildOnlyProp } from "@/lib/types"
 import type { MdPageContent, StaticFrontmatter } from "@/lib/interfaces"
 
-import Breadcrumbs from "@/components/Breadcrumbs"
-import Callout from "@/components/Callout"
+import ContentFeedback from "@/components/ContentFeedback"
 import Contributors from "@/components/Contributors"
-import DevconGrantsBanner from "@/components/DevconGrantsBanner"
 import EnergyConsumptionChart from "@/components/EnergyConsumptionChart"
-import FeedbackCard from "@/components/FeedbackCard"
+import FileContributors from "@/components/FileContributors"
 import GlossaryDefinition from "@/components/Glossary/GlossaryDefinition"
 import GlossaryTooltip from "@/components/Glossary/GlossaryTooltip"
-import { HubHero } from "@/components/Hero"
+import { HubHero, PageHero } from "@/components/Hero"
 import NetworkUpgradeSummary from "@/components/History/NetworkUpgradeSummary"
-import Link from "@/components/Link"
+import ListenToPlayer from "@/components/ListenToPlayer"
 import Logo from "@/components/Logo"
 import MainArticle from "@/components/MainArticle"
 import MatomoOptOut from "@/components/MatomoOptOut"
-import {
-  Heading1 as MdHeading1,
-  Heading2 as MdHeading2,
-  Heading3 as MdHeading3,
-  Heading4 as MdHeading4,
-} from "@/components/MdComponents"
-import MeetupList from "@/components/MeetupList"
-import Text from "@/components/OldText"
+import PageActions from "@/components/PageActions"
 import SocialListItem from "@/components/SocialListItem"
 import TableOfContents from "@/components/TableOfContents"
-import Translation from "@/components/Translation"
 import TranslationChartImage from "@/components/TranslationChartImage"
-import UpcomingEventsList from "@/components/UpcomingEventsList"
+import { Alert } from "@/components/ui/alert"
+import Callout from "@/components/ui/callout"
+import { Flex } from "@/components/ui/flex"
+import Link from "@/components/ui/Link"
+import WhitepaperBridge from "@/components/WhitepaperBridge"
 
+import { cn } from "@/lib/utils/cn"
 import { getEditPath } from "@/lib/utils/editPath"
-import { getLocaleTimestamp } from "@/lib/utils/time"
-import { isLangRightToLeft } from "@/lib/utils/translations"
 
-import GuideHeroImage from "@/public/heroes/guides-hub-hero.jpg"
-
-const Heading1 = (props: HeadingProps) => (
-  <MdHeading1 fontSize={{ base: "2.5rem", md: "5xl" }} {...props} />
-)
-const Heading2 = (props: HeadingProps) => (
-  <MdHeading2 fontSize={{ base: "2xl", md: "2rem" }} {...props} />
-)
-const Heading3 = (props: HeadingProps) => (
-  <MdHeading3 fontSize={{ base: "xl", md: "2xl" }} {...props} />
-)
-const Heading4 = (props: HeadingProps) => (
-  <MdHeading4 fontSize={{ base: "md", md: "xl" }} {...props} />
-)
-
-const ListItem = (props: ChildOnlyProp) => (
-  <chakra.li color="text300" {...props} />
-)
+import guideHeroImg from "@/public/images/heroes/guides-hub-hero.jpg"
 
 // Static layout components
 export const staticComponents = {
-  h1: Heading1,
-  h2: Heading2,
-  h3: Heading3,
-  h4: Heading4,
-  li: ListItem,
+  Alert,
   Callout,
   Contributors,
   EnergyConsumptionChart,
   GlossaryDefinition,
   GlossaryTooltip,
-  Icon,
-  Link,
+  Link, // TODO: Refactor /community/online/ `Link` usage to `[]()` then deprecate this
   Logo,
   MatomoOptOut,
-  MeetupList,
   NetworkUpgradeSummary,
   SocialListItem,
   TranslationChartImage,
-  UpcomingEventsList,
+  ListenToPlayer,
+  WhitepaperBridge,
 }
 
 type StaticLayoutProps = ChildOnlyProp &
   Pick<
     MdPageContent,
-    "slug" | "tocItems" | "lastUpdatedDate" | "contentNotTranslated"
+    | "slug"
+    | "tocItems"
+    | "lastEditLocaleTimestamp"
+    | "contentNotTranslated"
+    | "contributors"
   > & {
     frontmatter: StaticFrontmatter
   }
@@ -90,80 +62,73 @@ export const StaticLayout = ({
   frontmatter,
   slug,
   tocItems,
-  lastUpdatedDate,
+  lastEditLocaleTimestamp,
   contentNotTranslated,
+  contributors,
 }: StaticLayoutProps) => {
-  const { locale, asPath } = useRouter()
-
   const absoluteEditPath = getEditPath(slug)
 
-  return (
-    <Box w="full">
-      <DevconGrantsBanner pathname={asPath} />
-      <Flex
-        justifyContent="space-between"
-        w="full"
-        mx="auto"
-        mb={16}
-        p={8}
-        pt={{ base: 8, lg: 16 }}
-        dir={contentNotTranslated ? "ltr" : "unset"}
-      >
-        <Box w="full">
-          {slug === "/guides/" ? (
-            <HubHero
-              heroImg={GuideHeroImage}
-              header={frontmatter.title}
-              title={""}
-              description={frontmatter.description}
-            />
-          ) : (
-            <>
-              <Breadcrumbs slug={slug} mb="8" />
-              {lastUpdatedDate && (
-                <Text
-                  color="text200"
-                  dir={isLangRightToLeft(locale as Lang) ? "rtl" : "ltr"}
-                >
-                  <Translation id="page-last-updated" />:{" "}
-                  {getLocaleTimestamp(locale as Lang, lastUpdatedDate)}
-                </Text>
-              )}
-            </>
-          )}
+  const isGuidesHub = slug === "/guides/" || slug === "guides"
 
-          <Box
-            as={MainArticle}
-            maxW="container.md"
-            w="full"
-            sx={{
-              ".citation": {
-                p: {
-                  color: "text200",
-                },
-              },
-            }}
+  return (
+    <div dir={contentNotTranslated ? "ltr" : "unset"}>
+      {isGuidesHub ? (
+        <HubHero
+          breadcrumbs={{ slug }}
+          heroImg={guideHeroImg}
+          header={frontmatter.title}
+          description={frontmatter.description}
+        />
+      ) : (
+        <PageHero
+          breadcrumbs={{ slug }}
+          title={frontmatter.title}
+          variant="no-divider"
+        />
+      )}
+
+      <main className={cn("px-page pb-page", isGuidesHub && "pt-page")}>
+        <Flex className="w-full justify-between gap-x-space-3x max-lg:flex-col">
+          <TableOfContents
+            items={tocItems}
+            maxDepth={frontmatter.sidebarDepth || 2}
+            isMobile
+          />
+
+          <MainArticle
+            className={cn(
+              "flow max-w-3xl",
+              "**:[h1]:hidden" // TODO: Remove when non-English Static markdown update to remove `#` h1 line
+            )}
           >
-            <TableOfContents
-              position="relative"
-              zIndex={2}
-              items={tocItems}
-              isMobile
-              maxDepth={frontmatter.sidebarDepth || 2}
+            <PageActions
+              slug={slug}
+              isTranslated={!contentNotTranslated}
+              editPath={absoluteEditPath}
               hideEditButton={!!frontmatter.hideEditButton}
+              className="my-4"
             />
+
             {children}
 
-            <FeedbackCard isArticle />
-          </Box>
-        </Box>
-        <TableOfContents
-          editPath={absoluteEditPath}
-          items={tocItems}
-          maxDepth={frontmatter.sidebarDepth || 2}
-          hideEditButton={!!frontmatter.hideEditButton}
-        />
-      </Flex>
-    </Box>
+            {!frontmatter.hideEditButton && (
+              <FileContributors
+                className="mt-space-3x border-t"
+                contributors={contributors}
+                lastEditLocaleTimestamp={lastEditLocaleTimestamp}
+              />
+            )}
+          </MainArticle>
+
+          <TableOfContents
+            items={tocItems}
+            maxDepth={frontmatter.sidebarDepth || 2}
+          />
+        </Flex>
+
+        {/* End-of-page actions */}
+        <ContentFeedback isArticle />
+      </main>
+    </div>
   )
 }

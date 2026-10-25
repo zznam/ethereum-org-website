@@ -1,31 +1,26 @@
-import React from "react"
-import { motion } from "framer-motion"
-import { Box, Text } from "@chakra-ui/react"
+import { motion } from "motion/react"
+import { useTranslations } from "next-intl"
 
-const MotionBox = motion(Box)
+export const RecoveryPhraseNotice = () => {
+  const t = useTranslations("component-wallet-simulator")
 
-export const RecoveryPhraseNotice = () => (
-  <MotionBox
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.25 }}
-    py={8}
-    px={{ base: 4, md: 8 }}
-    h="full"
-    bg="background.highlight"
-    fontSize={{ base: "sm", md: "md" }}
-    sx={{ p: { mb: { base: 4, md: 6 } } }}
-  >
-    <Text fontSize={{ base: "xl", md: "2xl" }} lineHeight={8} fontWeight="bold">
-      Recovery phrase
-    </Text>
-    <Text>
-      Any person knowing this <strong>secret</strong> recovery phrase can make
-      transactions on behalf of your account.
-    </Text>
-    <Text>
-      Wallet app providers do not have access to your account—only you do.
-    </Text>
-    <Text fontWeight="bold">You must back it up safely.</Text>
-  </MotionBox>
-)
+  return (
+    <motion.div
+      className="h-full bg-background-highlight px-4 py-8 text-sm md:px-8 md:text-md [&_p]:mb-4 [&_p]:md:mb-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.25 }}
+    >
+      <p className="text-xl leading-8 font-bold md:text-2xl">
+        {t("sim-ca-recovery-title")}
+      </p>
+      <p>
+        {t.rich("sim-ca-recovery-desc-1", {
+          strong: (chunks) => <strong>{chunks}</strong>,
+        })}
+      </p>
+      <p>{t("sim-ca-recovery-desc-2")}</p>
+      <p className="font-bold">{t("sim-ca-recovery-desc-3")}</p>
+    </motion.div>
+  )
+}

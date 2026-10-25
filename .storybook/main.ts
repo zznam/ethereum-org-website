@@ -1,70 +1,122 @@
 import path from "path"
 
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin"
 import type { StorybookConfig } from "@storybook/nextjs"
-import { propNames } from "@chakra-ui/react"
 
 /**
- * Note regarding package.json settings related to Storybook:
- *
- * There is a resolutions option set for the package `jackspeak`. This is related to a
- * workaround provided to make sure storybook ( as of v7.5.2) works correctly with
- * Yarn v1
- *
- * Reference: https://github.com/storybookjs/storybook/issues/22431#issuecomment-1630086092
- *
- * The primary recommendation is to upgrade to Yarn 3 if possible
+ * Storybook configuration for the ethereum.org website
+ * This loads our components as stories and configures the necessary
+ * webpack settings for proper rendering
  */
-
 const config: StorybookConfig = {
-  stories: ["../src/components/**/*.stories.{ts,tsx}"],
+  stories: [
+    "./Overview.mdx",
+    // Recursive everywhere: a story nested a directory deeper than expected
+    // would otherwise never load, with no error to say so.
+    "../src/components/**/*.stories.{ts,tsx}",
+    "../src/layouts/**/*.stories.{ts,tsx}",
+    "../src/styles/**/*.stories.{ts,tsx}",
+    "../app/**/*.stories.{ts,tsx}",
+  ],
+
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
-    "@chakra-ui/storybook-addon",
-    "storybook-react-i18next",
+    "@storybook/addon-themes",
+    "@chromatic-com/storybook",
+    "storybook-next-intl",
+    "@storybook/addon-docs",
   ],
-  staticDirs: ["../public"],
+
+  // Not public/images: a staticDir change bails TurboSnap, imported images trace per story.
+  staticDirs: [
+    { from: "../public/content", to: "/content" },
+    { from: "../public/audio", to: "/audio" },
+  ],
+
   framework: {
     name: "@storybook/nextjs",
     options: {},
   },
-  docs: {
-    autodocs: "tag",
-  },
-  refs: {
-    "@chakra-ui/react": {
-      disable: true,
-    },
-  },
-  webpackFinal: async (config: any) => {
-    // Add path aliases
-    config.resolve.alias["@"] = path.resolve(__dirname, "../src")
-    config.resolve.alias["@/public"] = path.resolve(__dirname, "../public")
+
+  webpackFinal: async (config) => {
+    config.module = config.module || {}
+    config.module.rules = config.module.rules || []
+
+    if (config.resolve) {
+      config.resolve.plugins = [
+        ...(config.resolve.plugins || []),
+        new TsconfigPathsPlugin({
+          extensions: config.resolve.extensions,
+        }),
+      ]
+
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "@/storybook/*": path.resolve(process.cwd(), ".storybook"),
+        // Async server components render in the browser here, where the real
+        // helpers throw. See the shim's header for why this is a swap, not a
+        // fake. `$` keeps it an exact-request match.
+        "next-intl/server$": path.resolve(
+          process.cwd(),
+          ".storybook/next-intl-server.tsx"
+        ),
+      }
+    }
+
+    // This modifies the existing image rule to exclude .svg files
+    // since you want to handle those files with @svgr/webpack
+    const imageRule = config.module.rules.find((rule) =>
+      rule?.["test"]?.test(".svg")
+    )
+    if (imageRule) {
+      imageRule["exclude"] = /\.svg$/
+    }
+    // Configure yaml files to be loaded with yaml-loader
+    config.module.rules.push({
+      test: /\.ya?ml$/,
+      use: "yaml-loader",
+    })
+
+    // Configure .svg files to be loaded with @svgr/webpack
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    })
+
+    // .all-contributorsrc is JSON without a .json extension
+    config.module.rules.push({
+      test: /\.all-contributorsrc$/,
+      type: "json",
+    })
+
+    // The next/cache mock reaches next's render-result, which lazily requires node:stream.
+    config.plugins = [
+      ...(config.plugins || []),
+      {
+        apply: (compiler) =>
+          new compiler.webpack.NormalModuleReplacementPlugin(
+            /^node:stream$/,
+            (resource) => {
+              resource.request = "stream"
+            }
+          ).apply(compiler),
+      },
+    ]
 
     return config
   },
+
   typescript: {
     reactDocgenTypescriptOptions: {
       shouldExtractLiteralValuesFromEnum: true,
-      /**
-       * For handling bloated controls table of Chakra Props
-       *
-       * https://github.com/chakra-ui/chakra-ui/issues/2009#issuecomment-852793946
-       */
-      propFilter: (prop) => {
-        const excludedPropNames = propNames.concat([
-          "as",
-          "apply",
-          "sx",
-          "__css",
-        ])
-        const isStyledSystemProp = excludedPropNames.includes(prop.name)
-        const isHTMLElementProp =
-          prop.parent?.fileName.includes("node_modules") ?? false
-        return !(isStyledSystemProp || isHTMLElementProp)
-      },
     },
+
+    reactDocgen: "react-docgen-typescript",
+  },
+
+  features: {
+    experimentalRSC: true,
+    backgrounds: false,
   },
 }
 export default config

@@ -1,168 +1,181 @@
-import { useState } from "react"
-import { useRouter } from "next/router"
-import {
-  Avatar,
-  Flex,
-  FlexProps,
-  Heading,
-  ListItem,
-  ModalBody,
-  ModalHeader,
-  Skeleton as ChakraSkeleton,
-  SkeletonCircle as ChakraSkeletonCircle,
-  UnorderedList,
-  VStack,
-} from "@chakra-ui/react"
+"use client"
 
-import type { Author, Lang } from "@/lib/types"
+import { BaseHTMLAttributes, useState } from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
-import { Button } from "@/components/Buttons"
-import InlineLink from "@/components/Link"
-import Modal from "@/components/Modal"
-import Text from "@/components/OldText"
+import type { FileContributor } from "@/lib/types"
+
 import Translation from "@/components/Translation"
+import { Button } from "@/components/ui/buttons/Button"
+import { Center, Flex } from "@/components/ui/flex"
+import { ListItem, UnorderedList } from "@/components/ui/list"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
+import { cn } from "@/lib/utils/cn"
 import { trackCustomEvent } from "@/lib/utils/matomo"
-import { getLocaleTimestamp } from "@/lib/utils/time"
 
-// TODO: skeletons are not part of the DS, so these should be replaced once we
-// implement the new designs. Thats the reason we haven't define these styles in
-// the theme config file
-const skeletonColorProps = {
-  startColor: "lightBorder",
-  endColor: "searchBackgroundEmpty",
-}
+import { Avatar, AvatarBase, AvatarFallback } from "./ui/avatar"
+import Modal from "./ui/dialog-modal"
+import { LinkBox, LinkOverlay } from "./ui/link-box"
 
-const Skeleton = (props) => (
-  <ChakraSkeleton {...skeletonColorProps} borderRadius="md" {...props} />
-)
+import { useBreakpointValue } from "@/hooks/useBreakpointValue"
 
-const SkeletonCircle = (props) => (
-  <ChakraSkeletonCircle {...skeletonColorProps} {...props} />
-)
+const ContributorAvatar = ({
+  contributor,
+  label,
+  className,
+}: ContributorProps & { label?: string; className?: string }) => {
+  const hasProfile = !!contributor.html_url
 
-const ContributorList = ({ children }: { children: React.ReactNode }) => {
+  // Contributors without a profile (no GitHub account)
+  if (!hasProfile) {
+    const initials = contributor.login
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase()
+
+    return (
+      <Flex className="items-center gap-1">
+        <AvatarBase className={cn("size-10", className)}>
+          <AvatarFallback>{initials}</AvatarFallback>
+        </AvatarBase>
+        {label && (
+          <span className="inline-flex items-center p-1 text-sm">{label}</span>
+        )}
+      </Flex>
+    )
+  }
+
   return (
-    <UnorderedList maxH="2xs" m={0} mt={6} overflowY="scroll">
-      {children}
-    </UnorderedList>
+    <Avatar
+      src={contributor.avatar_url}
+      name={contributor.login}
+      href={
+        contributor.html_url.includes("crowdin.com")
+          ? contributor.html_url
+          : "https://github.com/" + contributor.login
+      }
+      // `size-10` is not part of the "size" variants
+      className={cn("size-10", className)}
+      label={label}
+    />
   )
 }
 
-const Contributor = ({ contributor }: { contributor: Author }) => {
+const ContributorAvatarGroup = ({
+  contributors,
+}: {
+  contributors: FileContributor[]
+}) => {
+  if (!contributors.length) return null
+
+  const maxVisibleAvatars = contributors.length >= 3 ? 3 : contributors.length
+  const remainingCount = contributors.length > 3 ? contributors.length - 3 : 0
+
   return (
-    <ListItem p={2} display="flex" alignItems="center">
-      <Avatar
-        height="40px"
-        width="40px"
-        src={contributor.avatarUrl}
-        name={contributor.name}
-        me={2}
-      />
-      {contributor.user && (
-        <InlineLink href={contributor.user.url}>
-          @{contributor.user.login}
-        </InlineLink>
+    <Flex className="items-center">
+      {contributors.slice(0, maxVisibleAvatars).map((contributor, index) => (
+        <div
+          key={contributor.login}
+          className="pointer-events-none -me-3 flex"
+          style={{ zIndex: maxVisibleAvatars - index }}
+        >
+          <ContributorAvatar contributor={contributor} />
+        </div>
+      ))}
+      {remainingCount > 0 && (
+        <Center className="-me-2 size-10 rounded-full bg-primary ps-1 text-sm text-body-inverse">
+          +{remainingCount}
+        </Center>
       )}
-      {!contributor.user && <span>{contributor.name}</span>}
+    </Flex>
+  )
+}
+
+type ContributorProps = { contributor: FileContributor }
+const Contributor = ({ contributor }: ContributorProps) => {
+  const hasProfile = !!contributor.html_url
+  return (
+    <ListItem className="flex items-center p-2">
+      <ContributorAvatar
+        contributor={contributor}
+        label={hasProfile ? "@" + contributor.login : contributor.login}
+      />
+      {contributor.html_url.includes("crowdin.com") && (
+        <p className="ms-5 text-body-medium">
+          <Translation id="translator" />
+        </p>
+      )}
     </ListItem>
   )
 }
 
-export type FileContributorsProps = FlexProps & {
-  editPath?: string
-  contributors: Author[]
-  loading: boolean
-  error?: boolean
-  lastEdit: string
-}
+const variants = cva("", {
+  variants: {
+    variant: {
+      base: "my-4 me-4 md:p-2 lg:mb-0",
+      compact: "",
+    },
+  },
+  defaultVariants: {
+    variant: "base",
+  },
+})
+
+export type FileContributorsProps = BaseHTMLAttributes<HTMLDivElement> & {
+  contributors: FileContributor[]
+  lastEditLocaleTimestamp?: string
+  className?: string
+} & VariantProps<typeof variants>
 
 const FileContributors = ({
   contributors,
-  loading,
-  error,
-  lastEdit,
+  lastEditLocaleTimestamp,
+  className,
+  variant,
   ...props
 }: FileContributorsProps) => {
   const [isModalOpen, setModalOpen] = useState(false)
-  const { locale } = useRouter()
-
-  if (error) return null
-  const lastContributor: Author = contributors.length
-    ? contributors[0]
-    : {
-        name: "",
-        email: "",
-        avatarUrl: "",
-        user: {
-          login: "",
-          url: "",
-        },
-      }
+  const modalSize = useBreakpointValue({ base: "xl", md: "md" } as const)
 
   return (
     <>
-      <Modal isOpen={isModalOpen} setIsOpen={setModalOpen}>
-        <ModalHeader py={0}>
-          <Heading m={0}>
-            <Translation id="contributors" />
-          </Heading>
-        </ModalHeader>
-
-        <ModalBody>
-          <Translation id="contributors-thanks" />
-          {contributors ? (
-            <ContributorList>
+      <Modal
+        open={isModalOpen}
+        onOpenChange={(open) => setModalOpen(open)}
+        size={modalSize}
+        title={<Translation id="contributors" />}
+      >
+        <div className="space-y-4">
+          <p>
+            <Translation id="contributors-thanks" />
+          </p>
+          <ScrollArea className="h-64 w-full">
+            <UnorderedList className="m-0">
               {contributors.map((contributor) => (
                 <Contributor
                   contributor={contributor}
-                  key={contributor.email}
+                  key={contributor.login}
                 />
               ))}
-            </ContributorList>
-          ) : null}
-        </ModalBody>
+            </UnorderedList>
+          </ScrollArea>
+        </div>
       </Modal>
 
-      <Flex
-        direction={{
-          base: "column",
-          md: "row",
-        }}
-        p={{ base: 0, md: 2 }}
-        {...props}
-      >
-        <Flex me={4} alignItems="center" flex="1">
-          <SkeletonCircle size="10" me={4} isLoaded={!loading}>
-            <Avatar
-              height="40px"
-              width="40px"
-              src={lastContributor.avatarUrl}
-              name={lastContributor.name}
-              me={2}
-            />
-          </SkeletonCircle>
-
-          <Skeleton isLoaded={!loading}>
-            <Text m={0} color="text200">
-              <Translation id="last-edit" />:{" "}
-              {lastContributor.user?.url && (
-                <InlineLink href={lastContributor.user.url}>
-                  @{lastContributor.user.login}
-                </InlineLink>
-              )}
-              {!lastContributor.user && <span>{lastContributor.name}</span>},{" "}
-              {getLocaleTimestamp(locale as Lang, lastEdit)}
-            </Text>
-          </Skeleton>
-        </Flex>
-
-        <VStack align="stretch" justifyContent="space-between" spacing={2}>
-          <Skeleton isLoaded={!loading} mt={{ base: 4, md: 0 }}>
+      <aside className={cn(variants({ variant }), className)} {...props}>
+        {lastEditLocaleTimestamp && (
+          <p className="mb-2 text-body-medium">
+            <Translation id="page-last-update" /> {lastEditLocaleTimestamp}
+          </p>
+        )}
+        <LinkBox className="flex">
+          <ContributorAvatarGroup contributors={contributors} />
+          <LinkOverlay asChild>
             <Button
-              variant="outline"
-              bg="background.base"
-              border={0}
+              variant="ghost"
               onClick={() => {
                 setModalOpen(true)
                 trackCustomEvent({
@@ -171,13 +184,12 @@ const FileContributors = ({
                   eventName: "click",
                 })
               }}
-              w={{ base: "full", md: "inherit" }}
             >
               <Translation id="see-contributors" />
             </Button>
-          </Skeleton>
-        </VStack>
-      </Flex>
+          </LinkOverlay>
+        </LinkBox>
+      </aside>
     </>
   )
 }

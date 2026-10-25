@@ -1,291 +1,303 @@
 ---
-title: Ethereum – Sicherheits- und Betrugsvorbeugung
-description: Ethereum sicher nutzen
+title: Ethereum-Sicherheit und Betrugsprävention
+description: Sicher bleiben auf Ethereum
 lang: de
 ---
 
-# Ethereum – Sicherheits- und Betrugsvorbeugung {#introduction}
+Das steigende Interesse an Kryptowährungen bringt ein wachsendes Risiko durch Betrüger und Hacker mit sich. Dieser Artikel stellt einige bewährte Methoden vor, um diese Risiken zu mindern.
 
-Da Kryptowährungen immer beliebter werden, ist es unerlässlich, sich die besten Praktiken für die Nutzung von Kryptowährungen anzueignen. Kryptowährungen können Spaß machen und aufregend sein, aber es gibt auch ernsthafte Risiken. Wenn Sie bereits im Vorfeld etwas Zeit investieren, können Sie diese Risiken mildern.
-
-<Divider />
-
-## Das Einmaleins der Sicherheit im Internet {#web-security}
-
-### Starke Kennwörter verwenden {#use-strong-passwords}
-
-[In mehr als 80 % der Fälle von gehackten Konten waren die Kennwörter entweder zu schwach oder gestohlen.](https://cloudnine.com/ediscoverydaily/electronic-discovery/80-percent-hacking-related-breaches-related-password-issues-cybersecurity-trends/). Lange Kombinationen aus Buchstaben, Zahlen und Sonderzeichen sind am besten geeignet, um Ihre Konten zu schützen.
-
-Der Fehler ist weit verbreitet, eine Kombination aus zwei oder drei allgemeinen, verwandten Wörtern aus dem Wörterbücher zu verwenden. Solche Kennwörter sind unsicher, da sie für eine einfache Hacking-Technik anfällig sind, welche als [Wörterbuchangriff](https://wikipedia.org/wiki/Dictionary_attack) bekannt ist.
-
-```md
-Beispiel eines schwachen Kennworts: SüßeWeicheKätzchen!
-
-Beispiel eines starken Kennworts: ymv\*azu.EAC8eyp8umf
-```
-
-Ein weiter häufiger Fehler ist die Verwendung von Kennwörtern, die leicht erraten oder durch [Social Engineering](https://wikipedia.org/wiki/Social_engineering_(security)) herausgefunden werden können. Dazu gehören der Mädchenname Ihrer Mutter, die Namen Ihrer Kinder oder Tiere oder Geburtsdaten. Das ist nicht sicher und erhöht das Risiko, dass Ihr Kennwort gehackt wird.
-
-#### Guter Umgang mit Kennwörtern: {#good-password-practices}
-
-- Erstellen Sie Kennwörter, welche die maximal mögliche Länge im Kennwortgenerator oder dem Formular, das Sie ausfüllen, in Anspruch nehmen
-- Verwenden Sie eine Kombination aus Groß- und Kleinbuchstaben, Zahlen und Sonderzeichen
-- Verwenden Sie in Ihrem Kennwort keine persönlichen Daten, wie beispielsweise Familiennamen
-- Vermeiden Sie häufige Wörter, die aus Wörterbüchern stammen
-
-[Mehr zum Erstellen starker Kennwörter](https://terranovasecurity.com/how-to-create-a-strong-password-in-7-easy-steps/)
-
-### Verwendung einzigartiger Kennwörter {#use-unique-passwords}
-
-Ein starkes Kennwort bietet nicht viel Schutz, wenn es durch eine Datenpanne offengelegt wird. Auf der Website [Have I Been Pwned](https://haveibeenpwned.com) können Sie prüfen, ob Ihre Konten von irgendeiner der Datenpannen, die in der Datenbank der Website gespeichert sind, betroffen sind. Ist das der Fall, **sollten Sie die betroffenen Kennwörter sofort ändern**. Die Verwendung von einzigartigen Kennwörtern für jedes Konto verringert das Risiko, dass Hacker Zugriff auf alle Ihre Konten erhalten, wenn eines der Kennwörter kompromittiert wird.
-
-### Verwendung von Kennwortmanagern {#use-password-manager}
-
-<InfoBanner emoji=":bulb:">
-  <div>
-    Ein Kennwortmanager ist hilfreich bei der Erstellung starker, einzigartiger Kennwörter und dabei sich diese zu merken! Wir empfehlen <strong>dringend</strong> die Verwendung eines Kennwortmanagers! Es gibt viele gute, kostenlose Angebote.
-  </div>
-</InfoBanner>
-
-Es ist nicht möglich, sich starke, einzigartige Kennwörter für jedes Konto zu merken, das Sie eingerichtet haben. Ein Kennwortmanager bietet Ihnen einen sicheren, verschlüsselten Speicher für all Ihre Kennwörter, auf den Sie über ein starkes Master-Kennwort zugreifen können. Ein solches Tool schlägt Ihnen auch starke Kennwörter vor, wenn Sie sich für einen neuen Dienst anmelden, sodass Sie keine eigenen erstellen müssen. Viele Kennwortmanager informieren Sie auch, wenn Sie von einem Datenleck betroffen sind, sodass Sie Ihre Kennwörter vor böswilligen Angriffen ändern können.
-
-![Beispiel zur Verwendung eines Kennwortmanagers](./passwordManager.png)
-
-#### Überzeugen Sie sich selbst von einem Kennwortmanager: {#try-password-manager}
-
-- [Bitwarden](https://bitwarden.com/)
-- [KeePass](https://keepass.info/)
-- [1Password](https://1password.com/)
-- Oder sehen Sie sich andere [empfohlene Passwortmanager](https://www.privacytools.io/secure-password-manager) an
-
-### Zwei-Faktor-Authentifizierung verwenden {#two-factor-authentication}
-
-Um zu beweisen, dass Sie tatsächlich Sie sind, gibt es verschiedene eindeutige Nachweise, die zur Authentifizierung verwendet werden können. Solche Nachweise werden **Faktoren** genannt. Die drei Hauptfaktoren sind:
-
-- Etwas, das nur Sie kennen (beispielsweise ein Kennwort oder eine Sicherheitsfrage)
-- Etwas, das nur Sie sind (wie ein Fingerabdruck oder ein Iris-/Gesichts-Scan)
-- Etwas, das nur Sie besitzen (wie ein Sicherheitsschlüssel, oder eine Authentifizierungs-App auf Ihrem Smartphone)
-
-Die Verwendung der **Zwei-Faktor-Authentifizierung (2FA)** bietet einen zusätzlichen *Sicherheitsfaktor* für Ihre Online-Konten. Damit reicht die Kenntnis Ihres Kennworts allein (etwas, das nur Sie wissen) nicht aus, um auf ein Konto zuzugreifen. Meist ist der zweite Faktor ein zufälliger 6-stelliger Code, bekannt als ein **zeitabhängiges einmaliges Kennwort (Time-based One-time Password, TOTP)**, auf das Sie über eine Authentifizierungs-App wie Google Authenticator oder Authy Zugriff haben. Solche Apps funktionieren als „etwas, das Sie besitzen“-Faktor, da der Seed, der den Zeitcode generiert, auf Ihrem Gerät gespeichert ist.
-
-<InfoBanner emoji=":lock:">
-  <div>
-    Hinweis: Die Verwendung von SMS-basierten 2FA ist anfällig für
-    <a href="https://www.vice.com/en/article/3kx4ej/sim-jacking-mobile-phone-fraud">
-      SIM-Swapping
-    </a>
-    und ist nicht sicher. Die höchste Sicherheit erhalten Sie, wenn Sie einen Service wie {" "}
-    <a href="https://mashable.com/article/how-to-set-up-google-authenticator">
-      Google Authenticator
-    </a>
-    oder <a href="https://authy.com/">Authy</a> nutzen.
-  </div>
-</InfoBanner>
-
-#### Sicherheitsschlüssel {#security-keys}
-
-Für diejenigen, die bei der 2FA einen Schritt weiter gehen möchten, sollten einen Sicherheitsschlüssel oder „Security Key“ benutzten. Sicherheitsschlüssel sind physische Hardware-Authentifizierungsgeräte, die genau so funktionieren wie Authentifizierungs-Apps. Einen Sicherheitsschlüssel zu verwenden, ist die sicherste Variante der 2FA. Viele dieser Schlüssel verwenden den Standard „FIDO Universal 2nd Factor (U2F)“. [Mehr erfahren über FIDO U2F](https://www.yubico.com/authentication-standards/fido-u2f/).
-
-Mehr zur 2FA:
-
-<YouTube id="m8jlnZuV1i4" start="3479" />
-
-### Browsererweiterungen entfernen {#uninstall-browser-extensions}
-
-Browsererweiterungen wie die Chrome-Erweiterungen oder die Add-ons von Firefox können nützliche Browserfunktionen erweitern und die Benutzerfreundlichkeit verbessern, aber sie sind auch mit Risiken verbunden. Standardgemäß fragen die meisten Browsererweiterungen nach dem Zugriff „Website-Daten lesen und ändern“. Damit können Sie mit Ihren Daten fast alles machen. Chrome-Erweiterungen werden eigentlich immer automatisch aktualisiert. Das bedeutet, dass eine bisher sichere Erweiterung zu einem späteren Zeitpunkt eventuell bösartig werden kann. Die meisten Browsererweiterungen versuchen nicht, Ihre Daten zu stehlen. Aber Sie sollten sich darüber im Klaren sein, dass sie das könnten.
-
-#### So bleiben Sie sicher: {#browser-extension-safety}
-
-- Nur Browsererweiterungen von vertrauenswürdigen Quellen installieren
-- Unbenutzte Browsererweiterungen entfernen
-- Chrome-Erweiterungen lokal installieren, um die automatische Aktualisierung der Erweiterungen zu stoppen (fortgeschritten)
-
-[Mehr zu den Risiken von Browsererweiterungen](https://www.kaspersky.co.uk/blog/browser-extensions-security/12750/)
+**Denken Sie daran: Niemand von ethereum.org wird Sie jemals kontaktieren. Antworten Sie nicht auf E-Mails, die behaupten, vom offiziellen Ethereum-Support zu stammen.**
 
 <Divider />
 
-## Das Einmaleins der Krypto-Sicherheit {#crypto-security}
+## Krypto-Sicherheit 101 {#crypto-security}
 
 ### Erweitern Sie Ihr Wissen {#level-up-your-knowledge}
 
-Einer der häufigsten Gründe, warum Menschen in der Kryptoszene betrogen werden, ist mangelndes Verständnis. Angenommen, Sie hätten nicht verstanden, dass das Ethereum-Netzwerk dezentralisiert ist und niemandem direkt gehört. In diesem Fall wäre es einfach, dass Sie auf jemanden hereinfallen, der vorgibt, ein Kundendienstmitarbeiter zu sein, und verspricht, im Gegenzug für Ihren Private-Key, Ihr verlorenes ETH zurückzuerstatten. Es ist lohnenswert, sich über die Funktionsweise von Ethereum zu informieren.
+Missverständnisse darüber, wie Krypto funktioniert, können zu kostspieligen Fehlern führen. Wenn sich beispielsweise jemand als Kundendienstmitarbeiter ausgibt, der verlorene ETH im Austausch für Ihre privaten Schlüssel zurückgeben kann, nutzt er aus, dass die Leute nicht verstehen, dass [Ethereum](/) ein dezentrales Netzwerk ist, dem diese Art von Funktionalität fehlt. Sich darüber zu informieren, wie Ethereum funktioniert, ist eine lohnende Investition.
 
-<DocLink to="/what-is-ethereum/">
+<DocLink href="/what-is-ethereum/">
   Was ist Ethereum?
 </DocLink>
 
-<DocLink to="/eth/">
+<DocLink href="/what-is-ether/">
   Was ist Ether?
 </DocLink>
 <Divider />
 
 ## Wallet-Sicherheit {#wallet-security}
 
-### Geben Sie Ihre Private-Keys nicht heraus {#protect-private-keys}
+### Teilen Sie niemals Ihre Wiederherstellungsphrase {#protect-private-keys}
 
-**Teilen Sie niemals – aus welchem Grund auch immer – Ihre Private-Keys!**
+**Teilen Sie niemals, aus welchem Grund auch immer, Ihre Wiederherstellungsphrase oder Ihre privaten Schlüssel!**
 
-Der Private-Key zu Ihrer Wallet fungiert als Kennwort für Ihre Ethereum-Wallet. Es ist das Einzige, das verhindert, dass jemand, der Ihre Wallet-Adresse kennt, Ihr Konto um all seine Vermögenswerte erleichtert!
+Ihre Wiederherstellungsphrase (auch geheime Wiederherstellungsphrase oder Seed-Phrase genannt) ist der Hauptschlüssel zu Ihrer Wallet. Jeder, der sie hat, kann auf alle Ihre Konten zugreifen und alle Vermögenswerte abräumen. Private Schlüssel funktionieren auf die gleiche Weise für einzelne Konten. Kein legitimer Dienst, Support-Mitarbeiter oder keine legitime Website wird Sie jemals danach fragen.
 
-<DocLink to="/wallets/">
+<DocLink href="/wallets/">
   Was ist eine Ethereum-Wallet?
 </DocLink>
 
-#### Nehmen Sie niemals Screenshots (Bildschirmaufnahmen) Ihrer Seed-Phrasen oder Private-Keys auf {#screenshot-private-keys}
+#### Machen Sie keine Screenshots von Ihren Seed-Phrasen/privaten Schlüsseln {#screenshot-private-keys}
 
-Wenn Sie Screenshots Ihrer Seed-Phrasen oder Private-Keys machen, riskieren Sie, dass diese mit der Cloud synchronisiert werden und möglicherweise Hacker darauf zu greifen können. Private-Keys aus der Cloud zu erhalten, ist ein gängiger Angriffspunkt für Hacker.
+Wenn Sie Screenshots Ihrer Seed-Phrasen oder privaten Schlüssel machen, werden diese möglicherweise mit einem Cloud-Datenanbieter synchronisiert, was sie für Hacker zugänglich machen könnte. Das Beschaffen privater Schlüssel aus der Cloud ist ein häufiger Angriffsvektor für Hacker.
 
-### Eine Hardware-Wallet verwenden {#use-hardware-wallet}
+### Verwenden Sie eine Hardware-Wallet {#use-hardware-wallet}
 
-Eine Hardware-Wallet bietet einen Offline-Speicherplatz für Ihre Private-Keys. Sie gelten als die sicherste Wallet-Option zum Speichern Ihrer privaten Schlüssel: Ihr privater Schlüssel berührt niemals das Internet und bleibt vollständig lokal auf Ihrem Gerät.
+Eine Hardware-Wallet bietet Offline-Speicher für private Schlüssel. Sie gelten als die sicherste Wallet-Option zur Aufbewahrung Ihrer privaten Schlüssel: Ihr privater Schlüssel kommt nie mit dem Internet in Berührung und bleibt vollständig lokal auf Ihrem Gerät.
 
-Ihre Private-Keys offline aufzubewahren reduziert das Risiko gehackt zu werden, auch wenn ein Hacker Zugang zu Ihrem Computer bekommt.
+Die Offline-Aufbewahrung privater Schlüssel reduziert das Risiko, gehackt zu werden, massiv, selbst wenn ein Hacker die Kontrolle über Ihren Computer erlangt.
 
-#### Überzeugen Sie sich selbst von einer Hardware-Wallet: {#try-hardware-wallet}
+#### Probieren Sie eine Hardware-Wallet aus: {#try-hardware-wallet}
 
 - [Ledger](https://www.ledger.com/)
 - [Trezor](https://trezor.io/)
 
-### Transaktionen vor dem Absenden immer prüfen {#double-check-transactions}
+### Überprüfen Sie Transaktionen vor dem Senden doppelt {#double-check-transactions}
 
-Es kommt häufig vor, dass Kryptowährung versehentlich an eine falsche Wallet-Adresse gesendet wird. **Eine über das Ethereum-Netzwerk versendete Transaktion lässt sich nicht rückgängig machen.** Der einzige Weg, das verlorene Geld wieder zurück zu bekommen, wäre, wenn Sie den Adresseneigentümer kennen und ihn bitten würden, das Geld wieder zurück zu senden.
+Das versehentliche Senden von Krypto an die falsche Wallet-Adresse ist ein häufiger Fehler. **Eine auf Ethereum gesendete Transaktion ist irreversibel.** Wenn Sie den Inhaber der Adresse nicht kennen und ihn nicht davon überzeugen können, Ihnen Ihr Geld zurückzusenden, werden Sie Ihre Gelder nicht zurückerhalten können.
 
-Stellen Sie immer sicher, dass die Adresse, an die Sie Geld überweisen, genau die Adresse des Empfängers ist. Es wird auch empfohlen, wenn Sie mit einem Smart Contract interagieren, dass Sie die Transaktionsnachricht vor dem Unterschreiben lesen.
+Stellen Sie vor dem Senden einer Transaktion immer sicher, dass die Adresse, an die Sie senden, genau mit der Adresse des gewünschten Empfängers übereinstimmt.
+Es ist eine bewährte Methode, bei der Interaktion mit einem Smart Contract die Transaktionsnachricht vor dem Signieren zu lesen.
 
-### Ausgabelimits für Smart Contracts festlegen {#spend-limits}
+### Legen Sie Ausgabenlimits für Smart Contracts fest {#spend-limits}
 
-Wenn Sie mit Smart Contracts interagieren, sollten Sie keine unbegrenzten Ausgabelimits zulassen. Ein unbegrenztes Ausgabelimit könnte einem Smart Contract ermöglichen, Ihre Wallet komplett zu leeren. Legen Sie stattdessen für die Ausgabelimits nur den Wert fest, der für die Transaktion erforderlich ist.
+Erlauben Sie bei der Interaktion mit Smart Contracts keine unbegrenzten Ausgabenlimits. Ein unbegrenztes Ausgabenlimit könnte es dem Smart Contract ermöglichen, Ihre Wallet leerzuräumen. Legen Sie stattdessen Ausgabenlimits nur auf den für die Transaktion erforderlichen Betrag fest.
 
-Viele Ethereum-Wallets bieten Schutz gegen die komplette Entleerung durch Hackerangriffe an.
+Viele Ethereum-Wallets bieten einen Limits-Schutz, um Konten davor zu bewahren, leergeräumt zu werden.
 
-[So widerrufen Sie den Smart-Contract-Zugriff auf Ihre Krypto-Gelder](/guides/how-to-revoke-token-access/)
+[So widerrufen Sie den Zugriff von Smart Contracts auf Ihre Krypto-Guthaben](/guides/how-to-revoke-token-access/)
 
 <Divider />
 
-## Häufige Betrugsversuche {#common-scams}
+## Häufige Betrugsmaschen {#common-scams}
 
-Betrüger suchen immer nach Möglichkeiten, an Ihr Geld zu gelangen. Es ist unmöglich, Betrüger gänzlich aufzuhalten. Doch wir können dafür sorgen, dass sie weniger erfolgreich sind, indem wir uns bewusst machen, wie sie vorgehen. Es gibt viele Variationen von Betrugsversuchen, aber die meisten folgen denselben Mustern. Merken Sie sich auf jeden Fall Folgendes:
+Es ist unmöglich, Betrüger vollständig zu stoppen, aber wir können sie weniger effektiv machen, indem wir uns ihrer am häufigsten verwendeten Techniken bewusst sind. Es gibt viele Variationen dieser Betrugsmaschen, aber sie folgen im Allgemeinen denselben übergeordneten Mustern. Wenn Sie sich sonst nichts merken, denken Sie an Folgendes:
 
-- Seien Sie immer skeptisch
-- Niemand wird Ihnen ETH kostenlos oder zu einem günstigeren Preis geben
-- Niemand benötigt Zugang zu Ihren Private-Keys oder anderen persönlichen Informationen!
+- seien Sie immer skeptisch
+- niemand wird Ihnen kostenlose oder vergünstigte ETH geben
+- niemand benötigt Zugriff auf Ihre privaten Schlüssel oder persönlichen Daten
+
+### Twitter-Anzeigen-Phishing {#ad-phishing}
+
+![Twitter link phishing](./twitterPhishingScam.png)
+
+Es gibt eine Methode zur Manipulation der Link-Vorschau-Funktion (Unfurling) von Twitter (auch bekannt als X), um Benutzer potenziell in dem Glauben zu täuschen, sie würden eine legitime Website besuchen. Diese Technik nutzt den Mechanismus von Twitter zur Generierung von Vorschauen für in Tweets geteilte URLs aus und zeigt beispielsweise _von ethereum.org_ an (siehe oben), während sie in Wirklichkeit auf eine bösartige Website umgeleitet werden.
+
+Überprüfen Sie immer, ob Sie sich auf der richtigen Domain befinden, insbesondere nachdem Sie auf einen Link geklickt haben.
+
+[Weitere Informationen hier](https://harrydenley.com/faking-twitter-unfurling).
 
 ### Giveaway-Betrug {#giveaway}
 
-Einer der häufigsten Betrugsfälle in der Welt der Kryptowährungen ist der Giveaway-Betrug. Der Giveaway-Betrug kann viele Formen annehmen. Allgemein wird aber gefordert, dass Sie ETH an eine angegebene Wallet-Adresse senden und dann die doppelte Menge an ETH zurückerhalten. *Aus diesem Grund wird dieser Betrug auch häufig als „2-für-1“-Betrug bezeichnet.*
+Einer der häufigsten Betrügereien bei Kryptowährungen ist der Giveaway-Betrug. Der Giveaway-Betrug kann viele Formen annehmen, aber die Grundidee ist, dass Sie, wenn Sie ETH an die angegebene Wallet-Adresse senden, Ihre ETH verdoppelt zurückerhalten. *Aus diesem Grund ist er auch als 2-für-1-Betrug bekannt.*
 
-Im Rahmen solcher Betrugsmaschen wird in der Regel ein kurzer Zeitraum vorgegeben, der für die Inanspruchnahme eines Geschenks gewährt wird, um schlechte Entscheidungen zu fördern und ein falsches Gefühl von Dringlichkeit zu erzeugen.
+Diese Betrügereien geben in der Regel ein begrenztes Zeitfenster vor, um das Giveaway zu beanspruchen, um ein falsches Gefühl der Dringlichkeit zu erzeugen.
 
-#### Social-Media-Hacks {#social-media-hacks}
+### Social-Media-Hacks {#social-media-hacks}
 
-Eine namhafte Variante des Giveaway-Betrugs gab es im Juli 2020, als die Twitter-Konten prominenter Personen und Organisationen gehackt wurden. Die Hacker veröffentlichten ein Bitcoin-Giveaway auf allen gehackten Konten gleichzeitig. Obwohl die betrügerischen Tweets schnell bemerkt und gelöscht wurden, gelang es den Hackern dennoch, 11 Bitcoin (oder umgerechnet 500.000 Dollar, Stand September 2021) zu erbeuten.
+Eine aufsehenerregende Version davon ereignete sich im Juli 2020, als die Twitter-Konten prominenter Persönlichkeiten und Organisationen gehackt wurden. Der Hacker postete gleichzeitig ein Bitcoin-Giveaway auf den gehackten Konten. Obwohl die irreführenden Tweets schnell bemerkt und gelöscht wurden, gelang es den Hackern dennoch, mit 11 Bitcoin (oder 500.000 US-Dollar Stand September 2021) davonzukommen.
 
-![Ein Betrug auf Twitter](./appleTwitterScam.png)
+![A scam on Twitter](./appleTwitterScam.png)
 
-#### Promi-Giveaway {#celebrity-giveaway}
+### Promi-Giveaway {#celebrity-giveaway}
 
-Ein Promi-Giveaway ist eine andere häufige Form des Giveaway-Betrugs. Betrüger nehmen ein aufgezeichnetes Video-Interview oder einen Konferenz-Vortrag mit einer prominenten Person und streamen es live auf YouTube. Das erweckt den Anschein, als ob die Person ein Live-Interview zur Unterstützung eines Kryptowährungs-Giveaway gibt.
+Das Promi-Giveaway ist eine weitere häufige Form des Giveaway-Betrugs. Die Betrüger nehmen ein aufgezeichnetes Videointerview oder einen Konferenzvortrag eines Prominenten und streamen es live auf YouTube – so dass es so aussieht, als würde der Prominente ein Live-Videointerview geben, in dem er ein Kryptowährungs-Giveaway unterstützt.
 
-Vitalik Buterin wird am häufigsten für diese Art von Giveaway-Betrug benutzt, aber viele andere prominente Personen in der Kryptoszene (z. B. Elon Musk oder Charles Hoskinson) ebenso. Eine berühmte Person in diesen Betrug hineinzuziehen, verleiht dem Livestream der Betrüger eine gewisse Legitimität (das sieht eigentlich unglaubwürdig aus, aber da Vitalik involviert ist, muss es in Ordnung sein!).
+Vitalik Buterin wird bei diesem Betrug am häufigsten verwendet, aber auch viele andere prominente Personen, die im Krypto-Bereich tätig sind, werden genutzt (z. B. Elon Musk oder Charles Hoskinson). Die Einbeziehung einer bekannten Person verleiht dem Livestream der Betrüger einen Anschein von Legitimität (das sieht zwar verdächtig aus, aber Vitalik ist beteiligt, also muss es in Ordnung sein!).
 
-**Giveaways sind immer Betrug. Wenn Sie Ihre Kryptowährung an diese betrügerischen Konten senden, ist das Geld für immer weg.**
+**Giveaways sind immer Betrug. Wenn Sie Ihre Gelder an diese Konten senden, werden Sie sie für immer verlieren.**
 
-![Ein Betrug auf YouTube](./youtubeScam.png)
+![A scam on YouTube](./youtubeScam.png)
 
-### Unterstützungsbetrug {#support-scams}
+### Support-Betrug {#support-scams}
 
-Kryptowährung ist eine relativ junge und missverstandene Technologie. Eine gängige Betrugsmasche, die davon profitiert, ist der Unterstützungsbetrug. Dabei imitieren Betrüger die Mitarbeiter häufig benutzter Wallets, Exchanges oder Blockchains.
+Kryptowährung ist eine relativ junge und missverstandene Technologie. Ein häufiger Betrug, der dies ausnutzt, ist der Support-Betrug, bei dem sich Betrüger als Support-Mitarbeiter für beliebte Wallets, Börsen oder Blockchains ausgeben.
 
-Ein Großteil der Diskussion über Ethereum findet auf der Plattform Discord statt. Unterstützungsbetrüger finden Ihre Opfer, indem sie in öffentlichen Discord-Kanälen nach Fragen suchen, und der Person eine private Nachricht senden, die etwas gefragt hat, um Unterstützung anzubieten. Indem die Betrüger Vertrauen aufbauen, versuchen sie, Sie dazu zu bringen, Ihren Private-Key offenzulegen oder auch direkt Geld (in Form von Kryptowährung) an ihre Konten zu schicken.
+Ein Großteil der Diskussionen über Ethereum findet auf Discord statt. Support-Betrüger finden ihr Ziel in der Regel, indem sie in öffentlichen Discord-Kanälen nach Support-Fragen suchen und dem Fragesteller dann eine private Nachricht senden, in der sie Unterstützung anbieten. Durch den Aufbau von Vertrauen versuchen Support-Betrüger, Sie dazu zu bringen, Ihre privaten Schlüssel preiszugeben oder Ihre Gelder an ihre Wallets zu senden.
 
-![Ein Unterstützungsbetrug auf Discord](./discordScam.png)
+![A support scam on Discord](./discordScam.png)
 
-Allgemein gilt: Mitarbeiter kommunizieren mit Ihnen nie über private, inoffizielle Kanäle. Ein paar einfache Dinge, die Sie beim Umgang mit Mitarbeitern im Hinterkopf behalten sollten:
+Als allgemeine Regel gilt, dass Mitarbeiter niemals über private, inoffizielle Kanäle mit Ihnen kommunizieren werden. Einige einfache Dinge, die Sie im Umgang mit dem Support beachten sollten:
 
-- Teilen Sie niemals Ihre Private-Keys, Seed-Phrasen oder Kennwörter
-- Erlauben Sie niemandem den Remote-Zugriff auf Ihren Computer
-- Kommunizieren Sie niemals außerhalb der von einer Organisation ausgewiesenen Kanäle
+- Teilen Sie niemals Ihre privaten Schlüssel, Seed-Phrasen oder Passwörter
+- Gewähren Sie niemals jemandem Fernzugriff auf Ihren Computer
+- Kommunizieren Sie niemals außerhalb der dafür vorgesehenen Kanäle einer Organisation
 
-<InfoBanner emoji=":lock:">
-  <div>
-    Achtung: Obwohl Unterstützungsbetrug oft auf Discord erfolgt, ist es auch möglich, dass diese und auch andere Arten von Betrug auf anderen Chat-Plattformen, einschließlich per E-Mail, vorkommen können.
-  </div>
-</InfoBanner>
+<Alert variant="update">
+<AlertEmoji text=":lock:"/>
+<AlertContent>
+<AlertDescription>
+    Vorsicht: Obwohl Betrügereien im Support-Stil häufig auf Discord vorkommen, können sie auch in allen Chat-Anwendungen verbreitet sein, in denen Krypto-Diskussionen stattfinden, einschließlich E-Mail.
+</AlertDescription>
+</AlertContent>
+</Alert>
 
 ### „Eth2“-Token-Betrug {#eth2-token-scam}
 
-Im Vorfeld der [Zusammenführung](/roadmap/merge/) haben Betrüger die Chance ergriffen, die Verwirrung um den Begriff „Eth2“ für sich zu nutzen, indem sie Benutzer dazu brachten, ihr ETH gegen „ETH2“-Token einzutauschen. Es gibt kein „ETH2", und es wurde auch kein anderer legitimer Token zusammen mit der Zusammenführung eingeführt. Das ETH, welches Sie vor der Zusammenführung besaßen, ist jetzt weiterhin das gleiche ETH. Es ist **nicht nötig, im Zusammenhang mit Ihrem ETH aktiv zu werden, um den Wechsel von Proof-of-Work zu Proof-of-Stake zu berücksichtigen**.
+Im Vorfeld auf [den Merge](/roadmap/merge/) nutzten Betrüger die Verwirrung um den Begriff „Eth2“ aus, um zu versuchen, Benutzer dazu zu bringen, ihre ETH gegen einen „ETH2“-Token einzutauschen. Es gibt kein „ETH2“, und mit dem Merge wurde kein anderer legitimer Token eingeführt. Die ETH, die Sie vor dem Merge besaßen, sind jetzt dieselben ETH. Es besteht **keine Notwendigkeit, irgendwelche Maßnahmen in Bezug auf Ihre ETH zu ergreifen, um dem Wechsel von Proof-of-Work (PoW) zu Proof-of-Stake (PoS) Rechnung zu tragen**.
 
-Betrüger könnten sich als „Support" ausgeben, und Sie dazu auffordern Ihr ETH einzuzahlen, um im Gegenzug „ETH2" zu erhalten. Es gibt kein [offizielles Ethereum-Support-Team](/community/support/) und auch keinen neuen Token. Teilen Sie niemals Ihre Ethereum-Wallet-Seed-Phrasen.
+Betrüger können als „Support“ auftreten und Ihnen mitteilen, dass Sie, wenn Sie Ihre ETH einzahlen, „ETH2“ zurückerhalten. Es gibt keinen [offiziellen Ethereum-Support](/community/support/), und es gibt keinen neuen Token. Teilen Sie niemals die Seed-Phrase Ihrer Wallet mit jemandem.
 
-_Hinweis: Es gibt abgeleitete (derivative) Token/Ticker, die staked ETH darstellen können (z. B. rETH von Rocket Pool, stETH von Lido, ETH2 von Coinbase). Doch diese abgeleiteten Token sind nichts, zu dem Sie „migrieren“ müssen._
+_Hinweis: Es gibt derivative Token/Ticker, die gestakte ETH repräsentieren können (z. B. rETH von Rocket Pool, stETH von Lido, ETH2 von Coinbase), aber dies ist nichts, wohin Sie „migrieren“ müssen._
 
 ### Phishing-Betrug {#phishing-scams}
 
-Phishing ist eine Betrugsmasche, die sich immer stärker ausbreitet. Betrüger setzen darauf, um das Geld aus Ihrer Wallet zu stehlen.
+Phishing-Betrug ist eine weitere, immer häufiger werdende Masche, die Betrüger anwenden, um zu versuchen, die Gelder Ihrer Wallet zu stehlen.
 
-In einigen Phishing-E-Mails werden Benutzer aufgefordert, auf Links zu klicken, über die sie zu Nachahmungen der originalen Websites weitergeleitet werden. Dort werden sie aufgefordert, ihre Seed-Phrase einzugeben, ihr Kennwort zurückzusetzen oder ETH zu senden. Andere bitten Sie möglicherweise darum, unwissentlich Malware zu installieren, um damit Ihren Computer zu infizieren und Betrügern so den Zugriff auf die Dateien Ihres Computers zu geben.
+Einige Phishing-E-Mails fordern Benutzer auf, auf Links zu klicken, die sie auf nachgemachte Websites umleiten, und fordern sie auf, ihre Seed-Phrase einzugeben, ihr Passwort zurückzusetzen oder ETH zu senden. Andere fordern Sie möglicherweise auf, unwissentlich Malware zu installieren, um Ihren Computer zu infizieren und Betrügern Zugriff auf die Dateien Ihres Computers zu gewähren.
 
 Wenn Sie eine E-Mail von einem unbekannten Absender erhalten, denken Sie daran:
 
 - Öffnen Sie niemals einen Link oder Anhang von E-Mail-Adressen, die Sie nicht kennen
-- Geben Sie niemals Ihre persönlichen Daten oder Kennwörter an Dritte weiter
+- Geben Sie niemals Ihre persönlichen Daten oder Passwörter an Dritte weiter
 - Löschen Sie E-Mails von unbekannten Absendern
 
-[Mehr zur Vermeidung von Phishing-Betrugsversuchen](https://support.mycrypto.com/staying-safe/mycrypto-protips-how-not-to-get-scammed-during-ico)
+[Mehr zur Vermeidung von Phishing-Betrug](https://support.mycrypto.com/staying-safe/mycrypto-protips-how-not-to-get-scammed-during-ico)
 
-### Krypto-Makler-Betrug {#broker-scams}
+### Krypto-Trading-Broker-Betrug {#broker-scams}
 
-Betrüger, die sich als Krypto-Makler ausgeben, geben vor, spezialisierte Kryptowährungsmakler zu sein. Sie bieten Ihnen an, Ihr Geld in Ihrem Namen zu investieren. In der Regel werden bei diesen Angeboten auch unrealistisch hohe Renditen versprochen. Nachdem der Betrüger Ihr Geld bekommen hat, könnte er Sie bitten, ihm noch mehr Geld zu senden, damit Sie keine weiteren Anlagegewinne verpassen. Oder der Betrüger verschwindet einfach sofort komplett.
+Betrügerische Krypto-Trading-Broker behaupten, spezialisierte Kryptowährungs-Broker zu sein, die anbieten, Ihr Geld zu nehmen und in Ihrem Namen zu investieren. Nachdem der Betrüger Ihre Gelder erhalten hat, hält er Sie möglicherweise hin und bittet Sie, weitere Gelder zu senden, damit Sie keine weiteren Anlagegewinne verpassen, oder er verschwindet vollständig.
 
-Diese betrügerischen Makler finden ihre Opfer, indem sie unechte YouTube-Kanäle oder -Konten nutzen, um scheinbar ganz normale Gespräche über den Makler zu beginnen. Diese Gespräche oder Kommentare sind oft extrem positiv bewertet, um die Legitimität zu erhöhen. Doch die positiven Stimmen stammen alle von anderen unechten Konten (sogenannte Bot-Accounts).
+Diese Betrüger finden oft Ziele, indem sie gefälschte Konten auf YouTube verwenden, um scheinbar natürliche Gespräche über den „Broker“ zu beginnen. Diese Gespräche werden oft stark hochgevotet, um die Legitimität zu erhöhen, aber die Upvotes stammen alle von Bot-Konten.
 
-**Vertrauen Sie keiner fremden Person im Internet, Investitionen in Ihrem Namen zu tätigen. Sie werden so Ihre Krypto verlieren.**
+**Vertrauen Sie keinen Fremden im Internet, die in Ihrem Namen investieren wollen. Sie werden Ihre Krypto verlieren.**
 
-![Ein Krypto-Makler-Betrug auf YouTube](./brokerScam.png)
+![A trading broker scam on YouTube](./brokerScam.png)
 
 ### Krypto-Mining-Pool-Betrug {#mining-pool-scams}
 
-Seit September 2022 ist Mining auf Ethereum nicht mehr möglich. Jedoch gibt es noch immer Mining-Pool-Betrug. Beim Mining-Pool-Betrug werden Sie unaufgefordert von anderen Personen kontaktiert, die vorgeben, dass Sie große Gewinne erzielen können, wenn Sie einem Ethereum-Mining-Pool beitreten. Die Betrüger tischen Ihnen eine Lüge nach der anderen auf und werden solange mit Ihnen in Kontakt bleiben, wie es erforderlich ist. Im Wesentlichen versuchen die Betrüger Sie davon zu überzeugen, dem Ethereum-Mining-Pool beizutreten. Ihre Kryptowährung soll dazu benutzt werden, ETH zu schaffen. Im Gegenzug erhalten Sie eine Dividende in Form von ETH. Am Ende passiert Folgendes: Sie merken, dass Ihre Kryptowährung nur kleine Gewinne einbringt. Das ist natürlich so gedacht, um Sie dazu zu bringen, mehr Kryptowährung zu investieren. Am Ende wird Ihre Kryptowährung an eine unbekannte Adresse gesendet und der Betrüger wird entweder verschwinden oder, wie kürzlich zu beobachten war, vielleicht sogar weiter mit Ihnen in Kontakt bleiben.
+Seit September 2022 ist das Mining auf Ethereum nicht mehr möglich. Dennoch gibt es weiterhin Mining-Pool-Betrügereien. Bei Mining-Pool-Betrügereien kontaktieren Sie Personen unaufgefordert und behaupten, dass Sie durch den Beitritt zu einem Ethereum-Mining-Pool hohe Renditen erzielen können. Der Betrüger wird Behauptungen aufstellen und so lange mit Ihnen in Kontakt bleiben, wie es nötig ist. Im Wesentlichen wird der Betrüger versuchen, Sie davon zu überzeugen, dass Ihre Kryptowährung bei einem Beitritt zu einem Ethereum-Mining-Pool zur Erstellung von ETH verwendet wird und dass Ihnen ETH-Dividenden ausgezahlt werden. Sie werden dann sehen, dass Ihre Kryptowährung kleine Renditen abwirft. Dies dient lediglich dazu, Sie dazu zu verleiten, mehr zu investieren. Letztendlich werden alle Ihre Gelder an eine unbekannte Adresse gesendet, und der Betrüger wird entweder verschwinden oder in einigen Fällen weiterhin in Kontakt bleiben, wie es in einem kürzlichen Fall geschehen ist.
 
-Fazit: Seien Sie vorsichtig mit Personen, die sie über soziale Netzwerke anschreiben und Ihnen vorschlagen, ihrem Mining-Pool beizutreten. Wenn Sie Kryptowährung verlieren, ist sie auch weg.
+Fazit: Seien Sie misstrauisch gegenüber Personen, die Sie in den sozialen Medien kontaktieren und Sie bitten, Teil eines Mining-Pools zu werden. Sobald Sie Ihre Krypto verlieren, ist sie weg.
 
-Folgendes sollten Sie beachten:
+Einige Dinge, die Sie sich merken sollten:
 
-- Seien Sie vorsichtig, wenn jemand Kontakt mit Ihnen aufnimmt und Möglichkeiten vorschlägt, wie Sie mit Ihrer Kryptowährung Geld verdienen können
-- Recherchieren Sie selbst umfassend zu Themen wie Staking, Liquiditäts-Pools und andere Investitionsmöglichkeiten für Ihre Kryptowährung
-- Solche Pläne sind selten, wenn überhaupt, echt. Wären sie es, dann würden viele darüber Bescheid wissen und Sie hätten eventuell schon einmal etwas davon gehört.
+- Seien Sie misstrauisch gegenüber jedem, der Sie bezüglich Möglichkeiten kontaktiert, mit Ihrer Krypto Geld zu verdienen
+- Recherchieren Sie über Staking, Liquiditätspools oder andere Möglichkeiten, Ihre Krypto zu investieren
+- Selten, wenn überhaupt, sind solche Systeme legitim. Wenn sie es wären, wären sie wahrscheinlich Mainstream und Sie hätten davon gehört.
 
-[Mann verliert 200.000 US-Dollar in einem Mining-Pool-Betrug](https://www.reddit.com/r/CoinBase/comments/r0qe0e/scam_or_possible_incredible_payout/)
+[Mann verliert 200.000 $ bei Mining-Pool-Betrug](https://www.reddit.com/r/CoinBase/comments/r0qe0e/scam_or_possible_incredible_payout/)
 
 ### Airdrop-Betrug {#airdrop-scams}
 
-Beim Airdrop-Betrug sendet ein Betrugsprojekt ein Asset (z. B. ein NFT/Token) per Airdrop an Ihre Wallet und leitet Sie gleichzeitig zu einer Betrugs-Website, damit Sie die Assets aus dem Airdrop beanspruchen können. Sie werden aufgefordert, sich mit Ihrer Ethereum-Wallet anzumelden, um eine Transaktion zu „autorisieren“, wenn Sie versuchen, den Besitz an dem Asset zu beanspruchen. Diese Transaktion ist eine Gefährdung für Ihr Konto, denn dabei werden Ihre öffentlichen und privaten Schlüssel an den Betrüger gesendet. In einer alternativen Form dieses Betrugs werden Sie dazu aufgefordert, eine Transaktion zu genehmigen, über die Geld direkt zu dem Wallet des Betrügers gesendet wird.
+Bei Airdrop-Betrügereien wirft ein betrügerisches Projekt einen Vermögenswert (NFT, Token) per Airdrop in Ihre Wallet ab und leitet Sie auf eine betrügerische Website weiter, um den per Airdrop abgeworfenen Vermögenswert zu beanspruchen. Sie werden aufgefordert, sich mit Ihrer Ethereum-Wallet anzumelden und eine Transaktion zu „genehmigen“, wenn Sie versuchen, den Anspruch geltend zu machen. Diese Transaktion kompromittiert Ihr Konto, indem sie Ihre öffentlichen und privaten Schlüssel an den Betrüger sendet. Eine alternative Form dieses Betrugs kann darin bestehen, dass Sie eine Transaktion bestätigen, die Gelder auf das Konto des Betrügers sendet.
 
-[Mehr zu Airdrop-Betrugsversuchen](https://www.youtube.com/watch?v=LLL_nQp1lGk)
+[Mehr zu Airdrop-Betrügereien](https://www.youtube.com/watch?v=LLL_nQp1lGk)
 
 <Divider />
 
-## Weiterführende Informationen {#further-reading}
+## Web-Sicherheit 101 {#web-security}
+
+### Verwenden Sie sichere Passwörter {#use-strong-passwords}
+
+[Über 80 % der Konto-Hacks sind das Ergebnis schwacher oder gestohlener Passwörter](https://cloudnine.com/ediscoverydaily/electronic-discovery/80-percent-hacking-related-breaches-related-password-issues-cybersecurity-trends/). Eine lange Kombination aus Zeichen, Zahlen und Symbolen trägt dazu bei, Ihre Konten sicher zu halten.
+
+Ein häufiger Fehler ist die Verwendung einer Kombination aus einigen wenigen gebräuchlichen, verwandten Wörtern. Solche Passwörter sind unsicher, da sie anfällig für eine Hacking-Technik namens Wörterbuchangriff sind.
+
+```md
+Beispiel für ein schwaches Passwort: SuesseFlauschigeKaetzchen!
+
+Beispiel für ein sicheres Passwort: ymv\*azu.EAC8eyp8umf
+```
+
+Ein weiterer häufiger Fehler ist die Verwendung von Passwörtern, die leicht erraten oder durch [Social Engineering](<https://wikipedia.org/wiki/Social_engineering_(security)>) herausgefunden werden können. Die Aufnahme des Mädchennamens Ihrer Mutter, der Namen Ihrer Kinder oder Haustiere oder von Geburtsdaten in Ihr Passwort erhöht das Risiko, gehackt zu werden.
+
+#### Bewährte Methoden für Passwörter: {#good-password-practices}
+
+- Machen Sie Passwörter so lang, wie es entweder Ihr Passwortgenerator oder das Formular, das Sie ausfüllen, zulässt
+- Verwenden Sie eine Mischung aus Groß- und Kleinbuchstaben, Zahlen und Symbolen
+- Verwenden Sie keine persönlichen Daten wie Familiennamen in Ihrem Passwort
+- Vermeiden Sie gebräuchliche Wörter
+
+[Mehr zum Erstellen sicherer Passwörter](https://terranovasecurity.com/how-to-create-a-strong-password-in-7-easy-steps/)
+
+### Verwenden Sie für alles eindeutige Passwörter {#use-unique-passwords}
+
+Ein sicheres Passwort, das bei einer Datenschutzverletzung offengelegt wurde, ist kein sicheres Passwort mehr. Die Website [Have I Been Pwned](https://haveibeenpwned.com) ermöglicht es Ihnen zu überprüfen, ob Ihre Konten in öffentliche Datenschutzverletzungen verwickelt waren. Wenn dies der Fall ist, **ändern Sie diese Passwörter sofort**. Die Verwendung eindeutiger Passwörter für jedes Konto verringert das Risiko, dass Hacker Zugriff auf alle Ihre Konten erhalten, wenn eines Ihrer Passwörter kompromittiert wird.
+
+### Verwenden Sie einen Passwort-Manager {#use-password-manager}
+
+<Alert variant="update">
+<AlertEmoji text=":bulb:"/>
+<AlertContent>
+<AlertDescription>
+    Die Verwendung eines Passwort-Managers kümmert sich um die Erstellung sicherer, eindeutiger Passwörter und merkt sie sich! Wir <strong>dringend</strong> empfehlen die Verwendung eines solchen, und die meisten davon sind kostenlos!
+</AlertDescription>
+</AlertContent>
+</Alert>
+
+Sich sichere, eindeutige Passwörter für jedes Ihrer Konten zu merken, ist nicht ideal. Ein Passwort-Manager bietet einen sicheren, verschlüsselten Speicher für alle Ihre Passwörter, auf den Sie über ein starkes Master-Passwort zugreifen können. Sie schlagen auch sichere Passwörter vor, wenn Sie sich für einen neuen Dienst anmelden, sodass Sie keine eigenen erstellen müssen. Viele Passwort-Manager teilen Ihnen auch mit, ob Sie in eine Datenschutzverletzung verwickelt waren, sodass Sie die Passwörter vor böswilligen Angriffen ändern können.
+
+![Example of using a password manager](./passwordManager.png)
+
+#### Probieren Sie einen Passwort-Manager aus: {#try-password-manager}
+
+- [Bitwarden](https://bitwarden.com/)
+- [KeePass](https://keepass.info/)
+- [1Password](https://1password.com/)
+- Oder sehen Sie sich andere [empfohlene Passwort-Manager](https://www.privacytools.io/secure-password-manager) an
+
+### Verwenden Sie die Zwei-Faktor-Authentifizierung {#two-factor-authentication}
+
+Sie werden möglicherweise manchmal gebeten, Ihre Identität durch eindeutige Nachweise zu authentifizieren. Diese werden als **Faktoren** bezeichnet. Die drei Hauptfaktoren sind:
+
+- Etwas, das Sie wissen (wie ein Passwort oder eine Sicherheitsfrage)
+- Etwas, das Sie sind (wie ein Fingerabdruck oder ein Iris-/Gesichtsscanner)
+- Etwas, das Sie besitzen (ein Sicherheitsschlüssel oder eine Authentifizierungs-App auf Ihrem Telefon)
+
+Die Verwendung der **Zwei-Faktor-Authentifizierung (2FA)** bietet einen zusätzlichen *Sicherheitsfaktor* für Ihre Online-Konten. 2FA stellt sicher, dass der bloße Besitz Ihres Passworts nicht ausreicht, um auf ein Konto zuzugreifen. Am häufigsten ist der zweite Faktor ein zufälliger 6-stelliger Code, bekannt als **zeitbasiertes Einmalpasswort (TOTP)**, auf den Sie über eine Authentifizierungs-App wie Google Authenticator oder Authy zugreifen können. Diese fungieren als „Etwas, das Sie besitzen“-Faktor, da der Seed, der den zeitgesteuerten Code generiert, auf Ihrem Gerät gespeichert ist.
+
+<Alert variant="update">
+<AlertEmoji text=":lock:"/>
+<AlertContent>
+<AlertDescription>
+    Hinweis: Die Verwendung von SMS-basierter 2FA ist anfällig für <a href="https://www.vice.com/en/article/3kx4ej/sim-jacking-mobile-phone-fraud">SIM-Jacking</a> und nicht sicher. Für die beste Sicherheit verwenden Sie einen Dienst wie <a href="https://mashable.com/article/how-to-set-up-google-authenticator">Google Authenticator</a> oder <a href="https://authy.com/">Authy</a>.
+</AlertDescription>
+</AlertContent>
+</Alert>
+
+#### Sicherheitsschlüssel {#security-keys}
+
+Ein Sicherheitsschlüssel ist eine fortschrittlichere und sicherere Art von 2FA. Sicherheitsschlüssel sind physische Hardware-Authentifizierungsgeräte, die wie Authentifizierungs-Apps funktionieren. Die Verwendung eines Sicherheitsschlüssels ist die sicherste Methode für 2FA. Viele dieser Schlüssel nutzen den Standard FIDO Universal 2nd Factor (U2F). [Erfahren Sie mehr über FIDO U2F](https://www.yubico.com/resources/glossary/fido-u2f/).
+
+Sehen Sie mehr zu 2FA:
+
+<VideoWatch slug="crypto-security-passwords" startTime="3479" />
+
+### Deinstallieren Sie Browser-Erweiterungen {#uninstall-browser-extensions}
+
+Browser-Erweiterungen, wie Chrome-Erweiterungen oder Add-ons für Firefox, können die Browserfunktionalität verbessern, bergen aber auch Risiken. Standardmäßig fordern die meisten Browser-Erweiterungen Zugriff auf „Website-Daten lesen und ändern“ an, wodurch sie fast alles mit Ihren Daten tun können. Chrome-Erweiterungen werden immer automatisch aktualisiert, sodass eine zuvor sichere Erweiterung später aktualisiert werden kann, um bösartigen Code zu enthalten. Die meisten Browser-Erweiterungen versuchen nicht, Ihre Daten zu stehlen, aber Sie sollten sich bewusst sein, dass sie es können.
+
+#### Bleiben Sie sicher, indem Sie: {#browser-extension-safety}
+
+- Browser-Erweiterungen nur aus vertrauenswürdigen Quellen installieren
+- Nicht verwendete Browser-Erweiterungen entfernen
+- Chrome-Erweiterungen lokal installieren, um die automatische Aktualisierung zu stoppen (Fortgeschritten)
+
+[Mehr zu den Risiken von Browser-Erweiterungen](https://www.kaspersky.co.uk/blog/browser-extensions-security/12750/)
+
+<Divider />
+
+## Weiterführende Literatur {#further-reading}
 
 ### Web-Sicherheit {#reading-web-security}
 
-- [Up to 3 million devices infected by malware-laced Chrome and Edge add-ons](https://arstechnica.com/information-technology/2020/12/up-to-3-million-devices-infected-by-malware-laced-chrome-and-edge-add-ons/) (Bis zu 3 Millionen Geräte durch Malware-verseuchte Chrome- und Edge-Add-ons infiziert) – _Dan Goodin_
-- [How to Create a Strong Password — That You Won’t Forget](https://www.avg.com/en/signal/how-to-create-a-strong-password-that-you-wont-forget) (So erstellen Sie ein starkes Passwort, dass Sie nicht vergessen) – _AVG_
-- [What is a security key?](https://help.coinbase.com/en/coinbase/getting-started/verify-my-account/security-keys-faq) (Was ist ein Sicherheitsschlüssel?) – _Coinbase_
+- [Bis zu 3 Millionen Geräte durch mit Malware verseuchte Chrome- und Edge-Add-ons infiziert](https://arstechnica.com/information-technology/2020/12/up-to-3-million-devices-infected-by-malware-laced-chrome-and-edge-add-ons/) – _Dan Goodin_
+- [So erstellen Sie ein sicheres Passwort – das Sie nicht vergessen werden](https://www.avg.com/en/signal/how-to-create-a-strong-password-that-you-wont-forget) – _AVG_
+- [Was ist ein Sicherheitsschlüssel?](https://help.coinbase.com/en/coinbase/getting-started/verify-my-account/security-keys-faq) – _Coinbase_
 
-### Kryptosicherheit {#reading-crypto-security}
+### Krypto-Sicherheit {#reading-crypto-security}
 
-- [Schützen Sie sich und Ihr Geld](https://support.mycrypto.com/staying-safe/protecting-yourself-and-your-funds) - _MyCrypto_
-- [Sicherheitsprobleme in gängiger Krypto-Kommunikationssoftware](https://docs.salusec.io/untitled/web3-penetration-test/risks-in-social-media) – _Salus_
-- [Sicherheitshandbuch für Dummies und erfahrene Personen](https://medium.com/mycrypto/mycryptos-security-guide-for-dummies-and-smart-people-too-ab178299c82e) - _MyCrypto_
-- [Kryptosicherheit: Kennwörter und Authentifizierung](https://www.youtube.com/watch?v=m8jlnZuV1i4) - _Andreas M. Antonopoulos_
+- [Sich selbst und seine Gelder schützen](https://support.mycrypto.com/staying-safe/protecting-yourself-and-your-funds) – _MyCrypto_
+- [Sicherheitsprobleme in gängiger Krypto-Kommunikationssoftware](https://docs.salusec.io/untitled/web3-penetration-test/risks-in-social-media) – _Salus_
+- [Sicherheitsleitfaden für Dummies und auch für schlaue Leute](https://medium.com/mycrypto/mycryptos-security-guide-for-dummies-and-smart-people-too-ab178299c82e) – _MyCrypto_
+- [Krypto-Sicherheit: Passwörter und Authentifizierung](https://www.youtube.com/watch?v=m8jlnZuV1i4) – _Andreas M. Antonopoulos_
 
 ### Aufklärung über Betrug {#reading-scam-education}
 
-- [Leitfaden: Wie man betrügerische Token erkennt](/guides/how-to-id-scam-tokens/)
-- [Bleiben Sie sicher: gängige Betrugsmaschen](https://support.mycrypto.com/staying-safe/common-scams) - _MyCrypto_
-- [Betrug vermeiden](https://bitcoin.org/en/scams) - _Bitcoin.org_
-- [Twitter-Thread über häufige Phishing-E-Mails und Nachrichten](https://twitter.com/tayvano_/status/1516225457640787969) - _Taylor Monahan_
+- [Leitfaden: So erkennen Sie Betrugs-Token](/guides/how-to-id-scam-tokens/)
+- [Sicher bleiben: Häufige Betrugsmaschen](https://support.mycrypto.com/staying-safe/common-scams) – _MyCrypto_
+- [Betrug vermeiden](https://bitcoin.org/en/scams) – _Bitcoin.org_
+- [Twitter-Thread zu häufigen Krypto-Phishing-E-Mails und -Nachrichten](https://twitter.com/tayvano_/status/1516225457640787969) – _Taylor Monahan_
 
 <QuizWidget quizKey="security" />

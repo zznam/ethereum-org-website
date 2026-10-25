@@ -1,95 +1,159 @@
 ---
-title: Penaruhan sebagai layanan
-description: Gambaran umum mengenai bagaimana cara memulai staking untuk pooled ETH
+title: Staking yang didelegasikan (staking sebagai layanan)
+description: Gambaran umum tentang cara memulai staking yang didelegasikan
 lang: id
 template: staking
-emoji: ":money_with_wings:"
-image: /staking/leslie-saas.png
-alt: Leslie si badak mengapung di awan.
+image: /images/staking/leslie-saas.png
 sidebarDepth: 2
 summaryPoints:
-  - Operator simpul pihak ketiga menangani operasi dari klien validator Anda
-  - Pilihan yang bagus bagi siapa pun yang memiliki 32 ETH dan tidak merasa nyaman menghadapi kompleksitas teknis dalam menjalankan simpul
-  - Mengurangi kepercayaan, dan tetap memegang kendali kunci penarikan Anda
+  - Operator node pihak ketiga menangani operasi klien validator Anda
+  - Pilihan tepat bagi siapa saja yang memiliki 32 ETH dan tidak ingin berurusan dengan kerumitan teknis dalam menjalankan node
+  - Pendelegasian mencakup spektrum yang luas, mulai dari layanan di mana Anda menyimpan kunci penarikan Anda hingga bursa yang sepenuhnya kustodial
 ---
 
-## Apa yang dimaksud dengan penaruhan sebagai layanan? {#what-is-staking-as-a-service}
+## Apa itu staking yang didelegasikan? {#what-is-staking-as-a-service}
 
-Penaruhan sebagai layanan ("SaaS") merupakan kategori layanan penguncian di mana Anda menyetor sendiri 32 ETH untuk validator, tetapi menugaskan operasi simpul kepada operator pihak ketiga. Proses ini biasanya melibatkan panduan dalam pengaturan awal, termasuk pembuatan kunci dan setoran, kemudian menampilkan kunci tanda tangan Anda ke operator. Ini memungkinkan layanan tersebut menggunakan validator Anda atas nama Anda, biasanya dengan membayar biaya bulanan.
+Staking yang didelegasikan mewakili kategori layanan staking di mana Anda menyetorkan 32 ETH Anda sendiri untuk sebuah validator, tetapi mendelegasikan operasi node ke operator pihak ketiga. Prosesnya biasanya melibatkan panduan melalui pengaturan awal, termasuk pembuatan kunci dan penyetoran, lalu mengunggah kunci penandatanganan Anda ke operator. Anda menyediakan ETH, tetapi menyerahkan operasi perangkat keras validator kepada orang lain.
 
-## Mengapa melakukan taruhan dengan layanan? {#why-stake-with-a-service}
+Protokol [Ethereum](/) secara bawaan tidak mendukung pendelegasian stake, sehingga berbagai layanan telah dibangun untuk memenuhi permintaan ini. Kategori ini paling dikenal sebagai **staking sebagai layanan (SaaS)**, tetapi mencakup spektrum pengaturan yang berbeda pada pertanyaan kunci tentang seberapa besar kendali yang Anda pertahankan atas ETH yang Anda stake:
 
-Protokol Ethereum tidak secara asli mendukung delegasi taruhan, sehingga layanan-layanan ini dibangun untuk memenuhi permintaan tersebut. Jika Anda memiliki 32 ETH untuk taruhan, namun tidak merasa nyaman menghadapi perangkat keras, layanan SaaS memungkinkan Anda menugaskan bagian yang sulit sementara Anda mendapatkan imbalan blok asli.
+- **Staking sebagai layanan non-kustodial**: Anda menyimpan kunci penarikan Anda sendiri dan hanya mendelegasikan operasi validator.
+- **Staking kustodial penuh**: penyedia, biasanya bursa, memegang kunci dan dana.
 
-<CardGrid>
-  <Card title="Validator milik Anda" emoji=":desktop_computer:" description="Deposit your own 32 ETH to activate your own set of signing keys that will participate in Ethereum consensus. Monitor your progress with dashboards to watch those ETH rewards accumulate." />
-  <Card title="Mudah untuk memulai" emoji="🏁" description="Forget about hardware specs, setup, node maintenance and upgrades. SaaS providers let you outsource the hard part by uploading your own signing credentials, allowing them to run a validator on your behalf, for a small cost." />
-  <Card title="Batasi risiko Anda" emoji=":shield:" description="In many cases users do not have to give up access to the keys that enable withdrawing or transferring staked funds. These are different from the signing keys, and can be stored separately to limit (but not eliminate) your risk as a staker." />
-</CardGrid>
+Dibandingkan dengan [staking mandiri](/staking/solo/), setiap bentuk pendelegasian menempatkan middleware antara Anda dan protokol Ethereum. Middleware tersebut adalah perangkat lunak dan infrastruktur yang dijalankan oleh bisnis orang lain. Setiap langkah menuju kenyamanan menambah asumsi kepercayaan, jadi sebelum memilih layanan, cari tahu di mana posisinya dalam spektrum ini.
+
+### Apa yang bukan merupakan staking yang didelegasikan {#what-delegated-staking-is-not}
+
+- **Staking gabungan dan token staking likuid (LST)**: dengan pool, Anda menggabungkan sejumlah ETH dengan staker lain, biasanya menerima token yang mewakili bagian Anda dari stake pool tersebut. Anda tidak mendelegasikan validator Anda sendiri; kontrak pintar pool dan operator node mengendalikan validator tersebut. [Lebih lanjut tentang staking gabungan](/staking/pools/)
+- **Operasi node berikat (bonded)**: beberapa protokol staking memungkinkan Anda menjalankan validator pada perangkat keras Anda sendiri dengan kurang dari 32 ETH dengan memasang obligasi (bond). Itu adalah operasi node, kebalikan dari pendelegasian, dan dibahas bersama [staking mandiri](/staking/solo/).
+
+## Mengapa mendelegasikan staking Anda? {#why-stake-with-a-service}
+
+Jika Anda memiliki 32 ETH untuk di-stake, tetapi tidak merasa nyaman berurusan dengan perangkat keras, layanan staking yang didelegasikan memungkinkan Anda menyerahkan sisi teknis sambil mendapatkan imbalan blok Ethereum asli.
+
+<Grid>
+  <Card title="Validator Anda sendiri" icon={<MonitorCheck />} description="Setorkan 32 ETH Anda sendiri untuk mengaktifkan set kunci penandatanganan Anda sendiri yang akan berpartisipasi dalam konsensus Ethereum. Pantau kemajuan Anda dengan dasbor untuk melihat imbalan ETH tersebut terakumulasi." />
+  <Card title="Mudah untuk memulai" icon={<Flag />} description="Lupakan tentang spesifikasi perangkat keras, pengaturan, pemeliharaan node, dan peningkatan. Penyedia memungkinkan Anda mengalihdayakan bagian yang sulit dengan mengunggah kredensial penandatanganan Anda sendiri, memungkinkan mereka menjalankan validator atas nama Anda, dengan biaya kecil." />
+  <Card title="Batasi risiko Anda" icon={<ShieldHalf />} description="Dengan layanan non-kustodial, Anda memegang kendali atas kunci yang memungkinkan penarikan atau transfer dana yang di-stake. Kunci ini berbeda dari kunci penandatanganan, dan dapat disimpan secara terpisah untuk membatasi (tetapi tidak menghilangkan) risiko Anda sebagai staker." />
+</Grid>
+
+## Perbandingan opsi staking {#comparison-of-staking-options}
 
 <StakingComparison page="saas" />
 
-## Apa yang perlu ditentukan {#what-to-consider}
+## Spektrum pendelegasian {#the-delegation-spectrum}
 
-Ada semakin banyak penyedia SaaS yang dapat membantu Anda melakukan taruhan ETH, tetapi setiap penyedia memiliki manfaat dan risikonya sendiri. Semua pilihan layanan SaaS memerlukan keyakinan tambahan dibandingkan dengan penaruhan di beranda. Opsi Saas mungkin memiliki kode tambahan yang melingkupi klien Ethereum yang tidak terbuka atau dapat diaudit. SaaS juga berdampak buruk pada desentralisasi jaringan. Tergantung pada pengaturan, Anda mungkin tidak mengendalikan validator Anda - operator dapat bertindak tidak jujur dengan menggunakan ETH Anda.
+Penyedia berbeda dalam hal kunci mana yang mereka pegang untuk Anda, dan setiap kunci yang mereka pegang adalah sesuatu yang harus Anda percayakan kepada mereka.
 
-Indikator atribut digunakan di bawah ini untuk menandakan kekuatan atau kelemahan yang mencolok yang mungkin dimiliki oleh penyedia SaaS yang terdaftar. Gunakan bagian ini sebagai referensi untuk bagaimana kami mendefinisikan atribut-atribut ini saat Anda memilih layanan untuk membantu perjalanan penaruhan Anda.
+### Staking sebagai layanan non-kustodial {#non-custodial-staking-as-a-service}
+
+Dengan SaaS non-kustodial, Anda biasanya dipandu melalui pembuatan kunci validator Anda dan melakukan setoran 32 ETH Anda sendiri, lalu Anda mengunggah _kunci penandatanganan_ ke operator. Kunci penandatanganan memungkinkan operator untuk melakukan tugas validator (membuktikan dan mengusulkan blok) atas nama Anda. Menyalahgunakannya dapat membuat validator Anda dihukum atau mengalami pemotongan (slash), tetapi kunci tersebut tidak dapat digunakan untuk menarik, mentransfer, atau membelanjakan dana Anda.
+
+_Kredensial penarikan_ validator tetap diarahkan ke alamat yang Anda kendalikan. Imbalan dan dana yang keluar hanya dapat masuk ke sana (lihat bagian model kepercayaan di bawah).
+
+### Layanan kustodial dan staking bursa {#custodial-services-and-exchange-staking}
+
+Di ujung spektrum yang sepenuhnya didelegasikan terdapat staking kustodial, yang paling umum ditawarkan oleh bursa terpusat. Anda tidak pernah menangani kunci sama sekali; Anda hanya menyimpan ETH di akun platform Anda dan memilih untuk melakukan staking. Ini adalah pengalaman pengguna yang paling sederhana, dan ini adalah opsi yang sah bagi orang-orang yang sudah menyimpan dana di bursa dan menerima risiko kustodial.
+
+Ini juga membutuhkan kepercayaan paling besar. Penyedia mengendalikan baik kunci penandatanganan maupun kredensial penarikan; apa yang Anda pegang adalah saldo di platform mereka, bukan validator. Itu berarti:
+
+- ETH yang Anda stake terpapar pada solvabilitas, keamanan, dan situasi regulasi penyedia, dan penarikan tunduk pada ketentuan dan waktu pemrosesan mereka, bukan hanya aturan protokol Ethereum.
+- Anda tidak memiliki cara independen untuk keluar dari validator atau memulihkan dana jika penyedia gagal atau membekukan penarikan.
+- Sejumlah besar ETH yang di-stake di bawah segelintir operator bursa berkontribusi pada sentralisasi stake, dan pilihan klien operator ini memengaruhi kesehatan jaringan. Melakukan staking dengan cara yang mempertahankan lebih banyak kendali di tangan Anda, atau memilih penyedia yang terbukti menjalankan klien minoritas, memberikan lebih banyak manfaat bagi ketahanan Ethereum.
+
+## Model kepercayaan: apa yang harus dievaluasi {#trust-model-what-to-evaluate}
+
+Staking yang didelegasikan selalu berarti mempercayakan sebagian dari pengaturan staking Anda kepada orang lain. Jawab pertanyaan-pertanyaan ini sebelum menyerahkan apa pun:
+
+- **Siapa yang memegang kunci penarikan?** Kredensial penarikan validator (tipe 0x01 atau 0x02) menunjuk ke alamat lapisan eksekusi yang pada akhirnya mengendalikan stake. Jika alamat itu milik Anda, pengaturannya adalah non-kustodial; operator dapat menjalankan (atau salah mengelola) validator, tetapi ETH hanya dapat ditarik ke Anda. Jika kredensial menunjuk ke alamat penyedia, Anda memegang janji, bukan stake.
+- **Bisakah Anda keluar tanpa operator?** Sejak [peningkatan Pectra](/roadmap/pectra/), [penarikan yang dipicu lapisan eksekusi (EIP-7002)](https://eips.ethereum.org/EIPS/eip-7002) memungkinkan alamat penarikan untuk memicu keluarnya validator (atau, untuk validator 0x02 yang menggabungkan bunga, penarikan sebagian saldo di atas 32 ETH) langsung dari lapisan eksekusi, tanpa kunci penandatanganan. Ini memerlukan transaksi dan membutuhkan biaya gas, tetapi ini berarti operator yang tidak responsif atau tidak berfungsi tidak dapat lagi menyandera validator Anda, asalkan kredensial penarikan adalah milik Anda.
+- **Bagaimana struktur biayanya?** Layanan mengenakan biaya bulanan tetap atau persentase dari imbalan. Periksa bagaimana biaya berinteraksi dengan waktu henti (downtime) dan penalti: siapa yang menanggung biaya jika kinerja operator buruk, dan apakah ada jaminan atau asuransi yang ditawarkan.
+- **Klien mana yang dijalankan operator?** Operator yang menjalankan mayoritas [klien eksekusi atau klien konsensus](/developers/docs/nodes-and-clients/client-diversity/) memaparkan stake Anda dan jaringan pada kegagalan yang berkorelasi jika klien tersebut memiliki bug. Utamakan penyedia yang mendokumentasikan penggunaan klien minoritas.
+- **Apakah layanannya terbuka dan diaudit?** Penyedia mungkin menjalankan perangkat lunak tambahan di sekitar klien Ethereum standar yang bukan sumber terbuka atau tidak dapat diaudit. Carilah audit publik, riwayat operasi yang mapan, dan catatan pemotongan (slashing) yang bersih.
+- **Apa yang terjadi jika penyedia menghilang?** Penyedia yang bertanggung jawab mendokumentasikan proses offboarding-nya, memberikan instruksi yang jelas tentang cara Anda keluar dari validator Anda, memulihkan kunci Anda, atau memicu keluar sendiri. Jika jawabannya sepenuhnya bergantung pada penyedia yang tetap berbisnis, itu adalah pengaturan kustodial.
+
+<Alert variant="update">
+<AlertIcon size="xl"><Split /></AlertIcon>
+<AlertContent>
+<AlertDescription>
+**Beberapa penyedia dapat menjalankan validator Anda menggunakan teknologi validator terdistribusi (DVT)**, membagi kunci penandatanganan di beberapa node sehingga tidak ada satu mesin atau operator pun yang menjadi titik kegagalan. [Lebih lanjut tentang teknologi validator terdistribusi](/staking/dvt/)
+</AlertDescription>
+</AlertContent>
+</Alert>
+
+## Apa yang perlu dipertimbangkan {#what-to-consider}
+
+Ada semakin banyak penyedia yang membantu Anda mendelegasikan operasi validator Anda, tetapi semuanya memiliki manfaat dan risikonya masing-masing. Semua opsi yang didelegasikan memerlukan asumsi kepercayaan tambahan dibandingkan dengan staking mandiri. Opsi yang didelegasikan mungkin memiliki kode tambahan yang membungkus klien Ethereum yang tidak terbuka atau tidak dapat diaudit. Pendelegasian juga memiliki efek merugikan pada desentralisasi jaringan. Bergantung pada pengaturannya, Anda mungkin tidak mengendalikan validator Anda, dan operator dapat bertindak tidak jujur menggunakan ETH Anda.
+
+Indikator atribut digunakan di bawah ini untuk menandakan kekuatan atau kelemahan penting yang mungkin dimiliki penyedia yang terdaftar. Gunakan bagian ini sebagai referensi tentang bagaimana kami mendefinisikan atribut-atribut ini saat Anda memilih layanan staking.
 
 <StakingConsiderations page="saas" />
 
-## Eksplorasi penyedia layanan penaruhan {#saas-providers}
+## Jelajahi penyedia layanan staking {#saas-providers}
 
-Berikut adalah beberapa penyedia layanan SaaS yang tersedia. Gunakan indikator-indikator di atas untuk membantu memandu Anda melalui layanan-layanan ini
+Di bawah ini adalah beberapa penyedia staking sebagai layanan yang tersedia. Gunakan indikator di atas untuk membantu memandu Anda melalui layanan-layanan ini.
 
 <ProductDisclaimer />
 
-### Penyedia layanan SaaS
+### Penyedia SaaS {#saas-providers-2}
 
 <StakingProductsCardGrid category="saas" />
 
-Harap perhatikan pentingnya mendukung [diversitas klien](/developers/docs/nodes-and-clients/client-diversity/) karena ini meningkatkan keamanan jaringan, dan membatasi risiko Anda. Layanan-layanan yang memiliki bukti pembatasan penggunaan mayoritas klien ditandai dengan <em style={{ textTransform: "uppercase" }}>"diversitas klien eksekusi"</em> dan <em style={{ textTransform: "uppercase" }}>"diversitas klien konsensus."</em>
+Harap perhatikan pentingnya mendukung [keragaman klien](/developers/docs/nodes-and-clients/client-diversity/) karena ini meningkatkan keamanan jaringan, dan membatasi risiko Anda. Layanan yang memiliki bukti membatasi penggunaan klien mayoritas ditandai dengan <em style={{ textTransform: "uppercase" }}>"keragaman klien eksekusi"</em> dan <em style={{ textTransform: "uppercase" }}>"keragaman klien konsensus."</em>
 
-### Pembangkit Kunci
+### Pembuat Kunci {#key-generators}
 
 <StakingProductsCardGrid category="keyGen" />
 
-Punya saran untuk penyedia penaruhan sebagai layanan yang kami lewatkan? Lihat [kebijakan daftar produk](/contributing/adding-staking-products/) kami untuk melihat apakah cocok, dan untuk mengirimkannya untuk ditinjau.
+Punya saran untuk penyedia staking sebagai layanan yang kami lewatkan? Lihat [kebijakan pendaftaran produk](/contributing/adding-staking-products/) kami untuk melihat apakah itu cocok, dan untuk mengirimkannya agar ditinjau.
+
+<StakingCommunityCallout className="my-16" />
 
 ## Pertanyaan yang sering diajukan {#faq}
 
-<ExpandableCard title="Siapa yang menyimpan kunci-kunci saya?" eventCategory="SaasStaking" eventName="clicked who holds my keys">
-Perjanjian akan berbeda dari penyedia ke penyedia, tetapi umumnya Anda akan dipandu melalui pengaturan kunci tanda tangan yang Anda butuhkan (satu per 32 ETH), dan mengunggahnya ke penyedia Anda agar mereka dapat memvalidasi atas nama Anda. Kunci tanda tangan sendiri tidak memberikan kemampuan untuk menarik, mentransfer, atau menghabiskan dana Anda. Namun, kunci tanda tangan juga memberikan kemampuan untuk memberikan suara terhadap konsensus, yang jika tidak dilakukan dengan benar dapat mengakibatkan hukuman offline atau pemotongan.
+<ExpandableCard title="Siapa yang memegang kunci saya?" eventCategory="SaasStaking" eventName="clicked who holds my keys">
+Pengaturan berbeda dari satu penyedia ke penyedia lainnya. Dengan layanan non-kustodial, Anda akan dipandu melalui pembuatan kunci penandatanganan untuk validator Anda (setiap validator memegang 32 ETH, atau hingga 2048 ETH dengan kredensial penggabungan (0x02) sejak peningkatan Pectra), dan mengunggahnya ke penyedia Anda untuk memungkinkan mereka memvalidasi atas nama Anda. Kunci penandatanganan saja tidak memberikan kemampuan apa pun untuk menarik, mentransfer, atau membelanjakan dana Anda. Namun, kunci tersebut memberikan kemampuan untuk memberikan suara menuju konsensus, yang jika tidak dilakukan dengan benar dapat mengakibatkan penalti offline atau pemotongan.
+
+Dengan layanan kustodial, seperti staking melalui bursa terpusat, penyedia memegang semua kunci: kunci penandatanganan dan kredensial penarikan. Dalam hal ini Anda mempercayakan dana itu sendiri kepada penyedia, bukan hanya operasi validator.
 </ExpandableCard>
 
 <ExpandableCard title="Jadi ada dua set kunci?" eventCategory="SaasStaking" eventName="clicked so there are two sets of keys">
-Ya. Setiap akun terdiri dari kunci BLS untuk <em>tanda tangan</em> dan kunci BLS untuk <em>penarikan</em>. Agar seorang validator dapat memberikan tanda tangan atas keadaan jaringan, berpartisipasi dalam komite sinkronisasi, dan mengajukan blok, kunci tanda tangan harus mudah diakses oleh klien validator. Kunci-kunci ini harus terhubung ke internet dalam bentuk tertentu, dan oleh karena itu secara inheren dianggap sebagai kunci "panas" (hot keys). Ini merupakan persyaratan agar validator Anda dapat memberikan tanda tangan, dan oleh karena itu kunci yang digunakan untuk mentransfer atau menarik dana dipisahkan karena alasan keamanan.
+Ya. Setiap validator memiliki kunci _penandatanganan_ dan _kredensial penarikan_ yang terpisah. Agar validator dapat membuktikan state rantai, berpartisipasi dalam komite sinkronisasi, dan mengusulkan blok, kunci penandatanganan harus mudah diakses oleh klien validator. Kunci ini harus terhubung ke internet dalam beberapa bentuk, dan dengan demikian secara inheren dianggap sebagai kunci "panas" (hot keys). Kunci yang mengendalikan dana yang ditarik disimpan secara terpisah untuk alasan keamanan.
 
-Kunci penarikan BLS digunakan untuk menandatangani pesan satu kali yang menyatakan akun lapisan eksekusi mana yang harus menerima imbalan penaruhan dan dana yang ditarik. Setelah pesan ini disiarkan, kunci <em>penarikan BLS</em> tidak lagi diperlukan. Sebagai gantinya, kendali atas dana yang ditarik secara permanen didelegasikan ke alamat yang Anda berikan. Hal ini memungkinkan Anda untuk mengatur alamat penarikan yang diamankan melalui penyimpanan dingin (cold storage) milik Anda sendiri, meminimalkan risiko terhadap dana validator Anda, bahkan jika orang lain mengontrol kunci tanda tangan validator Anda.
+Kredensial penarikan menunjuk alamat lapisan eksekusi yang menjadi tujuan imbalan staking dan dana yang keluar. Alat penyetoran modern memungkinkan Anda mengatur alamat ini pada saat penyetoran, baik sebagai kredensial reguler (0x01) atau penggabungan (0x02), dan itu harus berupa alamat yang Anda kendalikan, idealnya diamankan di penyimpanan dingin (cold storage). Ini melindungi dana Anda bahkan jika orang lain mengendalikan kunci penandatanganan validator Anda, dan sejak peningkatan Pectra, ini juga memungkinkan Anda keluar dari validator langsung dari alamat tersebut.
 
-Memperbarui kredensial penarikan adalah langkah yang diperlukan untuk mengaktifkan penarikan\*. Proses ini melibatkan pembuatan kunci penarikan dengan menggunakan frase benih mnemonik Anda.
+Validator yang disiapkan pada hari-hari awal jaringan tanpa alamat penarikan eksekusi menggunakan kunci penarikan BLS lama, dan harus menandatangani pesan satu kali yang menyatakan alamat penarikan sebelum penarikan dapat dimulai. Ini melibatkan pembuatan ulang kunci penarikan dari frasa benih mnemonik yang dibuat saat pengaturan.
 
-<strong>Pastikan Anda mencadangkan frase benih ini dengan aman, jika tidak Anda tidak akan dapat menghasilkan kunci penarikan Anda saat waktunya tiba.</strong>
+**Pastikan Anda mencadangkan frasa benih ini dengan aman atau Anda tidak akan dapat membuat kunci penarikan Anda saat waktunya tiba.**
 
-\*Penaruh yang telah menyediakan alamat penarikan pada saat deposit awal tidak perlu mengatur ini. Hubungi penyedia SaaS Anda untuk mendapatkan dukungan mengenai cara menyiapkan validator Anda.
+Periksa dengan penyedia Anda untuk dukungan mengenai cara menyiapkan validator Anda.
 </ExpandableCard>
 
-<ExpandableCard title="Kapan saya bisa menarik dana?" eventCategory="SaasStaking" eventName="clicked when can I withdraw">
-Penarikan penaruhan diimplementasikan dalam peningkatan Shanghai/Capella pada April 2023. Para penaruh perlu menyediakan alamat penarikan (jika tidak disediakan saat deposit awal), dan pembayaran imbalan akan mulai didistribusikan secara otomatis secara berkala setiap beberapa hari.
+<ExpandableCard title="Kapan saya bisa melakukan penarikan?" eventCategory="SaasStaking" eventName="clicked when can I withdraw">
+Cara kerja penarikan bergantung pada jenis kredensial penarikan validator Anda. Untuk validator reguler (0x01), saldo apa pun di atas 32 ETH secara otomatis disapu ke alamat penarikan secara berkala setiap beberapa hari. Untuk validator penggabungan (0x02), imbalan digabungkan ke dalam saldo validator hingga 2048 ETH, dan penarikan di bawah itu memerlukan pemicuan penarikan sebagian dari alamat penarikan Anda, yang membutuhkan biaya gas.
 
-Para validator juga dapat sepenuhnya keluar sebagai validator, yang akan membuka kunci saldo ETH mereka yang tersisa untuk penarikan. Akun yang telah menyediakan alamat penarikan eksekusi dan menyelesaikan proses keluar akan menerima seluruh saldo mereka ke alamat penarikan yang disediakan selama sweep validator berikutnya.
+Validator juga dapat keluar sepenuhnya, yang membuka kunci seluruh sisa saldo ETH. Setelah menyelesaikan proses keluar, saldo penuh ditransfer ke alamat penarikan selama penyapuan validator berikutnya.
 
-<ButtonLink to="/staking/withdrawals/">Lebih lanjut tentang penarikan penaruhan</ButtonLink>
+<ButtonLink href="/staking/withdrawals/">Lebih lanjut tentang penarikan staking</ButtonLink>
 </ExpandableCard>
 
-<ExpandableCard title="Apa yang terjadi jika saya terkena pengurangan hadiah pemotongan?" eventCategory="SaasStaking" eventName="clicked what happens if I get slashed">
-Dengan menggunakan penyedia SaaS, Anda mempercayakan operasi simpul Anda kepada pihak lain. Ini membawa risiko kinerja simpul yang buruk, yang tidak berada dalam kendali Anda. Jika validator Anda terkena pemotongan, saldo validator Anda akan dikenai hukuman dan secara paksa dihapus dari pool validator.
+<ExpandableCard title="Bagaimana jika penyedia saya menghilang atau tidak mau keluar dari validator saya?" eventCategory="SaasStaking" eventName="clicked what if my provider disappears">
+Jika kredensial penarikan Anda menunjuk ke alamat yang Anda kendalikan, Anda dapat keluar dari validator sendiri dan memulihkan stake Anda; lihat [Model kepercayaan: apa yang harus dievaluasi](#trust-model-what-to-evaluate).
 
-Setelah selesai proses pemotongan hadiah/keluar, dana tersebut akan ditransfer ke alamat penarikan yang ditetapkan untuk validator tersebut. Ini memerlukan menyediakan alamat penarikan untuk diaktifkan. Alamat penarikan mungkin telah disediakan saat deposit awal. Jika tidak, kunci penarikan validator harus digunakan untuk menandatangani pesan yang menyatakan alamat penarikan. Jika tidak ada alamat penarikan yang disediakan, dana akan tetap terkunci sampai alamat penarikan diberikan.
+Jika penyedia memegang kredensial penarikan (seperti pada staking kustodial dan bursa), tidak ada cara tingkat protokol bagi Anda untuk memulihkan dana secara independen; jalan keluar Anda terbatas pada proses penyedia itu sendiri.
+</ExpandableCard>
 
-Hubungi penyedia SaaS secara individu untuk mendapatkan informasi lebih lanjut tentang jaminan atau opsi asuransi, dan petunjuk tentang cara menyediakan alamat penarikan. Jika Anda lebih suka memiliki kendali penuh atas pengaturan validator Anda, <a href="/staking/solo/">pelajari lebih lanjut tentang cara melakukan taruhan solo untuk ETH</a>.
+<ExpandableCard title="Apa yang terjadi jika saya terkena pemotongan?" eventCategory="SaasStaking" eventName="clicked what happens if I get slashed">
+Dengan menggunakan penyedia staking yang didelegasikan, Anda mempercayakan operasi node Anda kepada orang lain. Ini datang dengan risiko kinerja node yang buruk, yang tidak berada dalam kendali Anda. Jika validator Anda mengalami pemotongan, penalti awal yang sebanding dengan saldo validator Anda diterapkan (dibuat jauh lebih kecil dalam peningkatan Pectra), dan validator Anda dikeluarkan secara paksa dari set validator.
+
+Setelah selesainya proses pemotongan/keluar, sisa dana ditransfer ke alamat penarikan yang ditetapkan ke validator.
+
+Hubungi masing-masing penyedia untuk detail lebih lanjut tentang jaminan atau opsi asuransi apa pun. Jika Anda lebih suka memegang kendali penuh atas pengaturan validator Anda, [pelajari lebih lanjut tentang cara melakukan staking mandiri ETH Anda](/staking/solo/).
 </ExpandableCard>
 
 ## Bacaan lebih lanjut {#further-reading}
 
-- [Direktori Penaruhan Ethereum](https://www.staking.directory/) - _Eridian dan Spacesider_
-- [Menilai Layanan Penaruhan](https://www.attestant.io/posts/evaluating-staking-services/) - _Jim McDonald 2020_
+- [Apa itu Staking-as-a-Service?](https://figment.io/insights/what-is-staking-as-a-service/) - _Figment_
+- [Direktori Staking Ethereum](https://www.staking.directory/) - _Eridian dan Spacesider_
+- [Mengevaluasi Layanan Staking](https://www.attestant.io/posts/evaluating-staking-services/) - _Jim McDonald 2020_
+- [EIP-7002: Penarikan yang dapat dipicu lapisan eksekusi](https://eips.ethereum.org/EIPS/eip-7002) - _spesifikasi untuk mengeluarkan validator dari alamat penarikannya_

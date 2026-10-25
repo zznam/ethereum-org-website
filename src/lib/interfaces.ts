@@ -1,17 +1,17 @@
-import { StaticImageData } from "next/image"
-
 import type {
-  CrowdinContributor,
+  CommonHeroProps,
+  FileContributor,
   Frontmatter,
   Lang,
   Layout,
   ToCItem,
   TranslationKey,
+  VideoFormat,
 } from "@/lib/types"
 
 export interface DeveloperDocsLink {
   id: TranslationKey
-  to: string
+  href: string
   path: string
   description: TranslationKey
   items: DeveloperDocsLink[]
@@ -22,66 +22,38 @@ export interface DeveloperDocsLink {
  */
 export interface SharedFrontmatter {
   title: string
+  metaTitle?: string
   description: string
   lang: Lang
   sidebarDepth?: number
   isOutdated?: boolean
   template?: Layout
+  authors?: string | string[]
 }
 
 export interface StaticFrontmatter extends SharedFrontmatter {
-  postMergeBannerTranslation?: string
   hideEditButton?: boolean
-}
-
-/**
- * TODO: Refactor markdown content that currently uses SummaryPointsNumbered
- * to use SummaryPoints (`summaryPoints: string[]`) instead. Then
- * deprecate @/lib/util/getSummaryPoints.ts
- */
-export interface SummaryPointsNumbered {
-  summaryPoint1?: string
-  summaryPoint2?: string
-  summaryPoint3?: string
-  summaryPoint4?: string
-}
-
-interface SummaryPoints {
-  summaryPoints: string[]
 }
 
 interface ImageInfo {
   image: string
   alt: string
   blurDataURL: string
+  imageWidth?: number
+  imageHeight?: number
 }
 
-export interface UpgradeFrontmatter
-  extends SharedFrontmatter,
-    SummaryPointsNumbered,
-    ImageInfo {}
-
-export interface RoadmapFrontmatter extends SharedFrontmatter, ImageInfo {
-  buttons: {
-    label: string
-    toId?: string
-    to?: string
-    variant?: string
-  }[]
-}
-
-export interface UseCasesFrontmatter
-  extends SharedFrontmatter,
-    SummaryPointsNumbered,
-    ImageInfo {
-  emoji: string
-}
-
-export interface StakingFrontmatter
-  extends SharedFrontmatter,
-    SummaryPoints,
-    ImageInfo {
-  emoji: string
+/**
+ * Canonical frontmatter shape for any page rendered through `TopicLayout`.
+ * Used for staking, use-cases, roadmap, upgrade, and ai-agents.
+ * See `docs/topic-layout-refactor.md`.
+ */
+export interface TopicFrontmatter extends SharedFrontmatter, ImageInfo {
+  summaryPoints?: string[]
+  summary?: string
+  buttons?: CommonHeroProps["buttons"]
+  showDropdown?: boolean
+  hideEditBanner?: boolean
 }
 
 export interface DocsFrontmatter extends SharedFrontmatter {
@@ -89,17 +61,44 @@ export interface DocsFrontmatter extends SharedFrontmatter {
   hideEditButton?: boolean
 }
 
+export interface VideoFrontmatter extends SharedFrontmatter {
+  youtubeId: string
+  uploadDate: string
+  duration: string
+  educationLevel: "beginner" | "intermediate" | "advanced"
+  topic: string[]
+  format: VideoFormat
+  author: string
+  customThumbnailUrl?: string
+  breadcrumb?: string
+}
+
 export interface TutorialFrontmatter extends SharedFrontmatter {
-  tags: string[]
+  tags?: string[]
   author: string
   source?: string
   sourceUrl?: string
-  skill: string
+  skill?: string
   published: string
   address?: string
-  postMergeBannerTranslation?: string
+  team?: string
+  image?: string
+  imageWidth?: number
+  imageHeight?: number
+  blurDataURL?: string
   hideEditButton?: boolean
-  showPostMergeBanner?: boolean
+  breadcrumb?: string
+}
+
+export interface BlogFrontmatter extends SharedFrontmatter {
+  tags?: string[]
+  author: string
+  published: string
+  image?: string
+  team?: string
+  sourceUrl?: string
+  hideEditButton?: boolean
+  breadcrumb?: string
 }
 
 export interface MdPageContent {
@@ -107,61 +106,25 @@ export interface MdPageContent {
   content: string
   frontmatter: Frontmatter
   tocItems: ToCItem[]
-  lastUpdatedDate?: string
+  lastEditLocaleTimestamp?: string
+  lastDeployLocaleTimestamp: string
   contentNotTranslated: boolean
-  crowdinContributors: CrowdinContributor[]
-}
-
-// Local environment framework
-export interface Framework {
-  id: string
-  url: string
-  githubUrl: string
-  background: string
-  name: string
-  description: string
-  alt: string
-  image: StaticImageData
-  starCount?: number
-  languages?: string[]
+  contributors: FileContributor[]
 }
 
 /**
- * Community events
+ * Codeblock
  */
 
-export interface CommunityEventsReturnType {
-  pastEventData: CommunityEvent[]
-  upcomingEventData: CommunityEvent[]
-}
-
-export interface CommunityEvent {
-  date: string
-  title: string
-  calendarLink: string
-}
-
-export interface ReqCommunityEvent {
-  start: { dateTime: string }
-  summary: string
-  htmlLink: string
-  location: string
-}
-
-/**
- * Community page
- */
-
-export interface ICard {
-  image: StaticImageData
+export interface CodeExample {
   title: string
   description: string
-  alt: string
-  to: string
-}
-
-export interface IGetInvolvedCard {
-  emoji: string
-  title: string
-  description: string
+  caption?: string
+  link?: string
+  image?: string
+  alt?: string
+  id?: number
+  codeLanguage: string
+  codeUrl: string
+  eventName: string
 }

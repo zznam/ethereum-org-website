@@ -1,185 +1,185 @@
 ---
-title: 如何撰写和部署非同质化代币（非同质化代币教程系列 1/3）
-description: 本教程是关于非同质化代币的系列教程的第一部分，将带您逐步了解如何使用以太坊和星际文件系统 (IPFS) 编写和部署非同质化代币（ERC-721 代币）智能合约。
-author: "Sumi Mudgil"
-tags:
-  - "ERC-721"
-  - "Alchemy"
-  - "Solidity"
-  - "智能合约"
+title: "如何编写和部署 NFT（NFT 教程系列第 1/3 部分）"
+description: "本教程是 NFT 系列的第 1 部分，将带你逐步了解如何使用以太坊和星际文件系统 (IPFS) 编写和部署非同质化代币（ERC-721 代币）智能合约。"
+author: "苏米·穆吉尔"
+tags: ["ERC-721", "Alchemy", "Solidity", "智能合约"]
 skill: beginner
+breadcrumb: "编写和部署 NFT"
 lang: zh
 published: 2021-04-22
 ---
 
-随着非同质化代币将区块链带入公众视野，现在正是通过在以太坊区链上发布自己的非同质化代币合约（ERC-721 代币）来了解这一宣传的绝佳机会！
+随着非同质化代币 (NFT) 将区块链带入公众视野，现在正是你通过在以太坊区块链上发布自己的 NFT 合约（ERC-721 代币）来亲自了解这一热潮的绝佳机会！
 
-Alchemy 非常自豪能够推动非同质化代币领域的一些巨头，包括 Makersplace（最近在克利斯蒂拍卖行创造了 6900 万美元的数字艺术品销售记录）、Dapper Labs（NBA Top Shot & Crypto Kitties 的创作者）、OpenSea（世界上最大的非同质化代币市场）、Zora、Super Rare、NFTfi、Foundation、Enjin、Origin Protocol、Immutable 等。
+在本教程中，我们将逐步介绍如何使用 [梅塔马斯克](https://metamask.io/)、[Solidity](https://docs.soliditylang.org/)、[Hardhat](https://hardhat.org/)、[Pinata](https://pinata.cloud/) 和 [Alchemy](https://alchemy.com/signup/eth) 在 Sepolia 测试网上创建和部署 ERC-721 智能合约（如果你还不懂这些词的意思，请不要担心，我们会解释的！）。
 
-在本教程中，我们将使用 [MetaMask](https://metamask.io/)、[Solidity](https://docs.soliditylang.org/en/v0.8.0/)、[Hardhat](https://hardhat.org/)、[Pinata](https://pinata.cloud/) 和 [Alchemy](https://alchemy.com/signup/eth) 演示如何在 Sepolia 测试网络上创建和部署 ERC-721 智能合约（如果还不明白其中的含义，请不要着急，我们会为你解释！)。
+在本教程的第 2 部分，我们将介绍如何使用我们的智能合约铸造 NFT，在第 3 部分，我们将解释如何在梅塔马斯克上查看你的 NFT。
 
-在本教程的第二部分，我们将了解如何使用我们的智能合约来铸造非同质化代币；在第三部分，我们将说明如何在 MetaMask 上查看您的非同质化代币。
+当然，如果你在任何时候有疑问，请随时在 [Alchemy Discord](https://discord.gg/gWuC7zB) 中联系我们，或访问 [Alchemy 的 NFT API 文档](https://www.alchemy.com/docs/reference/nft-api-quickstart)！
 
-当然，如果您有任何问题，请随时通过 [Alchemy Discord](https://discord.gg/gWuC7zB) 联系我们或阅读 [Alchemy 的非同质化代币应用程序接口相关文档](https://docs.alchemy.com/alchemy/enhanced-apis/nft-api)！
+## 第 1 步：连接到以太坊网络 {#connect-to-ethereum}
 
-## 步骤 1：连接到以太坊网络 {#connect-to-ethereum}
+有很多方法可以向以太坊区块链发出请求，但为了简单起见，我们将在 [Alchemy](https://alchemy.com/signup/eth) 上使用一个免费账户。Alchemy 是一个区块链开发者平台和 API，允许我们与以太坊链进行通信，而无需运行我们自己的节点。
 
-有很多方法可以向以太坊区块链发出请求，但为了方便起见，我们将使用 [Alchemy](https://alchemy.com/signup/eth) 上的免费帐户。Alchemy 是一个区块链开发平台，能够提供应用程序接口，让我们无需运行自己的节点，即可与以太坊区块链进行通信。
+在本教程中，我们还将利用 Alchemy 的开发者工具进行监控和分析，以了解我们的智能合约部署在内部是如何运作的。如果你还没有 Alchemy 账户，可以在[这里](https://alchemy.com/signup/eth)免费注册。
 
-在本教程中，我们将利用 Alchemy 平台的开发者工具进行监测和分析，以便了解智能合约部署的底层逻辑。 如果您还没有 Alchemy 帐户，您可以在[此处](https://alchemy.com/signup/eth)免费注册。
+## 第 2 步：创建你的应用（和 API 密钥） {#make-api-key}
 
-## 步骤 2：创建应用程序（和应用程序接口密钥） {#make-api-key}
+创建 Alchemy 账户后，你可以通过创建应用来生成应用程序编程接口 (API) 密钥。这将允许我们向 Sepolia 测试网发出请求。如果你想了解有关测试网的更多信息，请查看[本指南](https://www.alchemy.com/docs/choosing-a-web3-network)。
 
-创建了 Alchemy 帐户后，您可以通过创建应用程序来生成应用程序接口密钥。 这将使我们能够向 Sepolia 测试网络发出请求。 如果您想了解更多关于测试网络的信息，请查看[本指南](https://docs.alchemyapi.io/guides/choosing-a-network)。
+1. 在导航栏中选择“Select an app”，然后点击“Create new app”，导航到 Alchemy 仪表板中的“Create new app”页面。
 
-1. 在您的 Alchemy 仪表板中的“创建应用程序”页面上，将鼠标悬停在导航栏中的“应用程序”上 ，然后点击“创建应用程序”
+![创建你的应用](./alchemy-create-new-app.png)
 
-![创建您的应用程序](./create-your-app.png)
+2. 为你的应用命名（我们选择了“My First NFT!”），提供简短描述，并选择一个用例。接下来，搜索“Ethereum”并选择网络。我们将使用 Sepolia，这是推荐用于应用程序开发的测试网（请参阅[以太坊网络](/developers/docs/networks/#ethereum-testnets)）。
 
-2. 命名你的应用程序（我们选择使用“My First NFT!”），提供简短描述，选择“Ethereum”作为区块链，并选择“Sepolia”作为你的网络。 合并后，其他测试网已被弃用。
+3. 点击“Next”继续，然后点击“Create app”，就这么简单！你的应用应该会出现在导航栏的下拉菜单中，并提供可复制的 API 密钥。
 
-![配置并发布您的应用程序](./alchemy-explorer-sepolia.png)
+## 第 3 步：创建一个以太坊账户（地址） {#create-eth-address}
 
-3. 点击"创建应用程序"，完成！ 您的应用程序应该会出现在下面的表格中。
+我们需要一个以太坊账户来发送和接收交易。在本教程中，我们将使用梅塔马斯克，这是一款浏览器中的虚拟钱包，用于管理你的以太坊账户地址。如果你想了解更多关于以太坊交易如何运作的信息，请查看以太坊基金会的[此页面](/developers/docs/transactions/)。
 
-## 步骤 3：创建一个以太坊帐户（地址） {#create-eth-address}
+你可以免费在[这里](https://metamask.io/download)下载并创建一个梅塔马斯克账户。在创建账户时，或者如果你已经有账户，请确保使用网络选择菜单切换到“Sepolia”测试网（这样我们就不会使用真金白银）。如果你没有看到 Sepolia，请打开右上角的菜单，选择“Networks”，然后打开“Show test networks”开关（请参阅[梅塔马斯克查看测试网指南](https://support.metamask.io/configure/networks/how-to-view-testnets-in-metamask/)）。
 
-我们需要一个以太坊帐户来发送和接收交易。 在本教程中，我们将使用 MetaMask——浏览器中的虚拟钱包，用来管理您的以太坊帐户地址。 如果您想了解更多关于以太坊交易的运作方式，请查看以太坊基金会的[这个页面](/developers/docs/transactions/)。
+![将 Sepolia 设置为你的网络](./metamask-sepolia.png)
 
-您可以[在这里](https://metamask.io/download.html)免费下载并创建一个 MetaMask 帐户。 在你创建帐户时，或者如果你已有一个帐户，请确保切换到右上角的“Sepolia Test Network”（这样我们就不会使用实际货币进行交易）。
+## 第 4 步：从水龙头添加以太币 {#step-4-add-ether-from-a-faucet}
 
-![将 Sepolia 设置为你的网络](./metamask-goerli.png)
+为了将我们的智能合约部署到测试网，我们需要一些假 ETH。要获取 Sepolia ETH，请选择[Sepolia 网络详情](/developers/docs/networks/#sepolia)中列出的水龙头之一，并输入你的账户地址。如果一个不起作用，请尝试另一个，因为它们有时会枯竭，而且有些有资格规则：例如，[Alchemy Sepolia 水龙头](https://www.alchemy.com/faucets/ethereum-sepolia)要求接收地址在以太坊主网上至少持有 0.001 ETH。不久之后，你应该会在你的梅塔马斯克账户中看到 ETH！
 
-## 步骤 4：从水龙头添加以太币 {#step-4-add-ether-from-a-faucet}
+## 第 5 步：检查你的余额 {#check-balance}
 
-为了将我们的智能合约部署到测试网络，我们需要一些虚拟以太币。 想要获取以太币，可以访问由 Alchemy 托管的 [Sepolia Faucet](https://sepoliafaucet.com/)，登录并输入你的帐户地址，点击“Send Me ETH”。 您应该会很快在您的 MetaMask 帐户中看到以太币！
+为了再次确认我们的余额已到账，让我们使用 [Alchemy 的沙盒工具](https://sandbox.alchemy.com/?network=ETH_SEPOLIA&method=eth_getBalance&body.id=1&body.jsonrpc=2.0&body.method=eth_getBalance&body.params%5B0%5D=&body.params%5B1%5D=latest)发出一个 [eth_getBalance](https://www.alchemy.com/docs/chains/ethereum/ethereum-api-endpoints/eth-get-balance) 请求。这将返回我们钱包中的 ETH 数量。输入你的梅塔马斯克账户地址并点击“Send Request”后，你应该会看到类似如下的响应：
 
-## 步骤 5：查看帐户余额 {#check-balance}
+```json
+{ "jsonrpc": "2.0", "id": 0, "result": "0xde0b6b3a7640000" }
+```
 
-为了核实我们的余额，可以使用 [Alchemy 的创作者工具](https://composer.alchemyapi.io?composer_state=%7B%22network%22%3A0%2C%22methodName%22%3A%22eth_getBalance%22%2C%22paramValues%22%3A%5B%22%22%2C%22latest%22%5D%7D)发出 [eth_getBalance](https://docs.alchemyapi.io/alchemy/documentation/alchemy-api-reference/json-rpc#eth_getbalance) 请求。 这将返回我们钱包中的以太币金额。 输入您的 Metamask 帐户地址并单击“发送请求”后，您应该会看到这样的响应：
+> **注意** 此结果的单位是 Wei，而不是 ETH。Wei 被用作以太币的最小面额。从 Wei 到 ETH 的转换是 1 ETH = 10<sup>18</sup> Wei。因此，如果我们将 0xde0b6b3a7640000 转换为十进制，我们会得到 1\*10<sup>18</sup> Wei，这等于 1 ETH。
 
-    `{"jsonrpc": "2.0", "id": 0, "result": "0xde0b6b3a7640000"}`
+呼！我们的假钱都在那里了。
 
-> **注：**此结果以 wei 为单位，而非 ETH。 Wei 是以太币的最小计量单位。 wei 与 ETH 之间的转换为 1 eth = 10<sup>18</sup> wei。 因此，如果我们将 0xde0b6b3a7640000 转换为十进制，我们得到 1\*10<sup>18</sup> wei，即 1 ETH。
+## 第 6 步：初始化我们的项目 {#initialize-project}
 
-哦！ 这里显示了我们所有的虚拟货币。
+首先，我们需要为我们的项目创建一个文件夹。导航到你的命令行并输入：
 
-## 步骤 6：初始化我们的项目 {#initialize-project}
+```sh
+mkdir my-nft
+cd my-nft
+```
 
-首先，需要为我们的项目创建一个文件夹。 导航到您的命令行，然后输入：
+现在我们进入了项目文件夹，我们将使用 npm init 来初始化项目。如果你还没有安装 npm，请按照 [Node.js 安装说明](https://nodejs.org/en/download/)进行操作（本教程需要 Node.js 和 npm）。
 
-    mkdir my-nft
-    cd my-nft
+```sh
+npm init
+```
 
-现在我们进入了项目文件夹，我们将使用 npm init 来初始化项目。 如果还没有安装 npm，请遵循[此处的说明](https://docs.alchemyapi.io/alchemy/guides/alchemy-for-macs#1-install-nodejs-and-npm)（我们还需要 [Node.js](https://nodejs.org/en/download/)，所以请下载此工具！）。
+你如何回答安装问题并不重要；以下是我们的做法，仅供参考：
 
-    npm init
+```console
+package name: (my-nft)
+version: (1.0.0)
+description: My first NFT!
+entry point: (index.js)
+test command:
+git repository:
+keywords:
+author:
+license: (ISC)
+About to write to /Users/thesuperb1/Desktop/my-nft/package.json:
 
-其实如何回答安装问题并不重要，以下提供一个回答的样例供参考：
+{
+  "name": "my-nft",
+  "version": "1.0.0",
+  "description": "My first NFT!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+```
 
-    package name: (my-nft)
-    version: (1.0.0)
-    description: My first NFT!
-    entry point: (index.js)
-    test command:
-    git repository:
-    keywords:
-    author:
-    license: (ISC)
-    About to write to /Users/thesuperb1/Desktop/my-nft/package.json:
+批准 package.json。我们接下来要安装的 Hardhat 3 仅支持 ES 模块项目，因此将项目标记为 ES 模块：
 
-    {
-      "name": "my-nft",
-      "version": "1.0.0",
-      "description": "My first NFT!",
-      "main": "index.js",
-      "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-      },
-      "author": "",
-      "license": "ISC"
-    }
+```sh
+npm pkg set type=module
+```
 
-批准 package.json，我们就可以开始了！
+这样我们就准备就绪了！
 
-## 步骤 7：安装[安全帽 (Hardhat)](https://hardhat.org/getting-started/#overview) {#install-hardhat}
+## 第 7 步：安装 [Hardhat](https://hardhat.org/docs/getting-started) {#install-hardhat}
 
-安全帽是一个用于编译、部署、测试和调试以太坊软件的开发环境。 它帮助开发者在本地构建智能合约和去中心化应用程序并部署到实时链上。
+Hardhat 是一个用于编译、部署、测试和调试以太坊软件的开发环境。它可以帮助开发人员在部署到实时链之前在本地构建智能合约和去中心化应用 (dapp)。
 
-在我们的 my-nft 项目内运行：
+Hardhat 3 需要 Node.js v22.13.0 或更高版本。在我们的 my-nft 项目中运行：
 
-    npm install --save-dev hardhat
+```sh
+npm install --save-dev hardhat
+```
 
-查看此页面，了解更多有关[安装说明](https://hardhat.org/getting-started/#overview)的详细信息。
+查看此页面以获取有关[安装说明](https://hardhat.org/docs/getting-started)的更多详细信息。
 
-## 步骤 8：创建安全帽项目 {#create-hardhat-project}
+## 第 8 步：创建 Hardhat 项目 {#create-hardhat-project}
 
-在我们的项目文件夹中运行：
+运行 `npx hardhat --init` 会生成一个完整的示例项目，但在本教程中，我们将手动进行设置，以便你可以看到每个部分。在项目文件夹的根目录中，创建一个名为 `hardhat.config.js` 的文件，其内容如下：
 
-    npx hardhat
+```js
+import { defineConfig } from "hardhat/config"
 
-然后应该能看到一条欢迎消息和选项，用于选择您想要做的事情。 选择“创建一个空的 hardhat.config.js”：
+export default defineConfig({
+  solidity: "0.8.34",
+})
+```
 
-    888    888                      888 888               888
-    888    888                      888 888               888
-    888    888                      888 888               888
-    8888888888  8888b.  888d888 .d88888 88888b.   8888b.  888888
-    888    888     "88b 888P"  d88" 888 888 "88b     "88b 888
-    888    888 .d888888 888    888  888 888  888 .d888888 888
-    888    888 888  888 888    Y88b 888 888  888 888  888 Y88b.
-    888    888 "Y888888 888     "Y88888 888  888 "Y888888  "Y888
-    👷 Welcome to Hardhat v2.0.11 👷‍
-    ? 您想做什么？ …
-    Create a sample project
-    ❯ Create an empty hardhat.config.js
-    Quit
+这是我们将指定项目所有设置的地方（在第 13 步）。目前，它只是告诉 Hardhat 使用哪个版本的 Solidity 编译器。
 
-这将生成一个 hardhat.config.js 文件，我们将在其中指定项目的所有设置（步骤 13）。
+## 第 9 步：添加项目文件夹 {#add-project-folders}
 
-## 步骤 9：添加项目文件夹 {#add-project-folders}
+为了保持项目井然有序，我们将创建两个新文件夹。在命令行中导航到项目的根目录并输入：
 
-为了使我们的项目有条理，我们将创建两个新的文件夹。 在您的命令行中导航到项目的根目录，然后输入：
+```sh
+mkdir contracts
+mkdir scripts
+```
 
-    mkdir contracts
-    mkdir scripts
+- contracts/ 是我们保存 NFT 智能合约代码的地方
 
-- contracts/ 是我们保存非同质化代币智能合约代码的位置。
+- scripts/ 是我们保存用于部署智能合约并与之交互的脚本的地方
 
-- scripts/ 是我们存放脚本的位置，用于部署我们的智能合约和与之交互。
+## 第 10 步：编写我们的合约 {#write-contract}
 
-## 步骤 10：编写合约 {#write-contract}
+现在我们的环境已经设置好了，接下来是更激动人心的事情：*编写我们的智能合约代码！*
 
-现在我们的环境已经配置完成，接下来将是更令人兴奋的内容：_编写我们的智能合约代码！_
+在你最喜欢的编辑器（我们喜欢 [VSCode](https://code.visualstudio.com/)）中打开 my-nft 项目。智能合约是用一种叫做 Solidity 的语言编写的，我们将使用它来编写我们的 MyNFT.sol 智能合约。
 
-在你喜欢的编辑器中打开 my-nft 项目（我们喜欢用 [VSCode](https://code.visualstudio.com/)）。 智能合约用一种名为 Solidity 的语言编写，我们将用它来编写我们的 MyNFT.sol 智能合约。
+1. 导航到 `contracts` 文件夹并创建一个名为 MyNFT.sol 的新文件。
 
-1. 导航到 `contracts` 文件夹并创建一个名为 MyNFT.sol 的新文件
-
-2. 下面是我们的非同质化代币智能合约代码，基于 [OpenZeppelin](https://docs.openzeppelin.com/contracts/3.x/erc721) 库的 ERC-721 实现。 复制并粘贴以下内容到您的 MyNFT.sol 文件。
+2. 以下是我们的 NFT 智能合约代码，它基于 [欧本齐柏林](https://docs.openzeppelin.com/contracts/5.x/erc721) 库的 ERC-721 实现。将以下内容复制并粘贴到你的 MyNFT.sol 文件中。
 
    ```solidity
-   //Contract based on [https://docs.openzeppelin.com/contracts/3.x/erc721](https://docs.openzeppelin.com/contracts/3.x/erc721)
+   // 基于 https://docs.openzeppelin.com/contracts/5.x/erc721 的合约
    // SPDX-License-Identifier: MIT
-   pragma solidity ^0.8.0;
+   pragma solidity ^0.8.24;
 
    import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-   import "@openzeppelin/contracts/utils/Counters.sol";
    import "@openzeppelin/contracts/access/Ownable.sol";
    import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
    contract MyNFT is ERC721URIStorage, Ownable {
-       using Counters for Counters.Counter;
-       Counters.Counter private _tokenIds;
+       uint256 private _nextTokenId;
 
-       constructor() ERC721("MyNFT", "NFT") {}
+       constructor(address initialOwner)
+           ERC721("MyNFT", "NFT")
+           Ownable(initialOwner)
+       {}
 
        function mintNFT(address recipient, string memory tokenURI)
            public onlyOwner
            returns (uint256)
        {
-           _tokenIds.increment();
-
-           uint256 newItemId = _tokenIds.current();
+           uint256 newItemId = ++_nextTokenId;
            _mint(recipient, newItemId);
            _setTokenURI(newItemId, tokenURI);
 
@@ -188,163 +188,188 @@ Alchemy 非常自豪能够推动非同质化代币领域的一些巨头，包括
    }
    ```
 
-3. 因为我们要从 OpenZeppelin 合约库继承类，请在您的命令行中运行 `npm install @openzeppelin/contracts`，将该库安装到我们的文件夹中。
+3. 因为我们继承了欧本齐柏林合约库中的类，所以在命令行中运行 `npm install @openzeppelin/contracts` 将该库安装到我们的文件夹中。本教程使用欧本齐柏林 Contracts 5.x，它需要 Solidity 0.8.24 或更高版本。
 
-那么，这段代码究竟*做*了什么？ 让我们把它逐行分解。
+那么，这段代码到底*做*了什么？让我们逐行分解。
 
-在我们的智能合约的顶部，我们导入了三个 [OpenZeppelin](https://openzeppelin.com/) 智能合约类：
+在智能合约的顶部，我们导入了三个 [欧本齐柏林](https://openzeppelin.com/) 智能合约类：
 
-- @openzeppelin/contracts/token/ERC721/ERC721.sol 包含 ERC-721 标准的实现，我们的非同质化代币智能合约将继承此标准。 （要成为有效的非同质化代币，您的智能合约必须实现 ERC-721 标准的所有方法。） 要更加详细地了解继承的 ERC-721 功能，请在[这里](https://eips.ethereum.org/EIPS/eip-721)查看接口定义。
+- @openzeppelin/contracts/token/ERC721/ERC721.sol 包含 ERC-721 标准的实现，我们的 NFT 智能合约将继承该标准。（要成为有效的 NFT，你的智能合约必须实现 ERC-721 标准的所有方法。）要了解有关继承的 ERC-721 函数的更多信息，请在[此处](https://eips.ethereum.org/EIPS/eip-721)查看接口定义。
 
-- @openzeppelin/contracts/utils/Counters.sol 提供了只能以 1 为增量或减量的计数器。 我们的智能合约使用一个计数器来跟踪非同质化代币总铸币量，并在我们的新非同质化代币上设置唯一 ID。 （每个使用智能合约铸造的非同质化代币必须分配一个唯一 ID——在这里，我们的唯一 ID 仅由存在的非同质化代币总量决定。 例如，我们用智能合约铸造的第一个非同质化代币的 ID 是“1”，第二个非同质化代币的 ID 是“2”，以此类推）
+- @openzeppelin/contracts/access/Ownable.sol 在我们的智能合约上设置了[访问控制](https://docs.openzeppelin.com/contracts/5.x/access-control)，因此只有智能合约的所有者（你）才能铸造 NFT。所有者是传递给构造函数的 `initialOwner` 地址。（注意，包含访问控制完全是个人偏好。如果你希望任何人都能使用你的智能合约铸造 NFT，请从合约定义和构造函数中删除 `Ownable` 和 `Ownable(initialOwner)`，并从 `mintNFT` 函数中删除 `onlyOwner`。）
 
-- @openzeppelin/contracts/access/Ownable.sol 在我们的智能合约上设置了[访问控制](https://docs.openzeppelin.com/contracts/3.x/access-control)，因此只有智能合约的所有者（您）可以铸造非同质化代币。 （注意：包含访问控制完全是一种偏好。 如果您希望任何人都能使用您的智能合约铸造非同质化代币，请删除第 10 行的 Ownable 和第 17 行的 onlyOwner）。
+- @openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol 扩展了 ERC-721，以便每个代币都可以存储自己的元数据 URI，我们在铸造时设置该 URI。
 
-导入语句后面，是我们自定义的非同质化代币智能合约。合约非常短，只包含一个计数器、一个构造函数和独立函数！ 这要归功于我们继承的 OpenZepelin 合约，它们实现了我们创建非同质化代币所需的大多数方法。例如 `owerOf` 函数，其作用是返回非同质化代币所有者，以及 `transferFrom` 函数，其作用是将非同质化代币的所有权从一个帐户转移到另一个帐户。
+在导入语句之后，我们有了自定义的 NFT 智能合约，它出奇地短——只包含一个计数器、一个构造函数和一个函数！这要归功于我们继承的欧本齐柏林合约，它们实现了我们创建 NFT 所需的大部分方法，例如返回 NFT 所有者的 `ownerOf`，以及将 NFT 的所有权从一个账户转移到另一个账户的 `transferFrom`。
 
-在我们的 ERC-721 构造函数中，你会注意到我们传递 2 个字符串，“MyNFT”和“NFT”。 第一个变量是智能合约的名称，第二个变量是其符号。 你可以随意命名这些变量！
+计数器 `_nextTokenId` 跟踪已铸造的 NFT 总数，并在我们的新 NFT 上设置唯一 ID。（使用智能合约铸造的每个 NFT 都必须分配一个唯一 ID——在这里，我们的唯一 ID 仅由存在的 NFT 总数决定。`++_nextTokenId` 在使用计数器之前增加它，因此我们使用智能合约铸造的第一个 NFT 的 ID 为“1”，第二个 NFT 的 ID 为“2”，依此类推。）
 
-最后，我们得到了函数 `mintNFT(address recipient, string memory tokenURI)`，它让我们能够铸造非同质化代币！ 你将注意到，这个函数包含两个变量：
+在我们的 ERC-721 构造函数中，你会注意到我们传递了 2 个字符串，“MyNFT”和“NFT”。第一个变量是智能合约的名称，第二个是它的符号。你可以随意命名这些变量！
 
-- `address recipient` 指定了接收新铸造非同质化代币的地址
+最后，我们有 `mintNFT(address recipient, string memory tokenURI)` 函数，它允许我们铸造 NFT！你会注意到这个函数接收两个变量：
 
-- `string memory tokenURI` 是一个可以解析为 JSON 文档的字符串，该文档用于描述非同质化代币的元数据。 非同质化代币的元数据是它的核心所在，使它拥有可配置的属性，例如名称、描述、图像和其他属性。 在本教程第二部分，我们将描述如何配置元数据。
+- `address recipient` 指定将接收你新铸造的 NFT 的地址
 
-`mintNFT` 调用了继承的 ERC-721 库中的一些方法，最终返回一个数字，代表新铸造非同质化代币的 ID。
+- `string memory tokenURI` 是一个字符串，它应该解析为描述 NFT 元数据的 JSON 文档。NFT 的元数据才是真正赋予它生命的东西，允许它具有可配置的属性，例如名称、描述、图像和其他属性。在本教程的第 2 部分中，我们将描述如何配置此元数据。
 
-## 步骤 11：将 Metamask 和 Alchemy 连接至您的项目 {#connect-metamask-and-alchemy}
+`mintNFT` 调用继承的 ERC-721 库中的一些方法，并最终返回一个代表新铸造的 NFT 的 ID 的数字。
 
-我们已经创建了 Metamask 钱包、Alchemy 帐户，并且编写了一个智能合约，现在是将这三者连接起来的时候了。
+## 第 11 步：将梅塔马斯克和 Alchemy 连接到你的项目 {#connect-metamask-and-alchemy}
 
-从虚拟钱包发送的每笔交易都需要使用您独有的私钥签名。 为了给程序提供此项许可，我们可以安全地将私钥（和 Alchemy 应用程序接口密钥）存储在一个环境文件中。
+现在我们已经创建了梅塔马斯克钱包、Alchemy 账户并编写了智能合约，是时候将这三者连接起来了。
 
-如需了解更多关于发送交易的信息，请查看关于使用 web3 发送交易的 [本教程](/developers/tutorials/sending-transactions-using-web3-and-alchemy/)。
+从你的虚拟钱包发送的每笔交易都需要使用你唯一的私钥进行签名。为了向我们的程序提供此权限，我们可以安全地将私钥（和 Alchemy API 密钥）存储在环境文件中。
 
-首先，在项目目录中安装 dotenv 软件包：
+要了解有关发送交易的更多信息，请查看[交易文档](/developers/docs/transactions/)。
 
-    npm install dotenv --save
+在项目的根目录中创建一个 `.env` 文件，并将你的梅塔马斯克私钥和 HTTP Alchemy API URL 添加到其中。
 
-然后在我们的项目根目录中创建 `.env` 文件，并将您的 MetaMask 私钥和超文本传输协议 Alchemy 应用程序接口网址加入其中。
+- 按照[这些说明](https://support.metamask.io/configure/accounts/how-to-export-an-accounts-private-key/)从梅塔马斯克导出你的私钥
 
-- 遵循[这些说明](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key)，从 MetaMask 导出您的私钥
+- 请参阅下文获取 HTTP Alchemy API URL 并将其复制到剪贴板
 
-- 请从下方获取超文本传输协议 Alchemy 应用程序接口网址并将其复制到剪贴板
-
-![复制你的 Alchemy 应用程序接口网址](./copy-alchemy-api-url.gif)
+![复制你的 Alchemy API URL](./copy-alchemy-api-url.mp4#842x480)
 
 你的 `.env` 现在应该如下所示：
 
-    API_URL="https://eth-sepolia.g.alchemy.com/v2/your-api-key"
-    PRIVATE_KEY="your-metamask-private-key"
+```text
+API_URL="https://eth-sepolia.g.alchemy.com/v2/your-api-key"
+PRIVATE_KEY="your-metamask-private-key"
+```
 
-为了将它们实际连接到我们的代码，我们将在步骤 13 中在 hardhat.config.js 文件中引用这些变量。
+为了将这些实际连接到我们的代码，我们将在第 13 步的 hardhat.config.js 文件中引用这些变量。Node.js 可以自行读取 `.env` 文件，因此无需安装额外的包。
 
 <EnvWarningBanner />
 
-## 步骤 12：安装 Ethers.js {#install-ethers}
+## 第 12 步：安装 Ethers.js {#install-ethers}
 
-Ethers.js 是一个软件库，通过以更加方便用户的方法打包[标准 JSON RPC 方法](/developers/docs/apis/json-rpc/)，从而更容易与以太坊互动，并向以太坊提出请求。
+Ethers.js 是一个库，它通过用更用户友好的方法包装[标准 JSON-RPC 方法](/developers/docs/apis/json-rpc/)，使与以太坊交互和发出请求变得更加容易。
 
-安全帽使我们更容易将[插件](https://hardhat.org/plugins/)集成到工具和扩展功能中。 我们将利用 [Ethers 插件](https://hardhat.org/plugins/nomiclabs-hardhat-ethers.html)完成合约部署（[Ethers.js](https://github.com/ethers-io/ethers.js/) 有非常简洁的部署方法）。
+Hardhat 使得集成[插件](https://hardhat.org/docs/plugins/official-plugins)以获得额外的工具和扩展功能变得非常容易。我们将利用 [Ethers 插件](https://hardhat.org/docs/plugins/hardhat-ethers)进行合约部署（[Ethers.js](https://docs.ethers.org/v6/) 有一些非常简洁的合约部署方法）。
 
-在您的项目目录中输入：
+在你的项目目录中输入：
 
-    npm install --save-dev @nomiclabs/hardhat-ethers ethers@^5.0.0
+```sh
+npm install --save-dev @nomicfoundation/hardhat-ethers ethers
+```
 
-下一步中，我们还将在 hardhat.config.js 中使用 ethers。
+在下一步中，我们还将把该插件添加到我们的 hardhat.config.js 中。
 
-## 步骤 13：更新 hardhat.config.js {#update-hardhat-config}
+## 第 13 步：更新 hardhat.config.js {#update-hardhat-config}
 
-到目前为止，我们已经添加了几个依赖库和插件，现在我们需要更新 hardhat.config.js，以使项目了解所有这些新的组件。
+到目前为止，我们已经添加了几个依赖项和插件，现在我们需要更新 hardhat.config.js，以便我们的项目了解所有这些内容。
 
-按如下所示更新你的 hardhat.config.js 代码：
+将你的 hardhat.config.js 更新为如下所示：
 
-    /**
-    * @type import('hardhat/config').HardhatUserConfig
-    */
-    require('dotenv').config();
-    require("@nomiclabs/hardhat-ethers");
-    const { API_URL, PRIVATE_KEY } = process.env;
-    module.exports = {
-       solidity: "0.8.1",
-       defaultNetwork: "sepolia",
-       networks: {
-          hardhat: {},
-          sepolia: {
-             url: API_URL,
-             accounts: [`0x${PRIVATE_KEY}`]
-          }
-       },
-    }
+```js
+import { existsSync } from "node:fs"
+import hardhatEthers from "@nomicfoundation/hardhat-ethers"
+import { configVariable, defineConfig } from "hardhat/config"
 
-## 步骤 14：编写合约 {#compile-contract}
+// 如果存在 .env 文件，则将其中的 API_URL 和 PRIVATE_KEY 加载到 process.env 中
+if (existsSync(".env")) process.loadEnvFile()
 
-为了确保一切正常，我们来编译一下合约。 编译任务是 hardhat 的内部任务之一。
+export default defineConfig({
+  plugins: [hardhatEthers],
+  solidity: "0.8.34",
+  networks: {
+    sepolia: {
+      type: "http",
+      url: configVariable("API_URL"),
+      accounts: [configVariable("PRIVATE_KEY")],
+    },
+  },
+})
+```
+
+`configVariable` 告诉 Hardhat 仅在需要时才从环境变量中读取每个值，因此像 `compile` 这样的命令甚至在设置值之前就可以工作。如果你不想将私钥保存在纯文本文件中，Hardhat 也可以[从加密的密钥库中读取配置变量](https://hardhat.org/docs/guides/configuration-variables)。
+
+## 第 14 步：编译我们的合约 {#compile-contract}
+
+为了确保到目前为止一切正常，让我们编译我们的合约。编译任务是内置的 hardhat 任务之一。
 
 在命令行中运行：
 
-    npx hardhat compile
-
-你可能会看到关于源文件中未提供 SPDX 许可证识别码的警告，但无需担心，但愿其它的一切正常！ 如果遇到问题，您可以随时在 [Alchemy cord](https://discord.gg/u72VCg3) 社区中发消息询问。
-
-## 步骤 15：编写部署脚本 {#write-deploy}
-
-合约已经写完，配置文件也准备妥当，现在是写合约部署脚本的时候了。
-
-转到 `scripts/` 文件夹，创建一个名为 `deploy.js` 的新文件，在其中添加以下内容：
-
-```js
-async function main() {
-  const MyNFT = await ethers.getContractFactory("MyNFT")
-
-  // Start deployment, returning a promise that resolves to a contract object
-  const myNFT = await MyNFT.deploy()
-  await myNFT.deployed()
-  console.log("Contract deployed to address:", myNFT.address)
-}
-
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error)
-    process.exit(1)
-  })
+```sh
+npx hardhat compile
 ```
 
-安全帽在[合约教程](https://hardhat.org/tutorial/testing-contracts.html#writing-tests)中对这些代码的每一行均提供了很好的解释，我们在这里直接引用他们的解释。
+第一次编译时，Hardhat 会下载 Solidity 编译器。然后你应该会看到类似 `Compiled 1 Solidity file with solc 0.8.34` 的内容。如果没有，你可以随时在 [Alchemy Discord](https://discord.gg/gWuC7zB) 中留言。
 
-    const MyNFT = await ethers.getContractFactory("MyNFT");
+## 第 15 步：编写我们的部署脚本 {#write-deploy}
 
-ethers.js 中的 ContractFactory 是用于部署新智能合约的抽象对象，因此这里的 MyNFT 是我们非同质化代币合约实例的工厂。 使用 hardhat-ethers 插件时，ContractFactory 和合约实例默认与第一个签名帐户相连。
+现在我们的合约已经编写完毕，配置文件也准备就绪，是时候编写我们的合约部署脚本了。
 
-    const myNFT = await MyNFT.deploy();
+导航到 `scripts/` 文件夹并创建一个名为 `deploy.js` 的新文件，向其中添加以下内容：
 
-调用 ContractFactory 代码中的 deploy() 函数会启动合约部署，然后返回解析为合约的 Promise。 这个对象包括我们智能合约中每个函数的对应调用方法。
+```js
+import { network } from "hardhat"
 
-## 步骤 16：部署合约 {#deploy-contract}
+const { ethers } = await network.create()
 
-我们终于准备好部署我们的智能合约啦！ 返回项目目录的根目录，在命令行中运行：
+const [deployer] = await ethers.getSigners()
+const MyNFT = await ethers.getContractFactory("MyNFT")
 
-    npx hardhat --network sepolia run scripts/deploy.js
+// 开始部署，返回一个解析为合约对象的 Promise
+const myNFT = await MyNFT.deploy(deployer.address)
+await myNFT.waitForDeployment()
+console.log("Contract deployed to address:", await myNFT.getAddress())
+```
 
-您会看到类似以下所示的信息：
+让我们来看看这些代码行各自的作用。
 
-    在地址 0x4C5266cCc4b3F426965d2f51b6D910325a0E7650 部署的合约
+```js
+const { ethers } = await network.create()
+```
 
-如果我们访问 [Sepolia etherscan](https://sepolia.etherscan.io/) 并搜索我们的合约地址，应该能够看到它已成功部署。 如果未能立即看到它，请稍等片刻，因为部署可能需要一些时间。 交易将类似以下：
+在 Hardhat 3 中，脚本显式打开与网络的连接。`network.create()` 连接到你在运行脚本时使用 `--network` 选项选择的网络，并且 `hardhat-ethers` 插件将 `ethers` 对象添加到该连接中。
+
+```js
+const [deployer] = await ethers.getSigners()
+```
+
+`getSigners()` 返回为网络配置的账户。在 Sepolia 上，这就是你在 `.env` 中放入私钥的账户。我们将其地址传递给构造函数，以便你成为合约的所有者。
+
+```js
+const MyNFT = await ethers.getContractFactory("MyNFT")
+```
+
+ethers.js 中的 ContractFactory 是用于部署新智能合约的抽象，因此这里的 MyNFT 是我们 NFT 合约实例的工厂。使用 hardhat-ethers 插件时，ContractFactory 和 Contract 实例默认连接到第一个签名者。
+
+```js
+const myNFT = await MyNFT.deploy(deployer.address)
+```
+
+在 ContractFactory 上调用 deploy() 将开始部署，并返回一个解析为 Contract 的 Promise。这个对象为我们的每个智能合约函数提供了一个方法。你传递给 deploy() 的参数会进入合约的构造函数，这里是 `initialOwner` 地址。
+
+`waitForDeployment()` 等待部署交易被包含在区块中，而 `getAddress()` 返回新合约的地址。有关更多详细信息，请参阅 [ethers.js 合约文档](https://docs.ethers.org/v6/api/contract/)。
+
+## 第 16 步：部署我们的合约 {#deploy-contract}
+
+我们终于准备好部署我们的智能合约了！导航回项目目录的根目录，并在命令行中运行：
+
+```sh
+npx hardhat run scripts/deploy.js --network sepolia
+```
+
+然后你应该会看到类似以下内容：
+
+```text
+Contract deployed to address: 0x4C5266cCc4b3F426965d2f51b6D910325a0E7650
+```
+
+如果我们转到 [Sepolia Etherscan](https://sepolia.etherscan.io/) 并搜索我们的合约地址，我们应该能够看到它已成功部署。如果你不能立即看到它，请稍等片刻，因为这可能需要一些时间。交易将如下所示：
 
 ![在 Etherscan 上查看你的交易地址](./etherscan-sepoila-contract-creation.png)
 
-发送地址应匹配你的 MetaMask 帐户地址，收件地址将显示“合约创建”。 如果我们点击进入交易，将会在“To”字段中看到我们的合约地址：
+From 地址应与你的梅塔马斯克账户地址匹配，To 地址将显示“Contract Creation”。如果我们点击进入交易，我们将在 To 字段中看到我们的合约地址：
 
-![在 Etherscan 上查看您的合约地址](./etherscan-sepolia-tx-details.png)
+![在 Etherscan 上查看你的合约地址](./etherscan-sepolia-tx-details.png)
 
-太棒了！ 你刚刚在以太坊（测试网）区块链上部署了你的非同质化代币智能合约！
+太棒了！你刚刚将你的 NFT 智能合约部署到了以太坊（测试网）链上！
 
-为了更深入了解到底发生了什么，我们转到 [Alchemy 仪表板](https://dashboard.alchemyapi.io/explorer)中的 Explorer 选项卡。 如果你有多个 Alchemy 应用程序，请确保按应用程序筛选，然后选择“MyNFT”。
+要了解内部运作原理，你可以查看你的应用在 [Alchemy 仪表板](https://dashboard.alchemy.com/)中收到的请求。
 
-![使用 Alchemy 的浏览器仪表板查看“后端”调用](./alchemy-explorer-goerli.png)
+在那里，你会看到当我们调用 .deploy() 函数时，Hardhat/Ethers 在内部为我们进行的一些 JSON-RPC 调用。这里需要指出的两个重要调用是 [eth_sendRawTransaction](/developers/docs/apis/json-rpc/#eth-sendrawtransaction)（这是将我们的智能合约实际写入 Sepolia 链的请求）和 [eth_getTransactionByHash](/developers/docs/apis/json-rpc/#eth-gettransactionbyhash)（这是在给定哈希的情况下读取有关我们交易信息的请求，这是发送交易时的典型模式）。要了解有关发送交易的更多信息，请查看[交易文档](/developers/docs/transactions/)。
 
-在这里，你会看到一系列 JSON-RPC 调用，都是在我们调用 .deploy() 函数时 Hardhat/Ethers 替我们在后端完成的。 这里有两项重要调用，一个是 [eth_sendRawTransaction](/developers/docs/apis/json-rpc/#eth_sendrawtransaction)，这是实际将我们的智能合约写入 Sepolia 链的请求，另一个是 [eth_getTransactionByHash](/developers/docs/apis/json-rpc/#eth_gettransactionbyhash)，这是在提供哈希值时读取有关我们交易信息的请求（发送交易时的典型模式）。 如需了解更多关于发送交易的信息，请查看关于[使用 Web3 发送交易](/developers/tutorials/sending-transactions-using-web3-and-alchemy/)的本教程。
-
-以上即为本教程第 1 部分的全部内容。 在[第 2 部分，我们将通过铸造非同质化代币与我们的智能合约进行交互](/developers/tutorials/how-to-mint-an-nft/)，在[第 3 部分，我们将向你演示如何在以太坊钱包中查看你的非同质化代币](/developers/tutorials/how-to-view-nft-in-metamask/)！
+这就是本教程第 1 部分的全部内容。在[第 2 部分中，我们将通过铸造 NFT 实际与我们的智能合约进行交互](/developers/tutorials/how-to-mint-an-nft/)，在[第 3 部分中，我们将向你展示如何在你的以太坊钱包中查看你的 NFT](/developers/tutorials/how-to-view-nft-in-metamask/)！

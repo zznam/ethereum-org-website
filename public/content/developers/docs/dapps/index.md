@@ -1,10 +1,10 @@
 ---
-title: Introduction to dapps
-description:
+title: Technical introduction to dapps
+description: "A technical introduction to dapps: how decentralized applications combine smart contracts on Ethereum with a frontend, and how they differ from web apps."
 lang: en
 ---
 
-A decentralized application (dapp) is an application built on a decentralized network that combines a [smart contract](/developers/docs/smart-contracts/) and a frontend user interface. On Ethereum, smart contracts are accessible and transparent – like open APIs – so your dapp can even include a smart contract that someone else has written.
+A decentralized application (dapp) is an application built on a decentralized network that combines a [smart contract](/developers/docs/smart-contracts/) and a frontend user interface. On [Ethereum](/), smart contracts are accessible and transparent – like open APIs – so your dapp can even include a smart contract that someone else has written.
 
 ## Prerequisites {#prerequisites}
 
@@ -45,11 +45,11 @@ A smart contract is code that lives on the Ethereum blockchain and runs exactly 
 
 ## More of a visual learner? {#visual-learner}
 
-<YouTube id="F50OrwV6Uk8" />
+<VideoWatch slug="what-is-a-dapp" />
 
 ## Tools for creating dapps {#dapp-tools}
 
-**Scaffold-ETH _- Quickly experiment with Solidity using a frontend that adapts to your smart contract._**
+**Scaffold-ETH 2 _- Quickly experiment with Solidity using a frontend that adapts to your smart contract._**
 
 - [GitHub](https://github.com/scaffold-eth/scaffold-eth-2)
 - [Example dapp](https://punkwallet.io/)
@@ -74,9 +74,15 @@ A smart contract is code that lives on the Ethereum blockchain and runs exactly 
 - [Documentation](https://portal.thirdweb.com/)
 - [GitHub](https://github.com/thirdweb-dev/)
 
+**Crossmint _- Enterprise-grade web3 development platform to deploy smart contracts, enable credit-card and cross chain payments, and use APIs to create, distribute, sell, store, and edit NFTs._**
+
+- [crossmint.com](https://www.crossmint.com)
+- [Documentation](https://docs.crossmint.com)
+- [Discord](https://discord.com/invite/crossmint)
+
 ## Further reading {#further-reading}
 
-- [Explore dapps](/dapps)
+- [Explore dapps](/apps)
 - [The Architecture of a Web 3.0 application](https://www.preethikasireddy.com/post/the-architecture-of-a-web-3-0-application) - _Preethi Kasireddy_
 - [A 2021 guide to decentralized applications](https://limechain.tech/blog/what-are-dapps-the-2021-guide/) - _LimeChain_
 - [What Are Decentralized Apps?](https://www.gemini.com/cryptopedia/decentralized-applications-defi-dapps) - _Gemini_
@@ -88,3 +94,10 @@ _Know of a community resource that helped you? Edit this page and add it!_
 
 - [Introduction to the Ethereum stack](/developers/docs/ethereum-stack/)
 - [Development frameworks](/developers/docs/frameworks/)
+
+## Tutorials: Build apps and frontends on Ethereum {#tutorials}
+
+- [Uniswap-v2 Contract Walk-Through](/developers/tutorials/uniswap-v2-annotated-code/) _– An annotated walkthrough of the Uniswap v2 core contracts explaining how the AMM works._
+- [Building a user interface for your contract](/developers/tutorials/creating-a-wagmi-ui-for-your-contract/) _– How to build a modern React + wagmi frontend that connects to your smart contract._
+- [Server components and agents for web3 apps](/developers/tutorials/server-components/) _– How to write TypeScript server components that listen to blockchain events and respond with transactions._
+- [IPFS for decentralized user interfaces](/developers/tutorials/ipfs-decentralized-ui/) _– How to host your dapp's frontend on IPFS for censorship resistance._

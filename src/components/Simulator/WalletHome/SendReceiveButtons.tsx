@@ -1,11 +1,11 @@
-import React from "react"
-import { PiPaperPlaneRightFill } from "react-icons/pi"
-import { Flex } from "@chakra-ui/react"
+import { QrCode, SendHorizontal } from "lucide-react"
+import { useTranslations } from "next-intl"
 
-import { QrCodeIcon } from "../icons"
+import { Flex } from "@/components/ui/flex"
+
 import type { SimulatorNav } from "../interfaces"
 
-import { SendReceiveButton } from "./SendRecieveButton"
+import { SendReceiveButton } from "./SendReceiveButton"
 import type { SendReceiveEnabled } from "./types"
 
 type SendReceiveButtonsProps = {
@@ -16,6 +16,7 @@ export const SendReceiveButtons = ({
   nav,
   isEnabled = [false, false],
 }: SendReceiveButtonsProps) => {
+  const t = useTranslations("component-wallet-simulator")
   const [isSendEnabled, isReceiveEnabled] = isEnabled
   if (nav && isSendEnabled && isReceiveEnabled)
     throw new Error(
@@ -26,23 +27,23 @@ export const SendReceiveButtons = ({
   const highlightSend = !nav || !disableSend
   const highlightReceive = !nav || !disableReceive
   return (
-    <Flex justify="space-around" w="full" gap={4}>
+    <Flex className="w-full justify-around gap-4">
       <SendReceiveButton
         onClick={nav?.progressStepper}
         isDisabled={disableSend}
         isHighlighted={highlightSend}
-        icon={PiPaperPlaneRightFill}
+        icon={SendHorizontal}
       >
-        Send
+        {t("sim-send")}
       </SendReceiveButton>
       <SendReceiveButton
         onClick={nav?.progressStepper}
         isDisabled={disableReceive}
         isHighlighted={highlightReceive}
-        icon={QrCodeIcon}
+        icon={QrCode}
         isAnimated
       >
-        Receive
+        {t("sim-receive")}
       </SendReceiveButton>
     </Flex>
   )

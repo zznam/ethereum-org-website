@@ -4,8 +4,6 @@ description: Non-english resources to learn about Ethereum
 lang: en
 ---
 
-# Language resources {#language-resources}
-
 The Ethereum community is global and comprised of millions of non-English speakers.
 
 Our aim is to provide educational content in all languages and help overcome the language barriers that make onboarding people from all over the world to Ethereum a challenge.
@@ -29,16 +27,17 @@ If you are bilingual and want to help us reach more people, you can also get inv
 **News**
 
 - [BeInCrypto](http://www.beincrypto.com.br) - cryptocurrency news and articles, including a list of exchanges, available in Brazil
-- [Cointelegraph](http://cointelegraph.com.br/category/analysis) - Brazilian version of Cointelegraph, a major cryptocurrency news outlet
+- [Cointelegraph](https://cointelegraph.com.br/) - Brazilian version of Cointelegraph, a major cryptocurrency news outlet
 - [Livecoins](http://www.livecoins.com.br/ethereum) - cryptocurrency news and tools
 - [Seudinheiro](http://www.seudinheiro.com/criptomoedas/) - cryptocurrency news and reports
+- [Modular Crypto](https://modularcrypto.xyz/) - cryptocurrency news and educational articles
 
 **Education**
 
 - [web3dev](https://www.web3dev.com.br/) - Content hub and Discord community for web 3 developers.
 - [Web3Brasil](https://github.com/web3brasil/web3brasil) - resources for learning Web3 and DeFi
 - [CriptoFacil](http://www.criptofacil.com/ultimas-noticias/) - cryptocurrency news and education, including ‘Ethereum for beginners’ and ‘DeFi’ for beginners
-- [CriptoAtivos](http://www.criptoativos.wiki.br/) - insights from the cryptocurrency space, education and blog
+- [CriptoAtivos](https://web.archive.org/web/20220916210708/https://www.criptoativos.wiki.br/) - insights from the cryptocurrency space, education and blog
 - [Cointimes](http://www.cointimes.com.br/) - cryptocurrency news and education
 - [Web3 starter pack](https://docs.google.com/document/d/1X8PSTFH7FTw9J-gbKWM6Y430SWCBT8d4t4pJgFQHJ8E/) - a guide answering the most frequently asked and fundamental crypto questions
 
@@ -51,7 +50,6 @@ If you are bilingual and want to help us reach more people, you can also get inv
 - [Unitimes](https://mp.weixin.qq.com/s/tvloZSDBSOQN9zDQj_91kA) - community maintained content, covering Ethereum, DeFi, NFT, Web3-related knowledge
 - [123ETH](https://123eth.org/) - a Portal to the Ethereum ecosystem
 - [Zhen Xiao](http://zhenxiao.com/blockchain/) - free online courses about cryptocurrency and its applications
-- [Ethereum Whitepaper](https://github.com/ethereum/wiki/wiki/[%E4%B8%AD%E6%96%87]-%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%99%BD%E7%9A%AE%E4%B9%A6) - Chinese version of the Ethereum Whitepaper
 
 **Ethereum ecosystem**
 
@@ -90,6 +88,24 @@ If you are bilingual and want to help us reach more people, you can also get inv
 - [Microsoft Learn (Ethereum networks)](https://docs.microsoft.com/de-de/learn/modules/blockchain-ethereum-networks/) - connect to and deploy Ethereum networks
 - [Microsoft Learn (blockchains)](https://docs.microsoft.com/de-de/learn/paths/ethereum-blockchain-development/) - entry into blockchain development
 
+### Hebrew {#he}
+
+- [Udi Wertheimer - What bitcoiners can learn from Ethereum](https://www.cryptojungle.co.il/udi-wertheimer-what-bitcoiners-can-learn-from-ethereum/)
+- [Omer Greismen (OpenZeppelin) - How We Prevented a 15 Billion Dollars Smart Contract Hack](https://www.cryptojungle.co.il/omer-greisman-openzeppelin/)
+- [Shy Datika (INX) - Tokenization and the future of securities, including is Ethereum a security](https://www.cryptojungle.co.il/shy-datika-tokenization/)
+- [Roy Confino (Lemonade) - Insurance @ Ethereum](https://www.cryptojungle.co.il/roy-confino-insurance/)
+- [Idan Ofrat (Fireblocks) - Institutional Adoption](https://www.cryptojungle.co.il/idan-ofrat-fireblocks/)
+- [Gal Weizman (MetaMask) - What is MetaMask](https://www.cryptojungle.co.il/gal-weizman-metamask/)
+- [Dror Aviely (Consensys) - The center of Ethereum](https://www.cryptojungle.co.il/dror-aviely-ethereum-center/)
+- [Nir Rozin - Being a cryptopunk](https://www.cryptojungle.co.il/nir-rozin-cryptopunk/)
+- [Adan Kedem - Gaming & Metaverse](https://www.cryptojungle.co.il/adan-kedem-web3-gaming/)
+- [Uri Kolodny (Starkware) - Ethereum and blockchain layers](https://www.cryptojungle.co.il/uri-kolodny-starkware/)
+- [Udi Wertheimer - Ethereum 2.0 vs competition](https://www.cryptojungle.co.il/udi-on-eth2/)
+- [Ben Samocha (myself) - Ethereum 2.0 - an opportunity?](https://www.cryptojungle.co.il/etherurm2-week-summary/)
+- [Alon Muroch (Bloxstaking) - What is Ethereum 2.0?](https://www.cryptojungle.co.il/alon-moroch-eth2/)
+- [Eilon Aviv (Collider Ventures) - What can go wrong with Ethereum 2.0](https://www.cryptojungle.co.il/eilon-aviv-eth2-0/)
+- [Eilon Aviv (Collider Ventures) - Why do we need Ethereum 2.0](https://www.cryptojungle.co.il/eilon-aviv-ethereum-2-0/)
+
 ### Italian {#it}
 
 - [Ethereum Italia](https://www.ethereum-italia.it/) - Ethereum education, events, and news, focusing on smart contracts and blockchain technology
@@ -98,9 +114,19 @@ If you are bilingual and want to help us reach more people, you can also get inv
 - [Microsoft Learn (Smart contracts)](https://docs.microsoft.com/it-it/learn/modules/blockchain-solidity-ethereum-smart-contracts/) - learn about writing smart contracts using Solidity
 - [Microsoft Learn (dapps)](https://docs.microsoft.com/it-it/learn/modules/blockchain-create-ui-decentralized-apps/) - create a user interface with decentralized applications
 
+### Japanese {#ja}
+
+- [Japan Virtual and Crypto assets Exchange Association](https://jvcea.or.jp/)
+- [Japan Cryptoasset Business Association](https://cryptocurrency-association.org/)
+- [Get started with blockchain development - Learn | Microsoft Docs](https://docs.microsoft.com/ja-jp/learn/paths/ethereum-blockchain-development/) - This learning path introduces you to blockchain and development on the Ethereum platform
+- [Mastering Ethereum](https://www.oreilly.co.jp/books/9784873118963/) - Mastering Ethereum in Japanese
+- [Hands-On Smart Contract Development with Solidity and Ethereum](https://www.oreilly.co.jp/books/9784873119342/) - Hands-On Smart Contract Development with Solidity and Ethereum in Japanese
+
 ### Russian {#ru}
 
 - [Cyber Academy](https://cyberacademy.dev) - educational space for web3 builders
+- [Forklog](https://forklog.com) - news and educational articles about crypto in general, existing technologies and future upgrades of different blockchains
+- [BeInCrypto](https://ru.beincrypto.com) - news, crypto price analysis and non-technical articles with simple explanations about everything in crypto
 
 ### Spanish {#es}
 
@@ -122,11 +148,3 @@ If you are bilingual and want to help us reach more people, you can also get inv
 - [Tino Group](https://wiki.tino.org/ethereum-la-gi/) - overview of Ethereum, dapps, wallets and FAQs
 - [Tap Chi Bitcoin](https://tapchibitcoin.io/tap-chi/tin-tuc-ethereum-eth) - web platform with subpages for Ethereum news and education
 - [Coin68](https://coin68.com/ethereum-tieu-diem/) - cryptocurrency portal with Ethereum news and educational content
-
-### Japanese {#ja}
-
-- [Japan Virtual and Crypto assets Exchange Association](https://jvcea.or.jp/)
-- [Japan Cryptoasset Business Association](https://cryptocurrency-association.org/)
-- [Get started with blockchain development - Learn | Microsoft Docs](https://docs.microsoft.com/ja-jp/learn/paths/ethereum-blockchain-development/) - This learning path introduces you to blockchain and development on the Ethereum platform
-- [Mastering Ethereum](https://www.oreilly.co.jp/books/9784873118963/) - Mastering Ethereum in Japanese
-- [Hands-On Smart Contract Development with Solidity and Ethereum](https://www.oreilly.co.jp/books/9784873119342/) - Hands-On Smart Contract Development with Solidity and Ethereum in Japanese

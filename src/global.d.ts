@@ -5,14 +5,19 @@ export {}
 declare global {
   interface Window {
     // Used by matomo
-    _paq: any
+    _paq: unknown
     dev: boolean
   }
 
   namespace NodeJS {
     interface ProcessEnv {
       GITHUB_TOKEN: string
-      ALGOLIA_ADMIN_KEY: string
+      TYPESENSE_ADMIN_KEY: string
+      TYPESENSE_SEARCH_KEY: string
+      TYPESENSE_URL: string
+      INFERENCE_URL: string
+      INFERENCE_API_KEY: string
+      INFERENCE_CHAT_MODEL: string
       ETHERSCAN_API_KEY: string
       CROWDIN_API_KEY: string
     }

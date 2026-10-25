@@ -1,182 +1,230 @@
 ---
 title: Librerie API di backend
-description: Introduzione alle API client di Ethereum che permettono l'interazione tra un'applicazione con la blockchain.
+description: Un'introduzione alle API dei client Ethereum che ti consentono di interagire con la blockchain dalla tua applicazione.
 lang: it
 ---
 
-Per interagire con la blockchain Ethereum (ad esempio leggere i dati della blockchain e/o inviare transazioni alla rete), un'applicazione software deve connettersi a un nodo Ethereum.
+Affinché un'applicazione software possa interagire con la blockchain di [Ethereum](/) (ovvero, leggere i dati della blockchain e/o inviare transazioni alla rete), deve connettersi a un nodo Ethereum.
 
-Per questo scopo, ogni client di Ethereum implementa la specifica [JSON-RPC](/developers/docs/apis/json-rpc/), quindi esiste una serie uniforme di [metodi](/developers/docs/apis/json-rpc/#json-rpc-methods) su cui possono basarsi le applicazioni.
+A questo scopo, ogni client Ethereum implementa la specifica [JSON-RPC](/developers/docs/apis/json-rpc/), in modo che esista un insieme uniforme di [metodi](/developers/docs/apis/json-rpc/#json-rpc-methods) su cui le applicazioni possono fare affidamento.
 
-Se desideri utilizzare un linguaggio di programmazione specifico per connetterti a un nodo Ethereum, sviluppa una soluzione personalizzata, ma tieni presente che ci sono già molte librerie all'interno dell'ecosistema che possono facilitarti la vita. Con queste librerie, gli sviluppatori possono scrivere metodi a una riga intuitivi per inizializzare le richieste RPC JSON (under the hood) che interagiscono con Ethereum.
+Se desideri utilizzare un linguaggio di programmazione specifico per connetterti a un nodo Ethereum, ci sono molte librerie di utilità all'interno dell'ecosistema che rendono tutto ciò molto più semplice. Con queste librerie, gli sviluppatori possono scrivere metodi intuitivi di una sola riga per inizializzare richieste JSON-RPC (internamente) che interagiscono con Ethereum.
 
 ## Prerequisiti {#prerequisites}
 
-Potrebbe essere utile comprendere meglio lo [stack di Ethereum](/developers/docs/ethereum-stack/) e[i client di Ethereum](/developers/docs/nodes-and-clients/).
+Potrebbe essere utile comprendere lo [stack di Ethereum](/developers/docs/ethereum-stack/) e i [client Ethereum](/developers/docs/nodes-and-clients/).
 
 ## Perché usare una libreria? {#why-use-a-library}
 
-Queste librerie eliminano buona parte della complessità legata al dover interagire direttamente con un nodo Ethereum. Forniscono inoltre funzioni di utilità (ad esempio conversione da ETH a Gwei) in modo da ridurre il tempo necessario per districarsi tra le complessità dei client Ethereum e potersi concentrare sulle funzionalità uniche dell'applicazione.
+Queste librerie astraggono gran parte della complessità dell'interazione diretta con un nodo Ethereum. Forniscono anche funzioni di utilità (ad es. la conversione di ETH in Gwei) in modo che, come sviluppatore, tu possa dedicare meno tempo ad affrontare le complessità dei client Ethereum e più tempo a concentrarti sulle funzionalità uniche della tua applicazione.
 
 ## Librerie disponibili {#available-libraries}
 
-**Alchemy -** **_Piattaforma di sviluppo Ethereum_**
+### Infrastruttura e servizi di nodo {#infrastructure-and-node-services}
+
+**Alchemy -** **_Piattaforma di sviluppo di Ethereum._**
 
 - [alchemy.com](https://www.alchemy.com/)
-- [Documentazione](https://docs.alchemyapi.io/)
+- [Documentazione](https://www.alchemy.com/docs/)
 - [GitHub](https://github.com/alchemyplatform)
-- [Discord](https://discord.com/invite/A39JVCM)
+- [Discord](https://discord.com/invite/alchemyplatform)
+  
+**All That Node -** **_Nodo come servizio._**
 
-**BlockCypher -** **_API Web Ethereum._**
+- [All That Node.com](https://www.allthatnode.com/)
+- [Documentazione](https://docs.allthatnode.com)
+- [Discord](https://discord.gg/GmcdVEUbJM)
 
-- [blockcypher.com](https://www.blockcypher.com/)
-- [Documentazione](https://www.blockcypher.com/dev/ethereum/)
-
-**Blast by Bware Labs -** **_API decentralizzate per la rete principale e le reti di prova di Ethereum._**
+**Blast by Bware Labs -** **_Interfacce di programmazione delle applicazioni (API) decentralizzate per la Mainnet di Ethereum e le reti di test._**
 
 - [blastapi.io](https://blastapi.io/)
 - [Documentazione](https://docs.blastapi.io)
-- [Discord](https://discord.com/invite/VPkWESgtvV)
+- [Discord](https://discord.gg/SaRqmRUjjQ)
 
-**Infura -** **_L'API Ethereum come servizio_**
-
-- [infura.io](https://infura.io)
-- [Documentazione](https://infura.io/docs)
-- [GitHub](https://github.com/INFURA)
-
-**Gateway Ethereum Cloudflare**
-
-- [cloudflare-eth.com](https://cloudflare-eth.com)
-
-**Nodo cloud di Coinbase-** **_API per l'infrastruttura della Blockchain._**
-
-- [Nodo in cloud di Coinbase](https://www.coinbase.com/cloud/products/node)
-- [Documentazione](https://docs.cloud.coinbase.com/node/reference/welcome-to-node)
-
-**DataHub di Figment -** **_Servizi API Web3 con la Rete principale e le reti di prova di Ethereum._**
-
-- [DataHub](https://www.figment.io/datahub)
-- [Documentazione](https://docs.figment.io/introduction/what-is-datahub)
-
-**NFTPort -** **_Dati di Ethereum e API di Mint._**
-
-- [nftport.xyz](https://www.nftport.xyz/)
-- [Documentazione](https://docs.nftport.xyz/)
-- [GitHub](https://github.com/nftport/)
-- [Discord](https://discord.com/invite/K8nNrEgqhE)
-
-**Nodesmith -** **_Accesso dell’API JSON-RPC alla Rete Principale e alle reti di prova di Ethereum._**
-
-- [nodesmith.io](https://nodesmith.io/network/ethereum/)
-- [Documentazione](https://nodesmith.io/docs/#/ethereum/apiRef)
-
-**Ethercluster -** **_Esegui il tuo servizio API di Ethereum che supporta sia ETH che ETC_**
-
-- [ethercluster.com](https://www.ethercluster.com/)
-
-**Catainstack -** **_Nodi di Ethereum elastici e dedicati come servizio_**
-
-- [chainstack.com](https://chainstack.com)
-- [Documentazione](https://docs.chainstack.com)
-- [Riferimento all'API di Ethereum](https://docs.chainstack.com/api/ethereum/ethereum-api-reference)
-
-**QuickNode -** **_Infrastruttura della Blockchain come servizio._**
-
-- [quicknode.com](https://quicknode.com)
-- [Documentazione](https://www.quicknode.com/docs)
-- [Discord](https://discord.gg/NaR7TtpvJq)
-
-**Strumenti Python -** **_Diverse librerie per interagire con Ethereum tramite Python_**
-
-- [py.ethereum.org](http://python.ethereum.org/)
-- [web3.py GitHub](https://github.com/ethereum/web3.py)
-- [web3.py Chat](https://gitter.im/ethereum/web3.py)
-
-**web3j -** **_Libreria di integrazione di Java/Android/Kotlin/Scala per Ethereum_**
-
-- [GitHub](https://github.com/web3j/web3j)
-- [Docs](https://docs.web3j.io/)
-- [Gitter](https://gitter.im/web3j/web3j)
-
-**Rivet -** **_API di Ethereum ed Ethereum Classic come servizio, supportate da software open source._**
-
-- [rivet.cloud](https://rivet.cloud)
-- [Documentazione](https://rivet.cloud/docs/)
-- [GitHub](https://github.com/openrelayxyz/ethercattle-deployment)
-
-**Nethereum -** **_Una libreria di integrazione .NET open source per la blockchain_**
-
-- [GitHub](https://github.com/Nethereum/Nethereum)
-- [Documentazione](http://docs.nethereum.com/en/latest/)
-- [Discord](https://discord.com/invite/jQPrR58FxX)
-
-**QuikNode -** **_La piattaforma definitiva per sviluppatori di blockchain_**
-
-- [Tatum](https://tatum.io/)
-- [GitHub](https://github.com/tatumio/)
-- [Documentazione](https://docs.tatum.io/)
-- [Discord](https://discord.gg/EDmW3kjTC9)
-
-**Watchdata -** **_Accesso semplice e affidabile delle API alla blockchain di Ethereum._**
-
-- [Watchdata](https://watchdata.io/)
-- [Documentazione](https://docs.watchdata.io/)
-- [Discord](https://discord.com/invite/TZRJbZ6bdn)
-
-**Zmok -** **_Nodi di Ethereum orientati alla velocità come l'API JSON-RPC/WebSockets._**
-
-- [zmok.io](https://zmok.io/)
-- [GitHub](https://github.com/zmok-io)
-- [Documentazione](https://docs.zmok.io/)
-- [Discord](https://discord.gg/fAHeh3ka6s)
-
-**NOWNodes - _Nodi completi ed esploratori di blocchi._**
-
-- [NOWNodes.io](https://nownodes.io/)
-- [Documentazione](https://documenter.getpostman.com/view/13630829/TVmFkLwy#intro)
-
-**Moralis**: **_Fornitore di API EVM di livello enterprise._**
-
-- [moralis.io](http://moralis.io)
-- [Documentazione](https://docs.moralis.io/)
-- [GitHub](https://github.com/MoralisWeb3)
-- [Discord](https://discord.com/invite/KYswaxwEtg)
-- [Forum](https://forum.moralis.io/)
-
-**Chainbase -** **_Infrastruttura dati web3 tutto in uno per Ethereum._**
-
-- [chainbase.com](https://chainbase.com/)
-- [Documentazione](https://docs.chainbase.com/)
-- [Discord](https://discord.gg/Wx6qpqz4AF)
-
-**GetBlock-** **_Blockchain-as-a-service per lo sviluppo Web3_**
-
-- [GetBlock.io](https://getblock.io/)
-- [Documentazione](https://getblock.io/docs/)
-
-**BlockPi -** **_Fornire servizi RPC più efficienti e veloci_**
+**BlockPi -** **_Fornisce servizi RPC più efficienti e veloci_**
 
 - [blockpi.io](https://blockpi.io/)
 - [Documentazione](https://docs.blockpi.io/)
 - [GitHub](https://github.com/BlockPILabs)
 - [Discord](https://discord.com/invite/xTvGVrGVZv)
 
-**Tokenview -** **_La piattaforma generale per API blockchain multi-criptovaluta._**
+**Cloudflare Ethereum Gateway.**
+
+- [cloudflare-eth.com](https://www.cloudflare.com/application-services/products/web3/)
+
+**Etherscan - Block explorer e API di transazione**
+- [Documentazione](https://docs.etherscan.io/)
+
+**Blockscout - Block explorer open source**
+- [Documentazione](https://docs.blockscout.com/)
+
+**GetBlock-** **_Blockchain come servizio per lo sviluppo nel Web3_**
+
+- [GetBlock.io](https://getblock.io/)
+- [Documentazione](https://docs.getblock.io/)
+
+**Infura -** **_L'API di Ethereum come servizio._**
+
+- [infura.io](https://infura.io)
+- [Documentazione](https://docs.infura.io/api)
+- [GitHub](https://github.com/INFURA)
+
+**Node RPC - _Provider JSON-RPC per la Macchina Virtuale di Ethereum (EVM) conveniente_**
+
+- [noderpc.xyz](https://www.noderpc.xyz/)
+- [Documentazione](https://docs.noderpc.xyz/node-rpc)
+
+**NOWNodes - _Nodi completi e block explorer._**
+
+- [NOWNodes.io](https://nownodes.io/)
+- [Documentazione](https://nownodes.gitbook.io/documentation)
+
+**QuickNode -** **_Infrastruttura blockchain come servizio._**
+
+- [quicknode.com](https://quicknode.com)
+- [Documentazione](https://www.quicknode.com/docs/welcome)
+- [Discord](https://discord.gg/quicknode)
+
+**Rivet -** **_API di Ethereum ed Ethereum Classic come servizio basate su software open source._**
+
+- [rivet.cloud](https://rivet.cloud)
+- [Documentazione](https://rivet.cloud/docs/)
+- [GitHub](https://github.com/openrelayxyz/ethercattle-deployment)
+
+**SolidRPC -** **_Infrastruttura JSON-RPC per l'EVM con accesso pubblico completo, di archivio e senza chiavi._**
+
+- [solidrpc.io](https://solidrpc.io/)
+- [Documentazione](https://solidrpc.io/docs)
+- [GitHub](https://github.com/SolidRPC)
+
+**Zmok -** **_Nodi Ethereum orientati alla velocità come API JSON-RPC/WebSockets._**
+
+- [zmok.io](https://zmok.io/)
+- [GitHub](https://github.com/zmok-io)
+- [Documentazione](https://docs.zmok.io/)
+- [Discord](https://discord.gg/fAHeh3ka6s)
+
+### Strumenti di sviluppo {#development-tools}
+
+**eth.zig -** **_Una libreria Zig per Ethereum, con codifica dell'Interfaccia binaria dell'applicazione (ABI) a tempo di compilazione e binding dei contratti._**
+
+- [GitHub](https://github.com/StrobeLabs/eth.zig)
+- [Documentazione](https://ethzig.org)
+- [Esempi](https://github.com/StrobeLabs/eth.zig/tree/main/examples)
+
+**ethers-kt -** **_Libreria asincrona e ad alte prestazioni in Kotlin/Java/Android per blockchain basate sulla Macchina Virtuale di Ethereum (EVM)._**
+
+- [GitHub](https://github.com/Kr1ptal/ethers-kt)
+- [Esempi](https://github.com/Kr1ptal/ethers-kt/tree/master/examples)
+- [Discord](https://discord.gg/rx35NzQGSb)
+
+**Nethereum -** **_Una libreria di integrazione .NET open source per la blockchain._**
+
+- [GitHub](https://github.com/Nethereum/Nethereum)
+- [Documentazione](https://docs.nethereum.com/docs/getting-started/welcome/)
+- [Discord](https://discord.com/invite/jQPrR58FxX)
+
+**Strumenti Python -** **_Varietà di librerie per l'interazione con Ethereum tramite Python._**
+
+- [py.ethereum.org](https://snakecharmers.ethereum.org/)
+- [web3.py GitHub](https://github.com/ethereum/web3.py)
+- [web3.py Chat](https://gitter.im/ethereum/web3.py)
+
+**Tatum -** **_La piattaforma di sviluppo blockchain definitiva._**
+
+- [Tatum](https://tatum.io/)
+- [GitHub](https://github.com/tatumio/)
+- [Documentazione](https://docs.tatum.io/)
+- [Discord](https://discord.gg/EDmW3kjTC9)
+
+**web3j -** **_Una libreria di integrazione Java/Android/Kotlin/Scala per Ethereum._**
+
+- [GitHub](https://github.com/web3j/web3j)
+- [Documentazione](https://docs.web3j.io/)
+- [Gitter](https://gitter.im/web3j/web3j)
+
+### Servizi blockchain {#blockchain-services}
+
+**BlockCypher -** **_API Web di Ethereum._**
+
+- [blockcypher.com](https://www.blockcypher.com/)
+- [Documentazione](https://www.blockcypher.com/dev/ethereum/)
+
+**Chainbase -** **_Infrastruttura dati Web3 all-in-one per Ethereum._**
+
+- [chainbase.com](https://chainbase.com/)
+- [Documentazione](https://docs.chainbase.com/)
+- [Discord](https://discord.gg/Wx6qpqz4AF)
+
+**Chainstack -** **_Nodi Ethereum elastici e dedicati come servizio._**
+
+- [chainstack.com](https://chainstack.com)
+- [Documentazione](https://docs.chainstack.com/)
+- [Riferimento API di Ethereum](https://docs.chainstack.com/reference/ethereum-getting-started)
+
+**Coinbase Cloud Node -** **_API per l'infrastruttura blockchain._**
+
+- [Coinbase Cloud Node](https://www.coinbase.com/developer-platform)
+- [Documentazione](https://docs.cdp.coinbase.com/)
+
+**DataHub di Figment -** **_Servizi API Web3 con la Mainnet di Ethereum e le reti di test._**
+
+- [DataHub](https://www.figment.io/)
+- [Documentazione](https://docs.figment.io/)
+
+**Moralis -** **_Provider di API EVM di livello aziendale._**
+
+- [moralis.io](https://moralis.io)
+- [Documentazione](https://docs.moralis.io/)
+- [GitHub](https://github.com/MoralisWeb3)
+- [Discord](https://moralis.io/joindiscord/)
+- [Forum](https://forum.moralis.io/)
+
+**NFTPort -** **_API per dati e per coniare su Ethereum._**
+
+- [nftport.xyz](https://www.nftport.xyz/)
+- [Documentazione](https://docs.nftport.xyz/)
+- [GitHub](https://github.com/nftport/)
+- [Discord](https://discord.com/invite/K8nNrEgqhE)
+
+**Tokenview -** **_La piattaforma generale di API blockchain multi-cripto._**
 
 - [services.tokenview.io](https://services.tokenview.io/)
 - [Documentazione](https://services.tokenview.io/docs?type=api)
 - [GitHub](https://github.com/Tokenview)
 
+**Watchdata -** **_Fornisce un accesso API semplice e affidabile alla blockchain di Ethereum._**
+
+- [Watchdata](https://watchdata.io/)
+- [Documentazione](https://docs.watchdata.io/)
+- [Discord](https://discord.com/invite/TZRJbZ6bdn)
+
+**Codex -** **_API di dati blockchain arricchiti in tempo reale su dozzine di catene._**
+
+- [codex.io](https://www.codex.io/)
+- [Documentazione](https://docs.codex.io)
+- [Explorer](https://docs.codex.io/explore)
+- [GitHub](https://github.com/Codex-Data)
+- [Discord](https://discord.com/invite/mFpUhT3vAq)
+
+**Covalent -** **_API blockchain arricchite per oltre 200 catene._**
+
+- [covalenthq.com](https://www.covalenthq.com/)
+- [Documentazione](https://www.covalenthq.com/docs/api/)
+- [GitHub](https://github.com/covalenthq)
+- [Discord](https://www.covalenthq.com/discord/)
+
+
 ## Letture consigliate {#further-reading}
 
-_Conosci una risorsa della comunità che ti è stata utile? Modifica questa pagina e aggiungila!_
+_Conosci una risorsa della community che ti è stata utile? Modifica questa pagina e aggiungila!_
 
 ## Argomenti correlati {#related-topics}
 
-- [ Nodi e client](/developers/docs/nodes-and-clients/)
-- [Quadri di sviluppo](/developers/docs/frameworks/)
+- [Nodi e client](/developers/docs/nodes-and-clients/)
+- [Framework di sviluppo](/developers/docs/frameworks/)
 
 ## Tutorial correlati {#related-tutorials}
 
-- [Set up Web3js to use the Ethereum blockchain in JavaScript](/developers/tutorials/set-up-web3js-to-use-ethereum-in-javascript/) _– Istruzioni per impostare web3.js in un progetto._
-- [Calling a Smart Contract from JavaScript](/developers/tutorials/calling-a-smart-contract-from-javascript/) _– Usando il token DAI, impara come funzionano i contratti di chiamata con JavaScript_
+- [Configurare Web3.js per usare la blockchain di Ethereum in JavaScript](/developers/tutorials/set-up-web3js-to-use-ethereum-in-javascript/) _– Istruzioni per configurare Web3.js nel tuo progetto._
+- [Chiamare uno smart contract da JavaScript](/developers/tutorials/calling-a-smart-contract-from-javascript/) _– Usando il token DAI, scopri come chiamare le funzioni dei contratti usando JavaScript._

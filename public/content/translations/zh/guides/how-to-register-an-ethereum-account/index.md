@@ -14,7 +14,7 @@ lang: zh
 
 钱包就像是以太坊的在线银行账户。 现有数十种不同的钱包可供你选择 — 移动端、桌面端甚至是浏览器扩展应用。 你可以从我们精选的可信任钱包列表开始。
 
-<ButtonLink to="/wallets/find-wallet/">
+<ButtonLink href="/wallets/find-wallet/">
   寻找钱包
 </ButtonLink>
 
@@ -38,12 +38,15 @@ lang: zh
 
  <br />
 
-<InfoBanner shouldSpaceBetween emoji=":eyes:">
+<Alert variant="update">
+<AlertEmoji text=":eyes:"/>
+<AlertContent className="flex-row items-center justify-between">
   <div>想了解更多信息？</div>
-  <ButtonLink to="/guides/">
+  <ButtonLink href="/guides/">
     查看我们其他的指南
   </ButtonLink>
-</InfoBanner>
+</AlertContent>
+</Alert>
 
 ## 常见问题
 

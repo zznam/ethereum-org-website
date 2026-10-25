@@ -1,6 +1,6 @@
 ---
 title: Bridges
-description: An overview of bridging for developers
+description: "A developer guide to bridges: how cross-chain messaging and token bridging work, bridge types and trust assumptions, and how to integrate them in dapps."
 lang: en
 ---
 
@@ -23,7 +23,7 @@ Blockchains have unique strengths, weaknesses, and approaches to building applic
 For developers, bridges enable the following:
 
 - the transfer of any data, information, and assets across chains.
-- unlocking new features and use cases for protocols as bridges expand the design space for what protocols can offer. For example, a protocol for yield farming originally deployed on Ethereum Mainnet can offer liquidity pools across all EVM-compatible chains.
+- unlocking new features and use cases for protocols as bridges expand the design space for what protocols can offer. For example, a protocol for yield farming originally deployed on [Ethereum](/) Mainnet can offer liquidity pools across all EVM-compatible chains.
 - the opportunity to leverage the strengths of different blockchains. For example, developers can benefit from the lower fees offered by the different L2 solutions by deploying their dapps across rollups, and sidechains and users can bridge across them.
 - collaboration among developers from various blockchain ecosystems to build new products.
 - attracting users and communities from various ecosystems to their dapps.
@@ -103,9 +103,9 @@ If a dapp goes down the route of integrating a bridge or an aggregator, there ar
 
 ### Deploying a dapp on multiple chains {#deploying-a-dapp-on-multiple-chains}
 
-To deploy a dapp on multiple chains, developers can use development platforms like [Alchemy](https://www.alchemy.com/), [Hardhat](https://hardhat.org/), [Truffle](https://trufflesuite.com/), [Moralis](https://moralis.io/), etc. Typically, these platforms come with composable plugins that can enable dapps to go cross-chain. For instance, developers can use a deterministic deployment proxy offered by the [hardhat-deploy plugin](https://github.com/wighawag/hardhat-deploy).
+To deploy a dapp on multiple chains, developers can use development platforms like [Alchemy](https://www.alchemy.com/), [Hardhat](https://hardhat.org/), [Moralis](https://moralis.io/), etc. Typically, these platforms come with composable plugins that can enable dapps to go cross-chain. For instance, developers can use a deterministic deployment proxy offered by the [hardhat-deploy plugin](https://github.com/wighawag/hardhat-deploy).
 
-#### Examples:
+#### Examples: {#examples}
 
 - [How to build cross-chain dapps](https://moralis.io/how-to-build-cross-chain-dapps/)
 - [Building a Cross-Chain NFT Marketplace](https://youtu.be/WZWCzsB1xUE)
@@ -115,18 +115,20 @@ To deploy a dapp on multiple chains, developers can use development platforms li
 
 To monitor contract activity across chains, developers can use subgraphs and developer platforms like Tenderly to observe smart contracts in real-time. Such platforms also have tools that offer greater data monitoring functionality for cross-chain activities, such as checking for [events emitted by contracts](https://docs.soliditylang.org/en/v0.8.14/contracts.html?highlight=events#events), etc.
 
-#### Tools
+#### Tools {#tools}
 
 - [The Graph](https://thegraph.com/en/)
 - [Tenderly](https://tenderly.co/)
 
 ## Further reading {#further-reading}
-
 - [Blockchain Bridges](/bridges/) – ethereum.org
-- [Blockchain Bridges: Building Networks of Cryptonetworks](https://medium.com/1kxnetwork/blockchain-bridges-5db6afac44f8) Sep 8, 2021 – Dmitriy Berenzon
-- [The Interoperability Trilemma](https://blog.connext.network/the-interoperability-trilemma-657c2cf69f17) Oct 1, 2021 – Arjun Bhuptani
-- [Clusters: How Trusted & Trust-Minimized Bridges Shape the Multi-Chain Landscape](https://blog.celestia.org/clusters/) Oct 4, 2021 – Mustafa Al-Bassam
-- [LI.FI: With Bridges, Trust is a Spectrum](https://blog.li.fi/li-fi-with-bridges-trust-is-a-spectrum-354cd5a1a6d8) Apr 28, 2022 – Arjun Chand
+- [L2Beat Bridge Risk Framework](https://l2beat.com/bridges/summary)
+- [Blockchain Bridges: Building Networks of Cryptonetworks](https://medium.com/1kxnetwork/blockchain-bridges-5db6afac44f8) - Sep 8, 2021 – Dmitriy Berenzon
+- [The Interoperability Trilemma](https://blog.connext.network/the-interoperability-trilemma-657c2cf69f17) - Oct 1, 2021 – Arjun Bhuptani
+- [Clusters: How Trusted & Trust-Minimized Bridges Shape the Multi-Chain Landscape](https://blog.celestia.org/clusters/) - Oct 4, 2021 – Mustafa Al-Bassam
+- [LI.FI: With Bridges, Trust is a Spectrum](https://blog.li.fi/li-fi-with-bridges-trust-is-a-spectrum-354cd5a1a6d8) - Apr 28, 2022 – Arjun Chand
+- [The State Of Rollup Interoperability Solutions](https://web.archive.org/web/20250428015516/https://research.2077.xyz/the-state-of-rollup-interoperability) - June 20, 2024 – Alex Hook
+- [Harnessing Shared Security For Secure Cross-Chain Interoperability: Lagrange State Committees And Beyond](https://web.archive.org/web/20250125035123/https://research.2077.xyz/harnessing-shared-security-for-secure-blockchain-interoperability) - June 12, 2024 – Emmanuel Awosika
 
 Additionally, here are some insightful presentations by [James Prestwich](https://twitter.com/_prestwich) that can help develop a deeper understanding of bridges:
 

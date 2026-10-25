@@ -1,77 +1,83 @@
 ---
-title: 单独质押你的以太币
-description: 简要介绍如何单独质押你的以太币
+title: 在家质押你的 ETH
+description: 关于如何开始在家质押 ETH 的概述
 lang: zh
 template: staking
-emoji: ":money_with_wings:"
-image: /staking/leslie-solo.png
-alt: 莱斯利犀牛在自己的电脑芯片上。
+image: /images/staking/leslie-solo.png
 sidebarDepth: 2
 summaryPoints:
-  - 直接从协议中获得最大奖励，以保持你的验证者正常运行和在线
-  - 运行家用硬件并自行加入以太坊网络的安全和去中心化
-  - 消除信任依赖，始终自己掌控资金密钥
+  - 保持验证者正常运行并在线，直接从协议中获得最大奖励
+  - 运行家用硬件，亲自为以太坊网络的安全性和去中心化做出贡献
+  - 消除信任假设，绝不放弃对资金密钥的控制
 ---
 
-## 什么是单独质押？ {#what-is-solo-staking}
+## 什么是家庭质押？ {#what-is-solo-staking}
 
-单独质押是指运行一个连接到互联网的[以太坊节点](/run-a-node/)，并存入 32 个以太币以激活一个[验证者](#faq)，使你有能力直接参与网络共识。
+在家质押是指[运行一个连接到互联网的以太坊节点](/run-a-node/)并存入至少 32 个 ETH 以激活[验证者](#faq)的行为，这使你能够直接参与网络共识。
 
-**单独质押增强了以太坊网络的去中心化**，使以太坊更加抗审查，更加稳健，能够抵御攻击。 其他质押方法可能不会给网络带来同样的助益。 单独质押是保护以太坊的最佳质押方案。
+在家质押是最直接的质押方式。在你和协议之间没有智能合约、运营商或托管人。你持有自己的密钥，积极参与验证[以太坊](/)网络，并直接获得网络奖励。所有其他质押方法都在这一核心网络活动之上增加了技术、中间件或服务层。
 
-一个以太坊节点既包括执行层 (EL) 客户端，也包括共识层 (CL) 客户端。 这些客户端是一套共同工作的软件，拥有一套有效的签名密钥，以验证交易和区块、证明链头的正确性、汇总认证和提交区块。
+**在家质押提高了以太坊网络的去中心化程度**，使以太坊更具抗审查性，并能更稳健地抵御攻击。其他质押方法可能无法以同样的方式帮助网络。在家质押是保护以太坊安全的最佳质押选择。
 
-单独质押用户负责操作运行这些客户端所需的硬件。 强烈建议使用一台专用机器在家进行操作，这对网络安全非常有益。
+以太坊节点由执行层 (EL) 客户端和共识层 (CL) 客户端组成。这些客户端是协同工作的软件，连同一组有效的签名密钥，用于验证交易和区块、证明正确的链头、聚合证明并提议区块。
 
-单独质押人可以直接从协议中获得奖励，以保持他们的验证者在线并正常运行。
+在家质押者负责操作运行这些客户端所需的硬件。强烈建议使用一台你在家操作的专用机器来进行此操作——这对网络的健康极其有益。
 
-## 为什么要单独质押？ {#why-stake-solo}
+在家质押者通过保持其验证者正常运行并在线，直接从协议中获得奖励。
 
-单独质押让你承担更大的责任，但会让你对资金和质押设置拥有最大的控制权。
+## 为什么在家质押？ {#why-stake-solo}
 
-<CardGrid>
-  <Card title="赚取以太币" emoji="💸" description="Earn ETH-denominated rewards directly from the protocol when your validator is online, without any middlemen taking a cut." />
-  <Card title="完全控制" emoji="🎛️" description="Keep your own keys. Choose the combination of clients and hardware that allows you to minimize your risk and best contribute to the health and security of the network. Third-party staking services make these decisions for you, and they don't always make the safest choices." />
-  <Card title="网络安全" emoji="🔐" description="Solo staking is the most impactful way to stake. By running a validator on your own hardware at home, you strengthen the robustness, decentralization, and security of the Ethereum protocol." />
-</CardGrid>
+在家质押伴随着更多的责任，但为你提供了对资金和质押设置的最大控制权。
 
-## 单独质押前的考量 {#considerations-before-staking-solo}
+<Grid>
+  <Card title="保留全部奖励" icon={<HandCoins />} description="在家质押者获得 100% 的协议奖励，当你的验证者在线时，由协议直接支付。" />
+  <Card title="自我主权" icon={<KeyRound />} description="始终保留你自己的密钥并完全托管你的资金。选择能让你将风险降至最低的客户端和硬件组合。没有任何第三方可以为你做这些决定或限制你的提款。" />
+  <Card title="客户端和地理多样性" icon={<GlobeLock />} description="在家质押者在分布于多个地点的硬件上运行少数派客户端，从而增强了网络的去中心化和安全性。" />
+</Grid>
 
-尽管我们希望每个人都能无风险地进行单独质押，但这并不现实。 在选择单独质押以太币之前，有一些实际和严肃的事项需要记住。
+## 在家质押前的注意事项 {#considerations-before-staking-solo}
 
-<InfoGrid>
+尽管我们希望在家质押对每个人来说都是触手可及且没有风险的，但这并不现实。在选择在家质押你的 ETH 之前，需要牢记一些实际且严肃的注意事项。
+
 <ExpandableCard title="必读内容" eventCategory="SoloStaking" eventName="clicked required reading">
-在操作自己的节点时，你应该花一些时间学习如何使用你所选择的软件。 这涉及到阅读相关文档，以及了解开发团队的沟通渠道。
+运行自己的节点时，你应该花一些时间学习如何使用你选择的软件。这包括阅读相关文档并关注这些开发团队的沟通渠道。
 
-你对所运行的软件和权益证明的原理了解得越多，作为一名质押人的风险就越小，也越容易解决在节点运行过程中可能出现的任何问题。
+你对正在运行的软件以及权益证明 (PoS) 的工作原理了解得越多，作为质押者的风险就越小，作为节点运营商解决在此过程中可能出现的任何问题也就越容易。
 </ExpandableCard>
 
-<ExpandableCard title="熟悉计算机" eventCategory="SoloStaking" eventName="clicked comfortable with computers">
-节点设置要求用户能够熟练使用计算机，尽管随着时间的推移，新的工具正在使其变得更容易。 了解命令行界面会有帮助，但并非必需。
+<ExpandableCard title="熟悉计算机操作" eventCategory="SoloStaking" eventName="clicked comfortable with computers">
+节点设置要求对计算机操作有一定的熟练度，尽管随着时间的推移，新工具正在使这变得更容易。了解命令行界面会有所帮助，但不再是严格要求的。
 
-节点设置还需要用户对基本的硬件设置，以及最低推荐规格有一些了解。
+它还需要非常基础的硬件设置，以及对最低推荐规格的一些了解。
+</ExpandableCard>
+
+<ExpandableCard title="硬件要求" eventCategory="SoloStaking" eventName="clicked hardware requirements">
+目前社区关于验证者硬件和带宽的指南维护在[硬件和带宽建议 (EIP-7870)](https://eips.ethereum.org/EIPS/eip-7870)中。作为粗略的指南，请准备 4 TB NVMe SSD、64 GB RAM（更小也可以，但这是推荐的余量）、可靠的现代多核 CPU，以及大约 50 Mbps 下载 / 25 Mbps 上传的互联网连接。
+
+由于弗萨卡升级引入了 PeerDAS，质押节点只需要存储和下载网络斑点数据的一小部分，从而显著降低了在家质押者的磁盘和带宽要求。
 </ExpandableCard>
 
 <ExpandableCard title="安全的密钥管理" eventCategory="SoloStaking" eventName="clicked secure key management">
-就像私钥保护以太坊地址的方式一样，你也需要为验证者单独生成密钥。 你必须了解如何保护好助记词或私钥的安全。{' '}
+就像私钥保护你的以太坊地址一样，你需要专门为你的验证者生成密钥。你必须了解如何确保任何助记词或私钥的安全。{' '}
 
-<a href="/security/">以太坊的安全性和防范欺诈</a>
+[以太坊安全与防骗](/security/)
 </ExpandableCard>
 
 <ExpandableCard title="维护" eventCategory="SoloStaking" eventName="clicked maintenance">
-硬件设施会发生故障，网络连接会出错，客户端软件也需要升级。 因此节点维护不可避免，需要你偶尔关注。 你要确保知道任何预期的网络升级，或其他关键的客户端升级。
+硬件偶尔会发生故障，网络连接会出错，客户端软件偶尔也需要升级。节点维护是不可避免的，偶尔需要你的关注。你需要确保自己随时了解任何预期的网络升级或其他关键的客户端升级。
 </ExpandableCard>
 
 <ExpandableCard title="可靠的正常运行时间" eventCategory="SoloStaking" eventName="clicked reliable uptime">
-你的回报与你的验证者在线并正确验证的时间成正比。 宕机会导致一定比例的处罚，具体与有多少其他验证者同时离线有关，但<a href="#faq">不会导致罚没</a>。 同时网络带宽也很重要，因为如果没有及时收到认证，奖励就会减少。 建议至少要有 10 Mb/s 的上行和下行带宽。
+你的奖励与你的验证者在线并正确进行证明的时间成正比。停机时间会招致惩罚，惩罚力度与同时离线的其他验证者数量成正比，但[不会导致罚没](#faq)。带宽也很重要，因为未及时收到的证明会减少奖励。要求会有所不同，但当前的[硬件和带宽建议 (EIP-7870)](https://eips.ethereum.org/EIPS/eip-7870)建议大约 50 Mbps 下载和 25 Mbps 上传。
 </ExpandableCard>
 
 <ExpandableCard title="罚没风险" eventCategory="SoloStaking" eventName="clicked slashing risk">
-与离线导致的怠工处罚不同，<em>罚没</em>是一种更严重的处罚，专门针对恶意违规。 同一时间只在一台机器上运行加载你密钥的客户端，你被罚没的风险可以降到最低。 总得来说，所有质押人都必须意识到被罚没的风险。
+与离线导致的怠工惩罚不同，<em>罚没</em>是一种严重得多的惩罚，专门针对恶意违规行为。通过运行少数派客户端并确保你的密钥一次只加载在一台机器上，你被罚没的风险将降至最低。话虽如此，所有质押者都必须意识到罚没的风险。
 
-<a href="https://medium.com/prysmatic-labs/eth2-slashing-prevention-tips-f6faa5025f50/">更多关于惩罚和验证者生命周期的信息</a>
+<a href="https://medium.com/prysmatic-labs/eth2-slashing-prevention-tips-f6faa5025f50/"> 更多关于罚没和验证者生命周期的信息</a>
 </ExpandableCard>
-</InfoGrid>
+
+## 质押选项比较 {#comparison-of-staking-options}
 
 <StakingComparison page="solo" />
 
@@ -79,128 +85,160 @@ summaryPoints:
 
 <StakingHowSoloWorks />
 
-在线时你将赢得以太币奖励，奖励将定期存入你的提款地址。
+一旦你的节点同步完成并生成了密钥，你就可以存入质押存款以激活你的验证者。单个验证者至少需要 32 个 ETH，最多可持有 2048 个 ETH。网络大约在 13 分钟内识别存款，但新的验证者在开始证明之前需要通过一个激活队列；其长度随需求而变化。
 
-如果需要，你可以验证者身份退出，这样就不需要在线，也不会再有任何奖励。 之后，你的余额将提取到你在设置过程指定的提款地址。
+在活跃期间，你将赚取 ETH 奖励。使用复利 (0x02) 提款凭证，奖励会自动添加到你的质押中；使用常规提款 (0x01) 凭证，超过初始 32 个 ETH 的奖励会定期自动转入你的提款地址。
+
+如果需要，你可以作为验证者退出，这消除了在线的要求并停止任何进一步的奖励。你剩余的余额随后将被提取到你在设置期间指定的提款地址。退出可以使用你的验证者签名密钥发起，或者直接从你的提款地址通过执行层交易触发，因此对你资金的最终控制权始终掌握在你的提款地址手中。
+
+### 复利与 2048 ETH 上限 {#compounding}
+
+验证者拥有以下两种提款凭证之一：
+
+- **常规提款 (0x01)**：验证者的有效余额上限为 32 个 ETH，任何超过该数额的余额每隔几天会自动转入你的提款地址。
+- **复利 (0x02)**：验证者的有效余额最高可增长至 2048 个 ETH。奖励自动复利，并且你可以在超过 32 个 ETH 最低限额的每一个完整 ETH 上赚取奖励，因此你可以质押灵活的金额（例如 40 个 ETH），而不仅仅是 32 的倍数。只有超过 2048 个 ETH 的余额才会被自动转出；提取任何其他金额意味着从你的提款地址手动触发部分提款，这需要消耗 Gas。
+
+如果你运行多个验证者，你可以将它们合并为一个单一的复利验证者，而无需退出并重新进入网络，从而减少你的维护开销。合并请求从你的提款地址发出，并受处理队列的限制。将验证者从 0x01 凭证切换到 0x02 凭证使用相同的机制，并且在没有完全退出并再次存款的情况下**无法撤销**。
 
 [更多关于质押提款的信息](/staking/withdrawals/)
 
-## 开始使用 Staking Launchpad {#get-started-on-the-staking-launchpad}
+## 在质押启动板上开始 {#get-started-on-the-staking-launchpad}
 
-Staking Launchpad 是一个开源应用程序，可帮助你成为质押人。 它将指导你选择客户端、生成密钥并将你的以太币存入质押存款合约。 会提供一份清单，确保已经涵盖安全设置验证者需要的所有内容。
+质押启动板 (Staking Launchpad) 是一个开源应用程序，将帮助你成为一名质押者。它将引导你选择客户端、生成密钥并将你的 ETH 存入质押存款合约。它提供了一份清单，以确保你已涵盖所有内容，从而安全地设置你的验证者。
 
 <StakingLaunchpadWidget />
 
-## 使用节点和客户端设置工具时应考虑的事项 {#node-tool-considerations}
+## 节点和客户端设置工具的注意事项 {#node-tool-considerations}
 
-有越来越多的工具和服务可以帮助你单独质押以太币，但每种工具和服务的风险和收益各不相同。
+帮助你在家质押 ETH 的工具和服务越来越多，但每种工具和服务都伴随着不同的风险和收益。
 
-下面使用属性指标来表示列出的质押工具可能具有的显著优势或劣势。 在选择帮你度过质押之旅的工具时，请使用本节作为参考，了解我们如何定义这些属性。
+下面使用属性指标来标明列出的质押工具可能具有的显著优势或劣势。在选择哪些工具来帮助你的质押之旅时，请将本节作为我们如何定义这些属性的参考。
 
 <StakingConsiderations page="solo" />
 
 ## 探索节点和客户端设置工具 {#node-and-client-tools}
 
-有多种方案可帮助你进行设置。 上述指标可引导你了解如何使用下方的工具。
+有多种选项可帮助你进行设置。使用上述指标来帮助你了解以下工具。
 
 <ProductDisclaimer />
 
-### 节点工具
+### 节点工具 {#node-tools}
 
 <StakingProductsCardGrid category="nodeTools" />
 
-请注意选择[非主流客户端](/developers/docs/nodes-and-clients/client-diversity/)的重要性，因为可以提高网络安全性，并限制你的风险。 可让你设置非主流客户端的工具称为<em style={{ textTransform: "uppercase" }}>“多客户端”。</em>
+请注意选择[少数派客户端](/developers/docs/nodes-and-clients/client-diversity/)的重要性，因为它提高了网络的安全性，并限制了你的风险。允许你设置少数派客户端的工具被标记为<em style={{ textTransform: "uppercase" }}>“多客户端”</em>。
 
-### 密钥生成器
+### 密钥生成器 {#key-generators}
 
-这些工具可用来替代[质押存款命令行接口](https://github.com/ethereum/staking-deposit-cli/)，帮助生成密钥。
+这些工具可以作为[质押存款 CLI](https://github.com/ethereum/staking-deposit-cli/)的替代方案，以帮助生成密钥。
 
 <StakingProductsCardGrid category="keyGen" />
 
-想要推荐其他未提到的质押工具吗？ 可以查看我们的[产品上线政策](/contributing/adding-staking-products/)，确定你推荐的质押工具是否合适，合适的话，请提交以供审核。
+对我们遗漏的质押工具有什么建议吗？请查看我们的[产品上架政策](/contributing/adding-staking-products/)，看看它是否合适，并提交给我们进行审核。
 
-## 探索单独质押指南 {#staking-guides}
+## 探索在家质押指南 {#staking-guides}
 
 <StakingGuides />
 
+## 团队质押：具有容错能力的在家质押 {#squad-staking}
+
+**分布式验证者技术 (DVT)** 允许单个验证者在机器集群上运行，而不是仅在一台机器上运行。验证者密钥使用分布式密钥生成技术被分成多个份额，并且集群的阈值（例如，4 个节点中的任意 3 个）必须共同签名；完整的密钥永远不会存在于任何单台机器上。如果一台机器发生故障、离线或配置错误，集群的其余部分将保持验证者继续进行证明。
+
+对于在家质押者来说，这实现了“团队质押”：与朋友或其他社区成员组队共同运行验证者，消除了单人设置的单点故障，并降低了因单台机器行为不当而导致罚没的风险。Obol 和 SSV Network 都提供了生产级别的 DVT 实现，目前广泛应用于在家质押、质押即服务和质押池中。
+
+[更多关于分布式验证者技术 (DVT) 的信息](/staking/dvt/)
+
+## 为质押协议运行验证者 {#run-validators-for-a-staking-protocol}
+
+如果你拥有运行节点的硬件和技能，但少于 32 个 ETH，一些质押协议会将你的验证者与其联合质押者的 ETH 进行匹配。你存入较少的保证金作为抵押品，并在你自己的机器上运行验证者；协议提供剩余的质押，你将赚取一部分奖励。
+
+这是一种混合方法：你保留了操作自己硬件的责任（和满足感），但你的验证者在协议的智能合约、治理和性能规则下运行，这与直接质押你自己的 ETH 具有不同的信任假设。
+
+在[联合质押页面](/staking/pools/)上了解有关这些协议如何工作的更多信息，包括它们的信任假设和代币机制。
+
+## 使用节点的更多方式 {#more-ways-to-use-your-node}
+
+你完全不需要质押就可以将节点操作技能付诸实践。任何人都可以[运行以太坊节点](/run-a-node/)而无需存入任何 ETH。你将获得链的自我验证视图、用于发送交易和与应用程序交互的私有端点，并且你为网络的健康和弹性做出了贡献。在激活验证者之前，运行节点也是积累经验的好方法，且没有任何 ETH 风险。
+
+<StakingCommunityCallout className="my-16" />
+
 ## 常见问题 {#faq}
 
-下面是一些关于质押的最常见问题，值得了解一下。
+以下是一些关于质押的最常见问题，值得了解。
 
 <ExpandableCard title="什么是验证者？">
 
-<em>验证者</em>是一个虚拟实体，存在于以太坊上并参与以太坊协议的共识。 验证者由余额、公钥和其他属性信息表示。 <em>验证者客户端</em>是通过持有并使用验证者的私钥代表验证者行动的软件。 一个验证者客户端可以持有多个密钥对，从而控制多个验证者。
+<em>验证者</em>是存在于以太坊上并参与以太坊协议共识的虚拟实体。验证者由余额、公钥和其他属性表示。<em>验证者客户端</em>是代表验证者行事的软件，它持有并使用其私钥。单个验证者客户端可以持有许多密钥对，从而控制许多验证者。
 
 </ExpandableCard>
 
-<ExpandableCard title="我能存入超过 32 个以太币吗？">
-每个与验证者相关的密钥对都需要正好 32 个以太币才能激活。 将更多以太币存入一对密钥并不能增加可能获得的奖励，因为每个验证者的<a href="https://www.attestant.io/posts/understanding-validator-effective-balance/">有效余额</a>被限制为 32 个以太币。 这意味着质押时需要以 32 个以太币为单位递增，每个验证者都有自己的一套密钥和余额。
+<ExpandableCard title="我可以存入超过 32 ETH 吗？">
+是的。具有_复利_ (0x02) 提款凭证的验证者可以持有高达 2048 个 ETH 的有效余额，而激活的最低要求仍为 32 个 ETH。复利验证者的奖励会自动添加到其质押中，并且它可以在超过 32 个 ETH 最低限额的每一个完整 ETH 上赚取奖励，因此你可以质押非 32 倍数的金额。请参阅[复利与 2048 ETH 上限](#compounding)。
 
-不要为一个验证者存入超过 32 以太币的资金。 这样做不会增加你的奖励。 如果为验证者设置了提款地址，超过 32 个以太币多余资金将在下一次<a href="/staking/withdrawals/#validator-sweeping">验证者扫描</a>时自动提取到该地址。
+具有_常规提款_ (0x01) 凭证的验证者的有效余额上限仍为 32 个 ETH，任何超过该数额的余额每隔几天会自动转入提款地址。
 
-如果单独质押对你来说要求太高，可以考虑使用<a href="/staking/saas/">质押即服务</a>提供商，或者如果你的资金少于 32 个以太币，则可以考虑<a href="/staking/pools/">联合质押</a>。
+对于复利验证者，只有超过 2048 个 ETH 上限的余额才会被自动转出。要提取低于该数额的任何金额，你需要从你的提款地址触发部分提款（这笔交易需要消耗 Gas），这可以提取超过 32 个 ETH 最低限额的任何余额。如果你运行多个验证者，你也可以在不退出网络的情况下将它们合并为一个单一的复利验证者。
+
+[更多关于质押提款的信息](/staking/withdrawals/)
 </ExpandableCard>
 
-<ExpandableCard title="如果我离线了会被罚没吗？ （简单地说：不会）">
-在网络最终确认时下线，不会导致罚没。 如果你的验证者在某个周期（每个周期 6.4 分钟）内无法进行验证，就会导致少量的<em>怠工处罚</em>，但这与<em>罚没</em>有很大不同。 这些处罚比你在验证者可用的情况下获得的奖励要少一些，而且损失可以通过将验证者上线大约相等的时间赚回来。
+<ExpandableCard title="如果我离线会被罚没吗？（简而言之：不会。）">
+当网络正常最终确定时离线**不会**导致罚没。如果你的验证者在给定时段（每个时段长 6.4 分钟）内无法进行证明，则会产生少量的<em>怠工惩罚</em>，但这与<em>罚没</em>截然不同。这些惩罚略低于验证者在可进行证明时本应获得的奖励，并且损失可以通过大约相等时间的重新在线来赚回。
 
-请注意，对怠工验证者的处罚与有多少个验证者同时下线成正比。 在大部分网络参与者同时离线的情况下，对每个验证者的处罚会比单个验证者怠工所受的处罚大。
+请注意，怠工惩罚与同时离线的验证者数量成正比。在网络的大部分同时离线的情况下，这些验证者中每一个受到的惩罚将大于单个验证者不可用时的惩罚。
 
-在极端情况下，如果网络因超过三分之一的验证者离线而停止最终确认，这些验证者将受到所谓的<em>二次怠惰惩罚</em>，离线验证者帐户中的以太币将遭受指数级损失。 这时以太坊网络将通过消耗怠工验证者的以太币进行自我修复，直到他们的余额达到 16 个以太币，此时他们将自动从验证者池中退出。 剩余在线的验证者最终将再次超过 2/3，从而满足再次最终确认链的绝对多数要求。
+在极端情况下，如果由于超过三分之一的验证者离线而导致网络停止最终确定，这些用户将遭受所谓的<em>二次方怠工泄漏</em>，即从离线验证者账户中呈指数级流失 ETH。这使得网络最终能够通过销毁不活跃验证者的 ETH 来完成自我修复，直到其余额达到 16 ETH，此时它们将被自动从验证者池中逐出。剩余的在线验证者最终将再次占网络的 2/3 以上，满足再次最终确定链所需的绝对多数。
 </ExpandableCard>
 
-<ExpandableCard title="如何保证我不会被罚没？">
-简而言之，虽然永远不能完全保证，但如果你真诚行事，运行非主流客户端，并且每次只在一台机器上保留你的签名密钥，你被罚没的风险几乎为零。
+<ExpandableCard title="我如何确保自己不被罚没？">
+简而言之，这永远无法得到完全保证，但如果你出于善意行事，运行少数派客户端，并且一次只在一台机器上保留你的签名密钥，那么被罚没的风险几乎为零。
 
-只有几种特定的情况会导致验证者被罚没并从网络中退出。 在撰写本文时，已经发生的罚没事件完全是冗余硬件设置的产物，即签名密钥同时存储在两台不同的机器上。 这可能会无意中导致你的密钥出现<em>两次投票</em>，这是一种可被罚没的行为。
+只有少数几种特定方式会导致验证者被罚没并被逐出网络。在撰写本文时，已发生的罚没完全是冗余硬件设置的产物，即签名密钥同时存储在两台独立的机器上。这可能会无意中导致你的密钥进行<em>双重投票</em>，这是一种可被罚没的违规行为。
 
-运行主流客户端（任何被超过 2/3 的用户使用的客户端）也存在可能被罚没的风险，比如该客户端有一个导致链分叉的错误。 这可能会导致一个有问题的分叉被最终确认。 要纠正并返回预定链，需要提交一个<em>环绕投票</em>，以尝试撤销最终确定的区块。 这也是一种可被罚没的行为，可以通过运行非主流客户端来避免。
+运行绝对多数客户端（网络中超过 2/3 使用的任何客户端）也存在潜在的罚没风险，如果该客户端存在导致链分叉的错误。这可能导致错误的区块被最终确定。要纠正回预期的链，需要通过尝试撤销已最终确定的区块来提交<em>环绕投票</em>。这也是一种可被罚没的违规行为，只需运行少数派客户端即可避免。
 
-<em>非主流客户端</em>中的等效错误永远不会被最终确认，因此也不会导致环绕投票，只会导致怠工处罚，而非<em>罚没</em>。
+<em>少数派客户端</em>中相同的错误永远不会最终确定，因此永远不会导致环绕投票，而只会导致怠工惩罚，<em>不会导致罚没</em>。
 
 <ul>
-  <li><a href="https://hackernoon.com/ethereums-client-diversity-problem">详细了解运行非主流客户端的重要性。</a></li>
-  <li><a href="https://medium.com/prysmatic-labs/eth2-slashing-prevention-tips-f6faa5025f50">详细了解预防罚没</a></li>
+  <li><a href="https://clientdiversity.org/">了解更多关于运行少数派客户端重要性的信息。</a></li>
+  <li><a href="/developers/docs/consensus-mechanisms/pos/rewards-and-penalties/">了解更多关于奖励、惩罚和罚没的信息</a></li>
 </ul>
 </ExpandableCard>
 
 <ExpandableCard title="哪个客户端最好？">
-各个客户端在性能和用户界面方面可能略有不同，因为每个客户端都是由不同的团队使用不同编程语言开发的。 这意味着，它们之中没有“最好的”。 所有生产用客户端都是优秀的软件，它们都执行相同的核心功能，即与区块链进行同步和交互。
+各个客户端在性能和用户界面方面可能略有不同，因为它们是由不同的团队使用各种编程语言开发的。话虽如此，它们中没有一个是“最好的”。所有生产级别的客户端都是优秀的软件，它们都执行相同的核心功能来同步并与区块链进行交互。
 
-由于所有生产用客户端都提供相同的基本功能，所以选择一个<strong>非主流客户端</strong>实际上非常重要，即并未被网络上大多数验证者使用的任何客户端。 这听起来可能有悖常理，但运行多数或绝对多数人使用的客户端会使你在该客户端出现错误时面临更大的罚没风险。 运行一个少数人使用的客户端可以极大地降低这些风险。
+由于所有生产级别的客户端都提供相同的基本功能，因此选择<strong>少数派客户端</strong>实际上非常重要，这意味着当前未被网络上大多数验证者使用的任何客户端。这听起来可能违反直觉，但运行多数或绝对多数客户端会使你在该客户端出现错误时面临更高的罚没风险。运行少数派客户端极大地限制了这些风险。
 
-<a href="https://mirror.xyz/jmcook.eth/S7ONEka_0RgtKTZ3-dakPmAHQNPvuj15nh0YGKPFriA">详细了解为什么客户端多样性至关重要</a>
+<a href="https://mirror.xyz/jmcook.eth/S7ONEka_0RgtKTZ3-dakPmAHQNPvuj15nh0YGKPFriA">了解更多关于为什么客户端多样性至关重要的信息</a>
 </ExpandableCard>
 
-<ExpandableCard title="我可以仅使用 VPS（虚拟专用服务器）吗？">
-虽然虚拟专用服务器 (VPS) 可用于替代家庭硬件设施，但你的验证者客户端的物理访问和位置<em>确实很重要</em>。 使用中心化云计算解决方案（如亚马逊网络服务或 Digital Ocean）的便捷之处在于，你不必拥有和操作硬件设施，但代价是网络需要中心化。
+<ExpandableCard title="我可以直接使用 VPS（虚拟专用服务器）吗？">
+尽管虚拟专用服务器 (VPS) 可以用作家庭硬件的替代品，但验证者客户端的物理访问和位置<em>确实很重要</em>。诸如 Amazon Web Services 或 Digital Ocean 等中心化云解决方案提供了无需获取和操作硬件的便利，但代价是使网络中心化。
 
-在一个中心化云存储解决方案上运行的验证者客户端越多，对这些用户来说就越危险。 任何使这些提供商离线的事件，无论是攻击、监管要求，还是电力/互联网中断，都会导致每个依赖于该服务器的验证者客户端同时离线。
+在单一中心化云存储解决方案上运行的验证者客户端越多，对这些用户来说就越危险。任何导致这些提供商离线的事件，无论是由于攻击、监管要求，还是仅仅是断电/断网，都将导致依赖该服务器的每个验证者客户端同时离线。
 
-离线处罚与有多少其他验证者同时离线成正比。 使用虚拟专用服务器会大大增加离线处罚的风险，并在大范围宕机的情况下增加你的二次惩罚或罚没的风险。 为了尽量降低你自己的风险，以及以太坊网络的风险，我们强烈建议用户获取并操作自己的硬件。
+离线惩罚与同时离线的其他验证者数量成正比。使用 VPS 会大大增加离线惩罚更严重的风险，并在中断范围足够大时增加你遭受二次方泄漏或罚没的风险。为了将你自己的风险以及对网络的风险降至最低，强烈建议用户获取并操作自己的硬件。
 </ExpandableCard>
 
-<ExpandableCard title="我如何解锁我的奖励或收回我的以太币？">
+<ExpandableCard title="我如何解锁我的奖励或取回我的 ETH？">
 
-从信标链上进行任何类型的提款都需要设置提款凭据。
+每次提款都要求你的验证者设置了提款地址。新的质押者在生成密钥和存款时设置此地址。尚未设置提款地址的网络早期质押者需要在提款前更新其提款凭证。
 
-新质押人在生成密钥和存款时设置提款凭据。 尚未设置提款凭证的现有质押人可以升级他们的密钥，以支持提款功能。
+对于具有常规提款 (0x01) 凭证的验证者，奖励支付（超过初始 32 个的累积 ETH）会定期自动分配到提款地址。对于复利 (0x02) 验证者，奖励保持质押状态并自动复利。你可以通过从你的提款地址触发部分提款来提取超过 32 个 ETH 的任何余额。
 
-设置提款凭据后，奖励支付（最初的 32 个以太币累积的以太币奖励）将自动定期分发到提款地址。
+要解锁并收回你的全部余额，你必须退出你的验证者。你可以使用你的验证者签名密钥执行此操作，或者直接从你的提款地址通过执行层交易触发，这意味着即使你的签名密钥丢失，你的资金仍然可以恢复。
 
-要解锁并收回全部余额，还必须完成验证者退出流程。
-
-<ButtonLink to="/staking/withdrawals/">更多关于质押提款的信息</ButtonLink>
+<ButtonLink href="/staking/withdrawals/">更多关于质押提款的信息</ButtonLink>
 </ExpandableCard>
 
-## 延伸阅读 {#further-reading}
+## 进一步阅读 {#further-reading}
 
-- [以太坊质押目录](https://www.staking.directory/) - _Eridian 和 Spacesider_
-- [以太坊客户端多样性问题](https://hackernoon.com/ethereums-client-diversity-problem) - _@emmanuelawosika 2022_
+- [客户端多样性统计数据和迁移指南](https://clientdiversity.org/)
 - [帮助实现客户端多样性](https://www.attestant.io/posts/helping-client-diversity/) - _Jim McDonald 2022_
-- [以太坊共识层的客户端多样性](https://mirror.xyz/jmcook.eth/S7ONEka_0RgtKTZ3-dakPmAHQNPvuj15nh0YGKPFriA) - _jmcook.eth 2022_
-- [如何选购以太坊验证者的硬件](https://www.youtube.com/watch?v=C2wwu1IlhDc)- _EthStaker 2022_
-- [加入以太坊 2.0 测试网的详细步骤](https://kb.beaconcha.in/guides/tutorial-eth2-multiclient) - _Butta_
-- [以太坊 2 防止罚没小技巧](https://medium.com/prysmatic-labs/eth2-slashing-prevention-tips-f6faa5025f50) - _Raul Jordan 2020_
+- [以太坊共识层上的客户端多样性](https://mirror.xyz/jmcook.eth/S7ONEka_0RgtKTZ3-dakPmAHQNPvuj15nh0YGKPFriA) - _jmcook.eth 2022_
+- [操作指南：选购以太坊验证者硬件](https://www.youtube.com/watch?v=C2wwu1IlhDc) - _EthStaker 2022_
+- [EIP-7870：硬件和带宽建议](https://eips.ethereum.org/EIPS/eip-7870)
+- [佩克特拉升级：最大有效余额及更多](/roadmap/pectra/maxeb/)
 
-<QuizWidget quizKey="solo-staking" />
+<QuizWidget quizKey="staking-solo" />

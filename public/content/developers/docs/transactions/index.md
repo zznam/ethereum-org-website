@@ -4,7 +4,7 @@ description: An overview of Ethereum transactions – how they work, their data 
 lang: en
 ---
 
-Transactions are cryptographically signed instructions from accounts. An account will initiate a transaction to update the state of the Ethereum network. The simplest transaction is transferring ETH from one account to another.
+Transactions are cryptographically signed instructions from accounts. An account will initiate a transaction to update the state of the [Ethereum](/) network. The simplest transaction is transferring ETH from one account to another.
 
 ## Prerequisites {#prerequisites}
 
@@ -23,7 +23,7 @@ Transactions require a fee and must be included in a validated block. To make th
 
 A submitted transaction includes the following information:
 
-- `from` – the address of the sender, that will be signing the transaction. This will be an externally-owned account as contract accounts cannot send transactions.
+- `from` – the address of the sender, that will be signing the transaction. This will be an externally-owned account as contract accounts cannot send transactions
 - `to` – the receiving address (if an externally-owned account, the transaction will transfer value. If a contract account, the transaction will execute the contract code)
 - `signature` – the identifier of the sender. This is generated when the sender's private key signs the transaction and confirms the sender has authorized this transaction
 - `nonce` - a sequentially incrementing counter which indicates the transaction number from the account
@@ -132,6 +132,14 @@ According to the ABI specifications, integer values (such as addresses, which ar
 So we know that the `to` address is [`4f6742badb049791cd9a37ea913f2bac38d01279`](https://etherscan.io/address/0x4f6742badb049791cd9a37ea913f2bac38d01279).
 The `value` is 0x3b0559f4 = 990206452.
 
+### Transaction descriptors {#transaction-descriptors}
+
+Because the data field contains opaque hexadecimal bytes, it can be extremely difficult to verify what action a transaction will actually perform. This "blind signing" vulnerability is addressed by **[Clear Signing](https://clearsigning.org/)** through the use of [transaction descriptors](https://eips.ethereum.org/EIPS/eip-7730) (defined by ERC-7730).  
+
+The ERC-7730 specification uses transaction descriptors (often structured as JSON files) to enrich the data found in ABIs and structured messages, like EVM transaction calldata, EIP-712 messages, and EIP-4337 User Operations. Developers use these descriptors to map specific transaction variables directly into formatting templates, ensuring the underlying data remains machine-readable for applications.
+
+On the frontend, wallets use this formatting context to translate opaque bytecode into clear, human-readable information. By automatically resolving values like token addresses into recognized tickers, or amounts into decimals, users are presented with a plain-language summary of the transaction's exact intent (e.g., 'Swap 1000 USDC for at least 0.25 WETH') before they sign
+
 ## Types of transactions {#types-of-transactions}
 
 On Ethereum there are a few different types of transactions:
@@ -160,12 +168,19 @@ The base fee will be burned **-0.00399 ETH**
 
 Validator keeps the tip **+0.000210 ETH**
 
-Gas is required for any smart contract interaction too.
 
 ![Diagram showing how unused gas is refunded](./gas-tx.png)
 _Diagram adapted from [Ethereum EVM illustrated](https://takenobu-hs.github.io/downloads/ethereum_evm_illustrated.pdf)_
 
 Any gas not used in a transaction is refunded to the user account.
+
+### Smart contract interactions {#smart-contract-interactions}
+
+Gas is required for any transaction that involves a smart contract.
+
+Smart contracts can also contain functions known as [`view`](https://docs.soliditylang.org/en/latest/contracts.html#view-functions) or [`pure`](https://docs.soliditylang.org/en/latest/contracts.html#pure-functions) functions, which do not alter the state of the contract. As such, calling these functions from an EOA will not require any gas. The underlying RPC call for this scenario is [`eth_call`](/developers/docs/apis/json-rpc/#eth-call).
+
+Unlike when accessed using `eth_call`, these `view` or `pure` functions are also commonly called internally (i.e., from the contract itself or from another contract) which does cost gas.
 
 ## Transaction lifecycle {#transaction-lifecycle}
 
@@ -183,7 +198,7 @@ Once the transaction has been submitted the following happens:
 
 Watch Austin walk you through transactions, gas, and mining.
 
-<YouTube id="er-0ihqFQB0" />
+<VideoWatch slug="transactions-eth-build" />
 
 ## Typed Transaction Envelope {#typed-transaction-envelope}
 
@@ -202,6 +217,18 @@ Where the fields are defined as:
 - `TransactionType` - a number between 0 and 0x7f, for a total of 128 possible transaction types.
 - `TransactionPayload` - an arbitrary byte array defined by the transaction type.
 
+Based on the `TransactionType` value, a transaction can be classified as:
+
+1. **Type 0 (Legacy) Transactions:** The original transaction format used since Ethereum's launch. They do not include features from [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559) such as dynamic gas fee calculations or access lists for smart contracts. Legacy transactions lack a specific prefix indicating their type in their serialized form, starting with the byte `0xf8` when using [Recursive Length Prefix (RLP)](/developers/docs/data-structures-and-encoding/rlp) encoding. The TransactionType value for these transactions is `0x0`.
+
+2. **Type 1 Transactions:** Introduced in [EIP-2930](https://eips.ethereum.org/EIPS/eip-2930) as part of Ethereum's [Berlin Upgrade](/ethereum-forks/#berlin), these transactions include an `accessList` parameter. This list specifies addresses and storage keys the transaction expects to access, helping to potentially reduce [gas](/developers/docs/gas/) costs for complex transactions involving smart contracts. EIP-1559 fee market changes are not included in Type 1 transactions. Type 1 transactions also include a `yParity` parameter, which can either be `0x0` or `0x1`, indicating the parity of the y-value of the secp256k1 signature. They are identified by starting with the byte `0x01`, and their TransactionType value is `0x1`.
+
+3. **Type 2 Transactions**, commonly referred to as EIP-1559 transactions, are transactions introduced in [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559), in Ethereum's [London Upgrade](/ethereum-forks/#london). They have become the standard transaction type on the Ethereum network. These transactions introduce a new fee market mechanism that improves predictability by separating the transaction fee into a base fee and a priority fee. They start with the byte `0x02` and include fields such as `maxPriorityFeePerGas` and `maxFeePerGas`. Type 2 transactions are now the default due to their flexibility and efficiency, especially favored during periods of high network congestion for their ability to help users manage transaction fees more predictably. The TransactionType value for these transactions is `0x2`.
+
+4. **Type 3 (Blob) Transactions** were introduced in [EIP-4844](https://eips.ethereum.org/EIPS/eip-4844) as part of Ethereum's [Dencun Upgrade](/ethereum-forks/#dencun). These transactions are designed to handle "blob" data (Binary Large Objects) more efficiently, particularly benefiting Layer 2 rollups by providing a way to post data to the Ethereum network at a lower cost. Blob transactions include additional fields such as `blobVersionedHashes`, `maxFeePerBlobGas`, and `blobGasPrice`. They start with the byte `0x03`, and their TransactionType value is `0x3`. Blob transactions represent a significant improvement in Ethereum's data availability and scaling capabilities.
+
+5. **Type 4 Transactions** were introduced in [EIP-7702](https://eips.ethereum.org/EIPS/eip-7702) as part of Ethereum’s [Pectra Upgrade](/roadmap/pectra/). These transactions are designed to be forward-compatible with account abstraction. They allow EOAs to temporarily behave like smart contract accounts without compromising their original functionality. They include an `authorization_list` parameter, which specifies the smart contract to which the EOA delegates its authority. After the transaction, the EOA’s code field will have the address of the delegated smart contract.
+
 ## Further reading {#further-reading}
 
 - [EIP-2718: Typed Transaction Envelope](https://eips.ethereum.org/EIPS/eip-2718)
@@ -213,3 +240,7 @@ _Know of a community resource that helped you? Edit this page and add it!_
 - [Accounts](/developers/docs/accounts/)
 - [Ethereum virtual machine (EVM)](/developers/docs/evm/)
 - [Gas](/developers/docs/gas/)
+
+<Divider />
+
+<QuizWidget quizKey="transactions" />

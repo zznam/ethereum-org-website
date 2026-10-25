@@ -1,6 +1,6 @@
 ---
 title: Pakiety zbiorcze warstwy 2
-description: Wprowadzenie do różnych rozwiązania skalowania warstwy 2 opracowywanych obecnie przez społeczność Ethereum.
+description: "Wprowadzenie do różnych rozwiązania skalowania warstwy 2 opracowywanych obecnie przez społeczność Ethereum."
 lang: pl
 incomplete: true
 sidebarDepth: 3
@@ -65,7 +65,7 @@ Istnieje wiele implementacji pakietów zbiorczych ZK, które można zintegrować
 
 - [Loopring](https://loopring.org/#/)
 - [Starkware](https://starkware.co/)
-- [Matter Labs zkSync](https://zksync.io/)
+- [Matter Labs ZKsync](https://zksync.io/)
 - [Aztec 2.0](https://aztec.network/)
 - [Sieć Hermez](https://hermez.io/)
 - [zkTube](https://zktube.io/)
@@ -118,15 +118,13 @@ Istnieją rozwiązania hybrydowe, które łączą w sobie najlepsze elementy wie
 ## Dalsza lektura {#further-reading}
 
 - [Niekompletny przewodnik po pakietach zbiorczych](https://vitalik.eth.limo/general/2021/01/05/rollup.html)
-- [Zero-Knowledge Blockchain Scalability](https://ethworks.io/assets/download/zero-knowledge-blockchain-scaling-ethworks.pdf)
 
 **Pakiety zbiorcze ZK**
 
 **Optymistyczne pakiety zbiorcze**
 
-- [Wszystko, co musisz wiedzieć o optymistycznym pakiecie zbiorczym](https://research.paradigm.xyz/rollups)
 - [OVM Deep Dive](https://medium.com/ethereum-optimism/ovm-deep-dive-a300d1085f52)
-- [Jak faktycznie działa pakiet zbiorczy Optimism?](https://www.paradigm.xyz/2021/01/how-does-optimisms-rollup-really-work)
+- [Jak faktycznie działa pakiet zbiorczy Optimism?](https://www.paradigm.xyz/2021/01/how-does-optimism-s-rollup-really-work)
 
 **Rozwiązania hybrydowe**
 

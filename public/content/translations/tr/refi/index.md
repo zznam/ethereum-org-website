@@ -1,79 +1,81 @@
 ---
-title: Rejeneratif Finans (ReFi)
-description: ReFi'ye ve mevcut kullanım durumlarına genel bakış.
+title: "Onarıcı Finans (ReFi)"
+description: "ReFi'ye ve mevcut kullanım durumlarına genel bir bakış."
 lang: tr
 template: use-cases
-emoji: ":recycle:"
 sidebarDepth: 2
-image: /future_transparent.png
+image: /images/future_transparent.png
 alt: ""
-summaryPoint1: Yenileyici ilkeler üzerine inşa edilmiş alternatif bir ekonomik sistem
-summaryPoint2: İklim değişikliği gibi küresel düzeydeki koordinasyon krizlerini çözmek için Ethereum'dan yararlanma girişimi
-summaryPoint3: Doğrulanmış karbon kredileri gibi ekolojik fayda varlıklarını büyük ölçüde ölçeklendirmek için bir araç
+summaryPoints:
+  - "Onarıcı ilkelere dayalı alternatif bir ekonomik sistem"
+  - "İklim değişikliği gibi küresel düzeydeki koordinasyon krizlerini çözmek için Ethereum'dan yararlanma girişimi"
+  - "Doğrulanmış karbon kredileri gibi ekolojik fayda varlıklarını büyük ölçüde ölçeklendirmek için bir araç"
 ---
 
 ## ReFi nedir? {#what-is-refi}
 
-**Rejeneratif Finans (ReFi)**, çıkarıcı veya sömürücü olmaktan ziyade canlandırıcı ekonomiler yaratmayı amaçlayan, blok zincirler üzerine inşa edilmiş bir dizi araç ve fikirdir. Sonunda, çıkarıcı sistemler mevcut olan kaynakları tüketir ve çökerler; rejeneratif sistemler olmadan eksiktir. ReFi, parasal değer yaratmanın, gezegenimiz ve topluluklarımızdan sürdürülemez şekilde kaynak çıkarılmasından ayrıştırılması gerektiği varsayımı ile işler.
+**Onarıcı finans (ReFi)**, sömürücü veya tüketici olmak yerine onarıcı ekonomiler yaratmayı amaçlayan, [blokzincirler](/glossary/#blockchain) üzerine inşa edilmiş bir dizi araç ve fikirdir. Sonuç olarak, tüketici sistemler mevcut kaynakları tüketir ve çöker; onarıcı mekanizmalar olmadan dayanıklılıktan yoksundurlar. ReFi, parasal değer yaratımının, gezegenimizden ve topluluklarımızdan sürdürülemez kaynak çıkarımından ayrılması gerektiği varsayımıyla çalışır.
 
-Bunun yerine, ReFi rejeneratif döngüler oluşturarak çevresel, toplumsal veya sosyal sorunları çözmeyi amaçlar. Bu sistemler, aynı anda ekosistemlere ve topluluklara yarar sağlamanın yanı sıra katılımcılar için değer yaratır.
+Bunun yerine ReFi, onarıcı döngüler yaratarak çevresel, toplumsal veya sosyal sorunları çözmeyi amaçlar. Bu sistemler katılımcılar için değer yaratırken aynı zamanda ekosistemlere ve topluluklara fayda sağlar.
 
-ReFi'nin temellerinden birisi [Capital Institute](https://capitalinstitute.org)'tan John Fullerton tarafından öncülük edilen rejeneratif ekonomi konseptidir. O sistemik sağlığın temelinde yatan sekiz birbirine bağlı prensip önerdi:
+ReFi'nin temellerinden biri, Capital Institute'tan John Fullerton'ın öncülük ettiği onarıcı ekonomi kavramıdır. Sistemik sağlığın temelini oluşturan [birbiriyle bağlantılı sekiz ilke](https://capitalinstitute.org/8-principles-regenerative-economy/) önermiştir:
 
-![Birbirine bağlanmış sekiz prensip](./refi-regenerative-economy-diagram.png)
+![Eight interconnected principles](refi-regenerative-economy-diagram.png)
 
-ReFi projeleri bu prensiplerin kullanıldığı [akıllı sözleşmelerde](/developers/docs/smart-contracts/) ve [merkeziyetsiz finans (DeFi)](/defi/) uygulamalarının canlandırıcı davranışlara teşvik ettiğini fark etti, örneğin bozulmuş ekosistemleri kurtarmak ve evrensel sorunlarda iklim değişikliği ve biyolojik çeşitlilik kaybı gibi büyük ölçekli iş birliklerini kolaylaştırdığını anladı.
+ReFi projeleri, bozulmuş ekosistemleri onarmak gibi onarıcı davranışları teşvik etmek ve iklim değişikliği ile biyolojik çeşitlilik kaybı gibi küresel sorunlarda büyük ölçekli iş birliğini kolaylaştırmak için [akıllı sözleşmeler](/glossary/#smart-contract) ve [merkeziyetsiz finans (DeFi)](/glossary/#defi) uygulamalarını kullanarak bu ilkeleri hayata geçirir.
 
-ReFi aynı zamanda Ethereum'u bilimsel bilgiyi finanse etmek, oluşturmak, gözden geçirmek, kredilendirmek, depolamak ve yaymak için platform olarak kullanan [merkeziyetsiz bilim (DeSci)](/desci/) hareketi ile örtüşür. DeSci araçları ağaç dikmek, okyanustan plastik temizlemek veya bozulmuş bir ekosistemi yenilemek gibi rejeneratif aktiviteleri uygulamak ve gözlemlemek için doğrulanabilir standartlar ve pratikler geliştirme amaçlı kullanışlı olabilir.
+ReFi ayrıca, bilimsel bilgiyi finanse etmek, oluşturmak, incelemek, kredilendirmek, depolamak ve yaymak için Ethereum'u bir platform olarak kullanan [merkeziyetsiz bilim (DeSci)](/desci/) hareketiyle de örtüşmektedir. DeSci araçları; ağaç dikmek, okyanustan plastik temizlemek veya bozulmuş bir ekosistemi onarmak gibi onarıcı faaliyetlerin uygulanması ve izlenmesi için doğrulanabilir standartlar ve uygulamalar geliştirmede faydalı olabilir.
 
-## Karbon Kredilerinin Tokenlaştırılması {#tokenization-of-carbon-credits}
+<VideoWatch slug="regenerative-finance-refi" />
 
-**[Gönüllü karbon piyasası (VCM)](https://climatefocus.com/so-what-voluntary-carbon-market-exactly/)** mevcut emisyonları azaltarak veya atmosferde yayılan sera gazlarını kaldırarak karbon emisyonları üzerinde doğrulanmış pozitif etki yaratan projeleri fonlamak için bir mekanizmadır. Bu projeler doğrulandıktan sonra iklim hareketini destekleyen kişiler veya organizasyonlara satabilecekleri "karbon kredisi" isimli bir varlık elde ederler.
+## Karbon kredilerinin tokenlaştırılması {#tokenization-of-carbon-credits}
 
-VCM'ye ek olarak, spesifik bir yetki alanında (örneğin, ülke veya bölge) kanunlar veya yönetmelikler aracılığıyla bir karbon fiyatı belirlemeyi hedefleyen ve dağıtılacak izinlerin arzını kontrol eden, devlet destekli birkaç karbon piyasası ("uyum piyasaları") vardır. Uyum piyasaları kendi yetki alanlarındaki kirleticileri emisyonları azaltmaları için teşvik eder, ancak hali hazırda yayılmış sera gazlarını yok etme imkânları yoktur.
+**[Gönüllü karbon piyasası (VCM)](https://climatefocus.com/so-what-voluntary-carbon-market-exactly/)**, devam eden emisyonları azaltarak veya halihazırda atmosfere salınmış sera gazlarını ortadan kaldırarak karbon emisyonları üzerinde doğrulanmış olumlu bir etki yaratan projeleri finanse etmeye yönelik bir mekanizmadır. Bu projeler doğrulandıktan sonra, iklim eylemini desteklemek isteyen bireylere ve kuruluşlara satabilecekleri "karbon kredisi" adı verilen bir varlık alırlar.
 
-Geçmiş on yıllardaki gelişimine rağmen, VCM birtakım sorunlarla boğuşmaya devam ediyor:
+VCM'ye ek olarak, dağıtılacak izinlerin arzını kontrol ederek belirli bir yargı yetkisi (örneğin ülke veya bölge) dahilinde yasalar veya düzenlemeler yoluyla bir karbon fiyatı belirlemeyi amaçlayan, devlet tarafından zorunlu kılınan çeşitli karbon piyasaları ('uyum piyasaları') da bulunmaktadır. Uyum piyasaları, kendi yetki alanlarındaki kirleticileri emisyonları azaltmaya teşvik eder, ancak halihazırda salınmış olan sera gazlarını ortadan kaldırma kapasitesine sahip değildir.
 
-1. Yüksek oranda parçalanmış likidite
+Son on yıllardaki gelişimine rağmen, VCM çeşitli sorunlardan muzdarip olmaya devam etmektedir:
+
+1. Oldukça parçalanmış likidite
 2. Şeffaf olmayan işlem mekanizmaları
 3. Yüksek ücretler
-4. Çok düşük ticaret hızı
+4. Çok yavaş alım satım hızı
 5. Ölçeklenebilirlik eksikliği
 
-VCM'yi yeni blok zincir temelli **dijital karbon piyasasına (DCM)** dönüştürmek karbon kredilerini doğrulama, işlemde kullanma ve tüketme için mevcut teknolojiyi yükseltme fırsatı olabilir. Blok zincirler herkese açık şekilde doğrulanabilir veri, geniş bir kullanıcı aralığı ve daha çok likidite sağlar.
+VCM'yi yeni blokzincir tabanlı **dijital karbon piyasasına (DCM)** geçirmek, karbon kredilerini doğrulamak, işlem yapmak ve tüketmek için mevcut teknolojiyi yükseltmek adına bir fırsat olabilir. Blokzincirler, kamuya açık olarak doğrulanabilir verilere, geniş bir kullanıcı yelpazesi için erişime ve daha fazla likiditeye olanak tanır.
 
-ReFi projeleri geleneksel piyasaların sorunlarını hafifletmek için blok zincir teknolojilerini kullanır:
+ReFi projeleri, geleneksel piyasanın birçok sorununu hafifletmek için blokzincir teknolojisini kullanır:
 
-- **Likidite az sayıda likidite havuzunda yoğunlaşmıştır** ve herkes tarafından takas edilebilir. Tekil kişiler gibi büyük organizasyonlar da bu havuzları elle alıcı/satıcı arayışı, katılım ücreti veya ön kayıt olmadan kullanabilir.
-- **Tüm işlemler herkese açık blok zincirlerde kayıtlıdır**. Her bir karbon kredisinin takas aktivitesi sebebiyle takip ettiği yolun DCM'de var olduktan sonra sonsuza kadar izi sürülebilir.
-- **İşlem hızı neredeyse anlıktır**. Klasik piyasalar aracılığıyla büyük miktarda karbon kredisini güvenli hale getirmek günler veya haftalar alabilir, ancak DCM ile bu birkaç saniye içerisinde gerçekleştirilebilir.
-- **Takas aktivitesi aracılar olmadan gerçekleşir**, aracılar yüksek ücretler alırlar. Dijital karbon kredileri bir analiz firmasının verisine göre [eş değer geleneksek kredilere göre %62 masraf iyileştirmesini](https://www.klimadao.finance/blog/klimadao-analysis-of-the-base-carbon-tonne) temsil eder.
-- **DCM ölçeklenebilirdir** ve benzer tekillerin ve uluslararası firmaların isteklerini karşılayabilir.
+- **Likidite, herkes tarafından serbestçe alınıp satılabilen az sayıda likidite havuzunda yoğunlaşmıştır.** Büyük kuruluşların yanı sıra bireysel kullanıcılar da satıcı/alıcı için manuel arama yapmadan, katılım ücreti ödemeden veya önceden kayıt olmadan bu havuzları kullanabilir.
+- **Tüm işlemler halka açık blokzincirlere kaydedilir.** Her bir karbon kredisinin alım satım faaliyeti nedeniyle izlediği yol, DCM'de kullanıma sunulduğu andan itibaren sonsuza kadar izlenebilir.
+- **İşlem hızı neredeyse anındadır.** Eski piyasalar aracılığıyla büyük miktarlarda karbon kredisi güvence altına almak günler veya haftalar sürebilir, ancak bu DCM'de birkaç saniye içinde gerçekleştirilebilir.
+- **Alım satım faaliyeti, yüksek ücretler talep eden aracılar olmadan gerçekleşir.** Dijital karbon kredileri, geleneksel kredilere kıyasla önemli bir maliyet düşüşünü temsil eder.
+- **DCM ölçeklenebilirdir** ve hem bireylerin hem de çok uluslu şirketlerin taleplerini karşılayabilir.
 
-### DCM'in Ana Bileşenleri {#key-components-dcm}
+### DCM'nin temel bileşenleri {#key-components-dcm}
 
-Dört ana bileşen DCM'nin mevcut peyzajını oluşturur:
+Dört ana bileşen DCM'nin mevcut manzarasını oluşturur:
 
-1. [Verra](https://verra.org/project/vcs-program/registry-system/) ve [Gold Standard](https://www.goldstandard.org/) gibi kayıt defterleri karbon kredisi oluşturan projelerin güvenilir olduğunu doğrular. Ayrıca bunlar, dijital karbon kredilerinin oluşturulduğu ve transfer edildiği veya kullanıldığı (emekli edildiği) veritabanlarını yönetir.
+1. [Verra](https://verra.org/project/vcs-program/registry-system/) ve [Gold Standard](https://www.goldstandard.org/) gibi kayıt kuruluşları, karbon kredisi oluşturan projelerin güvenilir olmasını sağlar. Ayrıca dijital karbon kredilerinin ortaya çıktığı ve transfer edilebildiği veya kullanılabildiği (kullanımdan kaldırılabildiği) veritabanlarını da işletirler.
 
-Blok zincirler üzerinde inşa edilen ve bu sektördeki mevcut önde gelenlerle rekabet etmeye çalışan yeni bir yenilikçi proje dalgası bulunmaktadır.
+Blokzincirler üzerinde inşa edilen ve bu sektördeki mevcut oyuncuları yerinden etmeye çalışan yeni bir yenilikçi proje dalgası var.
 
-2. Karbon köprüler, diğer adıyla tokenlaştırıcılar, geleneksel kayıt defterlerinden DCM'ye karbon kredisi temsil veya transfer etmek için teknoloji sunarlar. Önde gelen örnekleri şunları içerir: [Toucan Protocol](https://toucan.earth/), [C3](https://c3.app/) ve [Moss.Earth](https://moss.earth/).
-3. Entegre servisler son kullanıcılara bir kredinin çevresel faydasını alma ve dünyadaki iklim hareketine desteğini paylaşma için karbon iptali ve/veya kaldırma kredileri sunarlar.
+2. Karbon köprüleri, diğer adıyla tokenlaştırıcılar, karbon kredilerini geleneksel kayıt kuruluşlarından DCM'ye temsil etmek veya transfer etmek için teknoloji sağlar. Önemli örnekler arasında [Toucan Protokolü](https://toucan.earth/), [C3](https://c3.app/) ve [Moss.Earth](https://moss.earth/) bulunur.
+3. Entegre hizmetler, son kullanıcılara karbon önleme ve/veya giderme kredileri sunarak bir kredinin çevresel faydasını talep etmelerine ve iklim eylemine verdikleri desteği dünyayla paylaşmalarına olanak tanır.
 
-[Klima Infinity](https://www.klimadao.finance/infinity) ve [Senken](https://senken.io/) gibi bazıları üçüncü şahıslar tarafından geliştirilen ve yerleşmiş standartlar altında arz edilen geniş aralıkta projeler sunarlar; [Nori](https://nori.com/) gibi diğerleri ise sadece kendilerinin arz ettikleri ve kendi özel pazarlarına sahip oldukları kendi karbon kredisi standardına göre geliştirilmiş spesifik projeler sunarlar.
+[Klima Infinity](https://www.klimadao.finance/infinity) ve [Senken](https://senken.io/) gibi bazıları, üçüncü taraflarca geliştirilen ve Verra gibi yerleşik standartlar altında ihraç edilen çok çeşitli projeler sunarken; [Nori](https://nori.com/) gibi diğerleri yalnızca kendi karbon kredisi standartları altında geliştirilen, ihraç ettikleri ve kendilerine ait özel bir pazar yerine sahip oldukları belirli projeleri sunar.
 
-4. Karbon piyasasının tüm tedarik zinciri etkisinin ve verimliliğinin ölçeklendirilmesini kolaylaştıran temeldeki raylar ve altyapı. [KlimaDAO](http://klimadao.finance/) likiditeyi bir kamu malı olarak sunar (herhangi birinin karbon kredilerini şeffaf bir fiyatla alıp satabilmesini sağlar), karbon piyasalarında girdi artışını ve emeklilikleri ödüllerle teşvik eder, alım ve emekliliğin yanında, geniş bir tokenlaştırılmış karbon kredileri yelpazesi ile alakalı veriye erişim için kullanıcı dostu ve beraber çalışabilen araçlar sunar.
+4. Karbon piyasasının tüm tedarik zincirinin etkisinin ve verimliliğinin ölçeklendirilmesini kolaylaştıran temel raylar ve altyapı. [KlimaDAO](https://klimadao.finance/), bir kamu malı olarak likidite sağlar (herkesin şeffaf bir fiyattan karbon kredisi alıp satmasına olanak tanır), karbon piyasalarının işlem kapasitesinin artmasını ve kullanımdan kaldırmaları ödüllerle teşvik eder ve çok çeşitli tokenlaştırılmış karbon kredileri hakkında verilere erişmek, bunları edinmek ve kullanımdan kaldırmak için kullanıcı dostu, birlikte çalışabilir araçlar sunar.
 
-## Karbon pazarlarının ötesinde ReFi {#refi-beyond}
+## Karbon piyasalarının ötesinde ReFi {#refi-beyond}
 
-Şu anda karbon piyasaları ve VCM'nin DCM'ye dönüşümü hakkında alan içinde büyük bir vurgu olsa da, "ReFi" terimi sadece karbon ile sınırlı değildir. Karbon kredilerinin dışında diğer çevresel varlıklar da geliştirilebilir ve tokenlaştırılabilir, yani ayrıca diğer negatif dışsallıklar da gelecekteki ekonomik sistemlerin temel katmanlarında fiyatlandırılabilir. Dahası, bu ekonomik modelin rejeneratif yönü diğer alanlara uygulanabilir, tıpkı [Gitcoin](https://gitcoin.co/) gibi ikinci dereceden finansman platformları aracılığıyla kamu mallarının fonlanması gibi. Açık katılım ve kaynakların eşit dağıtımı fikri üzerinde inşa edilmiş organizasyonlar herkesi açık kaynak yazılım projelerine olduğu gibi eğitimsel, çevresel ve topluluk odaklı projelere para aktarmak için destekler.
+Şu anda genel olarak karbon piyasalarına ve özelde VCM'nin DCM'ye geçişine güçlü bir vurgu yapılsa da, "ReFi" terimi kesinlikle karbonla sınırlı değildir. Karbon kredilerinin ötesindeki diğer çevresel varlıklar geliştirilebilir ve tokenlaştırılabilir, bu da diğer negatif dışsallıkların da gelecekteki ekonomik sistemlerin temel katmanlarında fiyatlandırılabileceği anlamına gelir. Dahası, bu ekonomik modelin onarıcı yönü, [Gitcoin](https://gitcoin.co/) gibi karesel fonlama platformları aracılığıyla kamusal malların finanse edilmesi gibi diğer alanlara da uygulanabilir. Açık katılım ve kaynakların adil dağılımı fikri üzerine inşa edilen kuruluşlar, herkesin açık kaynaklı yazılım projelerinin yanı sıra eğitim, çevre ve topluluk odaklı projelere para aktarmasını sağlar.
 
-Sermayenin yönünü çıkarımcı pratiklerden rejeneratif bir akışa çevirerek, sosyal, çevresel veya toplumsal faydalar sağlayan ve geleneksel finansta finansmanı başaramayan projeler ve şirketler ayağa kalkabilir ve toplum için pozitif dışsallıkları çok daha hızlı ve kolay şekilde oluşturabilir. Bu finansman modeline geçiş yapmak aynı zamanda tüm nüfusların sadece pasif izleyicilerdense aktif katılımcılar olabileceği çok daha kapsayıcı ekonomik sistemlere kapı açar. ReFi türümüz ve gezegenimizdeki tüm yaşamın karşılaştığı varoluşsal meydan okumalara karşı hareketi koordine etmek için bir mekanizma ve önümüzdeki yüzyıllar için daha kapsayıcı ve sürdürülebilir geleceği sağlayan yeni bir ekonomik paradigmanın temel katmanı olan bir Ethereum vizyonu sunar.
+Sermayenin yönünü sömürücü uygulamalardan onarıcı bir akışa kaydırarak, sosyal, çevresel veya toplumsal faydalar sağlayan ve geleneksel finansta fon bulamayan projeler ve şirketler çok daha hızlı ve kolay bir şekilde hayata geçebilir ve toplum için pozitif dışsallıklar yaratabilir. Bu fonlama modeline geçiş, aynı zamanda her demografiden insanın sadece pasif gözlemciler olmak yerine aktif katılımcılar olabileceği çok daha kapsayıcı ekonomik sistemlerin kapısını açar. ReFi, Ethereum'u türümüzün ve gezegenimizdeki tüm yaşamın karşı karşıya olduğu varoluşsal zorluklara karşı eylemi koordine eden bir mekanizma olarak sunar; yüzyıllar boyunca daha kapsayıcı ve sürdürülebilir bir gelecek sağlayan yeni bir ekonomik paradigmanın temel katmanı olarak.
 
-## ReFi hakkında ek okuma
+## ReFi hakkında ek okumalar {#additional-reading-on-refi}
 
-- [Karbon paralarına ve ekonomideki yerine yüksek seviye bir genel bakış](https://www.klimadao.finance/blog/the-vision-of-a-carbon-currency)
-- [Gelecek Bakanlığı, karbon destekli bir para biriminin iklim değişikliği ile savaştaki rolünü gösteren bir roman](https://en.wikipedia.org/wiki/The_Ministry_for_the_Future)
-- [Gönüllü Karbon Pazarlarının Ölçeklendirilmesi Görev Gücü tarafından detaylı bir rapor](https://www.iif.com/Portals/1/Files/TSVCM_Report.pdf)
-- [Kevin Owocki ve Evan Miyazono'nun ReFi hakkındaki CoinMarketCap Sözlük girdisi](https://coinmarketcap.com/alexandria/glossary/regenerative-finance-refi)
+- [Karbon para birimlerine ve ekonomideki yerlerine üst düzey bir bakış](https://www.klimadao.finance/resources/the-vision-of-a-carbon-currency)
+- [Gelecek Bakanlığı (The Ministry for the Future), karbon destekli bir para biriminin iklim değişikliğiyle mücadeledeki rolünü anlatan bir roman](https://en.wikipedia.org/wiki/The_Ministry_for_the_Future)
+- [Gönüllü Karbon Piyasalarını Ölçeklendirme Görev Gücü tarafından hazırlanan ayrıntılı bir rapor](https://www.iif.com/Portals/1/Files/TSVCM_Report.pdf)
+- [Kevin Owocki ve Evan Miyazono'nun ReFi hakkındaki CoinMarketCap Sözlük girişi](https://coinmarketcap.com/academy/glossary/regenerative-finance-refi)

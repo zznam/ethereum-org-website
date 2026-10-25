@@ -1,121 +1,142 @@
 ---
-title: Zdecentralizowane sieci społecznościowe
-description: Przegląd zdecentralizowanych serwisów społecznościowych w Ethereum
+title: "Zdecentralizowane sieci społecznościowe"
+description: "Przegląd zdecentralizowanych sieci społecznościowych na Ethereum"
 lang: pl
 template: use-cases
-emoji: ":mega:"
 sidebarDepth: 2
-image: /ethereum-learn.png
-summaryPoint1: Oparte na łańcuchu bloków platformy umożliwiające interakcje społeczne oraz tworzenie i rozpowszechnianie treści.
-summaryPoint2: Zdecentralizowane sieci mediów społecznościowych zapewniają ochronę prywatności użytkowników i większe bezpieczeństwo danych.
-summaryPoint3: Tokeny i NFT otwierają nowe możliwości monetyzacji treści.
+image: /images/ethereum-learn.png
+summaryPoints:
+  - "Oparte na technologii blockchain platformy do interakcji społecznych oraz tworzenia i dystrybucji treści."
+  - "Zdecentralizowane sieci społecznościowe chronią prywatność użytkowników i zwiększają bezpieczeństwo danych."
+  - "Tokeny i NFT tworzą nowe sposoby monetyzacji treści."
 ---
 
-Serwisy społecznościowe odgrywają ogromną rolę w naszej codziennej komunikacji i wzajemnych interakcjach. Scentralizowana kontrola takich serwisów jest jednak źródłem wielu problemów. Wycieki danych, przestoje serwerów, cenzurowanie treści czy naruszenia prywatności to tylko niektóre z nich. Aby stawić czoła tym wyzwaniom, deweloperzy tworzą serwisy społecznościowe, jako podstawę wykorzystując platformę Ethereum. Zdecentralizowane serwisy społecznościowe pozwalają wykluczyć większość problemów platform tradycyjnych, a przy tym zapewniają użytkownikom lepsze ogólne doświadczenia.
+Sieci społecznościowe odgrywają ogromną rolę w naszej codziennej komunikacji i interakcjach. Jednak scentralizowana kontrola nad tymi platformami stworzyła wiele problemów: wycieki danych, awarie serwerów, usuwanie z platform (de-platforming), cenzura i naruszenia prywatności to tylko niektóre z kompromisów, na jakie często idą media społecznościowe. Aby zwalczyć te problemy, programiści budują sieci społecznościowe na [Ethereum](/). Zdecentralizowane sieci społecznościowe mogą rozwiązać wiele problemów tradycyjnych platform społecznościowych i poprawić ogólne wrażenia użytkowników.
 
-## Czym są zdecentralizowane serwisy społecznościowe? {#what-are-decentralized-social-networks}
+## Czym są zdecentralizowane sieci społecznościowe? {#what-are-decentralized-social-networks}
 
-Zdecentralizowane serwisy społecznościowe to oparte na łańcuchu bloków platformy umożliwiające użytkownikom wymianę informacji oraz publikowanie treści i udostępnianie ich grupom odbiorców. Ponieważ aplikacje te oparte są na łańcuchu bloków, można je zdecentralizować, uodparniając je na próby cenzurowania treści i nadmierną kontrolę.
+Zdecentralizowane sieci społecznościowe to platformy [oparte na technologii blockchain](/glossary/#blockchain), które pozwalają użytkownikom na wymianę informacji, a także publikowanie i dystrybucję treści do odbiorców. Ponieważ te aplikacje działają na blockchainie, mogą być zdecentralizowane i odporne na cenzurę oraz nieuzasadnioną kontrolę.
 
-Wiele zdecentralizowanych serwisów społecznościowych funkcjonuje jako alternatywy dla platform konwencjonalnych, takich jak Facebook, LikedIn, Twitter i Medium. Serwisy społecznościowe oparte na łańcuchu bloków mają jednak wiele właściwości, które dają im przewagę nad platformami konwencjonalnymi.
+Wiele zdecentralizowanych sieci społecznościowych istnieje jako alternatywa dla uznanych serwisów społecznościowych, takich jak Facebook, LinkedIn, Twitter i Medium. Jednak sieci społecznościowe oparte na blockchainie mają szereg funkcji, które stawiają je przed tradycyjnymi platformami społecznościowymi.
 
-### Jak działają zdecentralizowane serwisy społecznościowe? {#decentralized-social-networks-overview}
+<VideoWatch slug="decentralized-social-media" />
 
-Zdecentralizowane serwisy społecznościowe reprezentują klasę [aplikacji zdecentralizowanych (d-aplikacji)](/dapps/), czyli aplikacji opartych na [inteligentnych kontraktach](/developers/docs/smart-contracts/) wdrożonych w łańcuchu bloków. Kod kontraktu służy jako backend tych aplikacji i określa ich logikę biznesową.
+### Jak działają zdecentralizowane sieci społecznościowe? {#decentralized-social-networks-overview}
 
-Konwencjonalne serwisy społecznościowe polegają na bazach danych, w których przechowywane są dane użytkowników, kod programu i inne rodzaje informacji. Tworzy to jednak pojedyncze punkty awarii i wprowadza znaczne ryzyko. Za przykład może posłużyć głośny incydent z zeszłego roku, kiedy to ze względu na [wielogodzinny przestój](https://www.npr.org/2021/10/05/1043211171/facebook-instagram-whatsapp-outage-business-impact) serwerów Facebooka użytkownicy zostali odcięci od platformy.
+Zdecentralizowane sieci społecznościowe to klasa [zdecentralizowanych aplikacji (dapp)](/apps/) — aplikacji napędzanych przez [inteligentne kontrakty](/glossary/#smart-contract) wdrożone na blockchainie. Kod kontraktu służy jako backend dla tych aplikacji i definiuje ich logikę biznesową.
 
-Zdecentralizowane serwisy społecznościowe typu peer-to-peer obejmują tysiące węzłów na całym świecie. Nawet jeśli niektóre węzły ulegną awarii, sieć będzie działać nieprzerwanie, dzięki czemu aplikacje są odporne na awarie i przestoje.
+Tradycyjne platformy mediów społecznościowych opierają się na bazach danych do przechowywania informacji o użytkownikach, kodu programu i innych form danych. Tworzy to jednak pojedyncze punkty awarii i wprowadza znaczne ryzyko. Na przykład serwery Facebooka niesławnie [przestały działać na wiele godzin](https://www.npr.org/2021/10/05/1043211171/facebook-instagram-whatsapp-outage-business-impact) w październiku 2021 r., odcinając użytkowników od platformy.
 
-Zdecentralizowane systemy pamięci, takie jak [InterPlanetary File System (IPFS)](https://ipfs.io/), sieci społecznościowe zbudowane na Ethereum chronią dane użytkowników przed nadużyciem. Tu nikt nie sprzedaje danych osobowych reklamodawcom a hakerzy nie są w stanie ich wykraść.
+Zdecentralizowane sieci społecznościowe istnieją w [sieci peer-to-peer](/glossary/#peer-to-peer-network) składającej się z tysięcy węzłów na całym świecie. Nawet jeśli niektóre węzły ulegną awarii, sieć będzie działać nieprzerwanie, dzięki czemu aplikacje będą odporne na awarie i przestoje.
 
-Wiele sieci społecznościowych opartych na łańcuchu bloków ma natywne tokeny, które je zasilają, bez potrzeby dochodu z reklam. Użytkownicy mogą kupić te tokeny, aby uzyskać dostęp do określonych funkcji, zrealizować zakupy w aplikacji lub dać napiwek swoim ulubionym twórcom treści.
+Korzystając ze zdecentralizowanych systemów przechowywania danych, takich jak [IPFS](https://ipfs.io/), sieci społecznościowe zbudowane na Ethereum mogą chronić informacje o użytkownikach przed wykorzystywaniem i złośliwym użyciem. Nikt nie sprzeda Twoich danych osobowych reklamodawcom, a hakerzy nie będą w stanie ukraść Twoich poufnych informacji.
 
-## Zalety zdecentralizowanych mediów społecznościowych {#benefits}
+Wiele platform społecznościowych opartych na blockchainie posiada natywne tokeny, które napędzają monetyzację w przypadku braku przychodów z reklam. Użytkownicy mogą kupować te tokeny, aby uzyskać dostęp do określonych funkcji, dokonywać zakupów w aplikacji lub dawać napiwki swoim ulubionym twórcom treści.
 
-1. Zdecentralizowane media społecznościowe są odporne na cenzurę i otwarte dla wszystkich. Oznacza to, że użytkownicy nie mogą być blokowani, usuwani z platformy ani ograniczani.
+## Korzyści ze zdecentralizowanych sieci społecznościowych {#benefits}
 
-2. Zdecentralizowane sieci społecznościowe są oparte na zasadach open source. Oznacza to, że ich kod źródłowy jest ogólnie dostępny. Eliminując wdrażanie nieprzejrzystych algorytmów powszechnych w tradycyjnych mediach społecznościowych, sieci społecznościowe oparte na łańcuchu bloków mogą pogodzić interesy użytkowników i twórców platformy.
+1. Zdecentralizowane sieci społecznościowe są odporne na cenzurę i otwarte dla wszystkich. Oznacza to, że **użytkownicy nie mogą zostać zbanowani**, usunięci z platformy ani arbitralnie ograniczeni.
 
-3. Zdecentralizowane sieci społecznościowe eliminują „pośrednika”. Twórcy treści są bezpośrednimi właścicielami swoich treści i angażują się bezpośrednio z osobami śledzącymi, fanami, kupującymi i innymi stronami, przy czym pomiędzy nimi nie ma nic poza inteligentnym kontraktem.
+2. Zdecentralizowane sieci społecznościowe są **zbudowane na ideałach open-source** i udostępniają kod źródłowy aplikacji do publicznego wglądu. Eliminując implementację nieprzejrzystych algorytmów powszechnych w tradycyjnych mediach społecznościowych, sieci społecznościowe oparte na blockchainie mogą pogodzić interesy użytkowników i twórców platform.
 
-4. Jako d-aplikacje działające w sieci Ethereum, która jest wspierana przez globalną sieć węzłów typu peer-to-peer, zdecentralizowane media społecznościowe są mniej podatne na przestoje i przerwy w pracy serwerów.
+3. Zdecentralizowane sieci społecznościowe eliminują „pośredników”. Twórcy treści **mają bezpośrednią własność nad swoimi treściami** i angażują się bezpośrednio z obserwującymi, fanami, kupującymi i innymi stronami, mając pomiędzy sobą jedynie inteligentny kontrakt.
 
-5. Zdecentralizowane platformy społecznościowe oferują ulepszone ramy monetyzacji dla twórców treści poprzez tokeny niezbywalne (NFT), płatności kryptowalutowe w aplikacji i inne.
+4. Jako dappy działające w sieci Ethereum, która jest utrzymywana przez globalną sieć węzłów peer-to-peer, zdecentralizowane sieci społecznościowe są **mniej podatne na przestoje serwerów** i awarie.
 
-6. Zdecentralizowane sieci społecznościowe zapewniają użytkownikom wysoki poziom prywatności i anonimowości. Na przykład każdy może się zalogować do sieci społecznościowej w Ethereum, korzystając z profilu lub portfela ENS — bez konieczności dzielenia się swoimi wrażliwymi danymi (PII), takimi jak nazwy, adresy e-mail itp.
+5. Zdecentralizowane platformy społecznościowe oferują **ulepszone ramy monetyzacji** dla twórców treści za pośrednictwem [niewymienialnych tokenów (NFT)](/glossary/#nft), płatności krypto w aplikacjach i nie tylko.
 
-7. Zdecentralizowane sieci społecznościowe nie opierają sie na scentralizowanych bazach danych. Dane są przechowywane w sposób rozproszony, który lepiej je zabezpiecza.
+6. Zdecentralizowane sieci społecznościowe zapewniają użytkownikom **wysoki poziom prywatności i anonimowości**. Na przykład osoba fizyczna może zalogować się do sieci społecznościowej opartej na Ethereum za pomocą profilu [ENS](/glossary/#ens) lub [portfela](/glossary/#wallet) — bez konieczności udostępniania danych osobowych (PII), takich jak imiona i nazwiska, adresy e-mail itp.
 
-## Zdecentralizowane sieci społecznościowe w Ethereum {#ethereum-social-networks}
+7. Zdecentralizowane sieci społecznościowe opierają się na zdecentralizowanym przechowywaniu danych, a nie na scentralizowanych bazach danych, co jest znacznie lepsze dla ochrony danych użytkowników.
 
-Sieć Ethereum jest doskonałym narzędziem dla programistów, którzy tworzą zdecentralizowane media społecznościowe, ze względu na popularność jej tokenów (ERC-20/ERC-721) i ogromną bazę użytkowników. Oto kilka przykładów sieci społecznościowych opartych na Ethereum:
+## Zdecentralizowane sieci społecznościowe na Ethereum {#ethereum-social-networks}
 
-### Peepeth {#peepeth}
+Sieć Ethereum stała się preferowanym narzędziem dla programistów tworzących zdecentralizowane media społecznościowe ze względu na popularność jej tokenów i ogromną bazę użytkowników. Oto kilka przykładów sieci społecznościowych opartych na Ethereum:
 
-[Peepeth](https://peepeth.com/) to platforma mikroblogowa podobna do Twittera. Działa w oparciu o łańcuch bloków Ethereum i wykorzystuje IPFS do przechowywania danych użytkowników.
-
-Użytkownicy mogą wysyłać krótkie wiadomości, Peeps, których nie można usunąć ani zmodyfikować. Możesz otrzymywać napiwki lub dawać je każdemu na platformie, w etherach (ETH), nie opuszczając aplikacji.
+<VideoWatch slug="crypto-apps-desocial-linda-xie" />
 
 ### Mirror {#mirror}
 
-[Mirror](https://mirror.xyz/) to oparta na web3 platforma do tworzenia treści, która ma być zdecentralizowana i należeć do użytkowników. Użytkownicy mogą czytać i pisać na platformie Mirror za darmo, po prostu podłączając swoje portfele. Mogą również zapisywać i subskrybować treści innych autorów.
+[Mirror](https://mirror.xyz/) to platforma do pisania obsługująca Web3, której celem jest decentralizacja i własność użytkowników. Użytkownicy mogą czytać i pisać za darmo na Mirror, po prostu podłączając swoje portfele. Użytkownicy mogą również kolekcjonować teksty i subskrybować swoich ulubionych autorów.
 
-Posty opublikowane na platformie Mirror są trwale przechowywane na Arweave, zdecentralizowanej platformie do przechowywania, i można je wybić jako kolekcjonerskie [niewymienialne tokeny (NFT)](/nft/) znane jako Writing NFT. Wybicie Writing NFT jest całkowicie darmowe dla twórców treści i odbywa się w warstwie L2 Ethereum. Dzięki temu transakcje są niedrogie i szybkie oraz przyjazne dla środowiska.
+Posty publikowane na Mirror są na stałe przechowywane na Arweave, zdecentralizowanej platformie pamięci masowej, i mogą być wybijane jako kolekcjonerskie [niewymienialne tokeny (NFT)](/nft/) znane jako Writing NFT. Tworzenie Writing NFT jest całkowicie darmowe dla autorów, a kolekcjonowanie odbywa się na [warstwie 2 (L2)](/glossary/#layer-2) Ethereum — dzięki czemu transakcje są tanie, szybkie i przyjazne dla środowiska.
 
 ### MINDS {#minds}
 
-[MINDS](https://www.minds.com/) jest jedną z najczęściej używanych zdecentralizowanych sieci społecznościowych. Działa podobnie jak Facebook i już zyskała miliony użytkowników.
+[MINDS](https://www.minds.com/) to jedna z najczęściej używanych zdecentralizowanych sieci społecznościowych. Działa jak Facebook i zgromadziła już miliony użytkowników.
 
-Użytkownicy używają natywnego tokena ERC-20 platformy $MIND, aby zapłacić za produkty. Użytkownicy mogą także zarabiać tokeny $MIND, publikując popularne treści, mając swój udział w ekosystemie i kierując innych na platformę.
+Użytkownicy używają natywnego tokena [ERC-20](/glossary/#erc-20) platformy, $MIND, do płacenia za przedmioty. Użytkownicy mogą również zarabiać tokeny $MIND, publikując popularne treści, wnosząc wkład w ekosystem i polecając platformę innym.
 
-## Zdecentralizowane media społecznościowe Ethereum w web2 {#web2-social-networks-and-ethereum}
+### Farcaster {#farcaster}
 
-Natywne platformy społecznościowe [Web3](/web3/) nie są jedynymi, które używają technologii łańcucha bloków. Wiele scentralizowanych platform także planuje zintegrować swoją infrastrukturę z Ethereum:
+[Farcaster](https://farcaster.xyz/) to „wystarczająco zdecentralizowana” sieć społecznościowa podobna do X i Reddita, która pozwala użytkownikom udostępniać i odkrywać „casty”. Została zbudowana na sieci L2 Optimism, aby transakcje były stosunkowo tanie.
 
-### Reddit {#reddit}
+## Korzystaj ze zdecentralizowanych sieci społecznościowych {#use-decentralized-social-networks}
 
-Reddit ma tak zwane [punkty społeczności](https://cointelegraph.com/news/reddit-to-reportedly-tokenize-karma-points-and-onboard-500m-new-users). Są to [tokeny ERC-20](/developers/docs/standards/tokens/erc-20/), które użytkownicy mogą zdobywać, publikując wysokiej jakości treści i przyczyniając się do rozwoju społeczności internetowych (subreddity). Możesz wymienić te tokeny w subreddicie, aby [uzyskać ekskluzywne przywileje i korzyści](https://www.reddit.com/community-points/). W tym projekcie Reddit współpracuje z Arbitrum, [warstwą L2](/layer-2/)zaprojektowaną do skalowania transakcji w Ethereum.
+- **[Status.app](https://status.app/)** - _Status to bezpieczna aplikacja do przesyłania wiadomości, która wykorzystuje protokół open-source, peer-to-peer oraz pełne szyfrowanie (end-to-end), aby chronić Twoje wiadomości przed osobami trzecimi._
+- **[Mirror.xyz](https://mirror.xyz/)** - _Mirror to zdecentralizowana, należąca do użytkowników platforma wydawnicza zbudowana na Ethereum, umożliwiająca użytkownikom finansowanie społecznościowe pomysłów, monetyzację treści i budowanie wartościowych społeczności._
+- **[Lens Protocol](https://lens.xyz/)** - _Lens Protocol to komponowalny i zdecentralizowany graf społecznościowy pomagający twórcom przejąć własność nad swoimi treściami, gdziekolwiek się udadzą w cyfrowym ogrodzie zdecentralizowanego internetu._
+- **[Farcaster](https://farcaster.xyz/)** - _Farcaster to wystarczająco zdecentralizowana sieć społecznościowa. Jest to otwarty protokół, który może obsługiwać wielu klientów, podobnie jak e-mail._
+- **[Ethereum Follow Protocol](https://efp.app/)** - _Ethereum Follow Protocol to w pełni zdecentralizowany graf społecznościowy onchain dla kont Ethereum, rozwijający wizję modułowego stosu tożsamości Ethereum, uzupełniający ENS i SIWE._
+- **[Ethereum Comments Protocol](https://www.ethcomments.xyz/)** - _Nowy, programowalny prymityw treści społecznościowych na Ethereum, aby umieścić Twoje myśli onchain._
 
-Program już działa, a subreddit r/CryptoCurrency [uruchamia swoją wersję punktów społeczności o nazwie „Moons”](https://www.reddit.com/r/CryptoCurrency/wiki/moons_wiki). Według oficjalnego opisu, Moons „nagradzają posterów, komentatorów i moderatorów za ich wkład w subreddit”. Ponieważ tokeny te są w łańcuchu bloków (użytkownicy otrzymują je w portfelach), są niezależne od Reddit i nie mogą być odebrane.
+## Sieci społecznościowe Web2 na Ethereum {#web2-social-networks-and-ethereum}
 
-Teraz, po zakończeniu fazy beta w sieci testowej Rinkeby, punkty społeczności Reddit znajdują się w [Arbitrum Nova](https://nova.arbitrum.io/), łańcuchu bloków, który łączy w sobie właściwości [łańcucha bocznego](/developers/docs/scaling/sidechains/) i [optymistycznego pakietu zbiorczego](/developers/docs/scaling/optimistic-rollups/). Oprócz korzystania z punktów społeczności, aby odblokować specjalne funkcje, użytkownicy mogą je również wymieniać na giełdach na walutę. Ponadto liczba punktów społeczności, które ma użytkownik, decyduje o jego wpływie na proces decyzyjny w obrębie społeczności.
+Natywne platformy społecznościowe [Web3](/glossary/#web3) nie są jedynymi, które próbują włączyć technologię blockchain do mediów społecznościowych. Wiele scentralizowanych platform również bada lub eksperymentowało z integracją Ethereum ze swoją infrastrukturą:
 
-### Twitter {#twitter}
+### Przeglądarka Brave {#brave}
 
-W styczniu 2021 r. Twitter Blue [uruchomił obsługę NFT](https://mashable.com/article/twitter-blue-nft-profile-picture), umożliwiając użytkownikom połączenie portfela i wyświetlanie NFT jako zdjęć profilowych. W czasie pisania tego tekstu firma ogłosiła również [plany](https://www.theverge.com/2021/8/16/22627435/twitter-bluesky-lead-jay-graber-decentralized-social-web) utworzenia w przyszłości zdecentralizowanej sieci społecznościowej.
+- Brave zintegrowało **[Basic Attention Token (BAT)](https://basicattentiontoken.org/)**, token ERC-20 zbudowany na Ethereum, ze swoim ekosystemem przeglądarki, aby zrewolucjonizować reklamę cyfrową i wsparcie dla twórców treści.
 
-### Instagram {#instagram}
+- Program **[Brave Rewards](https://brave.com/brave-rewards/)** pozwala użytkownikom zarabiać BAT poprzez oglądanie reklam szanujących prywatność, a następnie automatycznie wspierać strony internetowe i twórców treści na różnych platformach, takich jak YouTube, Twitter i GitHub, w oparciu o czas poświęcony na uwagę.
 
-W maju 2022 r. [Instagram ogłosił wsparcie dla NFT](https://about.instagram.com/blog/announcements/instagram-digital-collectibles) w ekosystemach Ethereum i Polygon. Użytkownicy mogą publikować NFT bezpośrednio na Instagramie, podłączając swój portfel Ethereum.
+- Twórcy treści mogą zarejestrować się jako **[zweryfikowani twórcy Brave](https://creators.brave.com/)**, aby otrzymywać te wpłaty bezpośrednio do swoich portfeli Ethereum, tworząc most między tradycyjnymi platformami internetowymi a monetyzacją opartą na blockchainie.
 
-## Użytkowanie zdecentralizowanych sieci społecznościowych {#use-decentralized-social-networks}
+- Tokeny BAT istnieją niezależnie na blockchainie Ethereum, co pozwala użytkownikom na ich transfer do osobistych portfeli lub na giełdy po ich zarobieniu.
 
-- **[Status.im](https://status.im/)** — _Status jest bezpieczną aplikacją typu open source do wysyłania wiadomości, z wykorzystaniem protokołu peer-to-peer i szyfrowania typu end-to-end w celu ochrony wiadomości przed stronami trzecimi._
-- **[Mirror.xyz](https://mirror.xyz/)** — _Mirror jest zdecentralizowaną platformą wydawniczą opartą na sieci Ethereum, która umożliwia użytkownikom finansowanie idei społecznościowych, monetyzowanie treści i budowanie społeczności o wysokiej wartości._
-- **[Lens Protocol](https://lens.xyz/)** — _Lens Protocol jest złożonym i zdecentralizowanym wykresem społecznym, pomagającym twórcom uwiarygodnić własność ich treści, niezależnie od miejsca ich pobytu w cyfrowym ogrodzie zdecentralizowanego internetu._
-- **[Farcaster](https://farcaster.xyz/)** — _Farcaster to wystarczająco zdecentralizowana sieć społeczna. Jest to protokół otwarty, który umożliwia obsługę wielu klientów — podobnie jak poczta e-mail._
+### Platforma muzyczna Audius {#audius}
 
-## Dodatkowo przeczytaj {#further-reading}
+- **[Audius](https://audius.co/)** to platforma do strumieniowego przesyłania muzyki, która wykorzystuje technologię blockchain Ethereum do bezpośredniego łączenia artystów z fanami.
+
+- Platforma charakteryzuje się hybrydową zdecentralizowaną architekturą, w której treści są przechowywane w IPFS, podczas gdy blockchain jest wykorzystywany do praw własności i **[tokena AUDIO](https://eth.blockscout.com/token/0x18aaa7115705e8be94bffebde57af9bfc265b998)**.
+
+- Audius nawiązał **[partnerstwo z TikTokiem](https://audius.co/tiktok)**, wprowadzając funkcjonalność Web3 do głównego nurtu odbiorców i pozwalając artystom na monetyzację ich treści za pomocą technologii blockchain.
+
+- Szczegóły techniczne platformy są dostępne w ich **[białej księdze](https://whitepaper.audius.co/)**, pokazując, jak zbudowali ją na infrastrukturze Ethereum.
+
+### Sorare Fantasy Sports {#sorare}
+
+- **[Sorare](https://sorare.com/)** to **[platforma sportów fantasy zbudowana na Ethereum](https://sorare.com/help/a/4402888626577/what-is-a-sorare-wallet)**, która pozwala użytkownikom zbierać, handlować i grać oficjalnymi kartami graczy NFT.
+
+- Karty graczy to weryfikowalne NFT na blockchainie Ethereum, a inteligentne kontrakty platformy można przeglądać w **[Etherscan](https://eth.blockscout.com/address/0x629a673a8242c2ac4b7b8c5d8735fbeac21a6205?tab=contract)**.
+
+- Sorare łączy tradycyjną rozgrywkę sportów fantasy z własnością zasobów cyfrowych na blockchainie, wprowadzając funkcjonalność **[finansowania za pomocą Ethereum](https://sorare.com/help/a/10969733392797/what-network-should-i-use-to-fund-my-eth-wallet)** dla fanów sportu z głównego nurtu.
+
+### Twitter/X (Napiwki krypto) {#twitter}
+
+**[Twitter](https://x.com)** (obecnie X) włączył technologię blockchain na wiele sposobów, aby ulepszyć monetyzację twórców i weryfikację tożsamości cyfrowej:
+
+- **Napiwki krypto**: Platforma zintegrowała **[napiwki w Ethereum](https://help.x.com/en/using-x/tips)**, umożliwiając użytkownikom wysyłanie płatności za pośrednictwem portfeli opartych na Ethereum, takich jak Strike.
+
+Integrując funkcje blockchain, X wypełnia lukę między doświadczeniami społecznościowymi Web2 a zdecentralizowaną własnością cyfrową.
+
+## Dalsza lektura {#further-reading}
 
 ### Artykuły {#articles}
 
-- [Decentralizacja mediów społecznościowych: przewodnik po warstwach społecznych Web3](https://www.coinbase.com/blog/decentralizing-social-media-a-guide-to-the-web3-social-stack) — _Coinbase Ventures_
-- [Media społecznościowe kolejną platformą z możliwością decentralizacji](https://www.coindesk.com/tech/2021/01/22/social-networks-are-the-next-big-decentralization-opportunity/) — _Ben Goertzel_
-- [Web3 obietnicą zdecentralizowanych, kontrolowanych przez społeczność serwisów społecznościowych](https://venturebeat.com/2022/02/26/web3-holds-the-promise-of-decentralized-community-powered-social-networks/) — _Sumit Ghosh_
-- [Przegląd mediów społecznościowych opartych na łańcuchu bloków](https://www.gemini.com/cryptopedia/blockchain-social-media-decentralized-social-media) — _Gemini Cryptopedia_
-- [Jak łańcuch bloków może rozwiązać problem z prywatnością w mediach społecznościowych](https://www.investopedia.com/news/ethereum-blockchain-social-media-privacy-problem-linkedin-indorse/) — _Prableen Bajpai_
-- [Sieci mediów społecznościowych wprowadzają łańcuchy bloków](https://businesstechguides.co/what-are-decentralized-social-networks) — _Emmanuel Awosika_
-- [Dostateczna decentralizacja serwisów społecznościowych](https://www.varunsrinivasan.com/2022/01/11/sufficient-decentralization-for-social-networks) — _Varun Srinivasan_
+- [Decentralizacja mediów społecznościowych: przewodnik po stosie społecznościowym Web3](https://www.coinbase.com/blog/decentralizing-social-media-a-guide-to-the-web3-social-stack) - _Coinbase Ventures_
+- [Sieci społecznościowe to kolejna wielka szansa na decentralizację](https://www.coindesk.com/tech/2021/01/22/social-networks-are-the-next-big-decentralization-opportunity/) — _Ben Goertzel_
+- [Web3 niesie obietnicę zdecentralizowanych, napędzanych przez społeczność sieci społecznościowych](https://venturebeat.com/2022/02/26/web3-holds-the-promise-of-decentralized-community-powered-social-networks/) — _Sumit Ghosh_
+- [Przegląd krajobrazu mediów społecznościowych opartych na blockchainie](https://www.gemini.com/cryptopedia/blockchain-social-media-decentralized-social-media) — _Gemini Cryptopedia_
+- [Jak blockchain może rozwiązać problem prywatności w mediach społecznościowych](https://www.investopedia.com/news/ethereum-blockchain-social-media-privacy-problem-linkedin-indorse/) — _Prableen Bajpai_
+- [Wystarczająca decentralizacja dla sieci społecznościowych](https://www.varunsrinivasan.com/2022/01/11/sufficient-decentralization-for-social-networks) — _Varun Srinivasan_
 
-### Materiały wideo {#videos}
+### Filmy {#videos}
 
-- [Jak działają zdecentralizowane media społecznościowe](https://www.youtube.com/watch?v=UdT2lpcGvcQ) — _CoinmarketCap_
-- [Dążenie do decentralizacji mediów społecznościowych: łańcuch bloków DeSo](https://www.youtube.com/watch?v=SG2HUiVp0rE) — _Bloomberg Technology_
-- [Przyszłość zdecentralizowanych mediów społecznościowych — Balaji Srinivasan, Vitalik Buterin, Juan Benet](https://www.youtube.com/watch?v=DTxE9KV3YrE) — _ETHGlobal_
+- [Wyjaśnienie zdecentralizowanych mediów społecznościowych](https://www.youtube.com/watch?v=UdT2lpcGvcQ) — _Coinmarketcap_
+- [Blockchain DeSo chce zdecentralizować media społecznościowe](https://www.youtube.com/watch?v=SG2HUiVp0rE) — _Bloomberg Technology_
+- [Przyszłość zdecentralizowanych mediów społecznościowych z Balajim Srinivasanem, Vitalikiem Buterinem, Juanem Benetem](https://www.youtube.com/watch?v=DTxE9KV3YrE) — _ETHGlobal_
 
 ### Społeczności {#communities}
 
-- [Status (serwer Discord)](https://discord.com/invite/3Exux7Y)
-- [Mirror (serwer Discord)](https://discord.com/invite/txuCHcE8wV)
-- [Wątek r/CryptoCurrency w serwisie Reddit](https://www.reddit.com/r/CryptoCurrency/)
+- [Subreddit r/CryptoCurrency](https://www.reddit.com/r/CryptoCurrency/)

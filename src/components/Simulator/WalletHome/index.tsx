@@ -1,11 +1,13 @@
-import React, { type Dispatch, type SetStateAction } from "react"
-import { Flex } from "@chakra-ui/react"
+import { type Dispatch, type SetStateAction } from "react"
+import { useTranslations } from "next-intl"
+
+import { Flex } from "@/components/ui/flex"
 
 import { defaultTokenBalances } from "../constants"
 import type { SimulatorNav } from "../interfaces"
 
 import { CategoryTabs } from "./CategoryTabs"
-import { NFT, TokenBalance } from "./interfaces"
+import type { NFT, TokenBalance } from "./interfaces"
 import { NFTList } from "./NFTList"
 import { SendReceiveButtons } from "./SendReceiveButtons"
 import { TokenBalanceList } from "./TokenBalanceList"
@@ -29,42 +31,21 @@ export const WalletHome = ({
   setActiveTabIndex,
   nfts = [],
 }: WalletHomeProps) => {
+  const t = useTranslations("component-wallet-simulator")
   const data: Array<TokenBalance> = tokenBalances ?? defaultTokenBalances
   const totalAmounts = data.reduce(
     (acc, { amount, usdConversion }) => acc + amount * usdConversion,
     0
   )
   return (
-    <Flex
-      direction="column"
-      alignItems="center"
-      bg="background.base"
-      position="absolute"
-      inset={0}
-    >
-      <Flex
-        direction="column"
-        flex={1}
-        pt={8}
-        pb={4}
-        px={6}
-        justify="space-between"
-        w="full"
-      >
+    <Flex className="absolute inset-0 flex-col items-center bg-background">
+      <Flex className="w-full flex-1 flex-col justify-between px-6 pt-8 pb-4">
         <WalletBalance usdAmount={totalAmounts} />
         <SendReceiveButtons nav={nav} isEnabled={isEnabled} />
       </Flex>
-      <Flex
-        direction="column"
-        flex={1}
-        p={6}
-        gap={6}
-        justify="space-between"
-        w="full"
-        bg="background.highlight"
-      >
+      <Flex className="w-full flex-1 flex-col justify-between gap-6 bg-background-highlight p-6">
         <CategoryTabs
-          categories={["Crypto", "NFTs"]}
+          categories={[t("sim-crypto"), t("sim-nfts")]}
           activeIndex={activeTabIndex}
           setActiveIndex={setActiveTabIndex}
         />

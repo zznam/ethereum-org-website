@@ -1,249 +1,244 @@
 ---
-title: WebSocketを利用する
-description: WebSocketsとAlchemyを使って、JSON-RPCリクエストを作成し、イベントを講読するためのガイド
-author: "Elan Halpern"
+title: "WebSocketの使用"
+description: "任意のイーサリアムノードプロバイダーを使用して、JSON-RPCリクエストを行い、イベントをサブスクライブするためのWebSocketの使用ガイド。"
+author: "エラン・ハルパーン"
 lang: ja
-tags:
-  - "Alchemy"
-  - "WebSockets"
-  - "クエリ"
-  - "JavaScript"
+tags: ["Alchemy", "WebSocket", "クエリ", "JavaScript"]
 skill: beginner
-source: Alchemy ドキュメント
-sourceUrl: https://docs.alchemyapi.io/guides/using-websockets
+breadcrumb: WebSocket
+source: Alchemy docs
+sourceUrl: https://www.alchemy.com/docs/reference/best-practices-for-using-websockets-in-web3
 published: 2020-12-01
 ---
 
-このガイドでは、初級者向けに、WebSocket と Alchemy を使ってイーサリアムブロックチェーンにリクエストを送信する方法を学びます。
+これは、WebSocketを使用してイーサリアムブロックチェーンにリクエストを行うための入門ガイドです。例では標準のJSON-RPCメソッドを使用しているため、Alchemyを含む、WebSocketエンドポイントを提供する任意のノードまたはノードプロバイダーで機能します。
 
-## WebSocket と HTTP の比較 {#websockets-vs-http}
+## WebSocketとHTTPの比較 {#websockets-vs-http}
 
-HTTP とは異なり、WebSocket では特定の情報が必要な場合にリクエストを継続的に実行する必要はありません。 WebSocket では、正しく設定されていれば、ネットワーク接続が継続され、変更をリッスンすることができます。
+HTTPとは異なり、WebSocketを使用すると、特定の情報が必要なときに継続的にリクエストを行う必要はありません。WebSocketは（正しく実装されていれば）ネットワーク接続を維持し、変更をリッスンします。
 
-どのネットワーク接続でも同様ですが、WebSocket が中断なしに永続的にオープンであると想定すべきではありませんが、手動で切断された接続に適切に対処し、再接続するのは手間がかかる場合があります。 WebSocket のもう一つの欠点は、応答にはエラーメッセージのみが含まれ、HTTP ステータスコードを取得できないという点です。
+他のネットワーク接続と同様に、WebSocketが中断されることなく永久に開いたままであると想定すべきではありませんが、切断された接続の処理や手動での再接続を正しく行うのは難しい場合があります。WebSocketのもう1つの欠点は、レスポンスでHTTPステータスコードを取得できず、エラーメッセージのみが返されることです。
 
-​[Alchemy Web3](https://docs.alchemy.com/reference/api-overview)を利用することで、WebSocket の接続失敗に自動的に対応し、設定なしでリトライさせることができます。
+クライアントライブラリは、これを代わりに処理してくれます。たとえば、[ViemのWebSocketトランスポート](https://viem.sh/docs/clients/transports/websocket)は、ソケットの障害時に再接続し、デフォルトでキープアライブのpingを送信します。
 
-## さっそく試してましょう {#try-it-out}
+## 試してみる {#try-it-out}
 
-WebSocket をテストする最も簡単な方法は、[wscat](https://github.com/websockets/wscat)などの WebSocket リクエストを行うためのコマンドラインツールをインストールすることです。 wscat を使って、次のようにリクエストを送ります：
+イーサリアムノードのWebSocket URLが必要です。ノードプロバイダーは、アプリケーション・プログラミング・インターフェース（API）キーを作成する際に、通常`wss://<provider-host>/<your-api-key>`の形式でURLを提供します。たとえば、Alchemyのイーサリアム・メインネットのURLは`wss://eth-mainnet.g.alchemy.com/v2/<your-api-key>`のようになります（[無料のAlchemyアカウントに登録する](https://auth.alchemy.com/signup)）。他のプロバイダーについては[サービスとしてのノード](/developers/docs/nodes-and-clients/nodes-as-a-service/)を参照するか、[独自のノード](/developers/docs/nodes-and-clients/run-a-node/)のWebSocketエンドポイントを使用してください。`wss://ethereum-rpc.publicnode.com`のようなパブリックエンドポイントも簡単な実験には機能しますが、レート制限があり、すべてのサブスクリプションタイプをサポートしているわけではありません。
 
-_注意：Alchemy アカウントをお持ちの場合は、 `demo`をあなたの API キーに置き換えてください。 [こちら](https://auth.alchemyapi.io/signup)で、Alchemy の無料アカウントを作成できます。_
+WebSocketをテストする最も簡単な方法は、[wscat](https://github.com/websockets/wscat)などのWebSocketリクエストを行うためのコマンドラインツールをインストールすることです。wscatを使用すると、次のようにリクエストを送信できます。
 
+```sh
+npx wscat -c wss://<provider-host>/<your-api-key>
+
+> {"jsonrpc": "2.0", "id": 0, "method": "eth_gasPrice"}
+
+< {"jsonrpc": "2.0", "result": "0x41f9de2", "id": 0}
 ```
-$ wscat -c wss://eth-mainnet.ws.alchemyapi.io/ws/demo
 
->  {"jsonrpc":  "2.0", "id": 0, "method":  "eth_gasPrice"}
+`>`で始まる行は入力する内容であり、`<`で始まる行はノードが送り返す内容です。
 
-<  {"jsonrpc":  "2.0", "result":  "0xb2d05e00", "id": 0}
+## WebSocketの使用方法 {#how-to-use-websockets}
 
-```
+まず、プロバイダーのWebSocket URLを使用してWebSocketを開きます。Alchemyの場合、[ダッシュボード](https://dashboard.alchemy.com/)でアプリを開き、そのアプリケーション・プログラミング・インターフェース（API）キーを表示することで見つけることができます。ほとんどのプロバイダーは両方に同じAPIキーを使用しますが、WebSocketのURL（`wss://`）はHTTPリクエストのURL（`https://`）とは異なることに注意してください。
 
-## WebSocket の使用方法 {#how-to-use-websockets}
+![AlchemyダッシュボードでWebSocket URLを見つける場所](./use-websockets.mp4#602x280)
 
-まず、アプリに WebSocket の URL を入力して WebSocket を開きます。 アプリの WebSocket URL を確認するには、[ダッシュボード](https://dashboard.alchemyapi.io/)の App ページを開き、「View Key」をクリックしてください。 アプリの WebSocket 用 URL は HTTP リクエスト用の URL とは異なっており、両方とも「View Key」で確認できる点に注意してください。
+プロバイダーがサポートする任意の[JSON-RPCメソッド](/developers/docs/apis/json-rpc/)をWebSocket経由で使用できます。これを行うには、HTTP POSTリクエストの本文として送信されるのと同じペイロードを使用しますが、代わりにそのペイロードをWebSocket経由で送信します。
 
-![AlchemyのダッシュボードでWebSocket URLを確認できる場所](./use-websockets.gif)
+## Web3での使用 {#with-web3}
 
-[Alchemy API レファレンス](https://docs.alchemyapi.io/documentation/alchemy-api-reference/)に記載されている API は、いずれも WebSocket 経由で使用可能です。 これには、HTTP POST リクエストの本文として送信する場合と同じペイロードを使用しますが、このペイロードを WebSocket 経由で送信します。
-
-## Web3 での WebSocket 使用方法 {#with-web3}
-
-Web3 のようなクライアント向けライブラリを使用する場合、WebSocket への移行は簡単です。 Web3 クライアントのインスタンスを作成する際に、HTTP URL ではなく WebSocket URL を渡すだけでよいです。 以下の例をご覧ください：
+[Viem](https://viem.sh/)のようなクライアントライブラリを使用しながらWebSocketに移行するのは簡単です。`http`トランスポートの代わりに、WebSocket URLを指定して`webSocket`トランスポートを使用します。たとえば、`npm install viem`を実行した後、これを`index.mjs`として保存し、`node index.mjs`を実行します。
 
 ```js
-const web3 = new Web3("wss://eth-mainnet.ws.alchemyapi.io/ws/your-api-key")
+import { createPublicClient, webSocket } from "viem"
+import { mainnet } from "viem/chains"
 
-web3.eth.getBlockNumber().then(console.log) // -> 7946893
+const client = createPublicClient({
+  chain: mainnet,
+  transport: webSocket("wss://<provider-host>/<your-api-key>"),
+})
+
+console.log(await client.getBlockNumber()) // -> 26243602n
+
+// 同じWebSocket経由で新しいブロックをサブスクライブする
+const unwatch = client.watchBlocks({
+  onBlock: (block) => {
+    console.log(block.number, block.hash)
+    unwatch()
+    process.exit(0)
+  },
+})
 ```
 
-## API を講読する {#subscription-api}
+## サブスクリプションAPI {#subscription-api}
 
-WebSocket 経由で接続する場合、`eth_subscribe`および`eth_unsubscribe`という 2 つの追加メソッドを使用できます。 これらのメソッドを使用することで、特定のイベントをリッスンし、すぐに通知を受け取ることができるようになります。
+WebSocket経由で接続している場合、`eth_subscribe`と`eth_unsubscribe`の2つの追加メソッドを使用できます。これらのメソッドを使用すると、特定のイベントをリッスンし、すぐに通知を受け取ることができます。
 
 ### `eth_subscribe` {#eth-subscribe}
 
-特定のイベントを対象とする新規のサブスクリプションを作成しましょう。 `eth_subscribe`の詳細については、[こちら](https://docs.alchemyapi.io/documentation/alchemy-api-reference/json-rpc#eth_subscribe)をご覧ください。
+指定されたイベントの新しいサブスクリプションを作成します。[`eth_subscribe`の詳細はこちら](https://geth.ethereum.org/docs/interacting-with-geth/rpc/pubsub)。
 
 #### パラメータ {#parameters}
 
-1. サブスクリプションの種類
+1. サブスクリプションタイプ
 2. オプションのパラメータ
 
-最初の引数では、リッスンするイベントのタイプを指定します。 2 番目の引数では、最初の引数に依存したオプションを追加します。 以下では、説明タイプ、タイプ別のオプション、およびイベントのペイロードについて説明します。
+最初の引数は、リッスンするイベントのタイプを指定します。2番目の引数には、最初の引数に依存する追加のオプションが含まれます。さまざまなサブスクリプションタイプ、そのオプション、およびイベントペイロードについて以下で説明します。
 
 #### 戻り値 {#returns}
 
-サブスクリプション ID：この ID は、受信したすべてのイベントに付与されるもので、`eth_unsubscribe`を使用してサブスクリプションを取り消すする際にも使用します。
+サブスクリプションID：このIDは受信したすべてのイベントに添付され、`eth_unsubscribe`を使用してサブスクリプションをキャンセルするためにも使用できます。
 
-#### サブスクリプション関連のイベント {#subscription-events}
+#### サブスクリプションイベント {#subscription-events}
 
-サブスクリプションが有効である場合、以下のフィールドを含むオブジェクトであるイベントが送信されます：
+サブスクリプションがアクティブな間、以下のフィールドを持つオブジェクトであるイベントを受信します。
 
-- `jsonrpc`: 常に「2.0」です。
-- `method`: 常に「eth_subscription」です。
-- `params`：以下のフィールドを含むオブジェクトです：
-  - `subscription`：このサブスクリプションを作成した`eth_subscription`の呼び出しが返したサブスクリプション ID です。
-  - `result`：サブスクリプションのタイプによって内容が異なるオブジェクトです。
+- `jsonrpc`: 常に "2.0"
+- `method`: 常に "eth_subscription"
+- `params`: 以下のフィールドを持つオブジェクト：
+  - `subscription`: このサブスクリプションを作成した`eth_subscribe`呼び出しによって返されたサブスクリプションID。
+  - `result`: サブスクリプションのタイプによって内容が異なるオブジェクト。
 
-#### サブスクリプションのタイプ {#subscription-types}
+#### サブスクリプションタイプ {#subscription-types}
 
-1. `alchemy_newFullPendingTransactions`
+1. `newHeads`
 
-保留状態に追加されたすべてのトランザクションにつき、トランザクション情報を返します。 このサブスクリプションタイプは保留中のトランザクションを講読するため、Web3 の標準的な呼び出しである`web3.eth.subscribe("pendingTransactions")`と似ていますが、トランザクションのハッシュだけでなく*トランザクションの完全な情報*を発行するという点が異なります。
+チェーンのリオーグ中を含め、新しいヘッダーがチェーンに追加されるたびにイベントを発行します。
 
-例：
-
-```json
->  {"jsonrpc":  "2.0",  "id":  1,  "method":  "eth_subscribe",  "params":  ["alchemy_newFullPendingTransactions"]}
-
-<  {"id":1,"result":"0x9a52eeddc2b289f985c0e23a7d8427c8","jsonrpc":"2.0"}
-<  {
-      "jsonrpc":"2.0",
-      "method":"eth_subscription",
-      "params":{
-          "result":{
-          "blockHash":null,
-          "blockNumber":null,
-          "from":"0xa36452fc31f6f482ad823cd1cf5515177d57667f",
-          "gas":"0x1adb0",
-          "gasPrice":"0x7735c4d40",
-          "hash":"0x50bff0736c713458c92dd1848d12f3354149be1363123dae35e94e0f2a9d56bf",
-"input":"0xa9059cbb0000000000000000000000000d0707963952f2fba59dd06f2b425ace40b492fe0000000000000000000000000000000000000000000015b1111266cfca100000",
-          "nonce":"0x0",
-          "to":"0xea38eaa3c86c8f9b751533ba2e562deb9acded40",
-          "transactionIndex":null,
-          "value":"0x0",
-          "v":"0x26",
-          "r":"0x195c2c1ed126088e12d290aa93541677d3e3b1d10f137e11f86b1b9227f01e3b",
-          "s":"0x60fc4edbf1527832a2a36dbc1e63ed6193a6eee654472fbebbf88ef1750b5344"},
-          "subscription":"0x9a52eeddc2b289f985c0e23a7d8427c8"
-      }
-  }
-
-```
-
-2. `newHeads`
-
-ブロックチェーンの再編成時も含む、ブロックチェーンに新たなヘッダーが追加された際に常にイベントを発行します。
-
-このサブスクリプションでは、ブロックチェーンの再編成が実行された場合に、新たなチェーンに対するすべてのヘッダーを含むイベントが発行されます。 特に、同じ高さを持つ複数のヘッダーが発行される場合があるため、このような状況が発生した場合は、より後ろのヘッダーを再編成後の適切なヘッダーと見なす必要があります。
+チェーンのリオーグが発生した場合、このサブスクリプションは新しいチェーンのすべての新しいヘッダーを含むイベントを発行します。特に、これは同じ高さで複数のヘッダーが発行されるのを見る可能性があることを意味し、これが発生した場合、後のヘッダーをリオーグ後の正しいものとして扱う必要があります。
 
 例：
 
 ```json
->  {"jsonrpc":  "2.0",  "id":  1,  "method":  "eth_subscribe",  "params":  ["newHeads"]}
+> {"jsonrpc": "2.0", "id": 1, "method": "eth_subscribe", "params": ["newHeads"]}
 
-<  {"jsonrpc":"2.0","id":2,"result":"0x9ce59a13059e417087c02d3236a0b1cc"}
-<  {
-  "jsonrpc":  "2.0",
-  "method":  "eth_subscription",
-  "params":  {
-      "result":  {
-          "extraData":  "0xd983010305844765746887676f312e342e328777696e646f7773",
-          "gasLimit":  "0x47e7c4",
-          "gasUsed":  "0x38658",
-          "logsBloom":
-"0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-          "nonce":  "0x084149998194cc5f",
-          "number":  "0x1348c9",
-          "parentHash":  "0x7736fab79e05dc611604d22470dadad26f56fe494421b5b333de816ce1f25701",
-          "receiptRoot":  "0x2fab35823ad00c7bb388595cb46652fe7886e00660a01e867824d3dceb1c8d36",
-          "sha3Uncles":  "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-          "stateRoot":  "0xb3346685172db67de536d8765c43c31009d0eb3bd9c501c9be3229203f15f378",
-          "timestamp":  "0x56ffeff8",
-          "transactionsRoot":  "0x0167ffa60e3ebc0b080cdb95f7c0087dd6c0e61413140e39d94d3468d7c9689f"
-      },
-  "subscription":  "0x9ce59a13059e417087c02d3236a0b1cc"
+< {"jsonrpc":"2.0","result":"0xe0d4abf5caf333fbf94c5f02182e6469","id":1}
+< {
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "result": {
+      "baseFeePerGas": "0x41f9de2",
+      "blobGasUsed": "0xc0000",
+      "difficulty": "0x0",
+      "excessBlobGas": "0xa88af38",
+      "extraData": "0xe29ca82051756173617220287175617361722e77696e2920e29ca8",
+      "gasLimit": "0x3938700",
+      "gasUsed": "0x1a17224",
+      "hash": "0xedc43a71b7ff13880bdbe7b748a225b91a11a91e79173fe28011363c10acaea5",
+      "logsBloom": "0x4beaef4e7dbb1bfdb3df673fab6cdf1cf9fc0e7f743d672c761551767b7dad953d79cf86e56e6195ae1b57dff20a0fd46e57c545af166ff49394df3839e269a6ff877b6baf9d899fd9666c58b7dfa7add4febf78b466e7f71af2dcbad53fdcfa3f7277d2fbfffcff953f9ef37b3af8fffb296a3adb94dc463ff0d6d5173f1beda0fd662d77eaedb34ff99f3eeed38a77e7d0cd63e917d4efbdfcb7d0d19437f98ff60773d0effbfbdfdbef9ebbf6a2c35efedd677a795d3ccd777e127eeb657f6a8dffaf64f3b8d998b516c78e661ef77fded57fb66d687fab17739b3ef5aa2765777d8cce0ef59a9ceebeceabbb7f76ed7fc65df7e8bccf7938eb3fb7de57f7",
+      "miner": "0x396343362be2a4da1ce0c1c210945346fb82aa49",
+      "mixHash": "0xa72c9201f502df607d0d7551ccc171ce37a5146747f04c6c495b0aebecb045c7",
+      "nonce": "0x0000000000000000",
+      "number": "0x1907212",
+      "parentBeaconBlockRoot": "0x34f3f289459913dd80ec9c20aa535866cd2bd310ac26e47570601e263d593735",
+      "parentHash": "0xe62c150ffbbd04e95343f945b70fa53756aba6c0bf96c0440d1ae354fa007a7c",
+      "receiptsRoot": "0x94951d882544da76e30b145b26a39b126e8acfba9db929351b84b2f4c847e3ed",
+      "requestsHash": "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+      "size": "0x1f4bc",
+      "stateRoot": "0x12771ea73858277034cf6604aee0abbf889c15091ab8ef9be81bf7258458a036",
+      "timestamp": "0x6ad92b47",
+      "transactionsRoot": "0xbd58ebe5c8c5519e458266a7db3ad049a7bffa106dc9a14f2fe6edb3f8ad5d70",
+      "withdrawalsRoot": "0x56a083b6140663c9e98c30167ee90a1ffb157505ba89cb584583b71cba100d2a"
+    },
+    "subscription": "0xe0d4abf5caf333fbf94c5f02182e6469"
   }
 }
-
 ```
 
-3. `ログ類`
+2. `logs`
 
-新たに追加されたブロックのうち、指定したフィルター条件に合致した部分のログを発行します。
+指定されたフィルター条件に一致する、新しく追加されたブロックの一部であるログを発行します。
 
-チェーンの再構成が発生した場合、`removed`のプロパティを`true`に設定すれば、古いチェーン上のブロックに含まれたログも再度発行されます。 さらに新しいチェーン上のブロックに含まれるログも発行されるため、再編成時には、同一のトランザクションのログが複数回表示される場合があります。
+チェーンのリオーグが発生した場合、古いチェーンのブロックの一部であるログは、`removed`プロパティが`true`に設定されて再度発行されます。さらに、新しいチェーンのブロックの一部であるログが発行されるため、リオーグの場合、同じトランザクションのログを複数回見る可能性があります。
 
 パラメータ
 
-1. 以下のフィールドを持つオブジェクトです：
-   - `address`（オプション）：アドレスを表す文字列あるいは、そのような文字列の配列です。
-     - これらのアドレスのいずれかで作成したログのみが発行されます。
-   - `topics`：トピック指定子の配列です。
-     - トピック指定子は、`null`、トピックを表す文字列、または文字列の配列のいずれかです。
-     - 配列において`null`ではない各位置は、当該の位置において与えられたトピックのひとつを持つユーザーだけにログを発行します。
+1. 以下のフィールドを持つオブジェクト：
+   - `address`（オプション）：アドレスを表す文字列、またはそのような文字列の配列。
+     - これらのアドレスのいずれかから作成されたログのみが発行されます。
+   - `topics`：トピック指定子の配列。
+     - 各トピック指定子は、`null`、トピックを表す文字列、または文字列の配列のいずれかです。
+     - 配列内の`null`ではない各位置は、発行されるログを、その位置に指定されたトピックのいずれかを持つもののみに制限します。
 
-トピック仕様の例：
+トピック指定の例：
 
-- `[]`：すべてのトピックを許可します。
-- `[A]`：最初の位置が A である（その後の位置については条件なし）。
-- `[null, B]`：最初の位置は条件なしで、かつ 2 番目の位置が B である（その後の位置については条件なし）。
-- `[A, B]`：最初の位置が A であり、2 番目の位置が B (その後の位置については条件なし) 。
-- `[[A, B], [A, B]]`: 最初の位置が (A または B)、かつ 2 番目の位置が (A または B) (その後の位置については条件なし)
+- `[]`：任意のトピックが許可されます。
+- `[A]`：最初の位置にA（およびそれ以降は任意）。
+- `[null, B]`：最初の位置は任意で、2番目の位置にB（およびそれ以降は任意）。
+- `[A, B]`：最初の位置にA、2番目の位置にB（およびそれ以降は任意）。
+- `[[A, B], [A, B]]`：最初の位置に（AまたはB）、2番目の位置に（AまたはB）（およびそれ以降は任意）。
+
+例：
+
+この例では、イーサリアム・メインネット上の[ラップド・イーサ（WETH）コントラクト](https://etherscan.io/address/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2)からの`Deposit`イベントをリッスンします。
+
+```json
+> {"jsonrpc": "2.0", "id": 1, "method": "eth_subscribe", "params": ["logs", {"address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", "topics": ["0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c"]}]}
+
+< {"jsonrpc":"2.0","result":"0x69a0e61ae8e3d61a93479858e8f1b43a","id":1}
+< {
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "result": {
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "blockHash": "0x168e06e5733df993078bb635cb9925f80ff39d12a36bd301052c44d7bf6b6068",
+      "blockNumber": "0x190720e",
+      "blockTimestamp": "0x6ad92b17",
+      "data": "0x000000000000000000000000000000000000000000000000039ed0c3d7848a1c",
+      "logIndex": "0x11",
+      "removed": false,
+      "topics": [
+        "0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c",
+        "0x00000000000000000000000023617e59a5925b2a4bf75d73ff6711cd0b29de85"
+      ],
+      "transactionHash": "0xc956e7012c2af8ff87db88e059336842ee872bfc93de1eac9760510d0bd801be",
+      "transactionIndex": "0xb"
+    },
+    "subscription": "0x69a0e61ae8e3d61a93479858e8f1b43a"
+  }
+}
+```
+
+3. `newPendingTransactions`
+
+ノードの保留中の状態（メンプール）に追加された各トランザクションのハッシュを発行します。
 
 例：
 
 ```json
->  {"jsonrpc":  "2.0",  "id":  1,  "method":  "eth_subscribe",  "params":  ["logs",  {"address":  "0x8320fe7702b96808f7bbc0d4a888ed1468216cfd",  "topics":  ["0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab902"]}]}
+> {"jsonrpc": "2.0", "id": 1, "method": "eth_subscribe", "params": ["newPendingTransactions"]}
 
-<  {"jsonrpc":"2.0","id":2,"result":"0x4a8a4c0517381924f9838102c5a4dcb7"}
-<  {
-  "jsonrpc":  "2.0",
-  "method":  "eth_subscription",
-  "params":  {
-      "subscription":  "0x4a8a4c0517381924f9838102c5a4dcb7",
-      "result":  {
-          "address":  "0x8320fe7702b96808f7bbc0d4a888ed1468216cfd",
-          "blockHash":  "0x61cdb2a09ab99abf791d474f20c2ea89bf8de2923a2d42bb49944c8c993cbf04",
-          "blockNumber":  "0x29e87",
-          "data": "0x00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000003",
-          "logIndex":"0x0",
-          "topics":["0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab902"],
-          "transactionHash":  "0xe044554a0a55067caafd07f8020ab9f2af60bdfe337e395ecd84b4877a3d1ab4",
-          "transactionIndex":  "0x0"
-      }
-  }
-}
-
+< {"jsonrpc":"2.0","result":"0x1c2365b029179adf1e84b9e327315249","id":1}
+< {"jsonrpc":"2.0","method":"eth_subscription","params":{"result":"0x4a62d0ad7c8868fbbfa10604e68638e637c6fc6f64fd1fb4ca042dcd0158c992","subscription":"0x1c2365b029179adf1e84b9e327315249"}}
 ```
+
+一部のプロバイダーは、独自のサブスクリプションタイプも提供しています。たとえば、Alchemyの[`alchemy_pendingTransactions`](https://www.alchemy.com/docs/reference/alchemy-pendingtransactions)は、ハッシュだけでなく<em>完全なトランザクションオブジェクト</em>を発行し、オプションの`fromAddress`、`toAddress`、および`hashesOnly`フィルターを受け入れます。これらは標準のJSON-RPCアプリケーション・プログラミング・インターフェース（API）の一部ではないため、そのプロバイダーでのみ機能します。
 
 ### `eth_unsubscribe` {#eth-unsubscribe}
 
-新たにイベントが送信されないように、既存のサブスクリプションを取り消します。
+既存のサブスクリプションをキャンセルし、それ以降イベントが送信されないようにします。
 
 パラメータ
 
-1. 以前に`eth_subscribe`呼び出しで返されたサブスクリプションの ID です。
+1. 以前に`eth_subscribe`呼び出しから返されたサブスクリプションID。
 
 戻り値
 
-サブスクリプションのキャンセルに成功した場合に`true`、または渡された ID のサブスクリプションが存在しない場合に`false`が返ります。
+サブスクリプションが正常にキャンセルされた場合は`true`、指定されたIDのサブスクリプションが存在しなかった場合は`false`。
+
+サブスクリプションは、それを作成したWebSocket接続上にのみ存在するため、`eth_unsubscribe`は同じ接続を介して送信する必要があります。別のHTTPリクエストとして送信することはできません。接続を閉じると、そのすべてのサブスクリプションもキャンセルされます。
 
 例：
 
-**リクエスト**
-
-```
-curl https://eth-mainnet.alchemyapi.io/v2/your-api-key
--X POST
--H "Content-Type: application/json"
--d '{"id": 1, "method": "eth_unsubscribe", "params": ["0x9cef478923ff08bf67fde6c64013158d"]}'
-
-
-```
-
-**結果**
-
 ```json
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "result": true
-}
+> {"jsonrpc": "2.0", "id": 2, "method": "eth_unsubscribe", "params": ["0xe0d4abf5caf333fbf94c5f02182e6469"]}
+
+< {"jsonrpc":"2.0","result":true,"id":2}
 ```
 
 ---
 
-無料で[Alchemy に登録し](https://auth.alchemyapi.io/signup)、[ドキュメント](https://docs.alchemyapi.io/)を確認しましょう。また[Twitter](https://twitter.com/AlchemyPlatform)をフォローして最新のニュースをチェックしてください。
+無料で[Alchemyに登録](https://auth.alchemy.com)し、[Alchemyのドキュメント](https://www.alchemy.com/docs/)を確認してください。最新ニュースについては、[ツイッター](https://x.com/Alchemy)でAlchemyをフォローしてください。

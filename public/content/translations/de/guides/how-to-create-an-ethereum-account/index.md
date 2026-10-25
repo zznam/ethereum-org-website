@@ -1,72 +1,75 @@
 ---
-title: Wie man ein Ethereum-Konto „anlegt"
-description: Eine Schritt-für-Schritt-Anleitung für die Erstellung eines Ethereum-Kontos mit einer Wallet.
+title: Wie man ein Ethereum-Konto erstellt
+metaTitle: Wie man ein Ethereum-Konto "erstellt"
+description: "Eine Schritt-für-Schritt-Anleitung zur Erstellung eines Ethereum-Kontos mit einer Wallet."
 lang: de
 ---
 
-# So erstellen Sie ein Ethereum-Konto
+**Jeder kann kostenlos ein Ethereum-Konto erstellen.** Sie müssen lediglich eine Krypto-Wallet-App installieren. Wallets erstellen und verwalten Ihr Ethereum-Konto. Sie können Transaktionen senden, Ihr Guthaben überprüfen und Sie mit anderen Apps verbinden, die auf Ethereum basieren.
 
-Jeder kann zu jeder Zeit ein kostenloses Ethereum-Konto einrichten. Es gibt mehrere Möglichkeiten, aber die einfachste und gebräuchlichste ist die Verwendung einer App, die als Wallet bekannt ist. Wallets erstellen und sichern den Schlüssel, mit dem Sie Ethereum nutzen können. Mit Ihrer Wallet können Sie Transaktionen senden, Ihren Token-Saldo überprüfen und sich mit Anwendungen verbinden, die auf Ethereum aufgebaut sind, wie zum Beispiel Token-Börsen, Spiele, NFT-Marktplätze und mehr. Einige "web2"-Anwendungen erlauben es nun auch, sich mit Ethereum anzumelden.
+Mit einer Wallet können Sie sich auch sofort bei jeder Token-Börse, bei Spielen und [NFT](/glossary/#nft)-Marktplätzen anmelden. Es ist keine individuelle Registrierung erforderlich, ein Konto wird für alle auf Ethereum basierenden Apps geteilt.
 
-Im Gegensatz zur Eröffnung eines neuen Kontos bei einem Unternehmen erfolgt die Einrichtung eines Ethereum-Kontos freiwillig, privat und ohne Genehmigungspflicht. Die Konten werden durch Schlüssel kontrolliert, die Sie mit Hilfe Ihrer Wallet-Software erstellen. Sie werden weder von einer dritten Partei ausgestellt noch in einem zentralen Register gespeichert.
+## Schritt 1: Wählen Sie eine Wallet {#step-1-choose-a-wallet}
 
-## Schritt 1: Eine Wallet auswählen
+Eine Wallet ist eine App, die Ihnen hilft, Ihr Ethereum-Konto zu verwalten. Es stehen Dutzende verschiedener Wallets zur Auswahl: für Mobilgeräte, Desktops oder sogar als Browser-Erweiterungen.
 
-Eine Wallet ist eine App, mit der Sie Ihr Ethereum-Konto verwalten können. Die App verwendet Ihre Schlüssel, um Transaktionen zu senden oder entgegenzunehmen und sich bei Anwendungen anzumelden. Es gibt Dutzende von verschiedenen Wallets (Geldbörsen) zur Auswahl - für das Handy, für den Desktop oder sogar für Browser-Erweiterungen.
 
-<ButtonLink to="/wallets/find-wallet/">
-  Finden Sie eine Wallet
+<ButtonLink href="/wallets/find-wallet/">
+  Liste der Wallets
 </ButtonLink>
 
-Wenn Sie noch keine Erfahrung mit Kryptowährungen haben, können Sie den Filter "New to Crypto" (Neu im Bereich Kryptowährungen) auf der Seite "Find a Wallet" (Geldbörse finden) auswählen, um die Wallets zu finden, die alle notwendigen Funktionen für Einsteiger enthalten.
+Wenn Sie neu sind, können Sie auf der Seite "Finde eine Wallet" den Filter „Neu bei Krypto“ auswählen, um Wallets zu finden, die alle notwendigen Funktionen für Anfänger enthalten sollten.
 
-![Filterauswahl auf der Seite „Wallet finden“](./wallet-box.png)
+![Filter selection on 'find a wallet' page](./wallet-box.png)
 
-Es gibt auch andere Profilfilter, die auf Ihre Bedürfnisse abgestimmt sind. Das sind Beispiele für gängige Wallets – Sie sollten jedoch selbst recherchieren, bevor Sie einer Software vertrauen.
+Es gibt auch andere Profilfilter, um Ihren Bedürfnissen gerecht zu werden. Dies sind Beispiele für häufig verwendete Wallets – Sie sollten Ihre eigenen Recherchen anstellen, bevor Sie einer Software vertrauen.
 
-## Schritt 2: Wallet-App herunterladen und installieren
+## Schritt 2: Laden Sie Ihre Wallet-App herunter und installieren Sie sie {#step-2-download-and-install-your-wallet-app}
 
-Wenn Sie sich für eine bestimmte Wallet entschieden haben, besuchen Sie die offizielle Website oder den App-Store, laden Sie es herunter und installieren Sie es. Sie alle sollten kostenlos sein.
+Sobald Sie sich für eine bestimmte Wallet entschieden haben, besuchen Sie deren offizielle Website oder den App Store, laden Sie sie herunter und installieren Sie sie. Alle sollten kostenlos sein.
 
-## Schritt 3: App öffnen und ein Ethereum-Konto erstellen oder importieren
+## Schritt 3: Öffnen Sie die App und erstellen Sie Ihr Ethereum-Konto {#step-3-open-the-app-and-create-your-ethereum-account}
 
-Wenn Sie Ihre neue Wallet zum ersten Mal öffnen, werden Sie möglicherweise gefragt, ob Sie ein neues Konto anlegen oder ein bestehendes importieren möchten. Klicken Sie auf neues Konto erstellen.
+Wenn Sie Ihre neue Wallet zum ersten Mal öffnen, werden Sie möglicherweise gebeten, zwischen der Erstellung eines neuen Kontos oder dem Importieren eines bestehenden Kontos zu wählen. Klicken Sie auf die Erstellung eines neuen Kontos. **Dies ist der Schritt, in dem die Wallet-Software Ihr Ethereum-Konto generiert.**
 
-## Schritt 4: Wiederherstellungssatz speichern
+## Schritt 4: Speichern Sie Ihre Wiederherstellungsphrase {#step-4-store-your-recovery-phrase}
 
-Einige Anwendungen fordern Sie auf, eine geheime "Seed-Phrase" zu speichern (diese wird auch als "Recovery-Phrase" oder "Mnemonic" bezeichnet). Es ist extrem wichtig, diese "Seed-Phrase " sicher aufzubewahren! Die Seed-Phrase wird verwendet, um einen geheimen Schlüssel für ein Konto zu generieren, der zum Signieren und Senden von Transaktionen verwendet werden kann. Jede Person, die die Seed-Phrase kennt, kann alle Konten kontrollieren, die damit erstellt wurden. Teilen Sie die Seed-Phrase niemals mit anderen. Die Seed-Phrase sollte 12 bis 24 zufällig generierte Wörter enthalten (die Reihenfolge der Wörter ist wichtig).
+Einige Apps werden Sie auffordern, eine geheime "Wiederherstellungsphrase" (manchmal auch "Seed-Phrase" oder "Mnemonic" genannt) zu speichern. Es ist extrem wichtig, diese Phrase sicher aufzubewahren! Sie wird verwendet, um Ihr Ethereum-Konto zu generieren, und kann verwendet werden, um Transaktionen zu senden.
 
-Sobald Sie Ihre Seed-Phrase gespeichert haben, sollten Sie Ihr Wallet-Dashboard mit Ihrem Guthaben sehen können. Schauen Sie sich unsere Anleitung an: [Wie verwenden Sie ein Wallet.](/guides/how-to-use-a-wallet)
+**Jede Person, die die Phrase kennt, kann die Kontrolle über alle Gelder übernehmen.** Teilen Sie diese niemals mit jemandem. Diese Phrase sollte 12 bis 24 zufällig generierte Wörter enthalten (die Reihenfolge der Wörter ist wichtig).
 
- <br />
-
-<InfoBanner shouldSpaceBetween emoji=":eyes:">
-  <div>Möchten Sie mehr erfahren?</div>
-  <ButtonLink to="/guides/">
-    Sehen Sie unsere anderen Anleitungen
+<div>
+<Alert variant="update">
+<AlertEmoji text=":eyes:"/>
+<AlertContent className="flex-row justify-between items-center">
+  <div><b>Wallet installiert?</b><br/>Lernen Sie, wie man sie benutzt.</div>
+  <ButtonLink href="/guides/how-to-use-a-wallet">
+    Wie man eine Wallet benutzt
   </ButtonLink>
-</InfoBanner>
+</AlertContent>
+</Alert>
+</div>
 
-## Häufig gestellte Fragen
+Interessiert an anderen Anleitungen? Schauen Sie sich unsere [Schritt-für-Schritt-Anleitungen](/guides/) an.
 
-### Ist meine Wallet auch mein Ethereum-Konto?
+## Häufig gestellte Fragen {#frequently-asked-questions}
 
-Nein. Die Wallet ist ein Verwaltungsinstrument, mit dem Sie Ihre Konten verwalten können. Eine einzige Wallet kann Zugang zu mehreren Konten gewähren, und ein einziges Konto kann von mehreren Wallets genutzt werden. Die Seed-Phrase wird verwendet, um Konten zu erstellen, die dann von der Wallet verwaltet werden.
+### Sind meine Wallet und mein Ethereum-Konto dasselbe? {#are-my-wallet-and-my-ethereum-account-the-same}
 
-Sie können sich die Konten als Blätter an einem Baum vorstellen, die alle aus einer einzigen Seed-Phrase "erwachsen". Jedes einzelne "Seed" bringt einen völlig anderen Konto-Baum hervor.
+Nein. Die Wallet ist ein Verwaltungstool, das Ihnen hilft, Konten zu verwalten. Eine einzige Wallet kann auf mehrere Konten zugreifen, und auf ein einziges Konto kann von mehreren Wallets zugegriffen werden. Die Wiederherstellungsphrase wird verwendet, um Konten zu erstellen, und gibt einer Wallet-App die Erlaubnis, Vermögenswerte zu verwalten.
 
-### Kann ich Bitcoin an eine Ethereum-Adresse senden oder Ether an eine Bitcoin-Adresse?
+### Kann ich Bitcoin an eine Ethereum-Adresse oder Ether an eine Bitcoin-Adresse senden? {#can-i-send-bitcoin-to-an-ethereum-address-or-ether-to-a-bitcoin-address}
 
-Nein, das ist nicht möglich. Bitcoin und Ether befinden sich auf zwei separaten Netzwerken (also unterschiedlichen Blockchains) mit jeweils eigenen Modellen der Buchführung und des Formats der Adresse. Es gab verschiedene Versuche, eine Brücke zwischen den Netzwerken zu bauen, von welchen der Aktivste derzeit [Wrapped bitcoin bzw. WBTC](https://www.bitcoin.com/get-started/what-is-wbtc/) ist. Dies ist keine Unterstützung, da WBTC eine treuhänderische Lösung ist (was bedeutet, dass eine einzelne Personengruppe bestimmte kritische Funktionen kontrolliert) und wird hier nur zu Informationszwecken bereitgestellt.
+Nein, das können Sie nicht. Bitcoin und Ether existieren in zwei separaten Netzwerken (d. h. auf unterschiedlichen Blockchains), jedes mit seiner eigenen Buchführung und eigenen Adressformaten. Es gab verschiedene Versuche, eine Brücke zwischen den beiden unterschiedlichen Netzwerken zu schlagen, von denen der derzeit aktivste [Wrapped Bitcoin oder WBTC](https://www.bitcoin.com/get-started/what-is-wbtc/) ist. Dies ist keine Empfehlung, da WBTC eine treuhänderische Lösung ist (was bedeutet, dass eine einzelne Gruppe von Personen bestimmte kritische Funktionen kontrolliert) und hier nur zu Informationszwecken aufgeführt wird.
 
-### Wenn ich eine ETH-Adresse besitze, besitze ich dann die gleiche Adresse auf anderen Blockchains?
+### Wenn ich eine ETH-Adresse besitze, besitze ich dann dieselbe Adresse auf anderen Blockchains? {#if-i-own-an-eth-address-do-i-own-the-same-address-on-other-blockchains}
 
-Sie können dieselbe Adresse auf allen Blockchains verwenden, die eine ähnliche zugrunde liegende Software wie Ethereum verwenden (bekannt als "EVM-kompatibel"). Diese [Liste](https://chainlist.org/) zeigt Ihnen, welche Blockchains Sie mit der gleichen Adresse verwenden können. Einige Blockchains, wie z. B. Bitcoin, implementieren einen komplett separaten Satz von Netzwerkregeln und Sie benötigen eine andere Adresse mit einem anderen Format. Wenn Sie eine Smart Contract Wallet haben, sollten Sie auf der Produktwebsite nachsehen, welche Blockchains unterstützt werden.
+Sie können dieselbe [Adresse](/glossary/#address) auf allen Blockchains verwenden, die eine ähnliche zugrunde liegende Software wie Ethereum nutzen (bekannt als 'EVM-kompatibel'). Diese [Liste](https://chainlist.org/) zeigt Ihnen, welche Blockchains Sie mit derselben Adresse verwenden können. Einige Blockchains, wie Bitcoin, implementieren ein völlig separates Set von Netzwerkregeln, und Sie benötigen eine andere Adresse mit einem anderen Format. Wenn Sie eine Smart Contract-Wallet haben, sollten Sie auf deren Produktwebsite nach weiteren Informationen darüber suchen, welche Blockchains unterstützt werden, da diese normalerweise einen begrenzteren, aber sichereren Anwendungsbereich haben.
 
-### Ist eine eigene Wallet sicherer als die Beträge auf einer Börse zu halten?
+### Ist es sicherer, eine eigene Wallet zu haben, als meine Gelder auf einer Börse aufzubewahren? {#is-having-my-own-wallet-safer-than-keeping-my-funds-on-an-exchange}
 
-Eine eigene Wallet zu besitzen bedeutet, dass Sie die Verantwortung für die Sicherheit Ihrer Vermögenswerte übernehmen. Leider gibt es viele Beispiele für gescheiterte Börsen, die das Geld ihrer Kunden verloren haben. Wenn Sie eine Wallet besitzen (mit einer Seed-Phrase), ist es nicht erforderlich, dass Sie Ihr Vermögen einem anderen Unternehmen anvertrauen. Allerdings müssen Sie Ihre eigenen Schlüssel sichern und Phishing-Betrug, die versehentliche Genehmigung von Transaktionen oder die Preisgabe von Schlüsseln, die Interaktion mit gefälschten Websites und andere Risiken bei der Selbstverwahrung vermeiden. Risiken und Nutzen sind unterschiedlich.
+Eine eigene Wallet zu haben bedeutet, dass Sie die Verantwortung für die Sicherheit Ihrer Vermögenswerte übernehmen. Es gibt leider viele Beispiele für gescheiterte Börsen, die das Geld ihrer Kunden verloren haben. Der Besitz einer Wallet (mit einer Wiederherstellungsphrase) beseitigt das Risiko, das damit verbunden ist, einer Entität zu vertrauen, die Ihre Vermögenswerte hält. Sie müssen sie jedoch selbst sichern und Phishing-Betrug, das versehentliche Genehmigen von Transaktionen oder das Offenlegen der Wiederherstellungsphrase, die Interaktion mit gefälschten Websites und andere Risiken der Eigenverwahrung vermeiden. Die Risiken und Vorteile sind unterschiedlich.
 
-### Wenn ich mein/e Telefon/Hardware-Wallet verliere, muss ich dann dieselbe Wallet-App erneut verwenden, um das verlorene Geld wiederzuerlangen?
+### Wenn ich mein Telefon/meine Hardware-Wallet verliere, muss ich dann dieselbe Wallet-App erneut verwenden, um die verlorenen Gelder wiederherzustellen? {#if-i-lose-my-phonehardware-wallet-do-i-need-to-use-the-same-wallet-app-again-to-recover-the-lost-funds}
 
-Nein, es ist möglich, eine andere Wallet zu verwenden. Solange Sie die Seed-Phrase haben, können Sie diese in den meisten Wallets eingeben. Die Wallet stellt dann Ihr Konto wieder her. Seien Sie vorsichtig, wenn das einmal erforderlich werden sollte: Stellen Sie sicher, dass Sie bei der Wiederherstellung Ihrer Wallet nicht mit dem Internet verbunden sind, damit Ihre Seed-Phrase nicht versehentlich veröffentlicht wird. Meist ist es nicht möglich, verlorene Gelder ohne die Seed-Phrase wiederzuerlangen.
+Nein, Sie können eine andere Wallet verwenden. Solange Sie die Seed-Phrase haben, können Sie diese in die meisten Wallets eingeben, und sie werden Ihr Konto wiederherstellen. Seien Sie vorsichtig, falls Sie dies jemals tun müssen: Es ist am besten sicherzustellen, dass Sie bei der Wiederherstellung Ihrer Wallet nicht mit dem Internet verbunden sind, damit Ihre Seed-Phrase nicht versehentlich durchsickert. Es ist oft unmöglich, verlorene Gelder ohne die Wiederherstellungsphrase wiederherzustellen.

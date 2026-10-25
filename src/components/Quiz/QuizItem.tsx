@@ -1,12 +1,26 @@
-import { useTranslation } from "next-i18next"
-import { Box, Flex, ListItem, Stack, Text } from "@chakra-ui/react"
+import { useTranslations } from "next-intl"
 
-import type { QuizzesSection } from "@/lib/types"
+import type { QuizLevel, QuizzesSection } from "@/lib/types"
 
-import { Button } from "../Buttons"
+import { LinkBox, LinkOverlay } from "@/components/ui/link-box"
+
+import { cn } from "@/lib/utils/cn"
+
 import { GreenTickIcon } from "../icons/quiz"
-import Tag from "../Tag"
-import Translation from "../Translation"
+import { Button } from "../ui/buttons/Button"
+import { Flex, Stack } from "../ui/flex"
+import { ListItem } from "../ui/list"
+import { Tag, type TagProps } from "../ui/tag"
+
+const LEVEL_STATUS: Record<QuizLevel, NonNullable<TagProps["status"]>> = {
+  beginner: "tag-green",
+  intermediate: "tag-yellow",
+  advanced: "tag-red",
+}
+
+// Quiz titles are common-namespace keys, except those pointing into
+// learn-quizzes with this legacy prefix.
+const LEARN_QUIZZES_PREFIX = "learn-quizzes:"
 
 export type QuizzesListItemProps = Omit<QuizzesSection, "id"> & {
   isCompleted: boolean
@@ -22,64 +36,57 @@ const QuizItem = ({
   numberOfQuestions,
   handleStart,
 }: QuizzesListItemProps) => {
-  const { t } = useTranslation("learn-quizzes")
+  const t = useTranslations("learn-quizzes")
+  const tCommon = useTranslations("common")
+
+  const title = titleId.startsWith(LEARN_QUIZZES_PREFIX)
+    ? t(titleId.slice(LEARN_QUIZZES_PREFIX.length))
+    : tCommon(titleId)
 
   return (
-    <ListItem
-      color={isCompleted ? "body.medium" : "text"}
-      fontWeight="bold"
-      px={{ base: 0, lg: 4 }}
-      py={4}
-      borderBottom="1px solid"
-      borderColor="disabled"
-      mb={0}
-      sx={{ counterIncrement: "list-counter" }}
-    >
-      <Flex
-        justifyContent="space-between"
-        alignItems={{ base: "flex-start", lg: "center" }}
-        direction={{ base: "column", lg: "row" }}
+    // The whole row is clickable via LinkOverlay's ::before, the same pattern
+    // CardList uses. Overlaying the real Button keeps one tab stop and native
+    // keyboard handling, which a click handler on the row would not.
+    <LinkBox asChild>
+      <ListItem
+        className={cn(
+          isCompleted ? "text-body-medium" : "text-body",
+          "m-0 flex justify-between gap-4 p-4 font-bold transition-colors",
+          "not-last:border-b hover:bg-background-highlight",
+          "[counter-increment:list-counter] max-sm:flex-col sm:items-center"
+        )}
       >
-        <Stack mb={{ base: 5, lg: 0 }}>
-          <Flex gap={2} alignItems="center">
-            <Text
-              color={isCompleted ? "body.medium" : "text"}
-              _before={{
-                content: 'counter(list-counter) ". "',
-              }}
-            >
-              <Translation id={titleId} />
-            </Text>
+        <Stack>
+          <Flex className="items-center gap-2">
+            <span className="before:content-[counter(list-counter)_'._']">
+              {title}
+            </span>
 
             {/* Show green tick if quizz was completed only */}
             {isCompleted && <GreenTickIcon />}
           </Flex>
 
           {/* Labels */}
-          <Flex gap={3}>
+          <Flex className="gap-3 font-normal">
             {/* number of questions - label */}
-            <Tag
-              label={t(`${numberOfQuestions} ${t("questions")}`)}
-              ms={{ lg: -2 }}
-            />
+            <Tag>{`${numberOfQuestions} ${t("questions")}`}</Tag>
 
             {/* difficulty - label */}
-            <Tag label={level.toUpperCase()} />
+            <Tag status={LEVEL_STATUS[level]}>{level.toUpperCase()}</Tag>
           </Flex>
         </Stack>
 
-        {/* Start Button */}
-        <Box w={{ base: "full", lg: "auto" }}>
+        <LinkOverlay asChild>
           <Button
             variant="outline"
-            w={{ base: "full", lg: "auto" }}
+            className="w-full sm:w-auto"
             onClick={handleStart}
           >
-            <Translation id="learn-quizzes:start" />
+            {t("start")}
           </Button>
-        </Box>
-      </Flex>
-    </ListItem>
+        </LinkOverlay>
+      </ListItem>
+    </LinkBox>
   )
 }
 

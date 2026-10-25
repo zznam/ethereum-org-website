@@ -1,187 +1,170 @@
 ---
 title: Menggunakan WebSockets
-description: Panduan untuk menggunakan WebSocket dan Alchemy untuk membuat permintaan JSON-RPC dan berlangganan ke aksi.
+description: Panduan menggunakan WebSockets untuk membuat permintaan JSON-RPC dan berlangganan kejadian, dengan penyedia node Ethereum mana pun.
 author: "Elan Halpern"
 lang: id
-tags:
-  - "alchemy"
-  - "websocket"
-  - "membuat kueri"
-  - "memulai"
-  - "langganan"
-  - "javascript"
+tags: ["Alchemy", "websockets", "kueri", "JavaScript"]
 skill: beginner
-source: Dokumen Alchemy
-sourceUrl: https://docs.alchemyapi.io/guides/using-websockets
+breadcrumb: WebSockets
+source: Alchemy docs
+sourceUrl: https://www.alchemy.com/docs/reference/best-practices-for-using-websockets-in-web3
 published: 2020-12-01
 ---
 
-Ini adalah panduan level pemula tentang menggunakan WebSocket dan Alchemy untuk membuat permintaan di blockchain Ethereum.
+Ini adalah panduan tingkat pemula untuk menggunakan WebSockets guna membuat permintaan ke rantai blok Ethereum. Contoh-contoh ini menggunakan metode JSON-RPC standar, sehingga berfungsi dengan node atau penyedia node mana pun yang menawarkan titik akhir WebSocket, termasuk Alchemy.
 
-## WebSocket vs. HTTP {#websockets-vs-http}
+## WebSockets vs HTTP {#websockets-vs-http}
 
-Tidak seperti HTTP, dengan WebSocket, Anda tidak perlu secara berulang membuat permintaan saat Anda menginginkan informasi spesifik. WebSocket mempertahankan koneksi jaringan untuk Anda (jika dilakukan dengan benar) dan mendengarkan perubahannya.
+Berbeda dengan HTTP, dengan WebSockets, Anda tidak perlu terus-menerus membuat permintaan saat menginginkan informasi tertentu. WebSockets mempertahankan koneksi jaringan untuk Anda (jika dilakukan dengan benar) dan mendengarkan perubahan.
 
-Seperti koneksi jaringan mana pun, Anda tidak boleh menganggap bahwa WebSocket akan tetap terbuka selamanya tanpa gangguan, tetapi menangani koneksi dan penyambungan kembali koneksi yang turun dengan benar secara manual bisa sulit untuk dilakukan. Kekurangan lainnya dari WebSocket adalah Anda tidak mendapatkan kode status HTTP dalam tanggapannya, tapi hanya pesan kesalahan.
+Seperti halnya koneksi jaringan apa pun, Anda tidak boleh berasumsi bahwa WebSocket akan tetap terbuka selamanya tanpa gangguan, tetapi menangani koneksi yang terputus dan penyambungan kembali secara manual dengan benar bisa menjadi tantangan tersendiri. Kekurangan lain dari WebSockets adalah Anda tidak mendapatkan kode status HTTP dalam respons, melainkan hanya pesan kesalahan.
 
-​[Web3 Alchemy](https://docs.alchemy.com/reference/api-overview) secara otomatis menambah penanganan untuk kegagalan WebSocket dan mencoba kembali tanpa perlu adanya konfigurasi.
+Pustaka klien dapat menangani hal ini untuk Anda. Misalnya, [transportasi WebSocket Viem](https://viem.sh/docs/clients/transports/websocket) menyambung kembali saat kegagalan soket dan mengirimkan ping keep-alive secara default.
 
 ## Cobalah {#try-it-out}
 
-Cara termudah untuk menguji WebSocket adalah menginstal peralatan baris perintah untuk membuat permintaan WebSocket, seperti [wscat](https://github.com/websockets/wscat). Dengan wscat, Anda bisa mengirim permintaan seperti berikut ini:
+Anda memerlukan URL WebSocket untuk node Ethereum. Penyedia node akan memberikannya saat Anda membuat kunci Antarmuka Pemrograman Aplikasi (API), biasanya dalam bentuk `wss://<provider-host>/<your-api-key>`. Misalnya, URL Mainnet Ethereum Alchemy terlihat seperti `wss://eth-mainnet.g.alchemy.com/v2/<your-api-key>` ([daftar untuk mendapatkan akun Alchemy gratis](https://auth.alchemy.com/signup)). Lihat [node sebagai layanan](/developers/docs/nodes-and-clients/nodes-as-a-service/) untuk penyedia lain, atau gunakan titik akhir WebSocket dari [node Anda sendiri](/developers/docs/nodes-and-clients/run-a-node/). Titik akhir publik seperti `wss://ethereum-rpc.publicnode.com` juga berfungsi untuk eksperimen cepat, tetapi dibatasi kecepatannya dan mungkin tidak mendukung setiap jenis langganan.
 
-_Catatan: jika Anda memiliki akun Alchemy, Anda bisa menggantikan `demo` dengan kunci API Anda sendiri. [Daftar akun Alchemy secara gratis di sini!](https://auth.alchemyapi.io/signup)_
+Cara termudah untuk menguji WebSockets adalah dengan menginstal alat baris perintah untuk membuat permintaan WebSocket seperti [wscat](https://github.com/websockets/wscat). Menggunakan wscat, Anda dapat mengirim permintaan sebagai berikut:
 
+```sh
+npx wscat -c wss://<provider-host>/<your-api-key>
+
+> {"jsonrpc": "2.0", "id": 0, "method": "eth_gasPrice"}
+
+< {"jsonrpc": "2.0", "result": "0x41f9de2", "id": 0}
 ```
-wscat -c wss://eth-mainnet.ws.alchemyapi.io/ws/demo
 
->  {"jsonrpc":  "2.0", "id": 0, "method":  "eth_gasPrice"}
+Baris yang dimulai dengan `>` adalah apa yang Anda ketik, dan baris yang dimulai dengan `<` adalah apa yang dikirim kembali oleh node.
 
-<  {"jsonrpc":  "2.0", "result":  "0xb2d05e00", "id": 0}
+## Cara menggunakan WebSockets {#how-to-use-websockets}
 
-```
+Untuk memulai, buka WebSocket menggunakan URL WebSocket penyedia Anda. Dengan Alchemy, Anda dapat menemukannya dengan membuka aplikasi Anda di [dasbor](https://dashboard.alchemy.com/) dan melihat kunci API-nya. Perhatikan bahwa URL untuk WebSockets (`wss://`) berbeda dari URL untuk permintaan HTTP (`https://`), meskipun sebagian besar penyedia menggunakan kunci API yang sama untuk keduanya.
 
-## Cara menggunakan WebSocket {#how-to-use-websockets}
+![Di mana menemukan URL WebSocket Anda di dasbor Alchemy Anda](./use-websockets.mp4#602x280)
 
-Untuk memulai, buka WebSocket menggunakan URL WebSocket untuk aplikasi Anda. Anda bisa menemukan URL WebSocket aplikasi Anda dengan membuka halaman aplikasi di [dasbor Anda](https://dashboard.alchemyapi.io/) dan mengklik "View Key". Perhatikan bahwa URL aplikasi Anda untuk WebSocket berbeda dari URL untuk permintaan HTTP, tapi keduanya bisa ditemukan dengan mengklik "View Key".
-
-![Tempat menemukan URL WebSocket Anda dalam dasbor Alchemy Anda](./use-websockets.gif)
-
-Setiap API yang terdaftar di [Referensi API Alchemy](https://docs.alchemyapi.io/documentation/alchemy-api-reference/) bisa digunakan melalui WebSocket. Untuk melakukannya, gunakan payload yang sama yang akan dikirimkan sebagai isi permintaan HTTP POST, tapi sebaliknya kirimkan payload itu melalui WebSocket.
+Metode [JSON-RPC](/developers/docs/apis/json-rpc/) apa pun yang didukung penyedia Anda dapat digunakan melalui WebSocket. Untuk melakukannya, gunakan muatan yang sama yang akan dikirim sebagai isi permintaan HTTP POST, tetapi kirimkan muatan tersebut melalui WebSocket.
 
 ## Dengan Web3 {#with-web3}
 
-Beralih ke WebSocket sementara menggunakan pustaka klien seperti Web3 itu mudah. Cukup hanya dengan meneruskan URL WebSocket sebagai ganti HTTP saat membuat instance klien Web3 Anda. Sebagai contoh:
+Beralih ke WebSockets saat menggunakan Pustaka klien seperti [Viem](https://viem.sh/) sangatlah mudah. Gunakan transportasi `webSocket` dengan URL WebSocket Anda alih-alih transportasi `http`. Misalnya, setelah `npm install viem`, simpan ini sebagai `index.mjs` dan jalankan `node index.mjs`:
 
 ```js
-const web3 = new Web3("wss://eth-mainnet.ws.alchemyapi.io/ws/your-api-key")
+import { createPublicClient, webSocket } from "viem"
+import { mainnet } from "viem/chains"
 
-web3.eth.getBlockNumber().then(console.log) // -> 7946893
+const client = createPublicClient({
+  chain: mainnet,
+  transport: webSocket("wss://<provider-host>/<your-api-key>"),
+})
+
+console.log(await client.getBlockNumber()) // -> 26243602n
+
+// Berlangganan blok baru melalui WebSocket yang sama
+const unwatch = client.watchBlocks({
+  onBlock: (block) => {
+    console.log(block.number, block.hash)
+    unwatch()
+    process.exit(0)
+  },
+})
 ```
 
 ## API Langganan {#subscription-api}
 
-Saat terhubung lewat WebSocket, Anda bisa menggunakan dua metode tambahan: `eth_subscribe` dan `eth_unsubscribe`. Metode ini akan memungkinkan Anda mendengar aksi tertentu dan mendapat pemberitahuan dengan segera.
+Saat terhubung melalui WebSocket, Anda dapat menggunakan dua metode tambahan: `eth_subscribe` dan `eth_unsubscribe`. Metode ini akan memungkinkan Anda untuk mendengarkan peristiwa tertentu dan segera diberi tahu.
 
 ### `eth_subscribe` {#eth-subscribe}
 
-Membuat langganan baru untuk aksi yang ditentukan. [Pelajari selengkapnya tentang `eth_subscribe`](https://docs.alchemyapi.io/documentation/alchemy-api-reference/json-rpc#eth_subscribe).
+Membuat langganan baru untuk peristiwa yang ditentukan. [Pelajari lebih lanjut tentang `eth_subscribe`](https://geth.ethereum.org/docs/interacting-with-geth/rpc/pubsub).
 
 #### Parameter {#parameters}
 
 1. Jenis langganan
 2. Parameter opsional
 
-Argumen pertama menentukan jenis aksi yang didengarkan. Argumen kedua berisi opsi tambahan yang tergantung pada argumen pertama. Jenis deskripsi, opsi, dan payload aksi yang berbeda dideskripsikan di bawah.
+Argumen pertama menentukan jenis peristiwa yang akan didengarkan. Argumen kedua berisi opsi tambahan yang bergantung pada argumen pertama. Berbagai jenis deskripsi, opsinya, dan muatan peristiwanya dijelaskan di bawah ini.
 
-#### Mengembalikan {#returns}
+#### Nilai Kembalian {#returns}
 
-ID langganan: ID ini akan dilampirkan pada setiap aksi yang diterima, dan bisa juga digunakan untuk membatalkan langganan menggunakan `eth_unsubscribe`.
+ID langganan: ID ini akan dilampirkan pada setiap peristiwa yang diterima, dan juga dapat digunakan untuk membatalkan langganan menggunakan `eth_unsubscribe`.
 
-#### Aksi langganan {#subscription-events}
+#### Peristiwa langganan {#subscription-events}
 
-Saat langganan aktif, Anda akan menerima aksi yang adalah objek dengan field berikut:
+Selama langganan aktif, Anda akan menerima peristiwa berupa objek dengan bidang-bidang berikut:
 
 - `jsonrpc`: Selalu "2.0"
 - `method`: Selalu "eth_subscription"
-- `params`: Objek dengan field berikut:
-  - `subscription`: ID langganan yang dikembalikan oleh pemanggilan `eth_subscription` yang membuat langganan ini.
-  - `result`: Objek yang isinya bervariasi bergantung pada jenis langganan.
+- `params`: Sebuah objek dengan bidang-bidang berikut:
+  - `subscription`: ID langganan yang dikembalikan oleh panggilan `eth_subscribe` yang membuat langganan ini.
+  - `result`: Sebuah objek yang isinya bervariasi tergantung pada jenis langganan.
 
 #### Jenis langganan {#subscription-types}
 
-1. `alchemy_newFullPendingTransactions`
+1. `newHeads`
 
-Mengembalikan informasi transaksi untuk semua transaksi yang ditambahkan ke state tunggu. Jenis langganan ini berlangganan ke transaksi tunggu, yang sama dengan pemanggilan Web3 standar `web3.eth.subscribe("pendingTransactions")`, tapi bedanya jenis langganan ini memancarkan _informasi transaksi lengkap_ dan bukan hanya hash transaksi.
+Memancarkan kejadian setiap kali header baru ditambahkan ke rantai, termasuk selama reorganisasi rantai (reorg).
 
-Contoh:
-
-```json
->  {"jsonrpc":  "2.0",  "id":  1,  "method":  "eth_subscribe",  "params":  ["alchemy_newFullPendingTransactions"]}
-
-<  {"id":1,"result":"0x9a52eeddc2b289f985c0e23a7d8427c8","jsonrpc":"2.0"}
-<  {
-      "jsonrpc":"2.0",
-      "method":"eth_subscription",
-      "params":{
-          "result":{
-          "blockHash":null,
-          "blockNumber":null,
-          "from":"0xa36452fc31f6f482ad823cd1cf5515177d57667f",
-          "gas":"0x1adb0",
-          "gasPrice":"0x7735c4d40",
-          "hash":"0x50bff0736c713458c92dd1848d12f3354149be1363123dae35e94e0f2a9d56bf",
-"input":"0xa9059cbb0000000000000000000000000d0707963952f2fba59dd06f2b425ace40b492fe0000000000000000000000000000000000000000000015b1111266cfca100000",
-          "nonce":"0x0",
-          "to":"0xea38eaa3c86c8f9b751533ba2e562deb9acded40",
-          "transactionIndex":null,
-          "value":"0x0",
-          "v":"0x26",
-          "r":"0x195c2c1ed126088e12d290aa93541677d3e3b1d10f137e11f86b1b9227f01e3b",
-          "s":"0x60fc4edbf1527832a2a36dbc1e63ed6193a6eee654472fbebbf88ef1750b5344"},
-          "subscription":"0x9a52eeddc2b289f985c0e23a7d8427c8"
-      }
-  }
-
-```
-
-2. `newHeads`
-
-Memancarkan aksi setiap kali header baru ditambahkan ke rantai, termasuk saat reorganisasi rantai.
-
-Saat reorganisasi rantai terjadi, langganan ini akan memancarkan aksi yang berisi semua header baru dari rantai barunya. Secara khusus, ini berarti Anda mungkin melihat beragam header yang dipancarkan dengan tinggi yang sama, dan saat ini terjadi, header berikutnya harus dianggap sebagai yang benar setelah reorganisasi selesai.
+Ketika reorg terjadi, langganan ini akan memancarkan kejadian yang berisi semua header baru untuk rantai baru. Secara khusus, ini berarti Anda mungkin melihat beberapa header dipancarkan dengan ketinggian yang sama, dan ketika ini terjadi, header yang lebih baru harus dianggap sebagai yang benar setelah reorg.
 
 Contoh:
 
 ```json
->  {"jsonrpc":  "2.0",  "id":  1,  "method":  "eth_subscribe",  "params":  ["newHeads"]}
+> {"jsonrpc": "2.0", "id": 1, "method": "eth_subscribe", "params": ["newHeads"]}
 
-<  {"jsonrpc":"2.0","id":2,"result":"0x9ce59a13059e417087c02d3236a0b1cc"}
-<  {
-  "jsonrpc":  "2.0",
-  "method":  "eth_subscription",
-  "params":  {
-      "result":  {
-          "difficulty":  "0x15d9223a23aa",
-          "extraData":  "0xd983010305844765746887676f312e342e328777696e646f7773",
-          "gasLimit":  "0x47e7c4",
-          "gasUsed":  "0x38658",
-          "logsBloom":
-"0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-          "miner":  "0xf8b483dba2c3b7176a3da549ad41a48bb3121069",
-          "nonce":  "0x084149998194cc5f",
-          "number":  "0x1348c9",
-          "parentHash":  "0x7736fab79e05dc611604d22470dadad26f56fe494421b5b333de816ce1f25701",
-          "receiptRoot":  "0x2fab35823ad00c7bb388595cb46652fe7886e00660a01e867824d3dceb1c8d36",
-          "sha3Uncles":  "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-          "stateRoot":  "0xb3346685172db67de536d8765c43c31009d0eb3bd9c501c9be3229203f15f378",
-          "timestamp":  "0x56ffeff8",
-          "transactionsRoot":  "0x0167ffa60e3ebc0b080cdb95f7c0087dd6c0e61413140e39d94d3468d7c9689f"
-      },
-  "subscription":  "0x9ce59a13059e417087c02d3236a0b1cc"
+< {"jsonrpc":"2.0","result":"0xe0d4abf5caf333fbf94c5f02182e6469","id":1}
+< {
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "result": {
+      "baseFeePerGas": "0x41f9de2",
+      "blobGasUsed": "0xc0000",
+      "difficulty": "0x0",
+      "excessBlobGas": "0xa88af38",
+      "extraData": "0xe29ca82051756173617220287175617361722e77696e2920e29ca8",
+      "gasLimit": "0x3938700",
+      "gasUsed": "0x1a17224",
+      "hash": "0xedc43a71b7ff13880bdbe7b748a225b91a11a91e79173fe28011363c10acaea5",
+      "logsBloom": "0x4beaef4e7dbb1bfdb3df673fab6cdf1cf9fc0e7f743d672c761551767b7dad953d79cf86e56e6195ae1b57dff20a0fd46e57c545af166ff49394df3839e269a6ff877b6baf9d899fd9666c58b7dfa7add4febf78b466e7f71af2dcbad53fdcfa3f7277d2fbfffcff953f9ef37b3af8fffb296a3adb94dc463ff0d6d5173f1beda0fd662d77eaedb34ff99f3eeed38a77e7d0cd63e917d4efbdfcb7d0d19437f98ff60773d0effbfbdfdbef9ebbf6a2c35efedd677a795d3ccd777e127eeb657f6a8dffaf64f3b8d998b516c78e661ef77fded57fb66d687fab17739b3ef5aa2765777d8cce0ef59a9ceebeceabbb7f76ed7fc65df7e8bccf7938eb3fb7de57f7",
+      "miner": "0x396343362be2a4da1ce0c1c210945346fb82aa49",
+      "mixHash": "0xa72c9201f502df607d0d7551ccc171ce37a5146747f04c6c495b0aebecb045c7",
+      "nonce": "0x0000000000000000",
+      "number": "0x1907212",
+      "parentBeaconBlockRoot": "0x34f3f289459913dd80ec9c20aa535866cd2bd310ac26e47570601e263d593735",
+      "parentHash": "0xe62c150ffbbd04e95343f945b70fa53756aba6c0bf96c0440d1ae354fa007a7c",
+      "receiptsRoot": "0x94951d882544da76e30b145b26a39b126e8acfba9db929351b84b2f4c847e3ed",
+      "requestsHash": "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+      "size": "0x1f4bc",
+      "stateRoot": "0x12771ea73858277034cf6604aee0abbf889c15091ab8ef9be81bf7258458a036",
+      "timestamp": "0x6ad92b47",
+      "transactionsRoot": "0xbd58ebe5c8c5519e458266a7db3ad049a7bffa106dc9a14f2fe6edb3f8ad5d70",
+      "withdrawalsRoot": "0x56a083b6140663c9e98c30167ee90a1ffb157505ba89cb584583b71cba100d2a"
+    },
+    "subscription": "0xe0d4abf5caf333fbf94c5f02182e6469"
   }
 }
-
 ```
 
-3. `log`
+2. `logs`
 
-Memancarkan log yang merupakan bagian dari blok yang baru ditambahkan yang sesuai dengan kriteria penyaringan tertentu.
+Memancarkan log yang merupakan bagian dari blok yang baru ditambahkan yang cocok dengan kriteria filter yang ditentukan.
 
-Saat reorganisasi rantai terjadi, log yang merupakan bagian dari blok di rantai lama akan dipancarkan lagi dengan properti `removed` diatur ke `true`. Selanjutnya, log yang merupakan bagian dari blok di rantai baru dipancarkan, berarti ada kemungkinan melihat log transaksi yang sama berulang kali jika terjadi reorganisasi.
+Ketika reorg terjadi, log yang merupakan bagian dari blok pada rantai lama akan dipancarkan lagi dengan properti `removed` diatur ke `true`. Selanjutnya, log yang merupakan bagian dari blok pada rantai baru dipancarkan, yang berarti dimungkinkan untuk melihat log untuk transaksi yang sama beberapa kali dalam kasus reorg.
 
 Parameter
 
-1. Objek dengan field berikut:
-   - `address` (optional): either a string representing an address or an array of such strings.
-     - Hanya log yang dibuat dari salah satu alamat ini akan dipancarkan.
-   - `topics`: array dari penentu topik.
+1. Sebuah objek dengan bidang-bidang berikut:
+   - `address` (opsional): baik string yang mewakili alamat atau array dari string tersebut.
+     - Hanya log yang dibuat dari salah satu alamat ini yang akan dipancarkan.
+   - `topics`: array penentu topik.
      - Setiap penentu topik adalah `null`, string yang mewakili topik, atau array string.
-     - Setiap posisi dalam array yang bukan `null` membatasi log yang dipancarkan hanya ke yang memiliki salah satu dari topik tertentu di posisi itu.
+     - Setiap posisi dalam array yang bukan `null` membatasi log yang dipancarkan hanya pada mereka yang memiliki salah satu topik yang diberikan di posisi tersebut.
 
 Beberapa contoh spesifikasi topik:
 
-- `[]`: Topik mana pun diizinkan.
+- `[]`: Topik apa pun diizinkan.
 - `[A]`: A di posisi pertama (dan apa pun setelahnya).
 - `[null, B]`: Apa pun di posisi pertama dan B di posisi kedua (dan apa pun setelahnya).
 - `[A, B]`: A di posisi pertama dan B di posisi kedua (dan apa pun setelahnya).
@@ -189,65 +172,73 @@ Beberapa contoh spesifikasi topik:
 
 Contoh:
 
-```json
->  {"jsonrpc":  "2.0",  "id":  1,  "method":  "eth_subscribe",  "params":  ["logs",  {"address":  "0x8320fe7702b96808f7bbc0d4a888ed1468216cfd",  "topics":  ["0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab902"]}]}
+Contoh ini mendengarkan kejadian `Deposit` dari [kontrak WETH](https://etherscan.io/address/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2) di Mainnet Ethereum:
 
-<  {"jsonrpc":"2.0","id":2,"result":"0x4a8a4c0517381924f9838102c5a4dcb7"}
-<  {
-  "jsonrpc":  "2.0",
-  "method":  "eth_subscription",
-  "params":  {
-      "subscription":  "0x4a8a4c0517381924f9838102c5a4dcb7",
-      "result":  {
-          "address":  "0x8320fe7702b96808f7bbc0d4a888ed1468216cfd",
-          "blockHash":  "0x61cdb2a09ab99abf791d474f20c2ea89bf8de2923a2d42bb49944c8c993cbf04",
-          "blockNumber":  "0x29e87",
-          "data": "0x00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000003",
-          "logIndex":"0x0",
-          "topics":["0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab902"],
-          "transactionHash":  "0xe044554a0a55067caafd07f8020ab9f2af60bdfe337e395ecd84b4877a3d1ab4",
-          "transactionIndex":  "0x0"
-      }
+```json
+> {"jsonrpc": "2.0", "id": 1, "method": "eth_subscribe", "params": ["logs", {"address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", "topics": ["0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c"]}]}
+
+< {"jsonrpc":"2.0","result":"0x69a0e61ae8e3d61a93479858e8f1b43a","id":1}
+< {
+  "jsonrpc": "2.0",
+  "method": "eth_subscription",
+  "params": {
+    "result": {
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "blockHash": "0x168e06e5733df993078bb635cb9925f80ff39d12a36bd301052c44d7bf6b6068",
+      "blockNumber": "0x190720e",
+      "blockTimestamp": "0x6ad92b17",
+      "data": "0x000000000000000000000000000000000000000000000000039ed0c3d7848a1c",
+      "logIndex": "0x11",
+      "removed": false,
+      "topics": [
+        "0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c",
+        "0x00000000000000000000000023617e59a5925b2a4bf75d73ff6711cd0b29de85"
+      ],
+      "transactionHash": "0xc956e7012c2af8ff87db88e059336842ee872bfc93de1eac9760510d0bd801be",
+      "transactionIndex": "0xb"
+    },
+    "subscription": "0x69a0e61ae8e3d61a93479858e8f1b43a"
   }
 }
-
 ```
 
-### `eth_unsubscribe` {#eth-unsubscribe}
+3. `newPendingTransactions`
 
-Membatalkan langganan yang ada, sehingga tidak ada aksi berikutnya yang dikirimkan.
-
-Parameter
-
-1. ID langganan, seperti yang dikembalikan sebelumnya dari pemanggilan `eth_subscribe`.
-
-Mengembalikan
-
-`true` jika langganan berhasil dibatalkan, atau `false` jika tidak ada langganan dengan ID tertentu.
+Memancarkan hash dari setiap transaksi yang ditambahkan ke state tertunda node (mempool-nya).
 
 Contoh:
 
-**Permintaan**
+```json
+> {"jsonrpc": "2.0", "id": 1, "method": "eth_subscribe", "params": ["newPendingTransactions"]}
 
-```
-curl https://eth-mainnet.alchemyapi.io/v2/your-api-key
--X POST
--H "Content-Type: application/json"
--d '{"id": 1, "method": "eth_unsubscribe", "params": ["0x9cef478923ff08bf67fde6c64013158d"]}'
-
-
+< {"jsonrpc":"2.0","result":"0x1c2365b029179adf1e84b9e327315249","id":1}
+< {"jsonrpc":"2.0","method":"eth_subscription","params":{"result":"0x4a62d0ad7c8868fbbfa10604e68638e637c6fc6f64fd1fb4ca042dcd0158c992","subscription":"0x1c2365b029179adf1e84b9e327315249"}}
 ```
 
-**Hasil**
+Beberapa penyedia juga menawarkan jenis langganan mereka sendiri. Misalnya, [`alchemy_pendingTransactions`](https://www.alchemy.com/docs/reference/alchemy-pendingtransactions) milik Alchemy memancarkan _objek transaksi penuh_ alih-alih hanya hash, dan menerima filter opsional `fromAddress`, `toAddress`, dan `hashesOnly`. Ini bukan bagian dari API JSON-RPC standar, sehingga hanya berfungsi dengan penyedia tersebut.
+
+### `eth_unsubscribe` {#eth-unsubscribe}
+
+Membatalkan langganan yang ada sehingga tidak ada kejadian lebih lanjut yang dikirim.
+
+Parameter
+
+1. ID Langganan, seperti yang dikembalikan sebelumnya dari panggilan `eth_subscribe`.
+
+Nilai Kembalian
+
+`true` jika langganan berhasil dibatalkan, atau `false` jika tidak ada langganan dengan ID yang diberikan.
+
+Langganan hanya ada pada koneksi WebSocket yang membuatnya, jadi `eth_unsubscribe` harus dikirim melalui koneksi yang sama. Ini tidak dapat dikirim sebagai permintaan HTTP terpisah. Menutup koneksi juga membatalkan semua langganannya.
+
+Contoh:
 
 ```json
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "result": true
-}
+> {"jsonrpc": "2.0", "id": 2, "method": "eth_unsubscribe", "params": ["0xe0d4abf5caf333fbf94c5f02182e6469"]}
+
+< {"jsonrpc":"2.0","result":true,"id":2}
 ```
 
 ---
 
-[Daftar Alchemy](https://auth.alchemyapi.io/signup) secara gratis, lihat [dokumentasi kami](https://docs.alchemyapi.io/), dan untuk berita terkini, ikuti kami di [Twitter](https://twitter.com/AlchemyPlatform).
+[Daftar dengan Alchemy](https://auth.alchemy.com) secara gratis, periksa [dokumentasi Alchemy](https://www.alchemy.com/docs/), dan untuk berita terbaru, ikuti Alchemy di [Twitter](https://x.com/Alchemy).

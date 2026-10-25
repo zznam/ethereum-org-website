@@ -2,6 +2,7 @@
 title: Decentralized Storage
 description: Overview of what decentralized storage is and the available tools to integrate it into a dapp.
 lang: en
+authors: ["Patrick Collins"]
 ---
 
 Unlike a centralized server operated by a single company or organization, decentralized storage systems consist of a peer-to-peer network of user-operators who hold a portion of the overall data, creating a resilient file storage sharing system. These can be in a blockchain-based application or any peer-to-peer-based network.
@@ -25,7 +26,7 @@ For a piece of data to persist forever, we need to use a persistence mechanism. 
 
 This is known as **blockchain-based** persistence.
 
-The issue with blockchain-based persistence is that the chain could get far too big to upkeep and store all the data feasibly (e.g. [many sources](https://healthit.com.au/how-big-is-the-internet-and-how-do-we-measure-it/) estimate the Internet to require over 40 Zetabytes of storage capacity).
+The issue with blockchain-based persistence is that the chain could get far too big to upkeep and store all the data feasibly (e.g., [many sources](https://healthit.com.au/how-big-is-the-internet-and-how-do-we-measure-it/) estimate the Internet to require over 40 Zetabytes of storage capacity).
 
 The blockchain must also have some type of incentive structure. For blockchain-based persistence, there is a payment made to the validator. When the data is added to the chain, the validators are paid to add the data on.
 
@@ -38,14 +39,14 @@ Platforms with blockchain-based persistence:
 
 **Contract-based** persistence has the intuition that data cannot be replicated by every node and stored forever, and instead must be upkept with contract agreements. These are agreements made with multiple nodes that have promised to hold a piece of data for a period of time. They must be refunded or renewed whenever they run out to keep the data persisted.
 
-In most cases, instead of storing all data on-chain, the hash of where the data is located on a chain gets stored. This way, the entire chain doesn't need to scale to keep all of the data.
+In most cases, instead of storing all data onchain, the hash of where the data is located on a chain gets stored. This way, the entire chain doesn't need to scale to keep all of the data.
 
 Platforms with contract-based persistence:
 
-- [Filecoin](https://docs.filecoin.io/about-filecoin/what-is-filecoin/)
-- [Skynet](https://siasky.net/)
+- [Filecoin](https://docs.filecoin.io/basics/what-is-filecoin)
+- [Skynet](https://sia.tech/)
 - [Storj](https://storj.io/)
-- [0Chain](https://0chain.net/)
+- [Züs](https://zus.network/)
 - [Crust Network](https://crust.network)
 - [Swarm](https://www.ethswarm.org/)
 - [4EVERLAND](https://www.4everland.org/)
@@ -75,7 +76,7 @@ One of the most popular ways to make sure data is retained, is to use some type 
 
 Types of dStorage with a challenge mechanism:
 
-- 0Chain
+- Züs
 - Skynet
 - Arweave
 - Filecoin
@@ -88,7 +89,6 @@ There aren't great tools to measure the level of decentralization of platforms, 
 
 Decentralized tools without KYC:
 
-- 0Chain (implementing a non-KYC edition)
 - Skynet
 - Arweave
 - Filecoin
@@ -110,7 +110,7 @@ Proof-of-stake based:
 
 - Ethereum
 - Filecoin
-- 0Chain
+- Züs
 - Crust Network
 
 ## Related tools {#related-tools}
@@ -127,11 +127,11 @@ Proof-of-stake based:
 - [Documentation](https://docs.storj.io/)
 - [GitHub](https://github.com/storj/storj)
 
-**Skynet - _Skynet is a decentralized PoW chain dedicated to a decentralized web._**
+**Sia - _Harnesseses cryptography to create a trustless cloud storage marketplace, allowing buyers and sellers to transact directly._**
 
-- [Skynet.net](https://siasky.net/)
-- [Documentation](https://siasky.net/docs/)
-- [GitHub](https://github.com/SkynetLabs/)
+- [Skynet.net](https://sia.tech/)
+- [Documentation](https://docs.sia.tech/)
+- [GitHub](https://github.com/SiaFoundation/)
 
 **Filecoin - _Filecoin was created from the same team behind IPFS. It is an incentive layer on top of the IPFS ideals._**
 
@@ -142,13 +142,13 @@ Proof-of-stake based:
 **Arweave - _Arweave is a dStorage platform for storing data._**
 
 - [Arweave.org](https://www.arweave.org/)
-- [Documentation](https://docs.arweave.org/info/)
+- [Documentation](https://docs.arweave.org/developers)
 - [Arweave](https://github.com/ArweaveTeam/arweave/)
 
-**0chain - _0Chain is a proof-of-stake dStorage platform with sharding and blobbers._**
+**Züs - _Züs is a proof-of-stake dStorage platform with sharding and blobbers._**
 
-- [0Chain.net](https://0chain.net/)
-- [Documentation](https://docs.0chain.net/0chain/)
+- [zus.network](https://zus.network/)
+- [Documentation](https://docs.zus.network/zus-docs/)
 - [GitHub](https://github.com/0chain/)
 
 **Crust Network - _Crust is a dStorage platform on top of the IPFS._**
@@ -160,7 +160,7 @@ Proof-of-stake based:
 **Swarm - _A distributed storage platform and content distribution service for the Ethereum web3 stack._**
 
 - [EthSwarm.org](https://www.ethswarm.org/)
-- [Documentation](https://docs.ethswarm.org/docs/)
+- [Documentation](https://docs.ethswarm.org/)
 - [GitHub](https://github.com/ethersphere/)
 
 **OrbitDB - _A decentralized peer to peer database on top of IPFS._**
@@ -171,14 +171,14 @@ Proof-of-stake based:
 
 **Aleph.im - _Decentralized cloud project (database, file storage, computing and DID). A unique blend of offchain and onchain peer-to-peer technology. IPFS and multi-chain compatibility._**
 
-- [Aleph.im](https://aleph.im/)
-- [Documentation](https://aleph.im/#/developers/)
+- [Aleph.im](https://aleph.cloud/)
+- [Documentation](https://docs.aleph.cloud/)
 - [GitHub](https://github.com/aleph-im/)
 
 **Ceramic - _User-controlled IPFS database storage for data-rich and engaging applications._**
 
 - [Ceramic.network](https://ceramic.network/)
-- [Documentation](https://developers.ceramic.network/learn/welcome/)
+- [Documentation](https://developers.ceramic.network/)
 - [GitHub](https://github.com/ceramicnetwork/js-ceramic/)
 
 **Filebase - _S3-compatible decentralized storage and geo-redundant IPFS pinning service. All files uploaded to IPFS through Filebase are automatically pinned to the Filebase infrastructure with 3x replication across the globe._**
@@ -205,9 +205,18 @@ Proof-of-stake based:
 - [Documentation](https://docs.spheron.network/)
 - [GitHub](https://github.com/spheronFdn)
 
+**dweb3 - _Resolver for decentralized webpages, similar to eth.limo, supporting all types and not limited to ENS and IPFS._**
+
+- [dweb3.wtf](https://dweb3.wtf)
+
+**web3compass - _Search engine for IPFS + ENS backed decentralized websites._**
+
+- [web3compass.net](https://www.web3compass.net/)
+- [Documentation](https://www.web3compass.net/statistics)
+
 ## Further reading {#further-reading}
 
-- [What Is Decentralized Storage?](https://coinmarketcap.com/alexandria/article/what-is-decentralized-storage-a-deep-dive-by-filecoin) - _CoinMarketCap_
+- [What Is Decentralized Storage?](https://coinmarketcap.com/academy/article/what-is-decentralized-storage-a-deep-dive-by-filecoin) - _CoinMarketCap_
 - [Busting Five Common Myths about Decentralized Storage](https://www.storj.io/blog/busting-five-common-myths-about-decentralized-storage) - _Storj_
 
 _Know of a community resource that helped you? Edit this page and add it!_

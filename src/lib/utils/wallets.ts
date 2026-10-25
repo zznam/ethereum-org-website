@@ -1,85 +1,52 @@
-import { shuffle, union } from "lodash"
-
 import { getLanguageCodeName } from "@/lib/utils/intl"
+import {
+  formatPriceUSD,
+  numberFormat,
+  numberToPercent,
+} from "@/lib/utils/numbers"
+import { safeShuffle } from "@/lib/utils/random"
 import { capitalize } from "@/lib/utils/string"
 
+import { newToCrypto } from "@/data/wallets/new-to-crypto"
 import walletsData from "@/data/wallets/wallet-data"
 
-import {
-  DEVELOPER_FEATURES,
-  FINANCE_FEATURES,
-  LONG_TERM_FEATURES,
-  NEW_TO_CRYPTO_FEATURES,
-  NFTS_FEATURES,
-} from "../constants"
-import { WalletData, WalletFilter } from "../types"
+import type { WalletFee, WalletFeeAmount, WalletLanguage } from "../types"
 
 export const getSupportedLocaleWallets = (locale: string) =>
-  shuffle(
-    walletsData.filter((wallet) => wallet.languages_supported.includes(locale))
+  safeShuffle(
+    walletsData.filter((wallet) =>
+      wallet.languages_supported.includes(locale as WalletLanguage)
+    )
   )
 
 export const getNonSupportedLocaleWallets = (locale: string) =>
-  shuffle(
-    walletsData.filter((wallet) => !wallet.languages_supported.includes(locale))
+  safeShuffle(
+    walletsData.filter(
+      (wallet) => !wallet.languages_supported.includes(locale as WalletLanguage)
+    )
   )
 
-// Get a list of a wallet supported Personas (new to crypto, nfts, long term, finance, developer)
-export const getWalletPersonas = (wallet: WalletData) => {
-  const walletPersonas: string[] = []
-
-  const isNewToCryptoPersona = NEW_TO_CRYPTO_FEATURES.every(
-    (feature) => wallet[feature]
-  )
-  const isNFTPersona = NFTS_FEATURES.every((feature) => wallet[feature])
-  const isLongTermPersona = LONG_TERM_FEATURES.every(
-    (feature) => wallet[feature]
-  )
-  const isFinancePersona = FINANCE_FEATURES.every((feature) => wallet[feature])
-  const isDeveloperPersona = DEVELOPER_FEATURES.every(
-    (feature) => wallet[feature]
-  )
-
-  if (isNewToCryptoPersona) {
-    walletPersonas.push("page-find-wallet-new-to-crypto-title")
-  }
-
-  if (isNFTPersona) {
-    walletPersonas.push("page-find-wallet-nfts-title")
-  }
-
-  if (isLongTermPersona) {
-    walletPersonas.push("page-find-wallet-hodler-title")
-  }
-
-  if (isFinancePersona) {
-    walletPersonas.push("page-find-wallet-finance-title")
-  }
-
-  if (isDeveloperPersona) {
-    walletPersonas.push("page-find-wallet-developer-title")
-  }
-
-  return walletPersonas
+export const getNewToCryptoWallets = () => {
+  return walletsData.filter((wallet) => newToCrypto.includes(wallet.name))
 }
 
 // Get a list of wallet supported languages with native title
 export const getSupportedLanguages = (
-  walletSupportedLanguages: string[],
+  supportedLanguageCodes: string[],
   locale: string
 ) => {
   const supportedLanguages = [] as string[]
 
   // current locale should appear first on the list, this manipulates the array to move it to the top if needed
   const supportsCurrentLocale = (current) => current === locale
-  const localeIndex = walletSupportedLanguages.findIndex(supportsCurrentLocale)
+  const localeIndex = supportedLanguageCodes.findIndex(supportsCurrentLocale)
 
   if (localeIndex >= 0) {
-    walletSupportedLanguages.splice(localeIndex, 1)
-    walletSupportedLanguages.unshift(locale)
+    supportedLanguageCodes.splice(localeIndex, 1)
+    supportedLanguageCodes.unshift(locale)
   }
 
-  walletSupportedLanguages.forEach((supportedLanguage) => {
+  supportedLanguageCodes.forEach((supportedLanguage) => {
     // Get supported language name
     const supportedLanguageName = getLanguageCodeName(supportedLanguage, locale)
     // Capitalize supported language name
@@ -90,102 +57,96 @@ export const getSupportedLanguages = (
 }
 
 // Format languages list to be displayed on UI label
-export const formatSupportedLanguages = (
-  supportedLanguages: string[],
-  sliceSize?: number
-) => {
-  return sliceSize
-    ? supportedLanguages.slice(0, sliceSize).join(", ")
-    : supportedLanguages.join(", ")
+export const formatStringList = (strings: string[], sliceSize?: number) => {
+  return sliceSize ? strings.slice(0, sliceSize).join(", ") : strings.join(", ")
 }
 
-// Get border custom color for Persona filter
-export const getPersonaBorderColor = (selectedPersona: number, idx: number) => {
-  return selectedPersona === idx ? "primary.base" : "transparent"
-}
+/** Namespace-bound `t` from useTranslations("page-wallets-find-wallet") */
+type WalletFeeTFunc = (
+  key: string,
+  values?: Record<string, string | number>
+) => string
 
-// Get total count of wallets that support a language
-const getLanguageTotalCount = (languageCode: string) => {
-  return walletsData.reduce(
-    (total, currentWallet) =>
-      currentWallet.languages_supported.includes(languageCode)
-        ? (total = total + 1)
-        : total,
-    0
-  )
-}
-
-// Get a list of all wallets languages, without duplicates
-export const getAllWalletsLanguages = (locale: string) => {
-  const compareFn = (
-    a: { langCode: string; langName: string },
-    b: { langCode: string; langName: string }
+/**
+ * Renders structured wallet fees as one line, e.g. "Device: $149, Swap fee: variable".
+ * Numbers stay canonical in wallet-data.ts; Intl handles per-locale formatting.
+ */
+export const formatWalletFees = (
+  fees: WalletFee[],
+  locale: string,
+  t: WalletFeeTFunc
+): string => {
+  // Node and browser ICU disagree on which thin/narrow space they emit around
+  // range dashes; normalize those to avoid hydration mismatches, but leave NBSP
+  // alone -- it separates the value from its unit (e.g. de "0,05-0,7 %")
+  // Intl.NumberFormat.prototype.formatRange isn't available in every browser
+  // still in the wild (e.g. older Firefox/WebView), so fall back to formatting
+  // each bound separately rather than throwing.
+  const formatRange = (
+    fmt: Intl.NumberFormat,
+    [min, max]: [min: number, max: number]
   ) => {
-    if (a.langName > b.langName) {
-      return 1
+    if (typeof fmt.formatRange !== "function") {
+      // en dash separation for numerical range
+      return `${fmt.format(min)} – ${fmt.format(max)}`
     }
-    if (a.langName < b.langName) {
-      return -1
-    }
-    return 0
+    return fmt
+      .formatRange(min, max)
+      .replace(/[\u2000-\u200a\u202f\u205f\u3000]/g, " ")
   }
 
-  return (
-    walletsData
-      .reduce(
-        (allLanguagesList, current) =>
-          // `union` lodash method merges all arrays removing duplicates
-          union(allLanguagesList, current.languages_supported),
-        [] as string[]
-      )
-      .map((languageCode) => {
-        // Get supported language name
-        const supportedLanguageName = getLanguageCodeName(languageCode, locale)
-        // Get a list of {langCode, langName}
-        return {
-          langCode: languageCode,
-          langName: `${capitalize(
-            supportedLanguageName!
-          )} (${getLanguageTotalCount(languageCode)})`,
-        }
+  // Data stores human-readable percents (0.875 -> "0.875%")
+  const percent = (amount: WalletFeeAmount) =>
+    Array.isArray(amount)
+      ? formatRange(
+          numberFormat(locale, { style: "percent", maximumFractionDigits: 3 }),
+          [amount[0] / 100, amount[1] / 100]
+        )
+      : numberToPercent(amount / 100, locale, { maximumFractionDigits: 3 })
+  const usd = (amount: WalletFeeAmount) =>
+    Array.isArray(amount)
+      ? formatRange(
+          numberFormat(locale, {
+            style: "currency",
+            currency: "USD",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+          }),
+          amount
+        )
+      : formatPriceUSD(amount, locale, { minimumFractionDigits: 0 })
+
+  const formatValue = (fee: WalletFee): string => {
+    if (fee.text) return t(`page-find-wallet-fee-value-${fee.text}`)
+    if (fee.percent !== undefined) return percent(fee.percent)
+    return usd(fee.usd)
+  }
+
+  const items = fees.map((fee) => {
+    let value = formatValue(fee)
+    if (fee.from) value = t("page-find-wallet-fee-value-from", { value })
+
+    // One-off template without the "{label}: {value}" shape
+    if (fee.type === "free-tier-plans")
+      return t("page-find-wallet-fee-free-tier-plans", { value })
+
+    if (fee.qualifier) {
+      value = t(`page-find-wallet-fee-qualifier-${fee.qualifier}`, {
+        value,
+        ...(fee.qualifierPercent !== undefined && {
+          percent: percent(fee.qualifierPercent),
+        }),
+        ...(fee.qualifierUsd !== undefined && {
+          usd: usd(fee.qualifierUsd),
+        }),
       })
-      // Sort list alphabetically by langName
-      .sort(compareFn)
-  )
-}
+    }
 
-// Get a list of top n wallets languages
-export const getWalletsTopLanguages = (n: number, locale: string) => {
-  const compareFn = (a: string, b: string) => {
-    return getLanguageTotalCount(b) - getLanguageTotalCount(a)
-  }
-
-  return walletsData
-    .reduce(
-      (allLanguagesList, current) =>
-        // `union` lodash method merges all arrays removing duplicates
-        union(allLanguagesList, current.languages_supported),
-      [] as string[]
-    )
-    .sort(compareFn)
-    .map((languageCode) => {
-      // Get supported language name
-      const supportedLanguageName = getLanguageCodeName(languageCode, locale)
-      // Return {code, capitalized language name}
-      return {
-        code: languageCode,
-        langName: `${capitalize(
-          supportedLanguageName!
-        )} (${getLanguageTotalCount(languageCode)})`,
-      }
+    return t("page-find-wallet-fee-item", {
+      label: t(`page-find-wallet-fee-label-${fee.type}`),
+      value,
     })
-    .slice(0, n)
-}
+  })
 
-// Get wallets listing count after applying filters
-export const walletsListingCount = (filters: WalletFilter) => {
-  return Object.values(filters).reduce(
-    (acc, filter) => (filter ? acc + 1 : acc),
-    0
-  )
+  return new Intl.ListFormat(locale, { style: "narrow" }).format(items)
 }

@@ -1,64 +1,155 @@
 ---
 title: Bloki
-description: Przegląd bloków w blockchainie Ethereum – ich struktura danych, dlaczego są potrzebne i jak są wytwarzane.
+description: "Przegląd bloków w blockchainie Ethereum – ich struktura danych, dlaczego są potrzebne i jak powstają."
 lang: pl
 ---
 
-Bloki są zestawami transakcji z kryptograficznym skrótem poprzedniego bloku w łańcuchu. Łączy to bloki (w łańcuch), ponieważ skróty są kryptograficznymi pochodnymi danych umieszczanych w blokach. Zapobiega to nadużyciom, ponieważ pojedyncza zmiana w dowolnym, historycznym bloku unieważniłaby wszystkie bloki następujące po nim, gdyż zmianie uległyby kolejne kryptograficzne skróty, co wychwyciłby każdy, kto korzysta z blokchaina.
+Bloki to pakiety transakcji zawierające hash poprzedniego bloku w łańcuchu. Łączy to bloki ze sobą (w łańcuch), ponieważ hashe są kryptograficznie wyprowadzane z danych bloku. Zapobiega to oszustwom, ponieważ jedna zmiana w jakimkolwiek bloku w historii unieważniłaby wszystkie następne bloki, jako że wszystkie kolejne hashe uległyby zmianie, a każdy, kto uruchamia blockchain, by to zauważył.
 
 ## Wymagania wstępne {#prerequisites}
 
-Bloki to temat przyjazny dla nowicjuszy. Jednak, aby pomóc ci w lepszym zrozumieniu tej strony, zalecamy najpierw przeczytać o [kontach](/developers/docs/accounts/), [transakcjach](/developers/docs/transactions/), a także nasze [Wprowadzenie do Ethereum](/developers/docs/intro-to-ethereum/).
+Bloki to temat bardzo przyjazny dla początkujących. Aby jednak pomóc Ci lepiej zrozumieć tę stronę, zalecamy najpierw przeczytać o [kontach](/developers/docs/accounts/), [transakcjach](/developers/docs/transactions/) oraz nasze [wprowadzenie do Ethereum](/developers/docs/intro-to-ethereum/).
 
 ## Dlaczego bloki? {#why-blocks}
 
-Aby zagwarantować, że wszyscy uczestnicy sieci Ethereum pozostają w zsynchronizowanym stanie i zgadzają się odnośnie do dokładnej historii transakcji, grupujemy transakcje w blokach. Oznacza to, że dziesiątki (lub setki) transakcji są zatwierdzane, uzgadniane i synchronizowane jednocześnie.
+Aby upewnić się, że wszyscy uczestnicy w sieci [Ethereum](/) utrzymują zsynchronizowany stan i zgadzają się co do dokładnej historii transakcji, grupujemy transakcje w bloki. Oznacza to, że dziesiątki (lub setki) transakcji są zatwierdzane, uzgadniane i synchronizowane jednocześnie.
 
-![Diagram przedstawiający transakcję w bloku, która powoduje zmiany stanu](./tx-block.png) _Diagram zaadaptowany z [Ilustrowanego Ethereum EVM](https://takenobu-hs.github.io/downloads/ethereum_evm_illustrated.pdf)_
+![A diagram showing transaction in a block causing state changes](./tx-block.png)
+_Diagram zaadaptowany z [Ethereum EVM illustrated](https://takenobu-hs.github.io/downloads/ethereum_evm_illustrated.pdf)_
 
-Dzięki rozgraniczaniu zatwierdzeń (transakcji zatwierdzeniowych) dajemy wszystkim uczestnikom sieci wystarczający zapas czasu, aby osiągnęli konsensus: nawet jeżeli żądania transakcyjne nadchodzą z częstotliwością kilku na sekundę, każdy jeden blok Ethereum jest zatwierdzany co około piętnaście sekund.
+Rozkładając zatwierdzenia w czasie, dajemy wszystkim uczestnikom sieci wystarczająco dużo czasu na osiągnięcie konsensusu: chociaż żądania transakcji pojawiają się dziesiątki razy na sekundę, bloki są tworzone i zatwierdzane w Ethereum tylko raz na dwanaście sekund.
 
 ## Jak działają bloki {#how-blocks-work}
 
-Aby zachować historię transakcji, bloki są ściśle uporządkowane (każdy nowy blok zawiera odniesienie do bloku nadrzędnego), podobnie ściśle uporządkowane są transakcje wewnątrz bloków. Poza rzadkimi przypadkami w każdym dowolnym momencie wszyscy uczestnicy sieci uzgadniają dokładną liczbę i historię bloków, pracują również nad tym, aby grupować bieżące żądania transakcji w następnym bloku.
+Aby zachować historię transakcji, bloki są ściśle uporządkowane (każdy nowo utworzony blok zawiera odniesienie do swojego bloku nadrzędnego), a transakcje wewnątrz bloków również są ściśle uporządkowane. Z wyjątkiem rzadkich przypadków, w dowolnym momencie wszyscy uczestnicy sieci zgadzają się co do dokładnej liczby i historii bloków oraz pracują nad zgrupowaniem bieżących żądań transakcji w następny blok.
 
-Gdy dany blok jest już złożony (wydobyty) przez jakiegoś górnika w sieci, jest rozprowadzany do reszty sieci; wszystkie węzły dodają ten blok na koniec swojego blockchaina, a wydobywanie trwa nadal. Dokładny proces składania (wydobywania) bloków, jak i proces zatwierdzania/konsensusu, są obecnie określone protokołem "proof-of-work" sieci Ethereum.
+Gdy blok zostanie złożony przez losowo wybranego walidatora w sieci, jest on propagowany do reszty sieci; wszystkie węzły dodają ten blok na koniec swojego blockchaina, a nowy walidator jest wybierany do utworzenia następnego bloku. Dokładny proces składania bloków oraz proces zatwierdzania/konsensusu jest obecnie określony przez protokół „dowodu stawki (PoS)” Ethereum.
 
-### Demo wizualne {#a-visual-demo}
+## Protokół dowodu stawki (PoS) {#proof-of-stake-protocol}
 
-<YouTube id="_160oMzblY8" />
+Dowód stawki (PoS) oznacza co następuje:
 
-## Protokół proof-of-work (dowodu wykonanej pracy) {#proof-of-work-protocol}
+- Węzły walidujące muszą stakować 32 ETH w kontrakcie depozytowym jako zabezpieczenie przed złym zachowaniem. Pomaga to chronić sieć, ponieważ udowodniona nieuczciwa aktywność prowadzi do zniszczenia części lub całości tej stawki.
+- W każdym slocie (oddalonym od siebie o dwanaście sekund) walidator jest losowo wybierany jako proponujący blok. Grupuje on transakcje, wykonuje je i określa nowy „stan”. Opakowuje te informacje w blok i przekazuje je innym walidatorom.
+- Inni walidatorzy, którzy dowiadują się o nowym bloku, ponownie wykonują transakcje, aby upewnić się, że zgadzają się z proponowaną zmianą globalnego stanu. Zakładając, że blok jest ważny, dodają go do własnej bazy danych.
+- Jeśli walidator dowie się o dwóch sprzecznych blokach dla tego samego slotu, używa swojego algorytmu wyboru rozwidlenia, aby wybrać ten, który jest poparty największą ilością stakowanego ETH.
 
-Proof-of-work oznacza, że:
-
-- Węzły wydobywcze muszą zużyć zmienne acz znaczne ilości energii, czasu i mocy obliczeniowej, aby wyprodukować „certyfikat legalności” dla bloku, który proponują sieci. Pomaga to w ochronie sieci m.in. przed spamem/atakami typu denial-of-service, ponieważ produkcja certyfikatów obarczona jest dużym kosztem.
-- Inni górnicy, którzy dowiadują się o nowym bloku z ważnym certyfikatem legalności, muszą go zaakceptować jako kolejny, obowiązujący blok w blockchainie.
-- Dokładna ilość czasu potrzebnego każdemu górnikowi, aby wytworzył certyfikat, jest zmienną losową o dużej wariancji. Gwarantuje to, że będzie mało prawdopodobne, aby dwaj górnicy równocześnie dokonali walidacji zaproponowanych, kolejnych bloków; gdy górnik produkuje i rozprowadza nowy, certyfikowany blok, może być pewien, że zostanie on zaakceptowany przez sieć jako następny, obowiązujący blok w łańcuchu, bez konfliktu (chociaż istnieje protokół służący do radzenia sobie z konfliktami, podobnie jak z sytuacjami, gdy dwa łańcuchy certyfikowanych bloków powstaną niemal w tym samym czasie).
-
-[Więcej o wydobywaniu](/developers/docs/consensus-mechanisms/pow/mining/)
+[Więcej o dowodzie stawki (PoS)](/developers/docs/consensus-mechanisms/pos)
 
 ## Co znajduje się w bloku? {#block-anatomy}
 
-- znacznik czasowy – czas wydobycia bloku;
-- numer bloku – długość łańcucha bloków wyrażona w blokach;
-- trudność – wysiłek potrzebny do wydobycia bloku;
-- mixHash – unikatowy identyfikator bloku;
-- nadrzędny skrót kryptograficzny (ang. hash) – unikatowy identyfikator bloku poprzedzającego bieżący (w ten sposób bloki są łączone w łańcuch);
-- lista transakcji – transakcje umieszczone w bloku;
-- źródło stanu – stan całego systemu zawierającego: salda kont, magazyn kontraktów, kod kontraktów i jednokrotki (ang. nonces) kont;
-- jednokrotka – kryptograficzny skrót, który – gdy zespolimy go z wartością mixHash – jest dowodem na fakt przejścia przez blok procesu [proof-of-work](/developers/docs/consensus-mechanisms/pow/).
+Blok zawiera wiele informacji. Na najwyższym poziomie blok zawiera następujące pola:
+
+| Pole | Opis |
+| :--------------- | :---------------------------------------------------- |
+| `slot` | slot, do którego należy blok |
+| `proposer_index` | ID walidatora będącego proponującym blok |
+| `parent_root` | hash poprzedniego bloku |
+| `state_root` | hash główny (root hash) obiektu stanu |
+| `body` | obiekt zawierający kilka pól, jak zdefiniowano poniżej |
+
+Obiekt `body` bloku zawiera kilka własnych pól:
+
+| Pole | Opis |
+| :------------------- | :----------------------------------------------- |
+| `randao_reveal` | wartość używana do wyboru następnego proponującego blok |
+| `eth1_data` | informacje o kontrakcie depozytowym |
+| `graffiti` | dowolne dane używane do oznaczania bloków |
+| `proposer_slashings` | lista walidatorów do ukarania cięciem |
+| `attester_slashings` | lista poświadczających do ukarania cięciem |
+| `attestations` | lista poświadczeń dokonanych dla poprzednich slotów |
+| `deposits` | lista nowych depozytów do kontraktu depozytowego |
+| `voluntary_exits` | lista walidatorów opuszczających sieć |
+| `sync_aggregate` | podzbiór walidatorów używanych do obsługi lekkich klientów |
+| `execution_payload` | transakcje przekazane z klienta warstwy wykonawczej |
+
+Pole `attestations` zawiera listę wszystkich poświadczeń w bloku. Poświadczenia mają swój własny typ danych, który zawiera kilka informacji. Każde poświadczenie zawiera:
+
+| Pole | Opis |
+| :----------------- | :------------------------------------------------------------- |
+| `aggregation_bits` | lista walidatorów, którzy wzięli udział w tym poświadczeniu |
+| `data` | kontener z wieloma podpólami |
+| `signature` | zagregowany podpis zestawu walidatorów dla części `data` |
+
+Pole `data` w `attestation` zawiera następujące elementy:
+
+| Pole | Opis |
+| :------------------ | :-------------------------------------------------------------- |
+| `slot` | slot, którego dotyczy poświadczenie |
+| `index` | indeksy poświadczających walidatorów |
+| `beacon_block_root` | hash główny bloku śledzącego widzianego jako szczyt łańcucha |
+| `source` | ostatni uzasadniony punkt kontrolny |
+| `target` | najnowszy blok graniczny epoki |
+
+Wykonanie transakcji w `execution_payload` aktualizuje globalny stan. Wszyscy klienci ponownie wykonują transakcje w `execution_payload`, aby upewnić się, że nowy stan pasuje do tego w polu `state_root` nowego bloku. W ten sposób klienci mogą stwierdzić, że nowy blok jest ważny i bezpieczny do dodania do ich blockchaina. Sam `execution payload` jest obiektem z kilkoma polami. Istnieje również `execution_payload_header`, który zawiera ważne informacje podsumowujące o danych wykonawczych. Te struktury danych są zorganizowane w następujący sposób:
+
+`execution_payload_header` zawiera następujące pola:
+
+| Pole | Opis |
+| :------------------ | :------------------------------------------------------------------ |
+| `parent_hash` | hash bloku nadrzędnego |
+| `fee_recipient` | adres konta, na które uiszczane są opłaty transakcyjne |
+| `state_root` | hash główny dla globalnego stanu po zastosowaniu zmian w tym bloku |
+| `receipts_root` | hash drzewa (trie) pokwitowań transakcji |
+| `logs_bloom` | struktura danych zawierająca logi zdarzeń |
+| `prev_randao` | wartość używana w losowym wyborze walidatora |
+| `block_number` | numer bieżącego bloku |
+| `gas_limit` | maksymalny limit gazu dozwolony w tym bloku |
+| `gas_used` | rzeczywista ilość gazu zużyta w tym bloku |
+| `timestamp` | czas bloku |
+| `extra_data` | dowolne dodatkowe dane jako surowe bajty |
+| `base_fee_per_gas` | wartość opłaty podstawowej |
+| `block_hash` | hash bloku wykonawczego |
+| `transactions_root` | hash główny transakcji w ładunku (payload) |
+| `withdrawal_root` | hash główny wypłat w ładunku |
+
+Sam `execution_payload` zawiera następujące elementy (zauważ, że jest to identyczne z nagłówkiem, z tą różnicą, że zamiast hasha głównego transakcji zawiera rzeczywistą listę transakcji i informacje o wypłatach):
+
+| Pole | Opis |
+| :----------------- | :------------------------------------------------------------------ |
+| `parent_hash` | hash bloku nadrzędnego |
+| `fee_recipient` | adres konta, na które uiszczane są opłaty transakcyjne |
+| `state_root` | hash główny dla globalnego stanu po zastosowaniu zmian w tym bloku |
+| `receipts_root` | hash drzewa (trie) pokwitowań transakcji |
+| `logs_bloom` | struktura danych zawierająca logi zdarzeń |
+| `prev_randao` | wartość używana w losowym wyborze walidatora |
+| `block_number` | numer bieżącego bloku |
+| `gas_limit` | maksymalny limit gazu dozwolony w tym bloku |
+| `gas_used` | rzeczywista ilość gazu zużyta w tym bloku |
+| `timestamp` | czas bloku |
+| `extra_data` | dowolne dodatkowe dane jako surowe bajty |
+| `base_fee_per_gas` | wartość opłaty podstawowej |
+| `block_hash` | hash bloku wykonawczego |
+| `transactions` | lista transakcji do wykonania |
+| `withdrawals` | lista obiektów wypłat |
+
+Lista `withdrawals` zawiera obiekty `withdrawal` o następującej strukturze:
+
+| Pole | Opis |
+| :--------------- | :--------------------------------- |
+| `address` | adres konta, które dokonało wypłaty |
+| `amount` | kwota wypłaty |
+| `index` | wartość indeksu wypłaty |
+| `validatorIndex` | wartość indeksu walidatora |
+
+## Czas bloku {#block-time}
+
+Czas bloku odnosi się do czasu oddzielającego bloki. W Ethereum czas jest podzielony na dwunastosekundowe jednostki zwane „slotami”. W każdym slocie wybierany jest jeden walidator, który ma zaproponować blok. Zakładając, że wszyscy walidatorzy są online i w pełni funkcjonalni, w każdym slocie pojawi się blok, co oznacza, że czas bloku wynosi 12 s. Jednak czasami walidatorzy mogą być offline, gdy zostaną wezwani do zaproponowania bloku, co oznacza, że sloty mogą czasami pozostać puste.
+
+Ta implementacja różni się od systemów opartych na dowodzie pracy (PoW), w których czasy bloków są probabilistyczne i dostrajane przez docelową trudność kopania protokołu. [Średni czas bloku](https://etherscan.io/chart/blocktime) w Ethereum jest tego doskonałym przykładem, gdzie przejście z dowodu pracy (PoW) na dowód stawki (PoS) można wyraźnie wywnioskować na podstawie spójności nowego 12-sekundowego czasu bloku.
 
 ## Rozmiar bloku {#block-size}
 
-Ważna uwaga na zakończenie jest taka, że same bloki są ograniczone pod względem rozmiaru. Każdy blok wyposażony jest w limit paliwa, który ustalany jest wspólnie przez górników i sieć: całkowita ilość paliwa zużyta przez wszystkie transakcje w bloku musi być mniejsza od tego limitu. Jest to o tyle ważne, że gwarantuje, iż bloki nie mogą być dowolnie duże. Gdyby bloki mogły mieć dowolną wielkość, wtedy mniej wydajne, pełne węzły stopniowo przestawałyby nadążać za siecią z powodu wymogów odnośnie do przestrzeni i prędkości. Limit paliwowy bloku 0 został zainicjowany wartością 5000; każdy górnik, który wydobywa nowy blok może zmienić limit paliwowy względem limitu w bloku nadrzędnym do około 0,1% w każdą ze stron. Od listopada 2018 do dziś limit paliwowy wynosi około 8 000 000.
+Ostatnią ważną uwagą jest to, że same bloki mają ograniczony rozmiar. Każdy blok ma docelowy rozmiar 30 milionów gazu, ale rozmiar bloków będzie rósł lub malał zgodnie z wymaganiami sieci, aż do limitu bloku wynoszącego 60 milionów gazu (2x docelowy rozmiar bloku). Limit gazu bloku może być korygowany w górę lub w dół o współczynnik 1/1024 w stosunku do limitu gazu poprzedniego bloku. W rezultacie walidatorzy mogą zmieniać limit gazu bloku poprzez konsensus. Całkowita ilość gazu zużyta przez wszystkie transakcje w bloku musi być mniejsza niż limit gazu bloku. Jest to ważne, ponieważ gwarantuje, że bloki nie mogą być dowolnie duże. Gdyby bloki mogły być dowolnie duże, mniej wydajne pełne węzły stopniowo przestałyby nadążać za siecią ze względu na wymagania dotyczące przestrzeni i szybkości. Im większy blok, tym większa moc obliczeniowa jest wymagana do przetworzenia go na czas przed następnym slotem. Jest to siła centralizująca, której przeciwdziała się poprzez ograniczanie rozmiarów bloków.
 
 ## Dalsza lektura {#further-reading}
 
-_Znasz jakiś zasób społecznościowy, który ci pomógł? Wyedytuj tę stronę i dodaj go!_
+_Znasz zasób społeczności, który Ci pomógł? Edytuj tę stronę i dodaj go!_
 
 ## Powiązane tematy {#related-topics}
 
-- [Wydobywanie](/developers/docs/consensus-mechanisms/pow/mining/)
 - [Transakcje](/developers/docs/transactions/)
-- [Paliwo](/developers/docs/gas/)
+- [Gaz](/developers/docs/gas/)
+- [Dowód stawki (PoS)](/developers/docs/consensus-mechanisms/pos)
+
+<QuizWidget quizKey="blocks" />

@@ -26,7 +26,7 @@ Different techniques are used for modeling smart contracts for formal verificati
 
 High-level models focus on the relationship between smart contracts and external agents, such as externally owned accounts (EOAs), contract accounts, and the blockchain environment. Such models are useful for defining properties that specify how a contract should behave in response to certain user interactions.
 
-Conversely, other formal models focus on the low-level behavior of a smart contract. While high-level models can help with reasoning about a contract's functionality, they may fail capture details about the internal workings of the implementation. Low-level models apply a white-box view to program analysis and rely on lower-level representations of smart contract applications, such as program traces and [control flow graphs](https://en.wikipedia.org/wiki/Control-flow_graph), to reason about properties relevant to a contract's execution.
+Conversely, other formal models focus on the low-level behavior of a smart contract. While high-level models can help with reasoning about a contract's functionality, they may fail to capture details about the internal workings of the implementation. Low-level models apply a white-box view to program analysis and rely on lower-level representations of smart contract applications, such as program traces and [control flow graphs](https://en.wikipedia.org/wiki/Control-flow_graph), to reason about properties relevant to a contract's execution.
 
 Low-level models are considered ideal since they represent the actual execution of a smart contract in Ethereum's execution environment (i.e., the [EVM](/developers/docs/evm/)). Low-level modeling techniques are especially useful in establishing critical safety properties in smart contracts and detecting potential vulnerabilities.
 
@@ -70,7 +70,7 @@ Low-level formal specifications can be given as either Hoare-style properties or
 
 ### Hoare-style properties {#hoare-style-properties}
 
-[Hoare Logic](https://en.wikipedia.org/wiki/Hoare_logic) provides a set of formal rules for reasoning about the correctness of programs, including smart contracts. A Hoare-style property is represented by a Hoare triple {_P_}_c_{_Q_}, where _c_ is a program and _P_ and _Q_ are predicates on the state of the _c_ (i.e., the program), formally described as _preconditions_ and _postconditions_, respectively.
+[Hoare Logic](https://en.wikipedia.org/wiki/Hoare_logic) provides a set of formal rules for reasoning about the correctness of programs, including smart contracts. A Hoare-style property is represented by a Hoare triple `{P}c{Q}`, where `c` is a program and `P` and `Q` are predicates on the state of the `c` (i.e., the program), formally described as _preconditions_ and _postconditions_, respectively.
 
 A precondition is a predicate describing the conditions required for the correct execution of a function; users calling into the contract must satisfy this requirement. A postcondition is a predicate describing the condition that a function establishes if correctly executed; users can expect this condition to be true after calling into the function. An _invariant_ in Hoare logic is a predicate that is preserved by execution of a function (i.e., it doesn't change).
 
@@ -78,7 +78,7 @@ Hoare-style specifications can guarantee either _partial correctness_ or _total 
 
 Obtaining proof of total correctness is difficult since some executions may delay before terminating, or never terminate at all. That said, the question of whether execution terminates is arguably a moot point since Ethereum's gas mechanism prevents infinite program loops (execution terminates either successfully or ends due to 'out-of-gas' error).
 
-Smart contract specifications created using Hoare logic will have preconditions, postconditions, and invariants defined for the execution of functions and loops in a contract. Preconditions often include the possibility of erroneous inputs to a function, with postconditions describing the expected response to such inputs (e.g., throwing a specific exception). In this manner Hoare-style properties are effective for assuring correctness of contract implementtions.
+Smart contract specifications created using Hoare logic will have preconditions, postconditions, and invariants defined for the execution of functions and loops in a contract. Preconditions often include the possibility of erroneous inputs to a function, with postconditions describing the expected response to such inputs (e.g., throwing a specific exception). In this manner Hoare-style properties are effective for assuring correctness of contract implementations.
 
 Many formal verification frameworks use Hoare-style specifications for proving semantic correctness of functions. It is also possible to add Hoare-style properties (as assertions) directly to contract code by using the `require` and `assert` statements in Solidity.
 
@@ -152,9 +152,10 @@ function safe_add(uint x, uint y) returns(uint z){
   require(z>=y);
 
   return z;
+}
 ```
 
-An execution trace that results in an integer overflow would need to satisfy the formula: `z = x + y AND (z >= x) AND (z=>y) AND (z < x OR z < y)` Such a formula is unlikely to be solved, hence it serves a mathematical proof that the function `safe_add` never overflows.
+An execution trace that results in an integer overflow would need to satisfy the formula: `z = x + y AND (z >= x) AND (z >= y) AND (z < x OR z < y)` Such a formula is unlikely to be solved, hence it serves a mathematical proof that the function `safe_add` never overflows.
 
 ### Why use formal verification for smart contracts? {#benefits-of-formal-verification}
 
@@ -162,7 +163,7 @@ An execution trace that results in an integer overflow would need to satisfy the
 
 Formal verification is used to assess the correctness of safety-critical systems whose failure can have devastating consequences, such as death, injury, or financial ruin. Smart contracts are high-value applications controlling enormous amounts of value, and simple errors in design can lead to [irrecoverable losses for users](https://www.freecodecamp.org/news/a-hacker-stole-31m-of-ether-how-it-happened-and-what-it-means-for-ethereum-9e5dc29e33ce/amp/). Formally verifying a contract before deployment, however, can increase guarantees that it will perform as expected once running on the blockchain.
 
-Reliability is a highly desired quality in any smart contract, especially because code deployed in the Ethereum Virtual Machine (EVM) is typically immutable. With post-launch upgrades not readily accessible, the need to guarantee reliability of contracts makes formal verification necessary. Formal verification is able to detect tricky issues, such as integer underflows and overflow, re-entrancy, and poor gas optimizations, which may slip past auditors and testers.
+Reliability is a highly desired quality in any smart contract, especially because code deployed in the [Ethereum](/) Virtual Machine (EVM) is typically immutable. With post-launch upgrades not readily accessible, the need to guarantee reliability of contracts makes formal verification necessary. Formal verification is able to detect tricky issues, such as integer underflows and overflow, re-entrancy, and poor gas optimizations, which may slip past auditors and testers.
 
 #### Prove functional correctness {#prove-functional-correctness}
 
@@ -215,7 +216,7 @@ Also, it is not always possible for program verifiers to determine if a property
 **Act**: _*Act allows specification of storage updates, pre/post conditions and contract invariants. Its tool suite also has proof backends able to prove many properties via Coq, SMT solvers, or hevm.*_
 
 - [GitHub](https://github.com/ethereum/act)
-- [Documentation](https://ethereum.github.io/act/)
+- [Documentation](https://github.com/argotorg/act)
 
 **Scribble** - _*Scribble transforms code annotations in the Scribble specification language into concrete assertions that check the specification.*_
 
@@ -252,10 +253,10 @@ Also, it is not always possible for program verifiers to determine if a property
 - [GitHub](https://github.com/isabelle-prover)
 - [Documentation](https://isabelle.in.tum.de/documentation.html)
 
-**Coq** - _Coq is an interactive theorem prover that lets you define programs using theorems and interactively generate machine-checked proofs of correctness._
+**Rocq** - _Rocq is an interactive theorem prover that lets you define programs using theorems and interactively generate machine-checked proofs of correctness._
 
-- [GitHub](https://github.com/coq/coq)
-- [Documentation](https://coq.github.io/doc/v8.13/refman/index.html)
+- [GitHub](https://github.com/rocq-prover/rocq)
+- [Documentation](https://rocq-prover.org/docs)
 
 ### Symbolic execution-based tools for detecting vulnerable patterns in smart contracts {#symbolic-execution-tools}
 
@@ -270,13 +271,12 @@ Also, it is not always possible for program verifiers to determine if a property
 
 **Mythril** - _A symbolic execution tool for detecting vulnerabilities in Ethereum smart contracts_
 
-- [GitHub](https://github.com/ConsenSys/mythril-classic)
-- [Documentation](https://mythril-classic.readthedocs.io/en/develop/)
+- [GitHub](https://github.com/ConsenSysDiligence/mythril)
+- [Documentation](https://github.com/ConsenSysDiligence/mythril/tree/develop/docs/source)
 
 ## Further reading {#further-reading}
 
 - [How Formal Verification of Smart Contracts Works](https://runtimeverification.com/blog/how-formal-verification-of-smart-contracts-works/)
-- [How Formal Verification Can Ensure Flawless Smart Contracts](https://media.consensys.net/how-formal-verification-can-ensure-flawless-smart-contracts-cbda8ad99bd1)
 - [An Overview of Formal Verification Projects in the Ethereum Ecosystem](https://github.com/leonardoalt/ethereum_formal_verification_overview)
 - [End-to-End Formal Verification of Ethereum 2.0 Deposit Smart Contract](https://runtimeverification.com/blog/end-to-end-formal-verification-of-ethereum-2-0-deposit-smart-contract/)
 - [Formally Verifying The World's Most Popular Smart Contract](https://www.zellic.io/blog/formal-verification-weth)

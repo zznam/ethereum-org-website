@@ -1,51 +1,45 @@
 import { useState } from "react"
-import shuffle from "lodash/shuffle"
-import { useRouter } from "next/router"
-import { useTranslation } from "next-i18next"
+import { shuffle } from "lodash"
+import { useLocale, useTranslations } from "next-intl"
 
-// TODO: Remove unused?
-// import argent from "@/public/wallets/argent.png"
-// import binanceus from "@/public/exchanges/binance.png"
-// import imtoken from "@/public/wallets/imtoken.png"
-// import mycrypto from "@/public/wallets/mycrypto.png"
-// import myetherwallet from "@/public/wallets/myetherwallet.png"
-// import squarelink from "@/public/wallets/squarelink.png"
-// import trust from "@/public/wallets/trust.png"
 import type { ImageProps } from "@/components/Image"
 import { SelectOnChange } from "@/components/Select"
 
+import { getCountryCodeName } from "@/lib/utils/intl"
 import { trackCustomEvent } from "@/lib/utils/matomo"
 
 import exchangeData from "@/data/exchangesByCountry"
 
-import binance from "@/public/exchanges/binance.png"
-import bitbuy from "@/public/exchanges/bitbuy.png"
-import bitfinex from "@/public/exchanges/bitfinex.png"
-import bitflyer from "@/public/exchanges/bitflyer.png"
-import bitkub from "@/public/exchanges/bitkub.png"
-import bitso from "@/public/exchanges/bitso.png"
-import bittrex from "@/public/exchanges/bittrex.png"
-import bitvavo from "@/public/exchanges/bitvavo.png"
-import bybit from "@/public/exchanges/bybit.png"
-import coinbase from "@/public/exchanges/coinbase.png"
-import coinmama from "@/public/exchanges/coinmama.png"
-import coinspot from "@/public/exchanges/coinspot.png"
-import cryptocom from "@/public/exchanges/crypto.com.png"
-import easycrypto from "@/public/exchanges/easycrypto.png"
-import gateio from "@/public/exchanges/gateio.png"
-import gemini from "@/public/exchanges/gemini.png"
-import huobiglobal from "@/public/exchanges/huobiglobal.png"
-import itezcom from "@/public/exchanges/itezcom.png"
-import korbit from "@/public/exchanges/korbit.png"
-import kraken from "@/public/exchanges/kraken.png"
-import kucoin from "@/public/exchanges/kucoin.png"
-import matrixport from "@/public/exchanges/matrixport.png"
-import moonpay from "@/public/exchanges/moonpay.png"
-import mtpelerin from "@/public/exchanges/mtpelerin.png"
-import okx from "@/public/exchanges/okx.png"
-import rain from "@/public/exchanges/rain.png"
-import shakepay from "@/public/exchanges/shakepay.png"
-import wazirx from "@/public/exchanges/wazirx.png"
+import binance from "@/public/images/exchanges/binance.png"
+import bitbuy from "@/public/images/exchanges/bitbuy.png"
+import bitfinex from "@/public/images/exchanges/bitfinex.png"
+import bitflyer from "@/public/images/exchanges/bitflyer.png"
+import bitkub from "@/public/images/exchanges/bitkub.png"
+import bitso from "@/public/images/exchanges/bitso.png"
+import bitvavo from "@/public/images/exchanges/bitvavo.png"
+import bybit from "@/public/images/exchanges/bybit.png"
+import coinbase from "@/public/images/exchanges/coinbase.png"
+import coinmama from "@/public/images/exchanges/coinmama.png"
+import coinmate from "@/public/images/exchanges/coinmate.png"
+import coinspot from "@/public/images/exchanges/coinspot.png"
+import coinswitch from "@/public/images/exchanges/coinswitch.png"
+import cryptocom from "@/public/images/exchanges/crypto.com.png"
+import gateio from "@/public/images/exchanges/gateio.png"
+import gemini from "@/public/images/exchanges/gemini.png"
+import huobiglobal from "@/public/images/exchanges/huobiglobal.png"
+import itezcom from "@/public/images/exchanges/itezcom.png"
+import korbit from "@/public/images/exchanges/korbit.png"
+import kraken from "@/public/images/exchanges/kraken.png"
+import kucoin from "@/public/images/exchanges/kucoin.png"
+import matrixport from "@/public/images/exchanges/matrixport.png"
+import moonpay from "@/public/images/exchanges/moonpay.png"
+import mtpelerin from "@/public/images/exchanges/mtpelerin.png"
+import okx from "@/public/images/exchanges/okx.png"
+import peer from "@/public/images/exchanges/peer.png"
+import rain from "@/public/images/exchanges/rain.png"
+import shakepay from "@/public/images/exchanges/shakepay.png"
+import wazirx from "@/public/images/exchanges/wazirx.png"
+import zebpay from "@/public/images/exchanges/zebpay.png"
 
 type ExchangeKey =
   | "binance"
@@ -55,14 +49,14 @@ type ExchangeKey =
   | "bitflyer"
   | "bitkub"
   | "bitso"
-  | "bittrex"
   | "bitvavo"
   | "bybit"
   | "coinbase"
   | "coinmama"
+  | "coinmate"
   | "coinspot"
+  | "coinswitch"
   | "cryptocom"
-  | "easycrypto"
   | "gateio"
   | "gemini"
   | "huobiglobal"
@@ -77,6 +71,8 @@ type ExchangeKey =
   | "rain"
   | "shakepay"
   | "wazirx"
+  | "zebpay"
+  | "peer"
 
 type ExchangeDetail = {
   name: string
@@ -94,6 +90,7 @@ type ExchangeData = Record<Country, ExchangeKey[]>
 type ExchangeByCountryOption = {
   value: string
   label: string
+  countryCode: Country
   exchanges: string[]
 }
 
@@ -104,8 +101,6 @@ type FilteredData = {
   image: ImageProps["src"]
   alt: string
 }
-
-const UNITED_STATES = "United States of America (USA)"
 
 const exchanges: ExchangeDetails = {
   binance: {
@@ -118,11 +113,29 @@ const exchanges: ExchangeDetails = {
     name: "Binance US",
     url: "https://www.binance.us/",
     image: binance,
-    usaExceptions: ["HI", "ID", "NY", "TX", "VT"],
+    // Updated Dec 4th 2024 https://support.binance.us/hc/en-us/articles/360046786914-List-of-supported-states-and-regions
+    usaExceptions: [
+      "AK", // Alaska
+      "AS", // American Samoa
+      "CT", // Connecticut
+      "GA", // Georgia
+      "GU", // Guam
+      "ME", // Maine
+      "MP", // Northern Mariana Islands
+      "NY", // New York
+      "NC", // North Carolina
+      "ND", // North Dakota
+      "OH", // Ohio
+      "OR", // Oregon
+      "TX", // Texas
+      "VI", // U.S. Virgin Islands
+      "VT", // Vermont
+      "WA", // Washington
+    ],
   },
   bitbuy: {
     name: "Bitbuy",
-    url: "https://bitbuy.ca/",
+    url: "https://bitbuy.ca/en-ca",
     image: bitbuy,
     usaExceptions: [],
   },
@@ -150,12 +163,6 @@ const exchanges: ExchangeDetails = {
     image: bitso,
     usaExceptions: [],
   },
-  bittrex: {
-    name: "Bittrex",
-    url: "https://global.bittrex.com/",
-    image: bittrex,
-    usaExceptions: ["CT", "HI", "NY", "NH", "TX", "VT", "VA"],
-  },
   bitvavo: {
     name: "Bitvavo",
     url: "https://bitvavo.com/en/ethereum",
@@ -180,10 +187,23 @@ const exchanges: ExchangeDetails = {
     image: coinmama,
     usaExceptions: ["CT", "FL", "IA", "NY"],
   },
+  coinmate: {
+    name: "Coinmate",
+    url: "https://coinmate.io/en",
+    image: coinmate,
+    usaExceptions: [],
+  },
   coinspot: {
     name: "CoinSpot",
     url: "https://www.coinspot.com.au/",
     image: coinspot,
+    usaExceptions: [],
+  },
+  coinswitch: {
+    name: "CoinSwitch",
+    url: "https://coinswitch.co/",
+    // ETH/INR trading: https://coinswitch.co/pro/eth-inr/csx
+    image: coinswitch,
     usaExceptions: [],
   },
   cryptocom: {
@@ -192,27 +212,21 @@ const exchanges: ExchangeDetails = {
     image: cryptocom,
     usaExceptions: ["NY"],
   },
-  easycrypto: {
-    name: "Easy Crypto",
-    url: "https://easycrypto.com/",
-    image: easycrypto,
-    usaExceptions: [],
-  },
   gateio: {
-    name: "Gate.io",
-    url: "https://www.gate.io/",
+    name: "Gate",
+    url: "https://www.gate.com/",
     image: gateio,
     usaExceptions: [],
   },
   huobiglobal: {
-    name: "Huobi Global",
-    url: "https://huobi.com/",
+    name: "HTX",
+    url: "https://www.htx.com/",
     image: huobiglobal,
     usaExceptions: [],
   },
   matrixport: {
-    name: "Matrixport",
-    url: "https://www.matrixport.com/",
+    name: "BIT (formerly Matrixport)",
+    url: "https://www.bit.com/",
     image: matrixport,
     usaExceptions: [],
   },
@@ -226,7 +240,7 @@ const exchanges: ExchangeDetails = {
     name: "Kraken",
     url: "https://www.kraken.com/",
     image: kraken,
-    usaExceptions: ["NY, WA"],
+    usaExceptions: ["NY", "WA"],
   },
   kucoin: {
     name: "KuCoin",
@@ -250,7 +264,7 @@ const exchanges: ExchangeDetails = {
     name: "OKX",
     url: "https://www.okx.com/",
     image: okx,
-    usaExceptions: [],
+    usaExceptions: ["NY", "TX", "KY", "NV", "HI", "WV"],
   },
   gemini: {
     name: "Gemini",
@@ -282,25 +296,49 @@ const exchanges: ExchangeDetails = {
     image: korbit,
     usaExceptions: [],
   },
+  zebpay: {
+    name: "ZebPay",
+    url: "https://www.zebpay.com/",
+    image: zebpay,
+    usaExceptions: [],
+  },
+  peer: {
+    name: "Peer",
+    url: "https://peer.xyz",
+    image: peer,
+    usaExceptions: [],
+  },
 }
 
 export const useCentralizedExchanges = () => {
-  const { locale } = useRouter()
-  const { t } = useTranslation("page-get-eth")
+  const locale = useLocale()
+  const t = useTranslations("page-get-eth")
+  const tCommon = useTranslations("common")
   const [selectedCountry, setSelectedCountry] =
     useState<ExchangeByCountryOption | null>()
 
   const placeholderString = t("page-get-eth-exchanges-search")
 
   // Add `value` & `label` for Select component, sort alphabetically
-  const selectOptions: ExchangeByCountryOption[] = Object.entries(
-    exchangeData as ExchangeData
-  )
-    .map(([country, exchanges]) => ({
-      value: country,
-      label: country,
-      exchanges,
-    }))
+  const exchangeEntries = Object.entries(exchangeData as ExchangeData) as [
+    Country,
+    ExchangeKey[],
+  ][]
+
+  const selectOptions: ExchangeByCountryOption[] = exchangeEntries
+    .map(([countryCode, exchanges]) => {
+      const countryName =
+        countryCode.length === 2
+          ? getCountryCodeName(countryCode, locale)
+          : tCommon(`region-${countryCode.toLowerCase()}`)
+
+      return {
+        value: countryName,
+        label: countryName,
+        countryCode,
+        exchanges,
+      }
+    })
     .sort((a, b) => a.value.localeCompare(b.value))
 
   const handleSelectChange: SelectOnChange<ExchangeByCountryOption> = (
@@ -334,10 +372,9 @@ export const useCentralizedExchanges = () => {
         .filter((exchange) => selectedCountry?.exchanges.includes(exchange))
         // Format array for <CardList/>
         .map((exchange) => {
-          // Add state exceptions if Country is USA
+          // Add state exceptions if the selected country is the United States
           let description: string | undefined
-          // TODO: Set up for i18n support; currently all country names in English:
-          if (selectedCountry.value === UNITED_STATES) {
+          if (selectedCountry.countryCode === "US") {
             const { usaExceptions } = exchanges[exchange]
             if (usaExceptions.length > 0) {
               description = `${t("page-get-eth-exchanges-except")} ${formatList(
@@ -350,7 +387,7 @@ export const useCentralizedExchanges = () => {
             description,
             link: exchanges[exchange].url,
             image: exchanges[exchange].image,
-            alt: "", // TODO: Add alt text for exchange image
+            alt: "", // Decorative icon with text label, keep alt blank
           }
         })
     )

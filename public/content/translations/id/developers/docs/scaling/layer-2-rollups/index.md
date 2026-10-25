@@ -114,7 +114,7 @@ Ada berbagai implementasi rollup ZK yang dapat Anda integrasikan ke dalam dapps 
 
 - [Loopring](https://loopring.org/#/)
 - [Starkware](https://starkware.co/)
-- [Matter Labs zkSync](https://zksync.io/)
+- [Matter Labs ZKsync](https://zksync.io/)
 - [Aztec 2.0](https://aztec.network/)
 - [Polygon Hermez](https://hermez.io/)
 - [zkTube](https://zktube.io/)
@@ -131,7 +131,6 @@ Solusi hibrida ada dengan menggabungkan bagian terbaik dari berbagai teknologi l
 
 - [Panduan Tidak Lengkap tentang Rollup](https://vitalik.eth.limo/general/2021/01/05/rollup.html)
 - [Rollup Optimistic vs Rollup ZK](https://limechain.tech/blog/optimistic-rollups-vs-zk-rollups/)
-- [Skalabilitas Blockchain Zero-Knowledge](https://ethworks.io/assets/download/zero-knowledge-blockchain-scaling-ethworks.pdf)
 - [Alasan rollup + shard data merupakan satu-satunya solusi berkelanjutan untuk penskalaan tinggi](https://polynya.medium.com/why-rollups-data-shards-are-the-only-sustainable-solution-for-high-scalability-c9aabd6fbb48)
 - [Rollup ZK yang digerakkan Ethereum: Yang Terbaik di Kelasnya](https://hackmd.io/@canti/rkUT0BD8K)
 
@@ -141,9 +140,8 @@ Solusi hibrida ada dengan menggabungkan bagian terbaik dari berbagai teknologi l
 
 **Rollup Optimistic**
 
-- [Semua yang perlu Anda ketahui tentang Rollup Optimistic](https://research.paradigm.xyz/rollups)
-- [Panduan Penting untuk Arbitrum](https://newsletter.banklesshq.com/p/the-essential-guide-to-arbitrum)
-- [Bagaimana Rollup Optimism benar-benar berfungsi?](https://www.paradigm.xyz/2021/01/how-does-optimisms-rollup-really-work)
+- [Panduan Penting untuk Arbitrum](https://www.bankless.com/the-essential-guide-to-arbitrum)
+- [Bagaimana Rollup Optimism benar-benar berfungsi?](https://www.paradigm.xyz/2021/01/how-does-optimism-s-rollup-really-work)
 - [OVM Deep Dive](https://medium.com/ethereum-optimism/ovm-deep-dive-a300d1085f52)
 
 **Solusi Hibrida**

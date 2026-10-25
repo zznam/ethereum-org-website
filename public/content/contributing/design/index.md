@@ -1,22 +1,21 @@
 ---
-title: Design contribution
+title: Design contribution to ethereum.org
+metaTitle: Design contribution
 description: Design contribution to ethereum.org
 lang: en
 ---
-
-# Design contribution to ethereum.org {#design-contributions}
 
 Design is a critical component of any project, and by devoting your time and design skills to ethereum.org, you can help to improve the user experience for our visitors. Contributing to an open-source project provides an opportunity to gain relevant experience and develop your skills in a collaborative environment. You will have the chance to work with other designers, developers, and community members, all of whom will have their own unique perspectives and insights.
 
 Ultimately, this is a great way to build a diverse and impressive portfolio that showcases your design skills.
 
-## How to contribute?
+## How to contribute? {#how-to-contribute}
 
 ### <Emoji text=":one:" size={1} /> &nbsp;Provide feedback on early design prototypes {#design-critique}
 
 We sometimes need a help testing our raw ideas. This is a great way how to contribute without any technical knowledge.
 
-1. The design team will share a mockup design on [Discord](https://discord.com/invite/ethereum-org) and on [GitHub](https://github.com/ethereum/ethereum-org-website/labels/design%20required%20%F0%9F%8E%A8).
+1. The design team will share a mockup design on [Discord](/discord/) and on [GitHub](https://github.com/ethereum/ethereum-org-website/labels/design%20required%20%F0%9F%8E%A8).
 2. You will be guided through the designs to provide feedback via comments function.
 3. The outcome will be shared in the GitHub issue and then closed by the team.
 
@@ -45,7 +44,7 @@ If you feel comfortable taking on design challenges, you can visit our GitHub is
 3. Propose the solution in the corresponding GitHub issue or [create a new one.](https://github.com/ethereum/ethereum-org-website/issues/new?assignees=&labels=feature+%3Asparkles%3A&template=feature_request.yaml&title=Feature+request)
 4. Wait for the design team to review.
 
-### <Emoji text=":five:" size={1} /> &nbsp;Build Design System together {#Contribute-to-design-system}
+### <Emoji text=":five:" size={1} /> &nbsp;Build Design System together {#contribute-to-design-system}
 
 Our design system makes designing ethereum.org fun and easy. If you are an experienced designer, you can help us prepare many components for the website.
 

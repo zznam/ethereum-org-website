@@ -1,45 +1,56 @@
-import { useTranslation } from "next-i18next"
+"use client"
+import { Fragment, useState } from "react"
+import { useTranslations } from "next-intl"
+
+import type { StablecoinType } from "@/lib/types"
+
+import { Image } from "@/components/Image"
+import { Button } from "@/components/ui/buttons/Button"
+import { Flex } from "@/components/ui/flex"
+import InlineLink from "@/components/ui/Link"
+import { LinkBox, LinkOverlay } from "@/components/ui/link-box"
 import {
-  Flex,
-  Image,
   Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useToken,
-} from "@chakra-ui/react"
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { Tag } from "@/components/ui/tag"
 
-import { ButtonLink } from "./Buttons"
+import { cn } from "@/lib/utils/cn"
 
-import { useRtlFlip } from "@/hooks/useRtlFlip"
-
-export interface TableRow {
+export type StablecoinsTableRow = {
   name: string
   marketCap: string
   image?: string
-  type: string
+  type: StablecoinType
   url?: string
+  symbol: string
+  peg: string
 }
 
 export type StablecoinsTableProps = {
-  columns: Array<string>
-  content: Array<TableRow>
+  content: StablecoinsTableRow[]
   hasError: boolean
+  /** Rows shown initially and added per "Show more" */
+  pageSize?: number
 }
 
 const StablecoinsTable = ({
-  columns,
   content,
   hasError,
+  pageSize = 10,
 }: StablecoinsTableProps) => {
-  const [textColor] = useToken("colors", ["text"])
-  const { flipForRtl } = useRtlFlip()
-  const { t } = useTranslation("page-stablecoins")
+  const t = useTranslations("page-stablecoins")
 
-  const stablecoinsType = {
+  const [visibleRows, setVisibleRows] = useState(pageSize)
+
+  const hasMoreRows = content.length > visibleRows
+  const displayedContent = content.slice(0, visibleRows)
+
+  const stablecoinsType: Record<StablecoinType, string> = {
     FIAT: t("page-stablecoins-stablecoins-table-type-fiat-backed"),
     CRYPTO: t("page-stablecoins-stablecoins-table-type-crypto-backed"),
     ASSET: t("page-stablecoins-stablecoins-table-type-precious-metals-backed"),
@@ -47,85 +58,101 @@ const StablecoinsTable = ({
   }
 
   return (
-    <Table
-      variant="unstyled"
-      my={8}
-      borderRadius="sm"
-      border={`1px solid ${textColor}`}
-      bg="background.base"
-      mb={8}
-      minW="720px"
-    >
-      <Thead bg="ednBackground" color="text200">
-        <Tr borderBottom={`1px solid ${textColor}`} mb="1px">
-          {columns.map((column, idx) => (
-            <Th
-              key={idx}
-              py={5}
-              fontSize="md"
-              fontWeight="normal"
-              letterSpacing="normal"
-            >
-              {column}
-            </Th>
-          ))}
-
-          {content && content[0]?.url && (
-            <Th p={5} fontSize="md" fontWeight="normal" textAlign="end">
-              <Text as="span" display="inline-block" transform={flipForRtl}>
-                ↗
-              </Text>
-            </Th>
+    <div className="w-full overflow-x-auto">
+      <Table variant="minimal" className="min-w-lg">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-2/5 whitespace-nowrap">
+              {t("page-stablecoins-stablecoins-table-header-column-1")}
+            </TableHead>
+            <TableHead className="w-[30%] whitespace-nowrap">
+              {t("page-stablecoins-stablecoins-table-header-column-2")}
+            </TableHead>
+            <TableHead className="w-[30%] text-end whitespace-nowrap">
+              {t("page-stablecoins-stablecoins-table-header-column-3")}
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {hasError && (
+            <TableRow>
+              <TableCell colSpan={3}>
+                {t("page-stablecoins-table-error")}
+              </TableCell>
+            </TableRow>
           )}
-        </Tr>
-      </Thead>
-      <Tbody>
-        {hasError && (
-          <Tr p={4}>
-            <Td colSpan={4}>{t("page-stablecoins-table-error")}</Td>
-          </Tr>
-        )}
 
-        {content.map(({ name, marketCap, image, type, url }, idx) => (
-          <Tr
-            key={idx}
-            color="text"
-            borderBottom={`1px solid ${textColor}`}
-            _hover={{
-              textDecoration: "none",
-              borderBottom: `1px solid ${textColor}`,
-              bg: "primary200",
-              color: "black300",
-            }}
-            _focus={{
-              borderBottom: `1px solid ${textColor}`,
-              bg: "primary200",
-              color: "black300",
-            }}
-          >
-            <Td>
-              <Flex align="center">
-                {image && <Image src={image} alt="" me={4} boxSize={6} />}
-                <>{name}</>
-              </Flex>
-            </Td>
-            <Td>
-              <Flex align="center">{marketCap}</Flex>
-            </Td>
-            <Td>
-              <Flex align="center">{stablecoinsType[type]}</Flex>
-            </Td>
-            {url && (
-              <Td textAlign="end">
-                <ButtonLink to={url} size="sm">
-                  Go to {name}
-                </ButtonLink>
-              </Td>
-            )}
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
+          {displayedContent.map(
+            ({ name, marketCap, image, type, url, symbol }, idx) => {
+              const row = (
+                <TableRow
+                  className={cn(
+                    url &&
+                      "cursor-pointer transition-colors hover:bg-background-highlight"
+                  )}
+                >
+                  <TableCell>
+                    <Flex className="items-center gap-3">
+                      {image && (
+                        <Image
+                          src={image}
+                          alt=""
+                          className="size-7 rounded-md"
+                          sizes="28px"
+                          width={28}
+                          height={28}
+                        />
+                      )}
+                      <span className="flex flex-col leading-tight">
+                        {url ? (
+                          <LinkOverlay asChild>
+                            <InlineLink
+                              href={url}
+                              className="font-bold text-primary hover:underline"
+                              aria-label={`${t("page-stablecoins-go-to")} ${name}`}
+                            >
+                              {name}
+                            </InlineLink>
+                          </LinkOverlay>
+                        ) : (
+                          <span className="font-bold">{name}</span>
+                        )}
+                        <span className="text-sm text-body-medium uppercase">
+                          {symbol}
+                        </span>
+                      </span>
+                    </Flex>
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {marketCap}
+                  </TableCell>
+                  <TableCell className="text-end">
+                    <Tag size="small" variant="outline">
+                      {stablecoinsType[type]}
+                    </Tag>
+                  </TableCell>
+                </TableRow>
+              )
+
+              return url ? (
+                <LinkBox asChild key={idx}>
+                  {row}
+                </LinkBox>
+              ) : (
+                <Fragment key={idx}>{row}</Fragment>
+              )
+            }
+          )}
+        </TableBody>
+      </Table>
+      {hasMoreRows && (
+        <Flex className="mt-6 justify-center">
+          <Button onClick={() => setVisibleRows((prev) => prev + pageSize)}>
+            {t("page-stablecoins-show-more")}
+          </Button>
+        </Flex>
+      )}
+    </div>
   )
 }
 export default StablecoinsTable

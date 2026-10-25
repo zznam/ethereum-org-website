@@ -16,8 +16,8 @@ const scoreBattleTested = (product: Product): 2 | 1 | 0 => {
   return product.battleTested === FlagType.VALID
     ? 2
     : product.battleTested === FlagType.CAUTION
-    ? 1
-    : 0
+      ? 1
+      : 0
 }
 
 const scoreTrustless = (product: Product): 1 | 0 => {
@@ -90,21 +90,9 @@ const getDiversityOfClients = (
 const getFlagFromBoolean = (bool: boolean) =>
   bool ? FlagType.VALID : FlagType.FALSE
 
-const getBrandProperties = ({
-  hue,
-  SAT,
-  LUM,
-  ...rest
-}: Pick<
-  StakingCategoryType,
-  "name" | "imageName" | "hue" | "url" | "matomo"
-> & { SAT: string; LUM: string }): Pick<
-  Product,
-  "name" | "imageName" | "color" | "url" | "matomo"
-> => ({
-  color: `hsla(${hue}, ${SAT}, ${LUM}, 1)`,
-  ...rest,
-})
+const getBrandProperties = (
+  props: Pick<StakingCategoryType, "name" | "imageName" | "url" | "matomo">
+): Pick<Product, "name" | "imageName" | "url" | "matomo"> => props
 
 const getTagProperties = (
   props: Pick<StakingCategoryType, "platforms" | "ui">

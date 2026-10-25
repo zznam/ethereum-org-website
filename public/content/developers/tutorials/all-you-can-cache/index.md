@@ -2,17 +2,26 @@
 title: "All you can cache"
 description: Learn how to create and use a caching contract for cheaper rollup transactions
 author: Ori Pomerantz
-tags: ["layer 2", "caching", "storage"]
+tags: ["layer 2", "caching", "storage", "scaling"]
 skill: intermediate
+breadcrumb: Caching for rollups
 published: 2022-09-15
 lang: en
 ---
 
-When using rollups the cost of a byte in the transaction is a lot more expensive than the cost of a storage slot. Therefore, it makes sense to cache as much information as possible on chain.
+When using rollups, every byte of the transaction has to be posted to L1. When this article was written, that made the cost of a byte in the transaction a lot more expensive than the cost of a storage slot. Therefore, it made sense to cache as much information as possible onchain.
 
-In this article you learn how to create and use a caching contract in such a way that any parameter value that is likely to be used multiple times will be cached and available for use (after the first time) with a much smaller number of bytes, and how to write off chain code that uses this cache.
+> **Note:** Rollup fees have changed a lot since this article was written in 2022. Since the [Ecotone and Fjord upgrades](https://docs.optimism.io/op-stack/transactions/fees#l1-data-fee) (2024), OP Stack chains post transaction data to [blobs](/roadmap/danksharding/), and the L1 data fee is based on an estimate of the transaction's _compressed_ size, with a minimum of 100 bytes per transaction ([see the specification](https://specs.optimism.io/protocol/fjord/exec-engine.html)). As a result:
+>
+> - Zero bytes are nearly free, because they compress well.
+> - Short transactions are already at the 100-byte minimum, so making their calldata even shorter does not reduce their fee.
+> - Blob space is cheap, so on OP Mainnet the L2 execution gas is often a larger part of the fee than the L1 data fee. Writing a new value into the cache (two `SSTORE`s of 22100 gas each) can cost more than the bytes it saves.
+>
+> The principle still holds (fewer compressed bytes mean a lower L1 data fee), but whether caching pays off depends on the size of your transactions and on current L1 and L2 gas prices. You can check the L1 data fee of a specific transaction by calling `getL1Fee` on the [`GasPriceOracle` predeploy](https://specs.optimism.io/protocol/predeploys.html#gaspriceoracle).
 
-If you want to skip the article and just see the source code, [it is here](https://github.com/qbzzt/20220915-all-you-can-cache). The development stack is [Foundry](https://book.getfoundry.sh/getting-started/installation).
+In this article you learn how to create and use a caching contract in such a way that any parameter value that is likely to be used multiple times will be cached and available for use (after the first time) with a much smaller number of bytes, and how to write offchain code that uses this cache.
+
+If you want to skip the article and just see the source code, [it is here](https://github.com/qbzzt/20220915-all-you-can-cache). The development stack is [Foundry](https://getfoundry.sh/introduction/installation/).
 
 ## Overall design {#overall-design}
 
@@ -53,7 +62,7 @@ These constants are used to interpret the special cases where we provide all the
     mapping(uint => uint) public val2key;
 ```
 
-A [mapping](https://www.geeksforgeeks.org/solidity-mappings/) between the values and their keys. This information is necessary to encode values before you send out the transaction.
+A [mapping](https://www.geeksforgeeks.org/solidity/solidity-mappings/) between the values and their keys. This information is necessary to encode values before you send out the transaction.
 
 ```solidity
     // Location n has the value for key n+1, because we need to preserve
@@ -242,7 +251,7 @@ One big advantage of Foundry is that it allows tests to be written in Solidity (
     function encodeVal(uint _val) public view returns(bytes memory) {
 ```
 
-`encodeVal` is a function that off-chain code calls to help create calldata that uses the cache. It receives a single value and returns the bytes that encode it. This function is a `view`, so it does not require a transaction and when called externally does not cost any gas.
+`encodeVal` is a function that offchain code calls to help create calldata that uses the cache. It receives a single value and returns the bytes that encode it. This function is a `view`, so it does not require a transaction and when called externally does not cost any gas.
 
 ```solidity
         uint _key = val2key[_val];
@@ -305,7 +314,7 @@ If we get here it means we got a key that's not less than 16\*256<sup>15</sup>. 
 
 ### Testing the cache {#testing-the-cache}
 
-One of the advantages of Foundry is that [it lets you write tests in Solidity](https://book.getfoundry.sh/forge/tests), which makes it easier to write unit tests. The tests for the `Cache` class are [here](https://github.com/qbzzt/20220915-all-you-can-cache/blob/main/test/Cache.t.sol). Because the testing code is repetitive, as tests tend to be, this article only explains the interesting parts.
+One of the advantages of Foundry is that [it lets you write tests in Solidity](https://getfoundry.sh/forge/tests/overview/), which makes it easier to write unit tests. The tests for the `Cache` class are [here](https://github.com/qbzzt/20220915-all-you-can-cache/blob/main/test/Cache.t.sol). Because the testing code is repetitive, as tests tend to be, this article only explains the interesting parts.
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
@@ -352,7 +361,7 @@ Tests are functions whose names start with `test`. This function checks the basi
             assertEq(cache.cacheRead(i), i*i);
 ```
 
-This is how you do the actual testing, using [`assert...` functions](https://book.getfoundry.sh/reference/forge-std/std-assertions). In this case, we check that the value we wrote is the one we read. We can discard the result of `cache.cacheWrite` because we know that cache keys are assigned linearly.
+This is how you do the actual testing, using [`assert...` functions](https://getfoundry.sh/reference/forge-std/std-assertions/). In this case, we check that the value we wrote is the one we read. We can discard the result of `cache.cacheWrite` because we know that cache keys are assigned linearly.
 
 ```solidity
         }
@@ -441,7 +450,7 @@ We can't use the normal ABI mechanism to call a function using the cache, so we 
             FOUR_PARAMS,
 ```
 
-It is useful for the same contract to support both cached functions (for calls directly from transactions) and non-cached functions (for calls from other smart contracts). To do that we need to continue to rely on the Solidity mechanism to call the correct function, instead of putting everything in [a `fallback` function](https://docs.soliditylang.org/en/v0.8.16/contracts.html#fallback-function). Doing this makes composability a lot easier. A single byte would be enough to identify the function in most cases, so we are wasting three bytes (16\*3=48 gas). However, as I'm writing this those 48 gas cost 0.07 cents, which is a reasonable cost of simpler, less bug prone, code.
+It is useful for the same contract to support both cached functions (for calls directly from transactions) and non-cached functions (for calls from other smart contracts). To do that we need to continue to rely on the Solidity mechanism to call the correct function, instead of putting everything in [a `fallback` function](https://docs.soliditylang.org/en/v0.8.16/contracts.html#fallback-function). Doing this makes composability a lot easier. A single byte would be enough to identify the function in most cases, so we are wasting three bytes. With the current OP Stack fee formula those three bytes add a tiny fraction of a cent (if anything, see the note at the top of the article), which is a reasonable cost of simpler, less bug prone, code.
 
 ```solidity
             // First value, add it to the cache
@@ -717,14 +726,14 @@ The read function is a `view`, so it does not require a transaction and does not
         worm.writeEntry(0xDEAD, 0xBEEF);
 ```
 
-[This (`vm.expectRevert`)](https://book.getfoundry.sh/cheatcodes/expect-revert#expectrevert) is how we specify in a Foundry test that the next call should fail, and the reported reason for a failure. This applies when we use the syntax `<contract>.<function name>()` rather than building the calldata and calling the contract using the low level interface (`<contract>.call()`, etc.).
+[This (`vm.expectRevert`)](https://getfoundry.sh/reference/cheatcodes/expect-revert/) is how we specify in a Foundry test that the next call should fail, and the reported reason for a failure. This applies when we use the syntax `<contract>.<function name>()` rather than building the calldata and calling the contract using the low level interface (`<contract>.call()`, etc.).
 
 ```solidity
     function testReadWriteCached() public {
         uint cacheGoat = worm.cacheWrite(0x60A7);
 ```
 
-Here we use the fact that `cacheWrite` returns the cache key. This is not something we'd expect to use in production, because `cacheWrite` changes the state, and therefore can only be called during a transaction. Transactions don't have return values, if they have results those results are supposed to be emitted as events. So the `cacheWrite` return value is only accessible from on-chain code, and on-chain code does not need parameter caching.
+Here we use the fact that `cacheWrite` returns the cache key. This is not something we'd expect to use in production, because `cacheWrite` changes the state, and therefore can only be called during a transaction. Transactions don't have return values, if they have results those results are supposed to be emitted as events. So the `cacheWrite` return value is only accessible from onchain code, and onchain code does not need parameter caching.
 
 ```solidity
         (_success,) = address(worm).call(_callInput);
@@ -753,47 +762,68 @@ Since we use the low level `<address>.call()` function, we can't use `vm.expectR
         (_success,) = address(worm).call(_callInput);
 ```
 
-This is the way we verify that code [emits an event correctly](https://book.getfoundry.sh/cheatcodes/expect-emit) in Foundry.
+This is the way we verify that code [emits an event correctly](https://getfoundry.sh/reference/cheatcodes/expect-emit/) in Foundry.
 
 ### The client {#the-client}
 
-One thing you don't get with Solidity tests is JavaScript code you can cut and paste into your own application. To write that code I deployed WORM to [Optimism Goerli](https://community.optimism.io/docs/useful-tools/networks/#optimism-goerli), [Optimism's](https://www.optimism.io/) new testnet. It is at address [`0xd34335b1d818cee54e3323d3246bd31d94e6a78a`](https://goerli-optimism.etherscan.io/address/0xd34335b1d818cee54e3323d3246bd31d94e6a78a).
+One thing you don't get with Solidity tests is JavaScript code you can cut and paste into your own application. The original version of this tutorial deployed WORM to Optimism Goerli, which has since been shut down. The sample repository still points at Optimism Goerli, so to run the client today you need to deploy WORM yourself to [OP Sepolia](https://docs.optimism.io/op-stack/introduction/op-stack) and point the client at your deployment.
 
-[You can see JavaScript code for the client here](https://github.com/qbzzt/20220915-all-you-can-cache/blob/main/javascript/index.js). To use it:
+[You can see JavaScript code for the client here](https://github.com/qbzzt/20220915-all-you-can-cache/blob/main/javascript/index.js). To use it, you need [Foundry](https://getfoundry.sh/introduction/installation/), [Node.js](https://nodejs.org/), and an account with some OP Sepolia ETH. [Optimism's faucet docs](https://docs.optimism.io/app-developers/tools-sdks/faucets) list current testnet faucets.
 
-1. Clone the git repository:
+1. Clone the git repository, including the `forge-std` submodule, and build the contracts. The client reads the WORM ABI and bytecode from `out/WORM.sol/WORM.json`, which only exists after `forge build`.
 
    ```sh
-   git clone https://github.com/qbzzt/20220915-all-you-can-cache.git
+   git clone --recurse-submodules https://github.com/qbzzt/20220915-all-you-can-cache.git
+   cd 20220915-all-you-can-cache
+   forge build
    ```
 
-2. Install the necessary packages:
+   Forge warns that `foundry.toml` uses the old `[default]` section name. You can ignore this warning, or run `forge config --fix`.
+
+2. Import the private key of your funded account into an encrypted Foundry keystore, and use it to [deploy WORM](https://getfoundry.sh/reference/forge/create) to OP Sepolia.
+
+   ```sh
+   cast wallet import op-sepolia-deployer --interactive
+   forge create src/WORM.sol:WORM --rpc-url https://sepolia.optimism.io --account op-sepolia-deployer --broadcast
+   ```
+
+   Without `--broadcast`, `forge create` only simulates the deployment. Copy the address from the `Deployed to:` line of the output.
+
+3. Edit `javascript/index.js`. Replace the old Optimism Goerli address in this line with the address of your deployment:
+
+   ```javascript
+   const worm = WormFactory.attach("0xD34335b1d818ceE54e3323D3246bD31d94E6a78a")
+   ```
+
+   You can also replace `https://goerli-optimism.etherscan.io` with `https://sepolia-optimism.etherscan.io` in the two `console.log` lines, so the links the client prints work.
+
+4. Install the necessary packages:
 
    ```sh
    cd javascript
-   yarn
+   npm install
    ```
 
-3. Copy the configuration file:
+5. Copy the configuration file:
 
    ```sh
    cp .env.example .env
    ```
 
-4. Edit `.env` for your configuration:
+6. Edit `.env` for your configuration. The variable names still refer to Optimism Goerli, but the values are for OP Sepolia:
 
-   | Parameter           | Value                                                                                                                                                               |
-   | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | MNEMONIC            | The mnemonic for an account that has enough ETH to pay for a transaction. [You can get free ETH for the Optimism Goerli network here](https://optimismfaucet.xyz/). |
-   | OPTIMISM_GOERLI_URL | URL to Optimism Goerli. The public endpoint, `https://goerli.optimism.io`, is rate limited but sufficient to what we need here                                      |
+   | Parameter           | Value                                                                                                   |
+   | ------------------- | ------------------------------------------------------------------------------------------------------- |
+   | MNEMONIC            | The mnemonic for an account that has enough OP Sepolia ETH to pay for a transaction.                    |
+   | OPTIMISM_GOERLI_URL | The OP Sepolia RPC URL, `https://sepolia.optimism.io`, or an OP Sepolia endpoint from another provider. |
 
-5. Run `index.js`.
+7. Run `index.js`.
 
    ```sh
    node index.js
    ```
 
-   This sample application first writes an entry to WORM, displaying the calldata and a link to the transaction on Etherscan. Then it reads back that entry, and displays the key it uses and the values in the entry (value, block number, and author).
+   This sample application first writes an entry to WORM, displaying the calldata and a link to the transaction on a block explorer. Then it reads back that entry, and displays the key it uses and the values in the entry (value, block number, and author).
 
 Most of the client is normal Dapp JavaScript. So again we'll only go over the interesting parts.
 
@@ -861,4 +891,7 @@ The code in this article is a proof of concept, the purpose is to make the idea 
 
   There are ways to solve this problem, and the related problem of transactions that are in the mempool during the cache reorder, but you must be aware of it.
 
-I demonstrated caching here with Optimism, because I'm an Optimism employee and this is the rollup I know best. But it should work with any rollup that charges a minimal cost for internal processing, so that in comparison writing the transaction data to L1 is the major expense.
+I demonstrated caching here with Optimism, because I'm an Optimism employee and this is the rollup I know best. But it should work with any rollup that charges a minimal cost for internal processing, so that in comparison writing the transaction data to L1 is the major expense. As explained in the note at the top of this article, check current fees before you decide caching is worth it.
+
+[See here for more of my work](https://cryptodocguy.pro/).
+

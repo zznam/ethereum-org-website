@@ -1,75 +1,219 @@
 ---
 title: Sieci
-description: Przegląd sieci Ethereum i informacje o miejscach, w których można uzyskać ether testnetowy (ETH) do testowania aplikacji.
+description: "Przegląd sieci Ethereum oraz informacje, gdzie zdobyć testowe ethery (ETH) do testowania aplikacji."
 lang: pl
 ---
 
-Ethereum jest protokołem, co oznacza, że może istnieć wiele niezależnych „sieci” zgodnych z tym protokołem, które nie wchodzą ze sobą w interakcje.
+Sieci [Ethereum](/) to grupy połączonych komputerów, które komunikują się za pomocą protokołu Ethereum. Istnieje tylko jedna sieć główna Ethereum (Mainnet), ale do celów testowych i programistycznych można tworzyć niezależne sieci zgodne z tymi samymi regułami protokołu. Istnieje wiele niezależnych „sieci”, które są zgodne z protokołem, ale nie wchodzą ze sobą w interakcje. Możesz nawet uruchomić jedną z nich lokalnie na własnym komputerze, aby testować swoje inteligentne kontrakty i aplikacje Web3.
 
-Sieci są różnymi środowiskami Ethereum, do których można uzyskać dostęp w celu rozwoju, testowania lub zastosowań produkcyjnych. Twoje konto Ethereum będzie działać w różnych sieciach, ale saldo konta i historia transakcji nie będą przenoszone z głównej sieci Ethereum. Do celów testowania warto wiedzieć, które sieci są dostępne i jak uzyskać ETH testnetu, dzięki czemu możesz się z nim bawić.
+Twoje konto Ethereum będzie działać w różnych sieciach, ale saldo konta i historia transakcji nie zostaną przeniesione z głównej sieci Ethereum. Do celów testowych warto wiedzieć, jakie sieci są dostępne i jak zdobyć ETH w sieci testowej, aby móc z nimi poeksperymentować. Ogólnie rzecz biorąc, ze względów bezpieczeństwa nie zaleca się ponownego używania kont z sieci głównej w sieciach testowych i odwrotnie.
 
-## Warunki wstępne {#prerequisites}
+## Wymagania wstępne {#prerequisites}
 
-Powinieneś zrozumieć podstawy Ethereum przed zapoznaniem się z różnymi sieciami, ponieważ sieci testowe zapewnią ci tanią, bezpieczną wersję Ethereum do zabawy. Zapoznaj się z naszym [wprowadzeniem do Ethereum](/developers/docs/intro-to-ethereum/).
+Zanim zaczniesz czytać o różnych sieciach, powinieneś zrozumieć [podstawy Ethereum](/developers/docs/intro-to-ethereum/), ponieważ sieci testowe zapewnią ci tanią i bezpieczną wersję Ethereum do eksperymentowania.
 
 ## Sieci publiczne {#public-networks}
 
-Sieci publiczne są dostępne dla każdego, kto ma połączenie internetowe. Każdy może odczytywać lub tworzyć transakcje w publicznym blockchainie i weryfikować wykonywane transakcje. Decyzję w sprawie transakcji i stanu sieci podejmuje się w drodze konsensusu partnerów.
+Sieci publiczne są dostępne dla każdego na świecie, kto ma połączenie z internetem. Każdy może odczytywać lub tworzyć transakcje na publicznym blockchainie oraz walidować wykonywane transakcje. Konsensus między węzłami decyduje o włączeniu transakcji i stanie sieci.
 
-### Sieć główna {#mainnet}
+### Sieć główna Ethereum {#ethereum-mainnet}
 
-Sieć główna jest głównym publicznym blockchainem produkcyjnym Ethereum, w którym w księdze rozproszonej dochodzi do transakcji o rzeczywistej wartości.
+Sieć główna (Mainnet) to główny publiczny produkcyjny blockchain Ethereum, w którym transakcje o rzeczywistej wartości odbywają się w rozproszonym rejestrze.
 
-Kiedy ludzie i giełdy rozmawiają o cenach ETH, mówią o ETH sieci głównej.
+Kiedy ludzie i giełdy dyskutują o cenach ETH, mają na myśli ETH w sieci głównej.
 
-### Sieci testowe {#testnets}
+### Sieci testowe Ethereum {#ethereum-testnets}
 
-Oprócz sieci głównej istnieją publiczne sieci testowe. Są to sieci wykorzystywane przez deweloperów protokołów lub inteligentnych kontraktów do testowania zarówno aktualizacji protokołu, jak i potencjalnych inteligentnych kontraktów w środowisku produkcyjnym przed wdrożeniem do sieci głównej. Można to traktować jako analogię relacji pomiędzy serwerami produkcyjnymi i pośredniczącymi.
+Oprócz sieci głównej istnieją publiczne sieci testowe. Są to sieci używane przez deweloperów protokołu lub deweloperów inteligentnych kontraktów do testowania zarówno aktualizacji protokołu, jak i potencjalnych inteligentnych kontraktów w środowisku zbliżonym do produkcyjnego przed wdrożeniem do sieci głównej. Pomyśl o tym jako o odpowiedniku serwerów produkcyjnych i testowych (staging).
 
-Ogólnie rzecz biorąc, ważne jest, aby każdy napisany kod kontraktu przetestować w sieci testowej przed wdrożeniem do sieci głównej. Jeśli tworzysz aplikację zdecentralizowaną integrującą się z istniejącymi inteligentnymi kontraktami, w przypadku większości projektów istnieją wdrożone w sieci testowej kopie, które można wykorzystać.
+Powinieneś przetestować każdy napisany kod kontraktu w sieci testowej przed wdrożeniem go do sieci głównej. Wśród zdecentralizowanych aplikacji (dapp), które integrują się z istniejącymi inteligentnymi kontraktami, większość projektów ma kopie wdrożone w sieciach testowych.
 
-Większość sieci testowych stosuje mechanizm konsensusu proof-of-authority. Oznacza to, że niewielka liczba węzłów jest wybierana w celu weryfikacji transakcji i tworzenia nowych bloków — potwierdzając swoją tożsamość w tym procesie. Trudno jest zachęcać do wydobywania w sieci testowej proof-of-work, co może sprawić, że będzie ona podatna na zagrożenia.
+Większość sieci testowych zaczynała od wykorzystania mechanizmu konsensusu dowodu autorytetu (PoA) wymagającego zezwolenia. Oznacza to, że niewielka liczba węzłów jest wybierana do walidacji transakcji i tworzenia nowych bloków – stawiając przy tym na szali swoją tożsamość. Alternatywnie, niektóre sieci testowe oferują otwarty mechanizm konsensusu dowodu stawki (PoS), w którym każdy może przetestować uruchomienie walidatora, podobnie jak w sieci głównej Ethereum.
 
-#### Görli {#goerli}
+ETH w sieciach testowych z założenia nie ma rzeczywistej wartości; jednakże powstały rynki dla pewnych rodzajów testowego ETH, które stały się rzadkie lub trudne do zdobycia. Ponieważ potrzebujesz ETH, aby faktycznie wchodzić w interakcje z Ethereum (nawet w sieciach testowych), większość ludzi otrzymuje testowe ETH za darmo z kraników. Większość kraników to aplikacje internetowe, w których można wprowadzić adres, na który ma zostać wysłane ETH.
 
-Sieć testowa proof-of-authority działająca między klientami.
+#### Której sieci testowej powinienem użyć? {#which-testnet-should-i-use}
 
-#### Kovan {#kovan}
+Dwie publiczne sieci testowe, które są obecnie utrzymywane przez deweloperów klientów, to Sepolia i Hoodi. Sepolia to sieć dla deweloperów kontraktów i aplikacji do testowania ich aplikacji. Sieć Hoodi pozwala deweloperom protokołu testować aktualizacje sieci, a stakerom testować uruchamianie walidatorów.
 
-Sieć testowa proof-of-authority dla osób obsługujących klienty OpenEthereum.
+#### Sepolia {#sepolia}
 
-#### Rinkeby {#rinkeby}
+**Sepolia to zalecana domyślna sieć testowa do tworzenia aplikacji**. Sieć Sepolia wykorzystuje zestaw walidatorów wymagający zezwolenia, kontrolowany przez zespoły klienckie i testowe.
 
-Sieć testowa proof-of-authority dla obsługujących klienty Geth.
+##### Zasoby
 
-#### Ropsten {#ropsten}
+- [Strona internetowa](https://sepolia.dev/)
+- [GitHub](https://github.com/eth-clients/sepolia)
+- [Otterscan](https://sepolia.otterscan.io/)
+- [Etherscan](https://sepolia.etherscan.io)
+- [Blockscout](https://eth-sepolia.blockscout.com/)
 
-Sieć testowa proof-of-work. Oznacza to, że jest to najbardziej podobna reprezentacja Ethereum.
+##### Kraniki
 
-### Krany sieci testowej {#testnet-faucets}
+- [Kranik Alchemy Sepolia](https://www.alchemy.com/faucets/ethereum-sepolia)
+- [Kranik Chain Platform Sepolia](https://faucet.chainplatform.co/faucets/ethereum-sepolia/)
+- [Kranik Chainstack Sepolia](https://faucet.chainstack.com/sepolia-testnet-faucet)
+- [Kranik ethfaucet.com Sepolia](https://ethfaucet.com/networks/ethereum)
+- [Kranik Google Cloud Web3 Sepolia](https://cloud.google.com/application/web3/faucet/ethereum/sepolia)
+- [Grabteeth](https://grabteeth.xyz/)
+- [Kranik Infura Sepolia](https://www.infura.io/faucet)
+- [Kranik OpenFaucet.org Sepolia](https://openfaucet.org/ethereum-sepolia)
+- [Kranik PoW](https://sepolia-faucet.pk910.de/)
+- [Kranik QuickNode Sepolia](https://faucet.quicknode.com/ethereum/sepolia)
 
-ETH w sieciach testowych nie ma rzeczywistej wartości, dlatego nie ma rynków dla ETH sieci testowych. Ponieważ potrzebujesz ETH, aby faktycznie prowadzić działania w Ethereum, większość ludzi uzyskuje ETH sieci testowych z kranów. Większość kranów to aplikacje internetowe, do których możesz wprowadzić adres, na który chcesz wysłać ETH.
+#### Hoodi {#hoodi}
 
-- [Kran Görli](https://faucet.goerli.mudit.blog/)
-- [Kran Kovan](https://faucet.kovan.network/)
-- [Kran Rinkeby](https://faucet.rinkeby.io/)
+Hoodi to sieć testowa do testowania walidacji i stakingu. Sieć Hoodi jest otwarta dla użytkowników chcących uruchomić walidator w sieci testowej. Stakerzy chcący przetestować aktualizacje protokołu przed ich wdrożeniem do sieci głównej powinni zatem korzystać z Hoodi.
+
+- Otwarty zestaw walidatorów, stakerzy mogą testować aktualizacje sieci
+- Duży stan, przydatny do testowania złożonych interakcji inteligentnych kontraktów
+- Dłuższy czas synchronizacji i wymaga więcej pamięci masowej do uruchomienia węzła
+
+##### Zasoby
+
+- [Strona internetowa](https://hoodi.ethpandaops.io/)
+- [GitHub](https://github.com/eth-clients/hoodi)
+- [Eksplorator](https://explorer.hoodi.ethpandaops.io/)
+- [Synchronizacja punktu kontrolnego](https://checkpoint-sync.hoodi.ethpandaops.io/)
+- [Otterscan](https://hoodi.otterscan.io/)
+- [Etherscan](https://hoodi.etherscan.io/)
+
+##### Kraniki
+
+- [Kranik Chain Platform Hoodi](https://faucet.chainplatform.co/faucets/ethereum-hoodi/)
+- [Kranik Hoodi](https://hoodi.ethpandaops.io/)
+- [Kranik OpenFaucet.org Hoodi](https://openfaucet.org/ethereum-hoodi)
+- [Kranik PoW](https://hoodi-faucet.pk910.de/)
+
+#### Ephemery {#ephemery}
+
+Ephemery to unikalny rodzaj sieci testowej, która w pełni resetuje się co miesiąc. Stan wykonania i konsensusu powraca do bloku genezy co 28 dni, co oznacza, że wszystko, co dzieje się w sieci testowej, jest ulotne. Dzięki temu idealnie nadaje się do krótkoterminowych testów, szybkiego uruchamiania węzłów i aplikacji typu „hello world”, które nie wymagają trwałości.
+
+- Zawsze świeży stan, krótkoterminowe testowanie walidatorów i aplikacji
+- Zawiera tylko podstawowy zestaw kontraktów
+- Otwarty zestaw walidatorów i łatwy dostęp do dużych ilości środków
+- Najmniejsze wymagania dla węzła i najszybsza synchronizacja, średnio &lt;5GB
+
+##### Zasoby
+
+- [Strona internetowa](https://ephemery.dev/)
+- [GitHub](https://github.com/ephemery-testnet/ephemery-resources)
+- [Czat społeczności](https://matrix.to/#/#staker-testnet:matrix.org)
+- [Blockscout](https://explorer.ephemery.dev/)
+- [Otterscan](https://otter.bordel.wtf/)
+- [Eksplorator Beacon](https://beaconlight.ephemery.dev/)
+- [Synchronizacja punktu kontrolnego](https://checkpoint-sync.ephemery.ethpandaops.io)
+- [Launchpad](https://launchpad.ephemery.dev/)
+
+#### Kraniki {#faucets}
+
+- [Kranik Bordel](https://faucet.bordel.wtf/)
+- [Kranik Pk910 PoW](https://ephemery-faucet.pk910.de/)
+
+#### Holesky (przestarzała) {#holesky}
+
+Sieć testowa Holesky jest przestarzała od września 2025 r. Operatorzy stakingu i dostawcy infrastruktury powinni zamiast tego używać Hoodi do testowania walidatorów.
+
+- [Ogłoszenie o wyłączeniu sieci testowej Holesky](https://blog.ethereum.org/2025/09/01/holesky-shutdown-announcement) - _Blog EF, 1 września 2025 r._
+- [Aktualizacje sieci testowych Holesky i Hoodi](https://blog.ethereum.org/2025/03/18/hoodi-holesky) - _Blog EF, 18 marca 2025 r._
+
+### Sieci testowe warstwy 2 {#layer-2-testnets}
+
+[Warstwa 2 (L2)](/layer-2/) to zbiorcze określenie opisujące określony zestaw rozwiązań skalujących Ethereum. Warstwa 2 to oddzielny blockchain, który rozszerza Ethereum i dziedziczy jego gwarancje bezpieczeństwa. Sieci testowe warstwy 2 są zazwyczaj ściśle powiązane z publicznymi sieciami testowymi Ethereum.
+
+#### Arbitrum Sepolia {#arbitrum-sepolia}
+
+Sieć testowa dla [Arbitrum](https://arbitrum.io/).
+
+##### Zasoby
+
+- [Etherscan](https://sepolia.arbiscan.io/)
+- [Blockscout](https://sepolia-explorer.arbitrum.io/)
+
+##### Kraniki
+
+- [Kranik Alchemy Arbitrum Sepolia](https://www.alchemy.com/faucets/arbitrum-sepolia)
+- [Kranik Chainlink Arbitrum Sepolia](https://faucets.chain.link/arbitrum-sepolia)
+- [Kranik ethfaucet.com Arbitrum Sepolia](https://ethfaucet.com/networks/arbitrum)
+- [Kranik OpenFaucet.org Arbitrum Sepolia](https://openfaucet.org/arbitrum-sepolia)
+- [Kranik QuickNode Arbitrum Sepolia](https://faucet.quicknode.com/arbitrum/sepolia)
+
+#### Optimistic Sepolia {#optimistic-sepolia}
+
+Sieć testowa dla [Optimism](https://www.optimism.io/).
+
+##### Zasoby
+
+- [Etherscan](https://sepolia-optimistic.etherscan.io/)
+- [Blockscout](https://optimism-sepolia.blockscout.com/)
+
+##### Kraniki
+
+- [Kranik Alchemy](https://www.alchemy.com/faucets/optimism-sepolia)
+- [Kranik Chainlink](https://faucets.chain.link/optimism-sepolia)
+- [Kranik ethfaucet.com Optimism Sepolia](https://ethfaucet.com/networks/optimism)
+- [Kranik OpenFaucet.org Optimism Sepolia](https://openfaucet.org/optimism-sepolia)
+- [Kranik sieci testowej](https://docs.optimism.io/app-developers/tools/faucets)
+
+#### Starknet Sepolia {#starknet-sepolia}
+
+Sieć testowa dla [Starknet](https://www.starknet.io).
+
+##### Zasoby
+
+- [Voyager Sepolia Scan](https://sepolia.voyager.online/)
+
+##### Kraniki
+
+- [Kranik Alchemy](https://www.alchemy.com/faucets/starknet-sepolia)
+- [Kranik Blast Starknet Sepolia](https://blastapi.io/faucets/starknet-sepolia-eth)
+- [Kranik Starknet](https://starknet-faucet.vercel.app/)
 
 ## Sieci prywatne {#private-networks}
 
-Sieć Ethereum jest siecią prywatną, jeśli jej węzły nie są podłączone do sieci publicznej (tj. sieci głównej lub sieci testowej). W tym kontekście „prywatna” oznacza jedynie sieć zastrzeżoną lub izolowaną, a nie chronioną lub bezpieczną.
+Sieć Ethereum jest siecią prywatną, jeśli jej węzły nie są połączone z siecią publiczną (tj. siecią główną lub siecią testową). W tym kontekście słowo „prywatna” oznacza jedynie zarezerwowana lub odizolowana, a nie chroniona czy bezpieczna.
 
-### Frameworki programistyczne {#development-networks}
+### Sieci deweloperskie {#development-networks}
 
-Aby rozwinąć aplikację Ethereum, musisz uruchomić ją w sieci prywatnej, aby przed jej wdrożeniem sprawdzić jak działa. Podobnie jak tworzysz lokalny serwer na komputerze do tworzenia stron internetowych, możesz utworzyć lokalną instancję blockchainu, aby przetestować aplikację dapp. Pozwala to na znacznie szybszą iterację niż publiczna sieć testowa.
+Aby stworzyć aplikację Ethereum, będziesz chciał uruchomić ją w sieci prywatnej, aby zobaczyć, jak działa, przed jej wdrożeniem. Podobnie jak tworzysz lokalny serwer na swoim komputerze do tworzenia stron internetowych, możesz utworzyć lokalną instancję blockchaina, aby przetestować swoją zdecentralizowaną aplikację (dapp). Pozwala to na znacznie szybszą iterację niż w przypadku publicznej sieci testowej.
 
-Istnieją projekty i narzędzia pomocne w tych działaniach. Dowiedz się więcej o [sieciach programistycznych](/developers/docs/development-networks/).
+Istnieją projekty i narzędzia, które w tym pomagają. Dowiedz się więcej o [sieciach deweloperskich](/developers/docs/development-networks/).
 
 ### Sieci konsorcjum {#consortium-networks}
 
-Proces konsensusu jest kontrolowany przez uprzednio określony zestaw zaufanych węzłów. Na przykład prywatna sieć znanych instytucji akademickich, z których każda zarządza jednym węzłem, a bloki są zatwierdzane przez próg sygnatariuszy w ramach sieci.
+Proces konsensusu jest kontrolowany przez wstępnie zdefiniowany zestaw zaufanych węzłów. Na przykład prywatna sieć znanych instytucji akademickich, z których każda zarządza jednym węzłem, a bloki są walidowane przez próg sygnatariuszy w sieci.
 
-Jeśli publiczna sieć Ethereum jest jak publiczny Internet, możesz myśleć o sieci konsorcjum jako o prywatnym intranecie.
+Jeśli publiczna sieć Ethereum przypomina publiczny internet, sieć konsorcjum przypomina prywatny intranet.
+
+## <Emoji text="🚉" /> Dlaczego sieci testowe Ethereum noszą nazwy stacji metra? {#why-naming}
+
+Wiele sieci testowych Ethereum nosi nazwy prawdziwych stacji metra lub stacji kolejowych. Ta tradycja nazewnictwa rozpoczęła się wcześnie i odzwierciedla globalne miasta, w których mieszkali lub pracowali współtwórcy. Jest to symboliczne, łatwe do zapamiętania i praktyczne. Podobnie jak sieci testowe są odizolowane od sieci głównej Ethereum, linie metra biegną oddzielnie od ruchu naziemnego.
+
+### <Emoji text="🚧" /> Powszechnie używane i starsze sieci testowe {#common-and-legacy-testnets}
+
+- **Sepolia** - Dzielnica w Atenach (Grecja) połączona z metrem. Obecnie używana do testowania inteligentnych kontraktów i zdecentralizowanych aplikacji (dapp).
+- **Hoodi** - Nazwana na cześć stacji metra Hoodi w Bengaluru (Indie). Używana do testowania walidatorów i aktualizacji protokołu.
+- **Goerli** _(przestarzała)_ - Nazwana na cześć stacji Görlitzer Bahnhof w Berlinie (Niemcy).
+- **Rinkeby** _(przestarzała)_ - Nazwana na cześć przedmieścia Sztokholmu ze stacją metra.
+- **Ropsten** _(przestarzała)_ - Odnosi się do obszaru i dawnego terminalu promowego/metra w Sztokholmie.
+- **Kovan** _(przestarzała)_ - Nazwana na cześć stacji MRT w Singapurze.
+- **Morden** _(przestarzała)_ - Nazwana na cześć stacji londyńskiego metra. Pierwsza publiczna sieć testowa Ethereum.
+
+### <Emoji text="🧪" /> Inne specjalistyczne sieci testowe {#other-testnets}
+
+Niektóre sieci testowe zostały stworzone do krótkoterminowych testów lub testów specyficznych dla aktualizacji i niekoniecznie mają motyw metra:
+
+- **Holesky** _(przestarzała)_ - Nazwana na cześć stacji Holešovice w Pradze. Używana do testowania walidatorów; uznana za przestarzałą w 2025 r.
+- **Kiln**, **Zhejiang**, **Shandong**, **Prater**, **Pyrmont**, **Olympic** _(wszystkie przestarzałe)_ oraz **Ephemery** - Zbudowane specjalnie do symulacji aktualizacji, takich jak The Merge, Szanghaj, lub eksperymentów z walidatorami. Niektóre nazwy są raczej regionalne lub tematyczne niż oparte na metrze.
+
+Używanie nazw stacji metra pomaga deweloperom szybko identyfikować i zapamiętywać sieci testowe bez konieczności polegania na numerycznych identyfikatorach łańcucha (Chain ID). Odzwierciedla to również kulturę Ethereum: praktyczną, globalną i skoncentrowaną na człowieku.
+
+## Powiązane narzędzia {#related-tools}
+
+- [Chainlist](https://chainlist.org/) _lista sieci EVM do łączenia portfeli i dostawców z odpowiednim identyfikatorem łańcucha (Chain ID) i identyfikatorem sieci (Network ID)_
+- [Łańcuchy oparte na EVM](https://github.com/ethereum-lists/chains) _repozytorium GitHub z metadanymi łańcuchów, które zasila Chainlist_
 
 ## Dalsza lektura {#further-reading}
 
-_Znasz jakieś zasoby społeczności, które Ci pomogły? Wyedytuj tę stronę i dodaj je!_
+- [Propozycja: Przewidywalny cykl życia sieci testowej Ethereum](https://ethereum-magicians.org/t/proposal-predictable-ethereum-testnet-lifecycle/11575/17)
+- [Ewolucja sieci testowych Ethereum](https://etherworld.co/2022/08/19/the-evolution-of-ethereum-testnet/)

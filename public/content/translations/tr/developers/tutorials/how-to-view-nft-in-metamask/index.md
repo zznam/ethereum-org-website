@@ -1,36 +1,42 @@
 ---
-title: NFT'nizi Cüzdanınızda Nasıl Görüntüleyebilirsiniz (NFT Öğretici Serisi Bölüm 3/3)
-description: Bu öğretici, MetaMask'ta mevcut bir NFT'nin nasıl görüntüleneceğini açıklar!
+title: "Cüzdanınızda NFT'nizi Nasıl Görüntülersiniz (NFT Eğitim Serisi Bölüm 3/3)"
+description: "Bu eğitim, MetaMask üzerinde mevcut bir NFT'nin nasıl görüntüleneceğini açıklamaktadır!"
 author: "Sumi Mudgil"
-tags:
-  - "ERC-721"
-  - "Alchemy"
-  - "Solidity"
-skill: advanced
+tags: ["ERC-721", "Alchemy", "Solidity"]
+skill: beginner
+breadcrumb: "Cüzdanda NFT görüntüleme"
 lang: tr
 published: 2021-04-22
 ---
 
-Bu öğretici, yeni basılmış NFT'mizi görüntülediğimiz NFT Öğretici serisinin Bölüm 3/3'üdür. Ancak, Mainnet veya herhangi bir test ağı dahil olmak üzere MetaMask kullanan herhangi bir ERC-721 token'ı için genel öğreticiyi kullanabilirsiniz. Ethereum üzerinde kendi NFT'nizi nasıl basacağınızı öğrenmek istiyorsanız, [Bir NFT Nasıl Yazılır ve Dağıtılır](/developers/tutorials/how-to-write-and-deploy-an-nft) kısmına göz atmalısınız!
+Bu eğitim, yeni bastığımız değiştirilemez token'ı (NFT) görüntülediğimiz NFT Eğitim Serisinin 3/3. Bölümüdür. Ancak, genel eğitimi Ana Ağ veya herhangi bir test ağı dahil olmak üzere MetaMask kullanan herhangi bir ERC-721 Token'ı için kullanabilirsiniz. Ethereum üzerinde kendi NFT'nizi nasıl basacağınızı öğrenmek isterseniz, [Bir NFT akıllı sözleşmesi Nasıl Yazılır ve Dağıtılır konulu 1. Bölüme](/developers/tutorials/how-to-write-and-deploy-an-nft) göz atmalısınız!
 
-Tebrikler! NFT öğretici serimizin en kısa ve en basit kısmına geldiniz: Yeni basılmış NFT'nizi sanal bir cüzdanda görüntüleme. Önceki iki bölümde onu kullandığımızdan dolayı bu örnek için MetaMask kullanacağız.
+Tebrikler! NFT eğitim serimizin en kısa ve en basit kısmına ulaştınız: yeni bastığınız NFT'nizi sanal bir cüzdanda nasıl görüntüleyeceğiniz. Önceki iki bölümde kullandığımız için bu örnekte MetaMask kullanacağız.
 
-Bir ön koşul olarak, MetaMask'in mobil cihazınızda zaten kurulu olması ve NFT'nizi bastığınız hesabı içermesi gerekir: Uygulamayı [iOS](https://apps.apple.com/us/app/metamask-blockchain-wallet/id1438144202) veya [Android](https://play.google.com/store/apps/details?id=io.metamask&hl=en_US&gl=US) üzerinden ücretsiz edinebilirsiniz.
+Ön koşul olarak, tarayıcı uzantısı veya mobil uygulama olarak MetaMask'ın zaten yüklü olması ve NFT'nizi bastığınız hesabı içermesi gerekir. MetaMask'ı [MetaMask indirme sayfasından](https://metamask.io/download) ücretsiz olarak edinebilirsiniz.
 
-## Adım 1: Ağınızı Sepolia'ya ayarlayın {#set-network-to-sepolia}
+## 1. Adım: Ağınızı Sepolia olarak ayarlayın {#set-network-to-sepolia}
 
-Uygulamanın üst kısmındaki "Wallet" (Cüzdan) düğmesine basın, ardından bir ağ seçmeniz istenecektir. NFT'miz Sepolia ağında basıldığından, ağınız olarak Sepolia'yı seçmeniz makuldür.
+NFT'miz Sepolia test ağında basıldığı için ağınız olarak Sepolia'yı seçmek isteyeceksiniz. MetaMask test ağlarını varsayılan olarak gizler, bu nedenle önce onları açın:
 
-![MetaMask Mobile üzerinde ağınızı Sepolia olarak ayarlama](./goerliMetamask.gif)
+1. Sağ üst köşedeki menüyü açın ve "Ağlar"ı seçin.
+2. Ağ listesinin en altına kaydırın ve "Test ağlarını göster" seçeneğini açın.
+3. Ağ listesinden "Sepolia"yı seçin.
 
-## Adım 2: Koleksiyon öğenizi MetaMask'e ekleyin {#add-nft-to-metamask}
+MetaMask sürümünüzde menüler farklı görünüyorsa [MetaMask'ın test ağlarını görüntüleme kılavuzuna](https://support.metamask.io/configure/networks/how-to-view-testnets-in-metamask/) bakın.
 
-Sepolia ağına girdikten sonra, sağdaki "Collectibles" (Koleksiyon Öğeleri) sekmesini seçip NFT akıllı sözleşme adresini ve NFT'nizin ERC-721 jeton kimliğini ekleyin: Bunu, öğreticimizin 2. Bölümünde dağıtılan NFT'nizin işlem karması temelinde Etherscan'de bulabilirsiniz.
+## 2. Adım: Koleksiyon öğenizi MetaMask'a ekleyin {#add-nft-to-metamask}
 
-![İşlem hash değerinizi ve ERC-721 token kimliğinizi nasıl bulabilirsiniz](./findNFTEtherscan.png)
+MetaMask, NFT'leri yalnızca Sepolia'yı içermeyen bazı ağlarda otomatik olarak algılar, bu nedenle NFT'nizi manuel olarak içe aktarmanız gerekir. Bunun için NFT akıllı sözleşme adresine ve NFT'nizin ERC-721 Token kimliğine ihtiyacınız vardır; bunları, eğitimimizin II. Bölümünde bastığınız NFT'nizin işlem hash'ine dayanarak Etherscan'de bulabilmelisiniz. 1. Bölümdeki sözleşmeyi kullandıysanız, ilk NFT'nizin Token kimliği 1'dir.
 
-NFT'nizi görüntülemek için birkaç kez yenilemeniz gerekebilir ancak kesinle orada olacaktır<Emoji text="😄" size={1} />!
+![İşlem hash'inizi ve ERC-721 Token kimliğinizi nasıl bulabilirsiniz](./findNFTEtherscan.png)
 
-![NFT'nizi MetaMask'e nasıl yüklersiniz](./findNFTMetamask.gif)
+Ardından, MetaMask'ta (uzantı veya mobil):
 
-Tebrikler! Bir NFT'yi başarıyla bastınız ve şimdi onu görüntüleyebilirsiniz! NFT dünyasını nasıl kasıp kavuracağınızı görmek için sabırsızlanıyoruz!
+1. Ana ekranın "NFT'ler" bölümüne gidin ve "NFT'yi İçe Aktar"ı seçin.
+2. Ağ olarak Sepolia'yı seçin ve NFT akıllı sözleşme adresinizi "Adres" kutusuna yapıştırın.
+3. Token kimliğinizi "Token Kimliği" kutusuna girin ve "İçe Aktar"ı seçin.
+
+NFT'nizi görüntülemek için birkaç kez yenilemeniz gerekebilir, ancak orada olacaktır <Emoji text="😄" size={1} />! MetaMask, NFT'nin sahibi olmadığınızı söylerse, NFT'yi bastığınız hesabı seçtiğinizi kontrol edin. Daha fazla yardım için [MetaMask'ın NFT'ler kılavuzuna](https://support.metamask.io/manage-crypto/nfts/nft-tokens-in-your-metamask-wallet/) bakın.
+
+Tebrikler! Başarıyla bir NFT bastınız ve artık onu görüntüleyebilirsiniz! NFT dünyasını nasıl kasıp kavuracağınızı görmek için sabırsızlanıyoruz!

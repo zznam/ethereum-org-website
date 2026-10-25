@@ -1,33 +1,27 @@
-import React from "react"
-import { MdContentCopy } from "react-icons/md"
-import { Flex, type FlexProps, Icon, Text } from "@chakra-ui/react"
+import { Clipboard } from "lucide-react"
+import { useTranslations } from "next-intl"
+
+import { Flex, type FlexProps } from "@/components/ui/flex"
 
 import { FAKE_DEMO_ADDRESS } from "../constants"
 import { NotificationPopover } from "../NotificationPopover"
 
 type AddressPillProps = Omit<FlexProps, "children">
 
-export const AddressPill = ({ ...btnProps }: AddressPillProps) => (
-  <NotificationPopover
-    title="Example walkthrough"
-    content="Share your address (public identifier) from your own wallet when finished here"
-  >
-    <Flex
-      gap={2}
-      align="center"
-      borderRadius="full"
-      bg="background.highlight"
-      color="disabled"
-      border="1px"
-      borderColor="border"
-      py={1}
-      px={2}
-      alignSelf="center"
-      fontSize="xs"
-      {...btnProps}
+export const AddressPill = ({ ...btnProps }: AddressPillProps) => {
+  const t = useTranslations("component-wallet-simulator")
+  return (
+    <NotificationPopover
+      title={t("sim-example-walkthrough")}
+      content={t("sim-address-tooltip")}
     >
-      <Text m={0}>{FAKE_DEMO_ADDRESS}</Text>
-      <Icon as={MdContentCopy} w={4} fontSize="lg" />
-    </Flex>
-  </NotificationPopover>
-)
+      <Flex
+        className="gap-2 self-center rounded-full border border-border bg-background-highlight px-2 py-1 text-center text-xs text-disabled"
+        {...btnProps}
+      >
+        <p>{FAKE_DEMO_ADDRESS}</p>
+        <Clipboard className="size-4 text-lg leading-none" />
+      </Flex>
+    </NotificationPopover>
+  )
+}

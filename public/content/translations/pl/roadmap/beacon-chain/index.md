@@ -1,76 +1,81 @@
 ---
-title: Łańcuch śledzący
-description: Dowiedz się więcej o łańcuchu śledzącym — uaktualnieniu, które wprowadziło mechanizm proof-of-stake w sieci Ethereum.
+title: Beacon Chain
+description: "Dowiedz się więcej o Beacon Chain – aktualizacji, która wprowadziła dowód stawki (PoS) w Ethereum."
 lang: pl
 template: upgrade
-image: /upgrades/core.png
+image: /images/upgrades/core.png
 alt: 
-summaryPoint1: Łańcuch śledzący wprowadził mechanizm proof-of-stake do ekosystemu Ethereum.
-summaryPoint2: Został on połączony z pierwotnym łańcuchem proof-of-work Ethereum we wrześniu 2022 roku.
-summaryPoint3: Łańcuch śledzący wprowadził logikę konsensusu i protokół uzgadniania bloków, które obecnie zabezpieczają Ethereum.
+summaryPoints:
+  - "Beacon Chain wprowadził dowód stawki (PoS) do ekosystemu Ethereum."
+  - "Został połączony z oryginalnym łańcuchem dowodu pracy (PoW) Ethereum we wrześniu 2022 roku."
+  - "Beacon Chain wprowadził logikę konsensusu i protokół propagacji bloków (gossip protocol), które obecnie zabezpieczają Ethereum."
 ---
 
 <UpgradeStatus isShipped dateKey="page-upgrades:page-upgrades-beacon-date">
-  Łańcuch śledzący wdrożono 1 grudnia 2020 roku, a 15 września 2022 roku uaktualniono Połączenie i sformalizowano proof-of-stake jako mechanizm konsensusu Ethereum.
+  Beacon Chain został uruchomiony 1 grudnia 2020 r. i sformalizował dowód stawki (PoS) jako mechanizm konsensusu Ethereum wraz z aktualizacją The Merge 15 września 2022 r.
 </UpgradeStatus>
 
-## Czym był łańcuch śledzący? {#what-is-the-beacon-chain}
+## Czym jest Beacon Chain? {#what-is-the-beacon-chain}
 
-Łańcuch śledzący to nazwa pierwotnego łańcucha bloków proof-of-stake, który został uruchomiony w 2020 r. Został on stworzony w celu zapewnienia, że logika konsensusu proof-of-stake jest solidna i zrównoważona, zanim zostanie uruchomiona w sieci głównej Ethereum. W związku z tym działał on równolegle z pierwotnym mechanizmem proof-of-work Ethereum. Wyłączenie mechanizmu proof-of-work i włączenie mechanizmu proof-of-stake w sieci Ethereum wymagało poinstruowania łańcucha śledzącego, aby akceptował transakcje z pierwotnego łańcucha Ethereum, łączył je w bloki, a następnie organizował je w łańcuch bloków przy użyciu mechanizmu konsensusu opartego na proof-of-stake. W tym samym momencie pierwotni klienci Ethereum wyłączyli wydobywanie, propagację bloków i logikę konsensusu, przekazując je w całości łańcuchowi śledzącemu. Wydarzenie to było określane jako [Połączenie](/roadmap/merge/). Po Połączeniu nie było już dwóch sieci blockchain; istniał tylko jeden łańcuch proof-of-stake Ethereum.
+Beacon Chain to nazwa oryginalnego blockchaina opartego na dowodzie stawki (PoS), który został uruchomiony w 2020 roku. Został stworzony, aby upewnić się, że logika konsensusu dowodu stawki jest solidna i zrównoważona przed włączeniem jej w sieci głównej [Ethereum](/). Dlatego działał on równolegle do oryginalnego Ethereum opartego na dowodzie pracy (PoW). Beacon Chain był łańcuchem „pustych” bloków, ale wyłączenie dowodu pracy i włączenie dowodu stawki w Ethereum wymagało poinstruowania Beacon Chain, aby akceptował dane transakcji od klientów warstwy wykonawczej, łączył je w bloki, a następnie organizował w blockchain przy użyciu mechanizmu konsensusu opartego na dowodzie stawki. W tym samym momencie oryginalni klienci Ethereum wyłączyli swoje kopanie, propagację bloku i logikę konsensusu, przekazując to wszystko do Beacon Chain. Wydarzenie to było znane jako [The Merge](/roadmap/merge/). Gdy nastąpił The Merge, nie było już dwóch blockchainów. Zamiast tego powstało jedno Ethereum oparte na dowodzie stawki, które teraz wymaga dwóch różnych klientów na węzeł. Beacon Chain jest teraz warstwą konsensusu, siecią peer-to-peer klientów konsensusu, która obsługuje propagację bloków (gossip) i logikę konsensusu, podczas gdy oryginalni klienci tworzą warstwę wykonawczą, która jest odpowiedzialna za propagację i wykonywanie transakcji oraz zarządzanie stanem Ethereum. Obie warstwy mogą komunikować się ze sobą za pomocą Engine API.
 
-## Co robił łańcuch śledzący? {#what-does-the-beacon-chain-do}
+## Co robi Beacon Chain? {#what-does-the-beacon-chain-do}
 
-Łańcuch śledzący to nazwa nadana księdze głównej kont, która prowadziła i koordynowała sieć [stakerów](/staking/) Ethereum, zanim stakerzy ci zaczęli zatwierdzać rzeczywiste transakcje Ethereum. Nie przetwarzał on transakcji ani nie obsługiwał interakcji inteligentnych kontraktów.
+Beacon Chain to nazwa nadana księdze rachunkowej, która prowadziła i koordynowała sieć [stakujących](/staking/) w Ethereum, zanim zaczęli oni walidować prawdziwe bloki Ethereum. Nie przetwarza on jednak transakcji ani nie obsługuje interakcji z inteligentnymi kontraktami, ponieważ odbywa się to w warstwie wykonawczej.
+Beacon Chain jest odpowiedzialny za takie rzeczy, jak obsługa bloków i poświadczeń, uruchamianie algorytmu wyboru rozwidlenia oraz zarządzanie nagrodami i karami.
+Przeczytaj więcej na naszej [stronie o architekturze węzła](/developers/docs/nodes-and-clients/node-architecture/#node-comparison).
 
-Wprowadził on mechanizm konsensusu (lub „warstwę konsensusu”), który zajął miejsce wydobywania z mechanizmem proof-of-work w sieci Ethereum i przyniósł wiele znaczących ulepszeń.
+## Wpływ Beacon Chain {#beacon-chain-features}
 
-Łańcuch śledzący był podstawowym elementem [bezpiecznego, przyjaznego środowisku i skalowalnego Ethereum, które mamy teraz](/roadmap/vision/).
+### Wprowadzenie stakingu {#introducing-staking}
 
-## Wpływ łańcucha śledzącego {#beacon-chain-features}
+Beacon Chain wprowadził [dowód stawki (PoS)](/developers/docs/consensus-mechanisms/pos/) do Ethereum. Zapewnia to bezpieczeństwo Ethereum, a walidatorom pozwala zarabiać więcej ETH w tym procesie. W praktyce staking polega na stakowaniu ETH w celu aktywacji oprogramowania walidatora. Jako stakujący uruchamiasz oprogramowanie, które tworzy i waliduje nowe bloki w łańcuchu.
 
-### Wprowadzenie do zastawiania {#introducing-staking}
+Staking służy podobnemu celowi, co kiedyś [kopanie](/developers/docs/consensus-mechanisms/pow/mining/), ale różni się od niego pod wieloma względami. Kopanie wymagało dużych nakładów początkowych w postaci potężnego sprzętu i zużycia energii, co prowadziło do korzyści skali i promowało centralizację. Kopanie nie wiązało się również z żadnym wymogiem blokowania aktywów jako zabezpieczenia, co ograniczało zdolność protokołu do karania złych aktorów po ataku.
 
-Łańcuch śledzący wprowadził do Ethereum mechanizm [proof-of-stake](/developers/docs/consensus-mechanisms/pos/). Zapewnia to bezpieczeństwo Ethereum i daje walidatorom więcej ETH w tym procesie. W praktyce staking polega na stakowaniu ETH w celu aktywowania oprogramowania walidatora. Jako staker używasz oprogramowania, które tworzy i waliduje nowe bloki w łańcuchu.
+Przejście na dowód stawki sprawiło, że Ethereum stało się znacznie bezpieczniejsze i bardziej zdecentralizowane w porównaniu do dowodu pracy. Im więcej osób uczestniczy w sieci, tym bardziej staje się ona zdecentralizowana i bezpieczna przed atakami.
 
-Staking służy podobnym celom, co kiedyś [wydobywanie](/developers/docs/consensus-mechanisms/pow/mining/), ale różni się pod wieloma względami. Wydobywanie wymagało dużych nakładów początkowych w postaci potężnego sprzętu i zużycia energii, co skutkowało ekonomią skali i sprzyjało centralizacji. Wydobywanie nie wiązało się również z wymogiem blokowania aktywów jako zabezpieczenia, co ograniczało możliwości protokołu w zakresie karania wrogich podmiotów po ataku.
 
-Przejście na proof-of-stake sprawiło, że sieć Ethereum stała się znacznie bezpieczniejsza i zdecentralizowana w porównaniu z proof-of-work. Im więcej osób uczestniczy w sieci, tym staje się ona bardziej zdecentralizowana i lepiej zabezpieczona przed atakami.
-
-<InfoBanner emoji=":money_bag:">
-  Jeśli chcesz zostać walidatorem i pomóc w zabezpieczaniu Ethereum, <a href="/staking/">dowiedz się więcej o stakingu</a>.
-</InfoBanner>
+<Alert variant="update">
+<AlertEmoji text=":money_bag:"/>
+<AlertContent>
+<AlertDescription>
+  Jeśli jesteś zainteresowany zostaniem walidatorem i pomocą w zabezpieczaniu Ethereum, [dowiedz się więcej o stakingu](/staking/).
+</AlertDescription>
+</AlertContent>
+</Alert>
 
 ### Przygotowanie do shardingu {#setting-up-for-sharding}
 
-Odkąd łańcuch śledzący połączył się z pierwotną siecią główną Ethereum, społeczność Ethereum zaczęła myśleć o skalowaniu sieci.
+Odkąd Beacon Chain połączył się z oryginalną siecią główną Ethereum, społeczność Ethereum zaczęła szukać sposobów na skalowanie sieci.
 
-Zaletą proof-of-stake jest posiadanie rejestru wszystkich zatwierdzonych producentów bloków w danym czasie, z których każdy stakuje ETH. Rejestr ten stwarza możliwość dzielenia i zdobywania, a także niezawodnego rozdzielania określonych obowiązków w sieci.
+Dowód stawki ma tę zaletę, że posiada rejestr wszystkich zatwierdzonych producentów bloków w danym momencie, z których każdy ma stakowane ETH. Rejestr ten przygotowuje grunt pod możliwość zastosowania zasady „dziel i rządź”, pozwalając na niezawodne rozdzielenie konkretnych obowiązków w sieci.
 
-Ta odpowiedzialność jest przeciwieństwem proof-of-work, gdzie górnicy nie mają żadnych zobowiązań wobec sieci i mogą w jednej chwili zaprzestać wydobycia i wyłączyć oprogramowanie swojego węzła bez żadnych konsekwencji. Nie ma też rejestru znanych proponentów bloków ani niezawodnego sposobu na bezpieczny podział obowiązków sieciowych.
+Ta odpowiedzialność kontrastuje z dowodem pracy, w którym kopiący nie mają żadnych zobowiązań wobec sieci i mogą w każdej chwili przestać kopać i na stałe wyłączyć oprogramowanie swojego węzła bez żadnych konsekwencji. Nie ma również rejestru znanych proponujących bloki (block proposers) ani niezawodnego sposobu na bezpieczne podzielenie obowiązków w sieci.
 
 [Więcej o shardingu](/roadmap/danksharding/)
 
-## Relacje między uaktualnieniami {#relationship-between-upgrades}
+## Związek między aktualizacjami {#relationship-between-upgrades}
 
-Wszystkie uaktualnienia Ethereum są poniekąd wzajemnie powiązane. Podsumujmy zatem, jak łańcuch śledzący wpływa na inne uaktualnienia.
+Wszystkie aktualizacje Ethereum są ze sobą w pewien sposób powiązane. Podsumujmy więc, jak Beacon Chain wpływa na inne aktualizacje.
 
-### Łańcuch śledzący i Połączenie {#merge-and-beacon-chain}
+### Beacon Chain i The Merge {#merge-and-beacon-chain}
 
-Na początku łańcuch śledzący istniał oddzielnie od sieci głównej Ethereum, ale zostały one połączone w 2022 r.
+Początkowo Beacon Chain istniał oddzielnie od sieci głównej Ethereum, ale zostały one połączone w 2022 roku.
 
-<ButtonLink to="/roadmap/merge/">
-  Połączenie
+<ButtonLink href="/roadmap/merge/">
+  The Merge
 </ButtonLink>
 
-### Shardy i łańcuch śledzący {#shards-and-beacon-chain}
+### Shardy i Beacon Chain {#shards-and-beacon-chain}
 
-Sharding może bezpiecznie wejść do ekosystemu Ethereum tylko z mechanizmem konsensusu proof-of-stake. W łańcuchu śledzącym wprowadzono staking, który „połączył się” z siecią główną, torując drogę shardingowi, który pomoże w dalszym skalowaniu Ethereum.
+Sharding może bezpiecznie wejść do ekosystemu Ethereum tylko wtedy, gdy wdrożony jest mechanizm konsensusu oparty na dowodzie stawki. Beacon Chain wprowadził staking, który „połączył się” z siecią główną, torując drogę dla shardingu, aby pomóc w dalszym skalowaniu Ethereum.
 
-<ButtonLink to="/roadmap/danksharding/">
-  Łańcuchy odłamkowe
+<ButtonLink href="/roadmap/danksharding/">
+  Łańcuchy shardów
 </ButtonLink>
 
-## Dalsza lektura
+## Dalsza lektura {#further-reading}
 
-- [Więcej na temat przyszłych uaktualnień Ethereum](/roadmap/vision)
-- [Więcej o proof-of-stake](/developers/docs/consensus-mechanisms/pos)
+- [Więcej o architekturze węzła](/developers/docs/nodes-and-clients/node-architecture)
+- [Więcej o dowodzie stawki (PoS)](/developers/docs/consensus-mechanisms/pos)
