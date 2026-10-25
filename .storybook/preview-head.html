@@ -1,0 +1,5 @@
+<script>
+  // Next's cache mock reads process.env while Storybook runs in the browser.
+  globalThis.process ??= { env: {} }
+  globalThis.process.env ??= {}
+</script>

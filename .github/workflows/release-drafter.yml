@@ -8,10 +8,13 @@ on:
 
 jobs:
   update_release_draft:
-    runs-on: ${{ fromJSON((github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && vars.LOCAL_RUNNER_LABELS || '["ubuntu-latest"]') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
     steps:
       # Drafts your next Release notes as PRs are merged
-      - uses: release-drafter/release-drafter@v5
+      - uses: release-drafter/release-drafter@v7
         with:
           config-name: release-drafter.yml
         env:
