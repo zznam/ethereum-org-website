@@ -1,4 +1,4 @@
-import { getTranslations, setRequestLocale } from "next-intl/server"
+import { getTranslations } from "next-intl/server"
 
 import type { Lang, PageParams } from "@/lib/types"
 
@@ -37,15 +37,13 @@ const Page = async (props: { params: Promise<PageParams> }) => {
   const params = await props.params
   const { locale } = params
 
-  setRequestLocale(locale)
-
   const [growThePieData, l2beatData] = await Promise.all([
     getGrowThePieData(),
     getL2beatData(),
   ])
 
   if (!l2beatData) {
-    throw new Error("Failed to fetch L2beat data")
+    throw new Error("Failed to fetch ETHBEAT data")
   }
 
   if (!growThePieData) {
@@ -501,8 +499,6 @@ export async function generateMetadata(props: {
 }) {
   const params = await props.params
   const { locale } = params
-
-  setRequestLocale(locale)
 
   const t = await getTranslations("page-layer-2")
 

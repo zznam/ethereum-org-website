@@ -1,5 +1,25 @@
 # Hindi (hi) -- Translation Review Findings
 
+## PR #19962 (intl/pending-dev) -- 2026-11-26 -- Score 8.9/10
+Scope: `component-diagrams.json`, 257 changed keys (Merkle proof, optimistic rollup, base fee, Gasper finality, ZK-rollup diagrams), changed lines only.
+
+Fixed: `कॉन्ट्रैक्ट` to the glossary and dominant `अनुबंध` in 14 values (#104 drift; zk keys only). Open: injected English parentheticals `(leaves)`, `(bisection)`, `(calldata)`; `उम्मीदवार रूट` for candidate root.
+
+## PR #19946 (intl/pending-dev) -- 2026-11-26 -- Score 9.2/10
+Scope: new `component-account.json` (42 keys) and 19 new `page-start.json` keys.
+
+Fixed: none needed. Open: `account-sessions-hint` `यह कभी नहीं कि यह कौन सा डिवाइस है` is a clipped calque of 'never which device it is'.
+
+## PR #19902 (intl/pending-dev) -- 2026-11-25 -- Score 8.8/10
+Scope: 7-8 re-translated pages (pos, portal-network, optimistic-rollups, zk-rollups, verifying, erc-721-vyper, SQL tutorial, glamsterdam), full PR review, sonnet agents.
+
+Fixed: actor as film actors x3 (#37b recurrence), property as sampatti x2, epoch yugon to epok, opcode spelling, committee to samiti. Open: enshrined as sunishchit, portal heading singular.
+
+## PR #19815 (intl/pending-dev) -- 2026-11-24 -- Score 8.3/10
+Scope: 12 re-translated dev-docs/roadmap pages with interactive diagrams + new `component-diagrams.json` namespace (933 keys), reviewed against English at PR head 86deeb25cd.
+
+Fixed: peer-das caption swap, checkpoint, builder, deploy (tainat), accounts contract regression (anubandh). Open: kadam vs charan, dashed rendered as dharashayi, derive rendered as prapt karen.
+
 (Earlier findings from PR #17101 live in known-patterns.md.)
 
 ## PR #18772 (community-stories.json, 2026-07-10) -- 8.2/10
@@ -183,3 +203,26 @@ Scope: 6 repaired developer tutorials (hello-world, mint/view/write NFT series, 
 **Notes:**
 
 - Glossary itself splits एथेरियम (Foundation) and इथेरियम.
+
+## PR #19803 (intl/pending-dev) -- 2026-11-16 -- Score 9.6/10
+Scope: 2 repaired developer tutorials (develop-and-test-dapps-with-a-multi-client-local-eth-testnet, how-to-use-echidna-to-test-smart-contracts), changed lines only. creating-a-wagmi-ui-for-your-contract was quarantined at the gate in all 24 locales (known-patterns #97). Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- echidna frontmatter `author` transliterated `ट्रेलऑफ़बिट्स`; dev and all other hi Trailofbits tutorials use Latin -> `Trailofbits`
+
+**Open / notes:**
+
+- echidna:747 relative clause attaches "returns int256" to transactions instead of the function -- native call
+
+## PR #19901 (intl/pending-dev) -- 2026-11-25 -- Score 9.0/10
+Scope: gas page, translation-program page, page-developers-index.json (3 files), changed lines only. Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- Gas page inline code spans restored to English (known-patterns #101 recurrence)
+
+**Open / notes:**
+
+- `man` -> `mulya` (value vs price) regression at gas:46; API spelled out.
+- `page-developers-index.json` lost its final newline vs dev (matches en; cosmetic)

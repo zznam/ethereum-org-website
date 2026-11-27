@@ -1,7 +1,7 @@
 import React from "react"
 import { Banknote, ChartNoAxesCombined, UsersRound, Wrench } from "lucide-react"
 import type { Metadata } from "next"
-import { getTranslations, setRequestLocale } from "next-intl/server"
+import { getTranslations } from "next-intl/server"
 
 import type { Lang, PageParams, SectionNavDetails } from "@/lib/types"
 
@@ -24,6 +24,7 @@ import { Tag } from "@/components/ui/tag"
 
 import { getAppPageContributorInfo } from "@/lib/utils/contributors"
 import { getMetadata } from "@/lib/utils/metadata"
+import { slugify } from "@/lib/utils/url"
 
 import OrganizationPathways from "../_components/organization-pathways"
 
@@ -43,8 +44,6 @@ import heroImg from "@/public/images/organizations/startup-warehouse-founders-wo
 const Page = async (props: { params: Promise<PageParams> }) => {
   const params = await props.params
   const { locale } = params
-
-  setRequestLocale(locale)
 
   const t = await getTranslations("page-founders")
 
@@ -371,7 +370,12 @@ const Page = async (props: { params: Promise<PageParams> }) => {
                         className="row-span-3 grid grid-rows-subgrid gap-0"
                       >
                         <CardHeader className="my-auto">
-                          <h3 className="sr-only">{name}</h3>
+                          <h3
+                            id={slugify(name, { unicode: true })}
+                            className="sr-only"
+                          >
+                            {name}
+                          </h3>
                           <Logo className="max-h-9 max-w-full" />
                         </CardHeader>
                         <CardContent spacing="md">
@@ -453,8 +457,6 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params
   const { locale } = params
-
-  setRequestLocale(locale)
 
   const t = await getTranslations("page-founders")
 

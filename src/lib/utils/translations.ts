@@ -45,6 +45,7 @@ export const EXACT_PATH_NAMESPACE_MAP: Record<string, string> = {
   "/quizzes/": "learn-quizzes",
   "/reports/": "page-reports",
   "/reports/trillion-dollar-security/": "page-trillion-dollar-security",
+  "/use-cases/": "page-use-cases",
   "/wallets/find-wallet/": "page-wallets-find-wallet",
   "/wallets/": "page-wallets",
   "/what-is-ether/": "page-what-is-ether",
@@ -52,6 +53,7 @@ export const EXACT_PATH_NAMESPACE_MAP: Record<string, string> = {
 }
 
 export const PREFIX_PATH_NAMESPACE_MAP: Array<[string, string]> = [
+  ["/courses/", "page-courses"],
   ["/staking/deposit-contract/", "page-staking-deposit-contract"],
   ["/staking/", "page-staking"],
   ["/layer-2/networks/", "page-layer-2-networks"],
@@ -92,16 +94,15 @@ const EXACT_PATH_ADDITIONAL_NAMESPACES: Record<string, string[]> = {
   "/community/": ["component-story-card"],
   "/developers/": ["component-swiper"],
   "/roadmap/": ["component-swiper"],
-  "/start/": ["component-swiper"],
   "/wallets/": ["component-wallet-simulator"],
   "/what-are-apps/": ["component-story-card"],
 }
 
 const PREFIX_PATH_ADDITIONAL_NAMESPACES: Array<[string, string[]]> = [
+  ["/courses/", ["component-account"]],
   ["/developers/docs/scaling/", ["page-layer-2"]],
   ["/developers/tools/", ["page-developers-tools-descriptions"]],
   ["/gas/", ["page-gas", "page-community"]],
-  ["/layer-2/networks/", ["table"]],
   ["/energy-consumption/", ["page-about"]],
   [
     "/10years/",

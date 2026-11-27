@@ -1,5 +1,15 @@
 # Turkish (tr) Translation Review Findings
 
+## PR #19902 (intl/pending-dev) -- 2026-11-25 -- Score 9.1/10
+Scope: 7-8 re-translated pages (pos, portal-network, optimistic-rollups, zk-rollups, verifying, erc-721-vyper, SQL tutorial, glamsterdam), full PR review, sonnet agents.
+
+Fixed: block proposer to blok teklifcisi (glamsterdam). Open: at stake rendered stake edilen, geçerlliğini typo (fixed in follow-up), bırak- for drop, suffix harmony on code names.
+
+## PR #19815 (intl/pending-dev) -- 2026-11-24 -- Score 8.4/10
+Scope: 12 re-translated dev-docs/roadmap pages with interactive diagrams + new `component-diagrams.json` namespace (933 keys), reviewed against English at PR head 86deeb25cd.
+
+Fixed: placeholder rebinding in peer-das and verkle keys, catallanma secimi, inline code (gas, verkle), libp2p casing, cifte imza, oncelik ucreti, onden kosma. Open: hard-coded suffixes after numeric placeholders (`{signedA}'si`), relay naming, `islem` ambiguity.
+
 > **PR:** #18353 (stablecoins-2026-redesign, page-stablecoins.json)
 > **Date:** 2026-06-05
 > **Quality Score:** 9.2/10
@@ -196,3 +206,28 @@ Scope: 6 repaired developer tutorials (hello-world, mint/view/write NFT series, 
 **Notes:**
 
 - Warnings: decimal separator and betik/komut dosyası differ between files; glossary-driven mid-sentence capitals (known).
+
+## PR #19803 (intl/pending-dev) -- 2026-11-16 -- Score 9.4/10
+Scope: 2 repaired developer tutorials (develop-and-test-dapps-with-a-multi-client-local-eth-testnet, how-to-use-echidna-to-test-smart-contracts), changed lines only. creating-a-wagmi-ui-for-your-contract was quarantined at the gate in all 24 locales (known-patterns #97). Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- multi-client: Kurtosis "enclave" rendered `yerleşim bölgesi` (residential area) at 6 sites; dev kept `Enclave` and the CLI flag is `--enclave` -> `enclave` with suffixes (`enclave'inizde`)
+- multi-client:35 "a major reason" overstated -> `başlıca nedenlerinden biridir`
+
+**Open / notes:**
+
+- multi-client "files artifacts" -> `dosya eserleri` (eser = creative work); dev had `Dosya Yapıları` -- native call
+- `hala` should be `hâlâ` (multi-client:163, echidna:513) -- informational
+
+## PR #19901 (intl/pending-dev) -- 2026-11-25 -- Score 8.6/10
+Scope: gas page, translation-program page, page-developers-index.json (3 files), changed lines only. Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- Gas page inline code spans restored to English (known-patterns #101 recurrence)
+
+**Open / notes:**
+
+- `tip` rendered `teşvik` at gas:36, :46 instead of glossary `öncelik ücreti`; left as is (tautology), the review agent called it critical -- native/maintainer call.
+- `page-developers-index.json` lost its final newline vs dev (matches en; cosmetic)

@@ -1,5 +1,20 @@
 # id Translation Review Findings
 
+## PR #19962 (intl/pending-dev) -- 2026-11-26 -- Score 8.8/10
+Scope: `component-diagrams.json`, 257 changed keys (Merkle proof, optimistic rollup, base fee, Gasper finality, ZK-rollup diagrams), changed lines only.
+
+Fixed: 33 values `(l1)`/`l1` uppercased; numeral order (`selama putaran {rounds}` to `selama {rounds} putaran`, `nilai {leaves}`, `sel hari {days}`, `entri {leaves} pertama`, `jejak langkah eksekusi {steps}`). Open: `memperdebatkan` (debate) for dispute.
+
+## PR #19902 (intl/pending-dev) -- 2026-11-25 -- Score 9.4/10
+Scope: 7-8 re-translated pages (pos, portal-network, optimistic-rollups, zk-rollups, verifying, erc-721-vyper, SQL tutorial, glamsterdam), full PR review, sonnet agents.
+
+Fixed: rollup optimis to rollup Optimistic (zk-rollups x5), equivocation to ekivokasi (pos L44). Open: L50 berdalih unchanged line, API/MEV over-expansion, capitalization leaks, mengkueri.
+
+## PR #19815 (intl/pending-dev) -- 2026-11-24 -- Score 9.0/10
+Scope: 12 re-translated dev-docs/roadmap pages with interactive diagrams + new `component-diagrams.json` namespace (933 keys), reviewed against English at PR head 86deeb25cd.
+
+Fixed: checkpoint, Bukti Kepemilikan in attestations description, fork choice algorithm, ekivokasi, rantai blok. Open: `dikembalikan` for revert, head/kepala, stem/batang page vs diagram.
+
 ## PR #18925 (privacy roadmap + 2 video transcripts) -- 2026-07-27 -- 9.3/10
 
 **Fixed (critical):** `set anonimitas` -> `himpunan anonimitas` (`roadmap/privacy` L74). The companion video transcript already used the glossary form 3x in the same PR — cross-file disagreement was the tell.
@@ -148,3 +163,24 @@ Scope: 6 repaired developer tutorials (hello-world, mint/view/write NFT series, 
 **Notes:**
 
 - Warnings: exclusive `kami` mixed with inclusive `kita` in the mint tutorial; `peristiwa` vs glossary `kejadian` (websockets:79).
+
+## PR #19803 (intl/pending-dev) -- 2026-11-16 -- Score 9.4/10
+Scope: 2 repaired developer tutorials (develop-and-test-dapps-with-a-multi-client-local-eth-testnet, how-to-use-echidna-to-test-smart-contracts), changed lines only. creating-a-wagmi-ui-for-your-contract was quarantined at the gate in all 24 locales (known-patterns #97). Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- echidna: revert rendered passive `dikembalikan` ("is returned") at 3 sites, regressing dev's `mengembalikan (revert)` -> restored with the `(revert)` gloss (#96)
+- echidna:145 `di-deploy` -> glossary `disebarkan`
+- multi-client: non-standard `enklaf` -> `enklave` (6 sites)
+
+## PR #19901 (intl/pending-dev) -- 2026-11-25 -- Score 8.8/10
+Scope: gas page, translation-program page, page-developers-index.json (3 files), changed lines only. Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- Gas page inline code spans restored to English (known-patterns #101 recurrence)
+
+**Open / notes:**
+
+- API expanded on L21 after L9.
+- `page-developers-index.json` lost its final newline vs dev (matches en; cosmetic)

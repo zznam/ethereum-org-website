@@ -1,9 +1,5 @@
 import { pick } from "lodash"
-import {
-  getMessages,
-  getTranslations,
-  setRequestLocale,
-} from "next-intl/server"
+import { getMessages, getTranslations } from "next-intl/server"
 
 import type { Lang, PageParams } from "@/lib/types"
 
@@ -85,7 +81,6 @@ const DocsColumn = ({
 const DevelopersPage = async (props: { params: Promise<PageParams> }) => {
   const params = await props.params
   const { locale } = params
-  setRequestLocale(locale)
   const t = await getTranslations("page-developers-index")
 
   // client messages for the swipers (the page has no root I18nProvider)
@@ -431,6 +426,12 @@ const DevelopersPage = async (props: { params: Promise<PageParams> }) => {
                 </CardFooter>
               </Card>
             </Grid>
+
+            <div className="mt-space-2x flex justify-center max-sm:*:w-full">
+              <ButtonLink href="/developers/tools/" className="max-md:w-full">
+                {t("page-developers-view-tools")}
+              </ButtonLink>
+            </div>
           </Section>
 
           {/* Video courses */}
@@ -677,6 +678,15 @@ const DevelopersPage = async (props: { params: Promise<PageParams> }) => {
                 ]}
               />
             </Grid>
+
+            <div
+              data-flow="cta"
+              className="flex justify-center max-sm:*:w-full"
+            >
+              <ButtonLink href="/developers/docs/" className="max-md:w-full">
+                {t("page-developers-docs-overview")}
+              </ButtonLink>
+            </div>
           </Section>
 
           {/* Hackathons */}
@@ -815,8 +825,6 @@ export async function generateMetadata(props: {
 }) {
   const params = await props.params
   const { locale } = params
-
-  setRequestLocale(locale)
 
   const t = await getTranslations("page-developers-index")
 

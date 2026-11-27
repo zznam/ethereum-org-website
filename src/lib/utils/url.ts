@@ -104,18 +104,22 @@ export const getFirstSegment = (pathname: string): string => {
 /**
  * Converts a string to a URL-friendly slug
  * @param text - The text to convert (e.g., "Governance/DAO", "Bridge Aave 1", "Hello world")
+ * @param options.unicode - Keep non-Latin letters and skip URI encoding, for
+ * element ids built from translated text (e.g., "我如何赚取奖励？" -> "我如何赚取奖励")
  * @returns URL slug (e.g., "governance-dao", "bridge-aave-1", "hello-world")
  */
-export const slugify = (text: string): string => {
-  return encodeURIComponent(
-    text
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
-      .replace(/\s+/g, "-") // Replace spaces with hyphens
-      .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
-      .replace(/^-|-$/g, "") // Remove leading/trailing hyphens
-  )
+export const slugify = (
+  text: string,
+  { unicode }: { unicode?: boolean } = {}
+): string => {
+  const slug = text
+    .toLowerCase()
+    .trim()
+    .replace(unicode ? /[^\p{L}\p{M}\p{N}\s-]/gu : /[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+    .replace(/^-|-$/g, "") // Remove leading/trailing hyphens
+  return unicode ? slug : encodeURIComponent(slug)
 }
 
 /**
@@ -142,14 +146,6 @@ export const normalizeUrlForJsonLd = (
   if (!url.pathname.endsWith("/") && !isFile(url.pathname)) url.pathname += "/"
   return url.toString()
 }
-
-/**
- * devcon.org publishes its ticket page in English, Hindi, and Marathi only, so
- * every other locale falls back to `en`. The mtm_* params attribute the
- * referral on Devcon analytics. Removable once the Devcon banners come down.
- */
-export const getDevconTicketLink = (locale: string) =>
-  `https://devcon.org/${["hi", "mr"].includes(locale) ? locale : "en"}/tickets/?mtm_campaign=ethorg10&mtm_source=ethereum.org&mtm_medium=referral`
 
 const X_HANDLE = /^@?([A-Za-z0-9_]{1,15})$/
 const PLACEHOLDER = /^(none|null|na|tbd)$/i

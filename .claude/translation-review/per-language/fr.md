@@ -1,5 +1,20 @@
 # French (fr) Translation Review Findings
 
+## PR #19962 (intl/pending-dev) -- 2026-11-26 -- Score 9.0/10
+Scope: `component-diagrams.json`, 257 changed keys (Merkle proof, optimistic rollup, base fee, Gasper finality, ZK-rollup diagrams), changed lines only.
+
+Fixed: 35 values with `(l1)`/`(l2)` and bare `la l1` uppercased.
+
+## PR #19902 (intl/pending-dev) -- 2026-11-25 -- Score 9.5/10
+Scope: 7-8 re-translated pages (pos, portal-network, optimistic-rollups, zk-rollups, verifying, erc-721-vyper, SQL tutorial, glamsterdam), full PR review, sonnet agents.
+
+Fixed: EOA comptes detenus en externe (optimistic-rollups L189). Open: gossip rendered potins, parenthetical English glosses in portal-network, sanctionne/reduction slashing mix.
+
+## PR #19815 (intl/pending-dev) -- 2026-11-24 -- Score 9.0/10
+Scope: 12 re-translated dev-docs/roadmap pages with interactive diagrams + new `component-diagrams.json` namespace (933 keys), reviewed against English at PR head 86deeb25cd.
+
+Fixed: gas inline code, choix de fourche, frais de priorite, creneaux. Open: `creneau de stockage` for storage slot (native call), Engine API vs API Engine.
+
 ## PR #18942 (intl/pending-dev) -- 2026-08-05 -- Score 9.0/10
 Scope: accounts `CREATE2` + `page-app-descriptions`/`page-apps`/`page-developers-tools-descriptions`/`page-values`.
 
@@ -144,3 +159,29 @@ Scope: 6 repaired developer tutorials (hello-world, mint/view/write NFT series, 
 **Notes:**
 
 - Clean otherwise.
+
+## PR #19803 (intl/pending-dev) -- 2026-11-16 -- Score 9.2/10
+Scope: 2 repaired developer tutorials (develop-and-test-dapps-with-a-multi-client-local-eth-testnet, how-to-use-echidna-to-test-smart-contracts), changed lines only. creating-a-wagmi-ui-for-your-contract was quarantined at the gate in all 24 locales (known-patterns #97). Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- multi-client title and description: retranslation spelled out `dapp` as `application décentralisée (dapp)` in both meta slots although the English did not change (#80, #91) -> restored dev's `une dapp`
+- multi-client:93 `dépendances paires` (paired) -> `dépendances pairs (peer dependencies)`
+
+**Open / notes:**
+
+- echidna:340 glossary `annuler` for revert reads as overflows being "cancelled" (L415/L422 unchanged, same issue) -- native call (#96)
+- ABI/EVM spelled out (#80)
+
+## PR #19901 (intl/pending-dev) -- 2026-11-25 -- Score 8.6/10
+Scope: gas page, translation-program page, page-developers-index.json (3 files), changed lines only. Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- Gas page inline code spans restored to English (known-patterns #101 recurrence)
+- Glossary: `frais maximums` -> `frais maximum` (gas L87, L89).
+
+**Open / notes:**
+
+- `suite a un bloc plein` reverses "preceding" (gas:73, dev had `avant`); `telugu` -> `telougou`; `supplement` for tip.
+- `page-developers-index.json` lost its final newline vs dev (matches en; cosmetic)

@@ -1,5 +1,15 @@
 # Swahili (sw) -- Translation Review Findings
 
+## PR #19902 (intl/pending-dev) -- 2026-11-25 -- Score 8.5/10
+Scope: 7-8 re-translated pages (pos, portal-network, optimistic-rollups, zk-rollups, verifying, erc-721-vyper, SQL tutorial, glamsterdam), full PR review, sonnet agents.
+
+Fixed: ufungumanisho typo to ufungamanisho, by BALs to na BALs. Open: client regressed kiteja to mteja/wateja, validator plural, Piga simu for call, Kisheria for enshrined, coined terms.
+
+## PR #19815 (intl/pending-dev) -- 2026-11-24 -- Score 8.2/10
+Scope: 12 re-translated dev-docs/roadmap pages with interactive diagrams + new `component-diagrams.json` namespace (933 keys), reviewed against English at PR head 86deeb25cd.
+
+Fixed: `angalau` (at least) for at-most in attestations inclusion delay, ada za kipaumbele, wathibitishaji plural, minyororo ya vitalu, ukataji, mchepuko. Open: relay Rilei vs wapeanaji, honest as halali.
+
 ## PR #18772 (community-stories.json, 2026-07-10) -- 9.1/10
 - CRIT fixed: passive-voice agency reversal in story-casio: "benki zote zilikataliwa maombi yangu" (banks WERE denied) -> "benki zote zilikataa maombi yangu" (banks denied my applications). Passive constructions are an inversion vector -- check polarity of passive renderings on every sw import.
 - WARN: "took for granted" -> "tulivichukulia poa" (considered them cool) weakens the idiom (story-yamille).
@@ -172,3 +182,30 @@ Scope: 6 repaired developer tutorials (hello-world, mint/view/write NFT series, 
 **Notes:**
 
 - Warnings (heaviest drift): `simu` (phone call) used for RPC calls; `iliyokufuliwa` should be `iliyofuliwa`; private key / metadata / blockchain / function terms differ between files.
+
+## PR #19803 (intl/pending-dev) -- 2026-11-16 -- Score 8.8/10
+Scope: 2 repaired developer tutorials (develop-and-test-dapps-with-a-multi-client-local-eth-testnet, how-to-use-echidna-to-test-smart-contracts), changed lines only. creating-a-wagmi-ui-for-your-contract was quarantined at the gate in all 24 locales (known-patterns #97). Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- multi-client: "output" rendered `Toleo` (release) at 4 sites, regressing dev's `Matokeo` -> `Matokeo` with concord
+- echidna: noun "assertion" rendered as imperative `thibitisha` at 7 sites (incl. 2 headings), regressing dev's `uthibitisho` -> restored (#96)
+- echidna:282 `Jina tupu` (empty name) -> `Jina pekee` (bare name)
+
+**Open / notes:**
+
+- multi-client: software client as `wateja` (customer) at 6 changed sites plus unchanged L3/L7/L16. Not auto-fixed: ETHGlossary itself sanctions `mteja wa mwafaka` (consensus client) and lists `mteja wa utekelezaji` as an alias for execution client, so there is no single deterministic target. Glossary follow-up: reconcile `kiteja` vs `mteja` across client entries
+- multi-client:61/219 "mapped" -> `-chorwa` (drawn); 250 `matukio` for instances; `kichunguza bloku` vs glossary `kichunguzi cha bloku` -- native call
+
+## PR #19901 (intl/pending-dev) -- 2026-11-25 -- Score 8.4/10
+Scope: gas page, translation-program page, page-developers-index.json (3 files), changed lines only. Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- Gas page inline code spans restored to English (known-patterns #101 recurrence)
+- Glossary: `Pochi` -> `Mikoba` (translation-program:9).
+
+**Open / notes:**
+
+- `inatambuliwa` for "determined" (dev had `inabainishwa`); `ufungamanisho` used for "no obligation"; msanidi/wasanidi drift.
+- `page-developers-index.json` lost its final newline vs dev (matches en; cosmetic)

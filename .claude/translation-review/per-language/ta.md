@@ -1,5 +1,20 @@
 # Tamil (ta) Translation Review Findings
 
+## PR #19946 (intl/pending-dev) -- 2026-11-26 -- Score 9.0/10
+Scope: new `component-account.json` (42 keys) and 19 new `page-start.json` keys.
+
+Fixed: none needed. Open: imperative register splits across sibling buttons (bare `அகற்று`/`வெளியேறு`/`நீக்கு`/`சேமி` vs polite `-வும்`/`-ங்கள்` vs literary `உலாவுக`), as in earlier runs.
+
+## PR #19902 (intl/pending-dev) -- 2026-11-25 -- Score 8.2/10
+Scope: 7-8 re-translated pages (pos, portal-network, optimistic-rollups, zk-rollups, verifying, erc-721-vyper, SQL tutorial, glamsterdam), full PR review, sonnet agents.
+
+Fixed: commitment to urutippadu, deploy regressed twice (npayanpadutha), actors as performers, clients as customers, state root, private key, blob, slot, block explorer, trade-off. Open: batch vs block both thoguthi, trustless liveness, enshrined as urudhi, bidi isolates in glamsterdam.
+
+## PR #19815 (intl/pending-dev) -- 2026-11-24 -- Score 8.5/10
+Scope: 12 re-translated dev-docs/roadmap pages with interactive diagrams + new `component-diagrams.json` namespace (933 keys), reviewed against English at PR head 86deeb25cd.
+
+Fixed: attestation description, tip, equivocation, slash, checkpoint, deploy (nilainirutthu) in 7 JSON keys, plus placeholder swaps missed by the review agent (peer-das caption, verkle). Open: 25 mev headings reverted to English (needs pipeline re-run), key terminology vicai/thiravukol.
+
 > **PR:** #18353 (stablecoins-2026-redesign, page-stablecoins.json)
 > **Date:** 2026-06-05
 > **Quality Score:** 9.4/10
@@ -224,3 +239,30 @@ Scope: 6 repaired developer tutorials (hello-world, mint/view/write NFT series, 
 **Notes:**
 
 - Warnings: constructor term drift; எமது/நமது mixed; "call out" mistranslated (write-deploy:374).
+
+## PR #19803 (intl/pending-dev) -- 2026-11-16 -- Score 9.0/10
+Scope: 2 repaired developer tutorials (develop-and-test-dapps-with-a-multi-client-local-eth-testnet, how-to-use-echidna-to-test-smart-contracts), changed lines only. creating-a-wagmi-ui-for-your-contract was quarantined at the gate in all 24 locales (known-patterns #97). Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- echidna:145 deploy rendered `பயன்படுத்தப்படுகிறது` (used) -> glossary `நிலைநிறுத்தப்படுகிறது` (recurring ta pattern)
+- multi-client:75/130 private/validator keys `திறப்புகள்` -> locale-standard `திறவுகோல்கள்`
+- echidna:506 inclusive/exclusive we mix `நாம் எங்கள்` -> `நாம் நமது`
+
+**Open / notes:**
+
+- echidna:64 invariants as `மாறிலிகள்` (constants), same word used for constants on L46 -- native call
+- multi-client: `கட்டமைப்பு` used for both framework and struct -- native call
+
+## PR #19901 (intl/pending-dev) -- 2026-11-25 -- Score 8.2/10
+Scope: gas page, translation-program page, page-developers-index.json (3 files), changed lines only. Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- Gas page inline code spans restored to English (known-patterns #101 recurrence)
+- Glossary: `வாலெட்டுகள்` -> `பணப்பைகள்` (translation-program:9); genitive `ETH-இன்` restored at gas:50.
+
+**Open / notes:**
+
+- `உறுதிப்பாடு` for "no obligation"; literary `செய்க` CTA among polite imperatives.
+- `page-developers-index.json` lost its final newline vs dev (matches en; cosmetic)

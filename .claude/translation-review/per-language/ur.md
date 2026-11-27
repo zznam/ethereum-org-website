@@ -1,5 +1,20 @@
 # Urdu (ur) -- Translation Review Findings
 
+## PR #19946 (intl/pending-dev) -- 2026-11-26 -- Score 8.8/10
+Scope: new `component-account.json` (42 keys) and 19 new `page-start.json` keys.
+
+Fixed: `get-eth-description` `اپنے پتہ پر` -> `اپنے پتے پر` (glossary citation form not inflected). Open: `account-name-reserved` `کے لیے استعمال ہو سکتا ہے` reads as 'could be used for', not 'could pass for'; `account-sessions-hint` `یہ کبھی نہیں کہ` is clipped; `account-name-edit` `مدون کریں` for 'edit' (`ترمیم کریں`).
+
+## PR #19902 (intl/pending-dev) -- 2026-11-25 -- Score 8.6/10
+Scope: 7-8 re-translated pages (pos, portal-network, optimistic-rollups, zk-rollups, verifying, erc-721-vyper, SQL tutorial, glamsterdam), full PR review, sonnet agents.
+
+Fixed: equivocating to dogla pan x2 (pos); follow-up fixed erc-721 L169 inversion, U+3002 x3, portal L17 Latin full stop. Open: actor as adakar (verifying), creation bytecode as takhliqi, burn as barn vs jalana, Western digits in prose; erc-1363 U+3002 pre-existing.
+
+## PR #19815 (intl/pending-dev) -- 2026-11-24 -- Score 8.4/10
+Scope: 12 re-translated dev-docs/roadmap pages with interactive diagrams + new `component-diagrams.json` namespace (933 keys), reviewed against English at PR head 86deeb25cd.
+
+Fixed: peer-das caption swap (isolates preserved), transaction fee, builder and searcher across the MEV-Boost diagram, PoS in attestations description. Open: qadam vs marhala, polynomial, relay as `rileez`.
+
 ## PR #18868 (full pipeline import, 2026-07-22) -- 8.4/10 (lowest in fleet)
 - CRIT (NOT hand-fixed, needs pipeline re-pass): `gaming/index.md` -- two whole sections (`## Gaming on Ethereum`, `## Ethereum's gaming ecosystem overview`) verbatim English between translated sections. `developers/tutorials/yellow-paper-evm/index.md` -- ~half the explanatory prose (sec 9, 9.3, 9.4, 9.4.2, 9.4.3, Opcode cost, Expanding memory cost) left English. Block-matching coverage gap, not laziness.
 - WARN: "trade-off" -> تبادلہ (glossary's *swap* term) on single-slot-finality; zkEVM correctly used سمجھوتہ. Prefer سمجھوتہ / loanword ٹریڈ آف.
@@ -231,3 +246,29 @@ Scope: how-to-write-and-deploy-an-nft (released from quarantine and fully rework
 - nft:342 `مثالیں` (examples) is used for object instances; prefer `انسٹینسز`
 - nft:226, 290 `ماحولیاتی` (ecological) is used for env file/variable; prefer `انوائرنمنٹ`
 - The step-6 heading and the word for installation differ between hello-world and the NFT tutorial
+
+## PR #19803 (intl/pending-dev) -- 2026-11-16 -- Score 9.0/10
+Scope: 2 repaired developer tutorials (develop-and-test-dapps-with-a-multi-client-local-eth-testnet, how-to-use-echidna-to-test-smart-contracts), changed lines only. creating-a-wagmi-ui-for-your-contract was quarantined at the gate in all 24 locales (known-patterns #97). Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- echidna:16/602 `Echidna 2.3.3` / `Echidna 2.3.0` left Latin inside the ltr span; glossary transliterates -> `ایکڈنا <span dir="ltr">2.3.3</span>` (critical)
+- multi-client:99/163 dropped token noun made `1000 منٹ` read as "1000 minutes" -> `1000 ٹوکن منٹ`
+- echidna:317 heading lost its `(assert)` clarifier vs dev -> restored
+
+**Open / notes:**
+
+- echidna:66 `نامانوس` (unfamiliar) for invalid; multi-client:205 `متضاد` (contradictory) for heterogeneous -- both pre-existing wording on changed lines, native call
+
+## PR #19901 (intl/pending-dev) -- 2026-11-25 -- Score 9.4/10
+Scope: gas page, translation-program page, page-developers-index.json (3 files), changed lines only. Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- Gas page inline code spans restored to English (known-patterns #101 recurrence)
+- Only the two formula spans at gas L44 and L69 needed restoring (the review agent reported none).
+
+**Open / notes:**
+
+- `paused` lost its temporary sense (translation-program:29).
+- `page-developers-index.json` lost its final newline vs dev (matches en; cosmetic)

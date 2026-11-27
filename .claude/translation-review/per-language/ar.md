@@ -1,5 +1,25 @@
 # Arabic (ar) Translation Review Findings
 
+## PR #19962 (intl/pending-dev) -- 2026-11-26 -- Score 9.3/10
+Scope: `component-diagrams.json`, 257 changed keys (Merkle proof, optimistic rollup, base fee, Gasper finality, ZK-rollup diagrams), changed lines only.
+
+Fixed: none needed. ICU binding, glossary forms (Casper FFG, aggregate/rollup terms) and bidi wrappers fine. Open: wrapper use is uneven (`{step}` isolated in gasper keys only); `كخلايا أيام {days}` word order.
+
+## PR #19946 (intl/pending-dev) -- 2026-11-26 -- Score 9.2/10
+Scope: new `component-account.json` (42 keys) and 19 new `page-start.json` keys.
+
+Fixed: hard-coded Eastern digit `٠` in the `zero` branch of `wallet-cta`, `wallet-languages`, `apps-cta-count` -> `{countFormatted}` (ar numerals are Western). Open: none.
+
+## PR #19902 (intl/pending-dev) -- 2026-11-25 -- Score 9.1/10
+Scope: 7-8 re-translated pages (pos, portal-network, optimistic-rollups, zk-rollups, verifying, erc-721-vyper, SQL tutorial, glamsterdam), full PR review, sonnet agents.
+
+0 critical. Open: slot as الفترات الزمنية vs خانة (glamsterdam), compiler مترجم vs مُصرّف, builder منشئي vs بُناة, dropped span dir=ltr wrappers in verifying (24 to 0), Ryuya Nakamura Latin in body but transliterated in author.
+
+## PR #19815 (intl/pending-dev) -- 2026-11-24 -- Score 8.6/10
+Scope: 12 re-translated dev-docs/roadmap pages with interactive diagrams + new `component-diagrams.json` namespace (933 keys), reviewed against English at PR head 86deeb25cd.
+
+Fixed: nodes-and-clients English dates and Latin Mainnet/Beacon Chain cells restored to Arabic, slot/attestation/checkpoint glossary forms, Ethereum spelling in attestations description. Open: bytes untranslated in JSON, Verkle singular/plural, `الرمز` vs `الكود`.
+
 > **PR:** #17105
 > **Date:** 2026-03-17
 > **Quality Score:** 5.2/10 (pre-fix)
@@ -288,3 +308,27 @@ Scope: 6 repaired developer tutorials (hello-world, mint/view/write NFT series, 
 **Notes:**
 
 - Warnings: `حساب` used for "computation" right after the same word for "account" (mint:116); English alt text (write-deploy:32,44); "leave `gas` out" rendered as "leave it empty" (sending:198).
+
+## PR #19803 (intl/pending-dev) -- 2026-11-16 -- Score 9.4/10
+Scope: 2 repaired developer tutorials (develop-and-test-dapps-with-a-multi-client-local-eth-testnet, how-to-use-echidna-to-test-smart-contracts), changed lines only. creating-a-wagmi-ui-for-your-contract was quarantined at the gate in all 24 locales (known-patterns #97). Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- multi-client:25 dangling `سوف:` before a list of verbal nouns -> `ستقوم بما يلي:`
+- echidna:414 `John Regehr` reverted to bare Latin -> `جون ريجر (John Regehr)` (dev form)
+
+**Open / notes:**
+
+- echidna:298 "falsify the property" -> `تزييف` (forge); suggested `لإثبات بطلان الخاصية` -- native call
+
+## PR #19901 (intl/pending-dev) -- 2026-11-25 -- Score 8.8/10
+Scope: gas page, translation-program page, page-developers-index.json (3 files), changed lines only. Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- Gas page inline code spans restored to English (known-patterns #101 recurrence)
+
+**Open / notes:**
+
+- Marathi spelling `المراثية` vs `الماراثية` -- native call.
+- `page-developers-index.json` lost its final newline vs dev (matches en; cosmetic)

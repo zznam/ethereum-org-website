@@ -1,5 +1,20 @@
 # Ukrainian (uk) Translation Review Findings
 
+## PR #19946 (intl/pending-dev) -- 2026-11-26 -- Score 9.2/10
+Scope: new `component-account.json` (42 keys) and 19 new `page-start.json` keys.
+
+Fixed: `account-sign-in-wallet` `з Етеріум` -> `з Етеріумом` (glossary citation form left uninflected; `Етеріумі`/`Етеріуму` inflect elsewhere, known-patterns #96). Open: none.
+
+## PR #19902 (intl/pending-dev) -- 2026-11-25 -- Score 8.8/10
+Scope: 7-8 re-translated pages (pos, portal-network, optimistic-rollups, zk-rollups, verifying, erc-721-vyper, SQL tutorial, glamsterdam), full PR review, sonnet agents.
+
+Fixed: claim as zatrebuvannya to tverdzhennia (optimistic-rollups), razgornutym typo. Open: Eteriuma vs Eteriumu genitive drift (12 sites in pos), commitment zobov'iazannia vs fiksatsiia, doubled (PBS).
+
+## PR #19815 (intl/pending-dev) -- 2026-11-24 -- Score 9.2/10
+Scope: 12 re-translated dev-docs/roadmap pages with interactive diagrams + new `component-diagrams.json` namespace (933 keys), reviewed against English at PR head 86deeb25cd.
+
+Fixed: Etheriumi in attestations description, vyboru forka, eqivokaciya/sleshing, prioritetna komisiya, BLS-pidpys. Open: seed rendered as sid-fraza, `vyprominyuye` for emits.
+
 > **PR:** #18418 (intl/pending-dev)
 > **Date:** 2026-06-16
 > **Quality Score:** 9.6/10
@@ -183,3 +198,27 @@ Scope: 6 repaired developer tutorials (hello-world, mint/view/write NFT series, 
 **Notes:**
 
 - No Russian contamination. Warnings: decimal separator; MetaMask UI labels given only in Ukrainian.
+
+## PR #19803 (intl/pending-dev) -- 2026-11-16 -- Score 9.6/10
+Scope: 2 repaired developer tutorials (develop-and-test-dapps-with-a-multi-client-local-eth-testnet, how-to-use-echidna-to-test-smart-contracts), changed lines only. creating-a-wagmi-ui-for-your-contract was quarantined at the gate in all 24 locales (known-patterns #97). Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- echidna:54 `Фазер` (singular) with plural verb -> `Фазери`
+- echidna:282 ABI glossary insertion split "ABI signature" -> `підпис двійкового інтерфейсу програми (ABI)`
+
+**Open / notes:**
+
+- multi-client: account as both `обліковими записами` (code comment) and `акаунти` (prose) -- informational
+
+## PR #19901 (intl/pending-dev) -- 2026-11-25 -- Score 8.8/10
+Scope: gas page, translation-program page, page-developers-index.json (3 files), changed lines only. Scores are for the PR's initial state.
+
+**Fixed in this branch:**
+
+- Gas page inline code spans restored to English (known-patterns #101 recurrence)
+
+**Open / notes:**
+
+- `tip` -> `надбавка`/`заохочення`; `повинна бути принаймні не меншою` says "at least" twice (gas:89); `акаунт` vs `рахунок` in one paragraph.
+- `page-developers-index.json` lost its final newline vs dev (matches en; cosmetic)

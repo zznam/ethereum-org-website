@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { getTranslations, setRequestLocale } from "next-intl/server"
+import { getTranslations } from "next-intl/server"
 
 import type { Lang, PageParams } from "@/lib/types"
 
@@ -42,8 +42,6 @@ const ReportCard = ({ cta, altText }: { cta: string; altText: string }) => (
 const TdsPage = async (props: { params: Promise<PageParams> }) => {
   const params = await props.params
   const { locale } = params
-
-  setRequestLocale(locale)
 
   const t = await getTranslations("page-trillion-dollar-security")
 
@@ -571,7 +569,7 @@ const TdsPage = async (props: { params: Promise<PageParams> }) => {
                     "page-trillion-dollar-security-section-3-1-paragraph-2",
                     {
                       a: (chunks) => (
-                        <Link href="https://l2beat.com/">{chunks}</Link>
+                        <Link href="https://ethbeat.org/">{chunks}</Link>
                       ),
                     }
                   )}
@@ -893,8 +891,6 @@ export async function generateMetadata(props: {
 }) {
   const params = await props.params
   const { locale } = params
-
-  setRequestLocale(locale)
 
   const t = await getTranslations("page-trillion-dollar-security")
 
